@@ -518,7 +518,6 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-
 			# Almacenando datos#
 		    $firstname=$this->limpiarCadena($_POST['firstname']);
 		    $lastname=$this->limpiarCadena($_POST['lastname']);
@@ -531,9 +530,15 @@
 			$country=$this->limpiarCadena($_POST['country']);
 			$departamento=$this->limpiarCadena($_POST['departamento']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$location=$this->limpiarCadena($_POST['location']);
+			$gender=$this->limpiarCadena($_POST['gender']);
+			$rif=$this->limpiarCadena($_POST['rif']);
 
 		    # Verificando campos obligatorios #
-		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" || $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" ){
+		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 
+			|| $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" 
+			|| $tcarea=="" || $tcnumber==""|| $location ==""|| $country=="" || $gender=="" || $rif=="" 
+			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
