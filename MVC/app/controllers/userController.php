@@ -8,11 +8,20 @@
 		/*----------  Controlador registrar usuario  ----------*/
 		public function registrarUsuarioControlador(){
 
+			$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"registrarUsuarioControlador",
+				"texto"=>"registrarUsuarioControlador",
+				"icono"=>"error"
+			];
+			return json_encode($alerta);
+			exit();
+
 			# Almacenando datos#
 		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
 		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
 
-		    $usuario=$this->limpiarCadena($_POST['usuario_usuario']);
+		    $usuario=$this->limpiarCadena($_POST['login']);
 		    $email=$this->limpiarCadena($_POST['usuario_email']);
 		    $clave1=$this->limpiarCadena($_POST['usuario_clave_1']);
 		    $clave2=$this->limpiarCadena($_POST['usuario_clave_2']);
@@ -85,7 +94,7 @@
 						$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"El EMAIL que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
+							"texto"=>"El EMAIL 3 que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
 							"icono"=>"error"
 						];
 						return json_encode($alerta);
@@ -118,7 +127,7 @@
             }
 
             # Verificando usuario #
-		    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
+		    $check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE login='$usuario'");
 		    if($check_usuario->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -232,7 +241,7 @@
 					"campo_valor"=>$apellido
 				],
 				[
-					"campo_nombre"=>"usuario_usuario",
+					"campo_nombre"=>"login",
 					"campo_marcador"=>":Usuario",
 					"campo_valor"=>$usuario
 				],
@@ -304,9 +313,9 @@
 
 			if(isset($busqueda) && $busqueda!=""){
 
-				$consulta_datos="SELECT * FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE '%$busqueda%')) ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
+				$consulta_datos="SELECT * FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR login LIKE '%$busqueda%')) ORDER BY usuario_nombre ASC LIMIT $inicio,$registros";
 
-				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR usuario_usuario LIKE '%$busqueda%'))";
+				$consulta_total="SELECT COUNT(usuario_id) FROM usuario WHERE ((usuario_id!='".$_SESSION['id']."' AND usuario_id!='1') AND (usuario_nombre LIKE '%$busqueda%' OR usuario_apellido LIKE '%$busqueda%' OR usuario_email LIKE '%$busqueda%' OR login LIKE '%$busqueda%'))";
 
 			}else{
 
@@ -349,7 +358,7 @@
 						<tr class="has-text-centered" >
 							<td>'.$contador.'</td>
 							<td>'.$rows['usuario_nombre'].' '.$rows['usuario_apellido'].'</td>
-							<td>'.$rows['usuario_usuario'].'</td>
+							<td>'.$rows['login'].'</td>
 							<td>'.$rows['usuario_email'].'</td>
 							<td>
 			                    <a href="'.APP_URL.'userPhoto/'.$rows['usuario_id'].'/" class="button is-info is-rounded is-small">
@@ -488,7 +497,7 @@
 		/*----------  Controlador actualizar usuario  ----------*/
 		public function actualizarUsuarioControlador(){
 
-			$id=$this->limpiarCadena($_POST['usuario_id']);
+			$id=$this->limpiarCadena($_POST['user_id']);
 
 			# Verificando usuario #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
@@ -504,86 +513,23 @@
 		    }else{
 		    	$datos=$datos->fetch();
 		    }
-
-		    $admin_usuario=$this->limpiarCadena($_POST['administrador_usuario']);
-		    $admin_clave=$this->limpiarCadena($_POST['administrador_clave']);
-
-		    # Verificando campos obligatorios admin #
-		    if($admin_usuario=="" || $admin_clave==""){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No ha llenado todos los campos que son obligatorios, que corresponden a su USUARIO y CLAVE",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$admin_usuario)){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"Su USUARIO no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$admin_clave)){
-		    	$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"Su CLAVE no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    # Verificando administrador #
-		    $check_admin=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$admin_usuario' AND usuario_id='".$_SESSION['id']."'");
-		    if($check_admin->rowCount()==1){
-
-		    	$check_admin=$check_admin->fetch();
-
-		    	if($check_admin['usuario_usuario']!=$admin_usuario || !password_verify($admin_clave,$check_admin['usuario_clave'])){
-
-		    		$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"USUARIO o CLAVE de administrador incorrectos",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-		        	exit();
-		    	}
-		    }else{
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"USUARIO o CLAVE de administrador incorrectos",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-
+			$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"Ocurrió ... un error inesperado",
+				"texto"=>"No hemos encontrado el usuario en el sistema",
+				"icono"=>"error"
+			];
+			return json_encode($alerta);
+			exit();
+			
 			# Almacenando datos#
-		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
-
-		    $usuario=$this->limpiarCadena($_POST['usuario_usuario']);
-		    $email=$this->limpiarCadena($_POST['usuario_email']);
-		    $clave1=$this->limpiarCadena($_POST['usuario_clave_1']);
-		    $clave2=$this->limpiarCadena($_POST['usuario_clave_2']);
-
-		    $caja=$this->limpiarCadena($_POST['usuario_caja']);
+		    $firstname=$this->limpiarCadena($_POST['firstname']);
+		    $lastname=$this->limpiarCadena($_POST['lastname']);
+		    $login=$this->limpiarCadena($_POST['login']);
+		    $email=$this->limpiarCadena($_POST['email']);
 
 		    # Verificando campos obligatorios #
-		    if($nombre=="" || $apellido=="" || $usuario==""){
+		    if($firstname=="" || $lastname=="" || $login=="" || $email==""){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -595,7 +541,7 @@
 		    }
 
 		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$nombre)){
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$firstname)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -606,7 +552,7 @@
 		        exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apellido)){
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$lastname)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -617,7 +563,7 @@
 		        exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
+		    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$login)){
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -629,14 +575,14 @@
 		    }
 
 		    # Verificando email #
-		    if($email!="" && $datos['usuario_email']!=$email){
+		    if($email!="" && $datos['email']!=$email){
 				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
+					$check_email=$this->ejecutarConsulta("SELECT email FROM usuario WHERE email='$email'");
 					if($check_email->rowCount()>0){
 						$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"El EMAIL que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
+							"texto"=>"El EMAIL 5 que acaba de ingresar ya se encuentra registrado en el sistema!, intente nuevamente",
 							"icono"=>"error"
 						];
 						return json_encode($alerta);
@@ -654,97 +600,26 @@
 				}
             }
 
-            # Verificando claves #
-            if($clave1!="" || $clave2!=""){
-            	if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave1) || $this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave2)){
-
-			        $alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Las CLAVES no coinciden con el formato solicitado",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-			        exit();
-			    }else{
-			    	if($clave1!=$clave2){
-
-						$alerta=[
-							"tipo"=>"simple",
-							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"Las nuevas CLAVES que acaba de ingresar no coinciden, por favor verifique e intente nuevamente",
-							"icono"=>"error"
-						];
-						return json_encode($alerta);
-						exit();
-			    	}else{
-			    		$clave=password_hash($clave1,PASSWORD_BCRYPT,["cost"=>10]);
-			    	}
-			    }
-			}else{
-				$clave=$datos['usuario_clave'];
-            }
-
-            # Verificando usuario #
-            if($datos['usuario_usuario']!=$usuario){
-			    $check_usuario=$this->ejecutarConsulta("SELECT usuario_usuario FROM usuario WHERE usuario_usuario='$usuario'");
-			    if($check_usuario->rowCount()>0){
-			        $alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"El USUARIO ingresado ya se encuentra registrado, por favor elija otro",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-			        exit();
-			    }
-            }
-
-            # Verificando caja #
-            if($datos['caja_id']!=$caja){
-			    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
-			    if($check_caja->rowCount()<=0){
-			        $alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"La caja seleccionada no existe en el sistema",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-			        exit();
-			    }
-            }
-
             $usuario_datos_up=[
 				[
-					"campo_nombre"=>"usuario_nombre",
-					"campo_marcador"=>":Nombre",
-					"campo_valor"=>$nombre
+					"campo_nombre"=>"firstname",
+					"campo_marcador"=>":Firstname",
+					"campo_valor"=>$firstname
 				],
 				[
-					"campo_nombre"=>"usuario_apellido",
-					"campo_marcador"=>":Apellido",
-					"campo_valor"=>$apellido
+					"campo_nombre"=>"LASTNAME",
+					"campo_marcador"=>":Lastname",
+					"campo_valor"=>$lastname
 				],
 				[
-					"campo_nombre"=>"usuario_usuario",
+					"campo_nombre"=>"login",
 					"campo_marcador"=>":Usuario",
-					"campo_valor"=>$usuario
+					"campo_valor"=>$login
 				],
 				[
 					"campo_nombre"=>"usuario_email",
 					"campo_marcador"=>":Email",
 					"campo_valor"=>$email
-				],
-				[
-					"campo_nombre"=>"usuario_clave",
-					"campo_marcador"=>":Clave",
-					"campo_valor"=>$clave
-				],
-				[
-					"campo_nombre"=>"caja_id",
-					"campo_marcador"=>":Caja",
-					"campo_valor"=>$caja
 				]
 			];
 
@@ -756,23 +631,23 @@
 
 			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
 
-				if($id==$_SESSION['id']){
-					$_SESSION['nombre']=$nombre;
-					$_SESSION['apellido']=$apellido;
-					$_SESSION['usuario']=$usuario;
+				if($id==$_SESSION['id'] && $_SESSION['nombre'] ){
+					$_SESSION['nombre']=$firstname;
+					$_SESSION['apellido']=$lastname;
+					$_SESSION['usuario']=$login;
 				}
 
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Usuario actualizado",
-					"texto"=>"Los datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." se actualizaron correctamente",
+					"texto"=>"Los datos del usuario ".$datos['firstname']." ".$datos['lastname']." se actualizaron correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido actualizar los datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido'].", por favor intente nuevamente",
+					"texto"=>"No hemos podido actualizar los datos del usuario ".$datos['firstname']." ".$datos['lastname'].", por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}

@@ -24,4 +24,6 @@
 <link href="http://localhost/multimarket/app/views/css/app.min.css" rel="stylesheet" type="text/css" />
 <!-- custom Css-->
 <link href="http://localhost/multimarket/app/views/css/custom.min.css" rel="stylesheet" type="text/css" />
+<!-- Sweet Alert css-->
+<link href="http://localhost/multimarket/app/views/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
 

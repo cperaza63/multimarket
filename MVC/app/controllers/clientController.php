@@ -133,7 +133,7 @@
 						$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"El EMAIL que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
+							"texto"=>"El EMAIL 2 que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
 							"icono"=>"error"
 						];
 						return json_encode($alerta);
@@ -567,7 +567,7 @@
 						$alerta=[
 							"tipo"=>"simple",
 							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"El EMAIL que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
+							"texto"=>"El EMAIL 4  que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
 							"icono"=>"error"
 						];
 						return json_encode($alerta);

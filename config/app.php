@@ -20,7 +20,7 @@
 
 
 	/*----------  Marcador de campos obligatorios (Font Awesome) ----------*/
-	const CAMPO_OBLIGATORIO='&nbsp; <i class="fas fa-edit"></i> &nbsp;';
+	const CAMPO_OBLIGATORIO='&nbsp; <i class="ri-edit-box-line"></i> &nbsp;';
 
 	/*----------  Zona horaria  ----------*/
 	date_default_timezone_set("America/Caracas");

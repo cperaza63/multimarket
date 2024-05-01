@@ -20,7 +20,6 @@
 				  </div>
 				</article>';
 		    }else{
-
 			    # Verificando integridad de los datos #
 			    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
 					echo '<article class="alert alert-danger shadow">
@@ -40,21 +39,19 @@
 						  </div>
 						</article>';
 				    }else{
-
 					    # Verificando usuario #
-					    $check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_usuario='$usuario'");
-
+					    $check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE login='$usuario'");
 					    if($check_usuario->rowCount()==1){
 
 					    	$check_usuario=$check_usuario->fetch();
 
-					    	if($check_usuario['usuario_usuario']==$usuario && password_verify($clave,$check_usuario['usuario_clave'])){
+					    	if($check_usuario['login']==$usuario && password_verify($clave,$check_usuario['password'])){
 
-					    		$_SESSION['id']=$check_usuario['usuario_id'];
-					            $_SESSION['nombre']=$check_usuario['usuario_nombre'];
-					            $_SESSION['apellido']=$check_usuario['usuario_apellido'];
-					            $_SESSION['usuario']=$check_usuario['usuario_usuario'];
-					            $_SESSION['foto']=$check_usuario['usuario_foto'];
+					    		$_SESSION['id']=$check_usuario['user_id'];
+					            $_SESSION['nombre']=$check_usuario['firstname'];
+					            $_SESSION['apellido']=$check_usuario['lastname'];
+					            $_SESSION['usuario']=$check_usuario['login'];
+					            $_SESSION['foto']=$check_usuario['foto_usuario'];
 					            $_SESSION['caja']=$check_usuario['caja_id'];
 
 

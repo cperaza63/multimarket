@@ -140,7 +140,7 @@ CREATE TABLE `usuario` (
   `usuario_nombre` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
   `usuario_apellido` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
   `usuario_email` varchar(50) COLLATE utf8_spanish2_ci NOT NULL,
-  `usuario_usuario` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
+  `login` varchar(30) COLLATE utf8_spanish2_ci NOT NULL,
   `usuario_clave` varchar(535) COLLATE utf8_spanish2_ci NOT NULL,
   `usuario_foto` varchar(200) COLLATE utf8_spanish2_ci NOT NULL,
   `caja_id` int(5) NOT NULL
@@ -150,7 +150,7 @@ CREATE TABLE `usuario` (
 -- Volcado de datos para la tabla `usuario`
 --
 
-INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_email`, `usuario_usuario`, `usuario_clave`, `usuario_foto`, `caja_id`) VALUES
+INSERT INTO `usuario` (`usuario_id`, `usuario_nombre`, `usuario_apellido`, `usuario_email`, `login`, `usuario_clave`, `usuario_foto`, `caja_id`) VALUES
 (1, 'Administrador', 'Principal', '', 'Administrador', '$2y$10$Jgm6xFb5Onz/BMdIkNK2Tur8yg/NYEMb/tdnhoV7kB1BwIG4R05D2', '', 1);
 
 -- --------------------------------------------------------

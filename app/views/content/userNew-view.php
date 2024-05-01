@@ -6,14 +6,32 @@
         <div class="container-fluid">
         
         <?php
+        // por ahora actualizamos datos del administrador
 
-        $datos=$insLogin->seleccionarDatos("Normal","usuario LIMIT 1","*",1);
+        $usuario_id = 1;
+        $datos=$insLogin->seleccionarDatos( "Normal", "usuario LIMIT 1", "*", $usuario_id );
 
         if($datos->rowCount()==1){
             $datos=$datos->fetch();
+            $user_id = $datos['user_id'];
+            $accion = "actualizar";
+            $boton_accion = "Actualizar";
+        }else{
+            // registro es nuevo
+            $accion = "registrar";
+            $boton_accion = "Agregar";
         }
-
         ?>
+        
+        <form class="FormularioAjax" 
+        action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
+        method="POST" autocomplete="off" 
+        enctype="multipart/form-data" >
+        
+        <input type="hidden" name="modulo_usuario" value="<?=$accion;?>">
+        <input type="hidden" name="user_id" value="<?=$user_id;?>">
+        <input type="hidden" name="login" value="<?=$datos['login'];?>">
+
 
             <div class="row">
                 <div class="col-xxl-3">
@@ -31,8 +49,8 @@
                                         </label>
                                     </div>
                                 </div>
-                                <h5 class="fs-16 mb-1"><?php echo $datos['usuario_nombre']; ?></h5>
-                                <p class="text-muted mb-0"><?php echo $datos['usuario_usuario']; ?></p>
+                                <h5 class="fs-16 mb-1"><?php echo $datos['nombre_completo']; ?></h5>
+                                <p class="text-muted mb-0"><?php echo $datos['login'] . " Afiliado # " . $datos['user_id']; ?></p>
                             </div>
                         </div>
                     </div>
@@ -134,48 +152,48 @@
                                         <div class="row">
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
-                                                    <label for="firstnameInput" class="form-label">Primero nombre</label>
-                                                    <input type="text" class="form-control" name="usuario_nombre" id="firstnameInput" placeholder="Enter your firstname" value="<?php echo $datos['usuario_nombre']; ?>">
+                                                    <label for="firstnameInput" class="form-label">Primer nombre</label>
+                                                    <input name="firstname" type="text" class="form-control" name="usuario_nombre" id="firstnameInput" placeholder="Enter your firstname" 
+                                                    value="<?php echo $datos['firstname']; ?>"
+                                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" 
+                                                    maxlength="40" required>
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="lastnameInput" class="form-label">Apellido</label>
-                                                    <input name="usuario_apellido" type="text" class="form-control" id="lastnameInput" placeholder="Enter your lastname" value="<?php echo $datos['usuario_apellido']; ?>">
+                                                    <input name="lastname" type="text" class="form-control" id="lastnameInput" placeholder="Enter your lastname" 
+                                                    value="<?php echo $datos['lastname']; ?>"
+                                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" 
+                                                    maxlength="40" required>
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="phonenumberInput" class="form-label">Telefono/WhatsApp</label>
-                                                    <input name="<usuario_telefono" type="text" class="form-control" id="phonenumberInput" placeholder="Enter your phone number" value="<?php echo $datos['usuario_telefono']; ?>">
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="emailInput" class="form-label">Email Address</label>
-                                                    <input type="email" class="form-control" id="emailInput" placeholder="Enter your email" value="<?php echo $datos['usuario_email']; ?>">
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
-                                                <div class="mb-3">
-                                                    <label for="usuario_nacimiento" class="form-label">Fecha de nacimiento</label>
-                                                    <input name="usuario_nacimiento" type="date" class="form-control"  id="created_at" placeholder="Seleccione una fecha" />
-                                                </div>
-                                            </div>
 
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-8">
                                                 <div class="mb-3">
-                                                    <label for="created_at" class="form-label">Usuario incorporado</label>
-                                                    <input name="created_at" type="date" class="form-control"  id="created_at" placeholder="Seleccione una fecha" />
+                                                    <label for="email" class="form-label">Email Address</label>
+                                                    <input name="email" type="text" class="form-control" id="email" placeholder="Coloque su email" 
+                                                    value="<?php echo $datos['email']; ?>">
                                                 </div>
                                             </div>
-
                                             <!--end col-->
-                                            <div class="col-lg-6">
+
+                                            <div class="col-lg-2">
+                                                <div class="mb-1">
+                                                    <label for="phonenumberInput" class="form-label">Telefono/Area</label>
+                                                    <input name="tcarea" size="4" type="text" class="form-control" id="tcarea" placeholder="Codigo de area" value="<?php echo $datos['tcarea']; ?>">
+                                                </div>
+                                            </div>
+                                            <div class="col-lg-2">
+                                                <div class="mb-1">
+                                                    <label for="phonenumberInput" class="form-label">Telefono/Número</label>
+                                                    <input name="tcnumber" size="10" type="text" class="form-control" id="tcnumber" placeholder="Numero de telefono" value="<?php echo $datos['tcnumber']; ?>">
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <!--<div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="skillsInput" class="form-label">Perfil del Usuario</label>
                                                     <select class="form-control" name="skillsInput" data-choices data-choices-text-unique-true multiple id="skillsInput">
@@ -188,55 +206,132 @@
                                                         <option value="php">PHP</option>
                                                     </select>
                                                 </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-6">
+                                            </div>-->
+                                            
+                                            <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="designationInput" class="form-label">Designación</label>
-                                                    <input type="text" class="form-control" id="designationInput" placeholder="Designation" value="<?php echo $datos['usuario_designacion']; ?>">
+                                                    <label for="tipo" class="form-label">Tipo de Usuario</label>
+                                                    <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                        <option value="">Seleccione un Perfil</option>
+                                                        <option value="ADMINISTRATOR"
+                                                        <?php if( $datos['tipo'] == 'ADMINISTRATOR'  ) echo"selected" ?>
+                                                        >Administrador</option>
+                                                        <option value="VENDOR"
+                                                        <?php if( $datos['tipo'] == 'VENDOR'  ) echo"selected" ?>
+                                                        >Vendedor/promotor</option>
+                                                        <option value="DESPACHADOR" 
+                                                        <?php if( $datos['tipo'] == 'DESPACHADOR'  ) echo"selected" ?>
+                                                        >Despachador</option>
+                                                        <option value="DISTRIBUIDOR"
+                                                        <?php if( $datos['tipo'] == 'DISTRIBUIDOR'  ) echo"selected" ?>
+                                                        >Distribuidor</option>
+                                                        <option value="USUARIO"
+                                                        <?php if( $datos['tipo'] == 'USUARIO'  ) echo"selected" ?>
+                                                        >Estudiante</option>
+                                                        <option value="ASISTENTE"
+                                                        <?php if( $datos['tipo'] == 'ASISTENTE'  ) echo"selected" ?>
+                                                        >ASISTENTE</option>
+                                                    </select>
                                                 </div>
                                             </div>
+                                            
                                             <!--end col-->
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="websiteInput1" class="form-label">Website</label>
-                                                    <input type="text" class="form-control" id="websiteInput1" placeholder="www.example.com" value="www.velzon.com" />
+                                                    <label for="departamento" class="form-label">Departamento/designación</label>
+                                                    <input name="departamento" type="text" class="form-control" id="departamento" placeholder="Designation" 
+                                                    value="<?php echo $datos['departamento']; ?>">
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="cityInput" class="form-label">City</label>
-                                                    <input type="text" class="form-control" id="cityInput" placeholder="City" value="California" />
+                                                    <label for="company_id" class="form-label">Empresa/Tienda asignada</label>
+                                                    <input name="company_id" type="text" class="form-control" id="company_id" placeholder="Tienda asignada" value="<?php echo $datos['company_id']; ?>" />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="countryInput" class="form-label">Country</label>
-                                                    <input type="text" class="form-control" id="countryInput" placeholder="Country" value="United States" />
+                                                    <label for="city" class="form-label">Ciudad</label>
+                                                    <input name="city" type="text" class="form-control" id="cityInput" placeholder="Ciudad" 
+                                                    value="<?php echo $datos['city']; ?>" />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="zipcodeInput" class="form-label">Zip Code</label>
-                                                    <input type="text" class="form-control" minlength="5" maxlength="6" id="zipcodeInput" placeholder="Enter zipcode" value="90011">
+                                                    <label for="state" class="form-label">Estado/Provincia</label>
+                                                    <input name="state" type="text" class="form-control" minlength="5" maxlength="6" id="state" placeholder="Enter Estado/provincia" value="<?php echo $datos['state']; ?>">
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="countryInput" class="form-label">País</label>
+                                                    <input name="country" type="text" class="form-control" id="country" placeholder="Pais"  
+                                                    value="<?php echo $datos['country']; ?>" />
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div class="mb-3 pb-2">
-                                                    <label for="exampleFormControlTextarea" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="exampleFormControlTextarea" placeholder="Enter your description" rows="3">Hi I'm Anna Adame,It will be as simple as Occidental; in fact, it will be Occidental. To an English person, it will seem like simplified English, as a skeptical Cambridge friend of mine told me what Occidental is European languages are members of the same family.</textarea>
+                                                    <label for="location" class="form-label">Dirección</label>
+                                                    <textarea name="location" class="form-control" id="exampleFormControlTextarea" placeholder="Dirección de habitación" rows="3"><?php echo $datos['location']; ?></textarea>
                                                 </div>
                                             </div>
                                             <!--end col-->
+
+                                            <?php
+                                            $dateTime = new DateTime($datos['dateofbirth']);
+                                            $fechaNac = date_format($dateTime,"Y-m-d");
+                                            $dateTime = new DateTime($datos['created_at']);
+                                            $createdAt = date_format($dateTime,"Y-m-d");
+                                            //echo $soloFecha; ?>
+                                            
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="gender" class="form-label">Género</label>
+                                                    <select name="gender" class="form-control" data-choices data-choices-text-unique-true id="gender">
+                                                        <option value="">Seleccione su opción</option>
+                                                        <option value="M"
+                                                        <?php if( $datos['gender'] == 'M'  ) echo"selected" ?>
+                                                        >Masculino</option>
+                                                        <option value="F"
+                                                        <?php if( $datos['gender'] == 'F'  ) echo"selected" ?>
+                                                        >Femenino</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="dateofbirth" class="form-label">Fecha de nacimiento</label>
+                                                    <input name="dateofbirth" type="date" class="form-control"  id="dateofbirth" placeholder="Seleccione una fecha" 
+                                                    value="<?php echo $fechaNac; ?>" />
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="created_at" class="form-label">Usuario incorporado</label>
+                                                    <input name="created_at" disabled name="created_at" type="date" class="form-control"  id="created_at"
+                                                    value="<?php echo $createdAt; ?>"
+                                                    />
+                                                </div>
+                                            </div>
+
+                                            <!--end col-->
+
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
-                                                    <button type="submit" class="btn btn-primary">Updates</button>
-                                                    <button type="button" class="btn btn-soft-success">Cancel</button>
+                                                    <button type="submit" class="btn btn-primary"><?=$boton_accion?></button>
+                                                    <button type="button" class="btn btn-soft-success">Cancelar</button>
+                                                    
                                                 </div>
+                                                <p class="has-text-centered pt-6">
+                                                    <small>Los campos marcados con <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                </p>
                                             </div>
                                             <!--end col-->
                                         </div>
@@ -581,6 +676,8 @@
                 <!--end col-->
             </div>
             <!--end row-->
+        
+        </form>
 
         </div>
         <!-- container-fluid -->
