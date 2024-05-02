@@ -609,6 +609,16 @@
 
             $usuario_datos_up=[
 				[
+					"campo_nombre"=>"login",
+					"campo_marcador"=>":Login",
+					"campo_valor"=>$login
+				],
+				[
+					"campo_nombre"=>"email",
+					"campo_marcador"=>":Email",
+					"campo_valor"=>$email
+				],
+				[
 					"campo_nombre"=>"firstname",
 					"campo_marcador"=>":Firstname",
 					"campo_valor"=>$firstname
@@ -619,14 +629,65 @@
 					"campo_valor"=>$lastname
 				],
 				[
-					"campo_nombre"=>"login",
-					"campo_marcador"=>":Login",
-					"campo_valor"=>$login
+					"campo_nombre"=>"tcarea",
+					"campo_marcador"=>":Tcarea",
+					"campo_valor"=>$tcarea
 				],
 				[
-					"campo_nombre"=>"email",
-					"campo_marcador"=>":Email",
-					"campo_valor"=>$email
+					"campo_nombre"=>"tcnumber",
+					"campo_marcador"=>":Tcnumber",
+					"campo_valor"=>$tcnumber
+				],
+				[
+					"campo_nombre"=>"tipo",
+					"campo_marcador"=>":Tipo",
+					"campo_valor"=>$tipo
+				],
+				[
+					"campo_nombre"=>"city",
+					"campo_marcador"=>":City",
+					"campo_valor"=>$city
+				],
+
+				[
+					"campo_nombre"=>"state",
+					"campo_marcador"=>":State",
+					"campo_valor"=>$state
+				],
+				[
+					"campo_nombre"=>"country",
+					"campo_marcador"=>":Country",
+					"campo_valor"=>$country
+				],
+				[
+					"campo_nombre"=>"departamento",
+					"campo_marcador"=>":Departamento",
+					"campo_valor"=>$departamento
+				],
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"country",
+					"campo_marcador"=>":Country",
+					"campo_valor"=>$country
+				],
+				[
+					"campo_nombre"=>"location",
+					"campo_marcador"=>":Location",
+					"campo_valor"=>$location
+				],
+				[
+					"campo_nombre"=>"gender",
+					"campo_marcador"=>":Gender",
+					"campo_valor"=>$gender
+				],
+				[
+					"campo_nombre"=>"rif",
+					"campo_marcador"=>":Rif",
+					"campo_valor"=>$rif
 				]
 			];
 

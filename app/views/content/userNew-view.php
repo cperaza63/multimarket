@@ -171,7 +171,7 @@
                                             </div>
                                             <!--end col-->
 
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email Address</label>
                                                     <input name="email" type="text" class="form-control" id="email" placeholder="Coloque su email" 
@@ -179,7 +179,12 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-
+                                            <div class="col-lg-2">
+                                                <div class="mb-1">
+                                                    <label for="rif" class="form-label">Cedula/Rif</label>
+                                                    <input name="rif" size="4" type="text" class="form-control" id="tcarea" placeholder="Codigo de area" value="<?php echo $datos['rif']; ?>">
+                                                </div>
+                                            </div>
                                             <div class="col-lg-2">
                                                 <div class="mb-1">
                                                     <label for="phonenumberInput" class="form-label">Telefono/Area</label>
@@ -262,7 +267,7 @@
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="state" class="form-label">Estado/Provincia</label>
-                                                    <input name="state" type="text" class="form-control" minlength="5" maxlength="6" id="state" placeholder="Enter Estado/provincia" value="<?php echo $datos['state']; ?>">
+                                                    <input name="state" type="text" class="form-control" minlength="2" maxlength="10" id="state" placeholder="Enter Estado/provincia" value="<?php echo $datos['state']; ?>">
                                                 </div>
                                             </div>
                                             <!--end col-->
