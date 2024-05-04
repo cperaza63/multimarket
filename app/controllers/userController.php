@@ -57,7 +57,7 @@
 		        exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
+			if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -290,9 +290,9 @@
 				/*----------  Controlador registrar usuario  ----------*/
 		public function actualizarPasswordControlador(){
 		# Almacenando datos#
-		
+		$login=$this->limpiarCadena($_POST['login']);
 		$user_id=$this->limpiarCadena($_POST['user_id']);
-		$clave=$this->limpiarCadena($_POST['old_password']);
+		$clave= $this->limpiarCadena($_POST['old_password']);
 		$clave1=$this->limpiarCadena($_POST['new_password']);
 		$clave2=$this->limpiarCadena($_POST['repeat_password']);
 		# Verificando campos obligatorios #
@@ -306,36 +306,106 @@
 			return json_encode($alerta);
 			exit();
 		}
-		# Verificando usuario #
-		$check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE user_id = $user_id and password = '$clave'");
-		if($check_usuario->rowCount()>0){
+		
+		if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave)){
 			$alerta=[
 				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El USUARIO ingresado ya se encuentra registrado, por favor elija otro",
+				"titulo"=>"1 Ocurrió un error inesperado",
+				"texto"=>"La CLAVE actual no coincide con el formato solicitado",
 				"icono"=>"error"
 			];
 			return json_encode($alerta);
 			exit();
 		}
 		
-		# Verificando integridad de los datos #
-		if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$clave1)){
+		# Verificando usuario #
+		$check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE login='$login'");
+		if($check_usuario->rowCount()==1){
+			$check_usuario=$check_usuario->fetch();
+			if($check_usuario['login']==$login && password_verify($clave,$check_usuario['password'])){
+				// pasa 
+			}else{
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"2 Ocurrió un error inesperado",
+					"texto"=>"Usuario o clave incorrectos al momento de validar",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+		}
+
+		$alerta=[
+			"tipo"=>"simple",
+			"titulo"=>" $login sigo",
+			"texto"=>"La CLAVE actual no coincide con el formato solicitado",
+			"icono"=>"error"
+		];
+		return json_encode($alerta);
+		exit();
+	
+		# AQUI QUEDE 
+		#Verificando integridad de los datos #
+		if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave)){
+			$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"1 Ocurrió un error inesperado",
+				"texto"=>"La CLAVE actual no coincide con el formato solicitado",
+				"icono"=>"error"
+			];
+			return json_encode($alerta);
+			exit();
+		}else{
+			# Verificando usuario #
+			$check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE login='$login'");
+			if($check_usuario->rowCount()==1){
+				$check_usuario=$check_usuario->fetch();
+				if($check_usuario['login']==$login && password_verify($clave,$check_usuario['password'])){
+					// pasa 
+				}else{
+					$alerta=[
+						"tipo"=>"simple",
+						"titulo"=>"2 Ocurrió un error inesperado",
+						"texto"=>"Usuario o clave incorrectos al momento de validar",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
+					exit();
+				}
+			}else{
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"3 Ocurrió un error inesperado",
+					"texto"=>"Usuario no se encontro",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+		}
+
+		exit();
+
+		if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave1) || $this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave2)){
 			$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El nueva clave no coincide con el formato solicitado",
+				"texto"=>"Las CLAVES no coinciden con el formato solicitado",
 				"icono"=>"error"
 			];
 			return json_encode($alerta);
 			exit();
 		}
 
-		if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$clave2)){
+
+		$check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE user_id = $user_id");
+
+		if($check_usuario->rowCount() == 0){
 			$alerta=[
 				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El clave confirmacion no coincide con el formato solicitado",
+				"titulo"=>"Ocurrió un error al validar al usuario",
+				"texto"=>"$clave El USUARIO no fue encontrado, por favor revise",
 				"icono"=>"error"
 			];
 			return json_encode($alerta);
@@ -353,29 +423,33 @@
 			return json_encode($alerta);
 			exit();
 		}else{
-			$clave=password_hash($clave1,PASSWORD_BCRYPT,["cost"=>10]);
+			$clave = password_hash($clave1,PASSWORD_BCRYPT,["cost"=>10]);
 		}
-
+		
+		$tabla="usuario";
 		$usuario_datos_reg=[
 			[
-				"campo_nombre"=>"usuario_nombre",
-				"campo_marcador"=>":Nombre",
-				"campo_valor"=>$clave
-			],
-			[
 				"campo_nombre"=>"password",
-				"campo_marcador"=>":Apellido",
-				"campo_valor"=>$clave1
+				"campo_marcador"=>":Password",
+				"campo_valor"=>$clave
 			]
 		];
+		$condicion=[
+			"condicion_campo"=>"user_id",
+			"condicion_marcador"=>":User_id",
+			"condicion_valor"=>$user_id
+		];
 
-		$registrar_usuario=$this->guardarDatos("usuario",$usuario_datos_reg);
+		
+		exit();
+		
+		$registrar_usuario=$this->actualizarDatos($tabla, $usuario_datos_reg, $condicion);
 
 		if($registrar_usuario->rowCount()==1){
 			$alerta=[
 				"tipo"=>"limpiar",
-				"titulo"=>"Usuario registrado",
-				"texto"=>"El usuario se registro con exito",
+				"titulo"=>"Clave del Usuario registrado",
+				"texto"=>"$clave El usuario se registro con exito",
 				"icono"=>"success"
 			];
 		}else{
@@ -386,7 +460,6 @@
 				"icono"=>"error"
 			];
 		}
-
 		return json_encode($alerta);
 	}
 

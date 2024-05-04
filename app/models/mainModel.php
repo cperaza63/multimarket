@@ -110,7 +110,7 @@
             $sql->execute();
 
             return $sql;
-		}
+		} 
 
 
 		/*----------  Funcion para ejecutar una consulta UPDATE preparada  ----------*/

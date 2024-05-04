@@ -9,11 +9,12 @@
         // por ahora actualizamos datos del administrador
 
         $usuario_id = 1;
-        $datos = $insLogin->seleccionarDatos( "Normal", "usuario LIMIT 1", "*", $usuario_id );
+        $datos = $insLogin->seleccionarDatos( "Unico", "usuario", "user_id", $usuario_id );
 
         if($datos->rowCount()==1){
             $datos=$datos->fetch();
             $user_id = $datos['user_id'];
+            $login   = $datos['login'];
             $accion = "actualizar";
             $boton_accion = "Actualizar";
         }else{
@@ -147,27 +148,30 @@
                     
                     <input type="hidden" name="modulo_usuario" value="<?=$accion;?>">
                     <input type="hidden" name="user_id" value="<?=$user_id;?>">
-                    <input type="hidden" name="login" value="<?=$datos['login'];?>">
+                    <input type="hidden" name="login" value="<?=$login;?>">
 
                     <div class="col-xxl-9">
                         <div class="card mt-xxl-n5">
                             <div class="card-header">
                                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
-                                    <li class="nav-item">
+                                   |<li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
                                             <i class="fas fa-home"></i> Información personal
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+ 
+                                    <li li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
                                             <i class="far fa-user"></i> Cambiar su Clave
                                         </a>
                                     </li>
-                                    <!-- <li class="nav-item">
+                                    
+                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
-                                            <i class="far fa-envelope"></i> Experiencia
+                                            <i class="far fa-envelope"></i> Mis compras
                                         </a>
                                     </li>
+                                    <!-- 
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#privacy" role="tab">
                                             <i class="far fa-envelope"></i> Politica de Privacidad
@@ -389,26 +393,26 @@
                                     
                                             <input type="hidden" name="modulo_usuario" value="actualizarClave">
                                             <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
-
+                                            <input type="hidden" name="login" value="<?php echo $datos['login']; ?>">
                                             <div class="row g-2">
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="oldpasswordInput" class="form-label">Actual Password*</label>
-                                                        <input name="old_password" type="password" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
+                                                        <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="newpasswordInput" class="form-label">Nuevo Password*</label>
-                                                        <input name="new_password" type="password" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
+                                                        <input name="new_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="confirmpasswordInput" class="form-label">Confirmar Password*</label>
-                                                        <input name="repeat_password" type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
+                                                        <input name="repeat_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
                                                     </div>
                                                 </div>
                                                 <!--end col-->

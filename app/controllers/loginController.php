@@ -21,7 +21,7 @@
 				</article>';
 		    }else{
 			    # Verificando integridad de los datos #
-			    if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
+			    if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$usuario)){
 					echo '<article class="alert alert-danger shadow">
 					  <div class="message-body">
 					    <strong>Ocurrió un error inesperado</strong><br>
@@ -35,7 +35,7 @@
 						echo '<article class="alert alert-danger shadow">
 						  <div class="message-body">
 						    <strong>Ocurrió un error inesperado</strong><br>
-						    La CLAVE no coincide con el formato solicitado
+						    La CLAVE... no coincide con el formato solicitado
 						  </div>
 						</article>';
 				    }else{
