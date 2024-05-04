@@ -51,7 +51,7 @@
 					            $_SESSION['nombre']=$check_usuario['firstname'];
 					            $_SESSION['apellido']=$check_usuario['lastname'];
 					            $_SESSION['usuario']=$check_usuario['login'];
-					            $_SESSION['foto']=$check_usuario['foto_usuario'];
+					            $_SESSION['foto']=$check_usuario['usuario_foto'];
 					            $_SESSION['caja']=$check_usuario['caja_id'];
 
 

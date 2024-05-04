@@ -287,8 +287,6 @@
 			return json_encode($alerta);
 		}
 
-
-
 		/*----------  Controlador listar usuario  ----------*/
 		public function listarUsuarioControlador($pagina,$registros,$url,$busqueda){
 
@@ -413,7 +411,6 @@
 			return $tabla;
 		}
 
-
 		/*----------  Controlador eliminar usuario  ----------*/
 		public function eliminarUsuarioControlador(){
 
@@ -485,7 +482,6 @@
 
 		    return json_encode($alerta);
 		}
-
 
 		/*----------  Controlador actualizar usuario  ----------*/
 		public function actualizarUsuarioControlador(){
@@ -723,7 +719,6 @@
 			return json_encode($alerta);
 		}
 
-
 		/*----------  Controlador eliminar foto usuario  ----------*/
 		public function eliminarFotoUsuarioControlador(){
 
@@ -812,9 +807,11 @@
 			return json_encode($alerta);
 		}
 
-
 		/*----------  Controlador actualizar foto usuario  ----------*/
 		public function actualizarFotoUsuarioControlador(){
+
+			return json_encode($_POST['usuario_id']);
+			exit;
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
@@ -833,7 +830,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Directorio de imagenes #
+			# Directorio de imagenes #
     		$img_dir="../views/fotos/";
 
     		# Comprobar si se selecciono una imagen #
@@ -891,7 +888,7 @@
 		        $foto=explode(".", $datos['usuario_foto']);
 		        $foto=$foto[0];
 	        }else{
-	        	$foto=str_ireplace(" ","_",$datos['usuario_nombre']);
+	        	$foto=str_ireplace(" ","_",$datos['firstname']);
 	        	$foto=$foto."_".rand(0,100);
 	        }
 	        
@@ -935,7 +932,7 @@
 			];
 
 			$condicion=[
-				"condicion_campo"=>"usuario_id",
+				"condicion_campo"=>"user_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
@@ -949,7 +946,7 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"La foto del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." se actualizo correctamente",
+					"texto"=>"La foto del usuario ".$datos['firstname']." ".$datos['lastname']." se actualizo correctamente",
 					"icono"=>"success"
 				];
 			}else{
@@ -957,7 +954,7 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"No hemos podido actualizar algunos datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." , sin embargo la foto ha sido actualizada",
+					"texto"=>"No hemos podido actualizar algunos datos del usuario ".$datos['firstname']." ".$datos['lastname']." , sin embargo la foto ha sido actualizada",
 					"icono"=>"warning"
 				];
 			}
