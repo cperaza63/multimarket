@@ -31,8 +31,11 @@
                             <div class="text-center">
                                 <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
                                     method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                    
+                                    <!--    Campos parametros     -->
+                                    
                                     <input type="hidden" name="modulo_usuario" value="actualizarFoto">
-                                    <input type="hidden" name="usuario_id" value="<?php echo $datos['user_id']; ?>">
+                                    <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
 
                                     <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                         
@@ -40,16 +43,29 @@
                                         class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                         alt="user-profile-image">
                                         
-                                        <div class="avatar-xs p-0 rounded-circle profile-photo-edit">
-                                            <input id="profile-img-file-input" name="usuario_foto" type="file" 
-                                            accept=".jpg, .png, .jpeg" class="profile-img-file-input">
-                                            
-                                            <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                                <span class="avatar-title rounded-circle bg-light text-body shadow">
-                                                    <i class="ri-camera-fill"></i>
-                                                </span>
-                                            </label>
-                                        </div>
+                                        <table>
+                                            <tr>
+                                                <td>
+                                                    <button type="submit" class="avatar-title rounded-circle bg-light text-body shadow">
+                                                            <i class="ri-upload-2-fill"></i>
+                                                    </button>
+                                                </td>
+                                                <td>
+                                                    <div class="avatar-xs p-0 rounded-circle ">
+                                                        <input id="profile-img-file-input" name="usuario_foto" type="file" 
+                                                        accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                        
+                                                        <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                                            <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                <i class="ri-camera-fill"></i>
+                                                            </span>
+                                                        </label>
+                                                    </div>
+                                                </td>
+                                               
+                                            </tr>
+                                        </table>
+
                                     </div>
                                 </form>
                                 
@@ -59,7 +75,7 @@
                         </div>
                     </div>
                     <!--end card-->
-                    <div class="card">
+                    <!-- <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-3">
                                 <div class="flex-grow-1">
@@ -75,7 +91,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- <div class="card">
                         <div class="card-body">
                             <div class="d-flex align-items-center mb-4">
@@ -147,7 +163,7 @@
                                             <i class="far fa-user"></i> Cambiar su Clave
                                         </a>
                                     </li>
-                                    <li class="nav-item">
+                                    <!-- <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
                                             <i class="far fa-envelope"></i> Experiencia
                                         </a>
@@ -156,7 +172,7 @@
                                         <a class="nav-link" data-bs-toggle="tab" href="#privacy" role="tab">
                                             <i class="far fa-envelope"></i> Politica de Privacidad
                                         </a>
-                                    </li>
+                                    </li> -->
                                 </ul>
                             </div>
                             <div class="card-body p-4">
@@ -366,44 +382,52 @@
                                     </div>
                                     <!--end tab-pane-->
                                     <div class="tab-pane" id="changePassword" role="tabpanel">
-                                        <form action="javascript:void(0);">
+
+                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
+                                            method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                            <!--    Campos parametros     -->
+                                    
+                                            <input type="hidden" name="modulo_usuario" value="actualizarClave">
+                                            <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
+
                                             <div class="row g-2">
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label for="oldpasswordInput" class="form-label">Old Password*</label>
-                                                        <input type="password" class="form-control" id="oldpasswordInput" placeholder="Enter current password">
+                                                        <label for="oldpasswordInput" class="form-label">Actual Password*</label>
+                                                        <input name="old_password" type="password" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label for="newpasswordInput" class="form-label">New Password*</label>
-                                                        <input type="password" class="form-control" id="newpasswordInput" placeholder="Enter new password">
+                                                        <label for="newpasswordInput" class="form-label">Nuevo Password*</label>
+                                                        <input name="new_password" type="password" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div>
-                                                        <label for="confirmpasswordInput" class="form-label">Confirm Password*</label>
-                                                        <input type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirm password">
+                                                        <label for="confirmpasswordInput" class="form-label">Confirmar Password*</label>
+                                                        <input name="repeat_password" type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-12">
                                                     <div class="mb-3">
-                                                        <a href="javascript:void(0);" class="link-primary text-decoration-underline">Forgot Password ?</a>
+                                                        <a href="javascript:void(0);" class="link-primary text-decoration-underline">Olvido su Password ?</a>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-12">
                                                     <div class="text-end">
-                                                        <button type="submit" class="btn btn-success">Change Password</button>
+                                                        <button type="submit" class="btn btn-success">Cambiar Password</button>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                             </div>
                                             <!--end row-->
                                         </form>
+
                                         <div class="mt-4 mb-3 border-bottom pb-2">
                                             <div class="float-end">
                                                 <a href="javascript:void(0);" class="link-primary">All Logout</a>

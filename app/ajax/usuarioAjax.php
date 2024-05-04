@@ -21,6 +21,10 @@
 		if($_POST['modulo_usuario']=="actualizarFoto"){
 			echo $insUsuario->actualizarFotoUsuarioControlador();
 		}
+
+		if($_POST['modulo_usuario']=="actualizarClave"){
+			echo $insUsuario->actualizarPasswordControlador();
+		}
 		
 		if($_POST['modulo_usuario']=="actualizar"){
 			echo $insUsuario->actualizarUsuarioControlador();
