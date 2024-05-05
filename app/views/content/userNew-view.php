@@ -398,7 +398,7 @@
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="oldpasswordInput" class="form-label">Actual Password*</label>
-                                                        <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
+                                                        <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual" value="<?=$login?>">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
@@ -432,7 +432,7 @@
                                             <!--end row-->
                                         </form>
 
-                                        <div class="mt-4 mb-3 border-bottom pb-2">
+                                        <!-- <div class="mt-4 mb-3 border-bottom pb-2">
                                             <div class="float-end">
                                                 <a href="javascript:void(0);" class="link-primary">All Logout</a>
                                             </div>
@@ -493,7 +493,7 @@
                                             <div>
                                                 <a href="javascript:void(0);">Logout</a>
                                             </div>
-                                        </div>
+                                        </div> -->
                                     </div>
                                     <!--end tab-pane-->
                                     <div class="tab-pane" id="experience" role="tabpanel">

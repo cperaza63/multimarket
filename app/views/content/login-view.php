@@ -66,7 +66,7 @@
                                                 ?>
                                                 <div class="mb-3">
                                                     <label for="username" class="form-label">Username</label>
-                                                    <input  type="text" name="login_usuario" class="form-control" id="username" placeholder="Enter username" pattern="[a-zA-Z0-9]{4,20}" maxlength="20" required >
+                                                    <input  type="email" pattern="[a-zA-Z0-9$@.-]{7,100}" name="login_usuario" class="form-control" id="username" placeholder="Enter username" pattern="[a-zA-Z0-9]{4,20}" maxlength="20" required >
                                                 </div>
 
                                                 <div class="mb-3">
