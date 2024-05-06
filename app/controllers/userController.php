@@ -527,12 +527,10 @@
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!=""){
-				$consulta_datos="SELECT * FROM usuario 
-								WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') AND (firstname LIKE '%$busqueda%' OR lastname LIKE '%$busqueda%' OR email LIKE '%$busqueda%' OR login LIKE '%$busqueda%')) ORDER BY lastname, firstname ASC";
+				$consulta_datos="SELECT * FROM usuario WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') AND (firstname LIKE '%$busqueda%' OR lastname LIKE '%$busqueda%' OR email LIKE '%$busqueda%' OR login LIKE '%$busqueda%')) ORDER BY lastname, firstname ASC";
 			}else{
 				$consulta_datos="SELECT * FROM usuario WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY lastname ASC";
 			}
-			
 
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
