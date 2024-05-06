@@ -38,9 +38,15 @@
                             </a>
                             <div class="collapse menu-dropdown" id="sidebarDashboards">
                                 <ul class="nav nav-sm flex-column">
+                                    
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userNew/" class="nav-link" data-key="t-crm"> Usuario Admin </a>
-                                    </li>    
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>userList/" class="nav-link" data-key="t-crm"> Lista de Usuarios </a>
+                                    </li>
+
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Datos empresa </a>
                                     </li>
