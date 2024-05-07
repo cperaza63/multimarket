@@ -87,11 +87,10 @@
                                             </div>
                                         </th>
                                         
-                                        <th>ID</th>
+                                        <th>Img</th>
                                         <th>Usuario</th>
                                         <th>Action</th>
                                         <th>Email</th>
-                                        
                                         <th>Telefono</th>
                                         <th>Status</th>
                                         <th>Create Date</th>
@@ -104,6 +103,12 @@
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
+                                            if($rows['usuario_foto'] != ""){
+                                                $usuario_foto = APP_URL . "app/views/fotos/usuarios/".$rows['usuario_foto'];
+                                            }else{
+                                                $usuario_foto = "http://localhost/multimarket/app/views/images/users/avatar-1.jpg";
+                                            }
+                                            
                                             ?>
                                             <tr>
                                                 <th scope="row">
@@ -112,7 +117,12 @@
                                                     </div>
                                                 </th>
                                                 
-                                                <td><?=$rows['user_id'];?></td>
+                                                <td>
+                                                    <img class="rounded-circle header-profile-user" 
+                                                    src="<?=$usuario_foto?>" 
+                                                    alt="Header Avatar">
+                                                </td>
+                                                
                                                 <td><?=$rows['firstname'] . " " . $rows['lastname'];?></td>
                                                 
                                                 <td>
