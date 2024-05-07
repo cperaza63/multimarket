@@ -3,7 +3,7 @@
 <!-- ============================================================== -->
 <div class="main-content">
     <div class="page-content">
-        <div class="container-fluid"> 
+        <div class="container-fluid">
         
         <?php
         // por ahora actualizamos datos del administrador

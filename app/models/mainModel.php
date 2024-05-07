@@ -93,7 +93,6 @@
 			return $sql;
 		}
 
-
 		/*---------- Funcion seleccionar datos ----------*/
         public function seleccionarDatos($tipo,$tabla,$campo,$id){
 			$tipo=$this->limpiarCadena($tipo);

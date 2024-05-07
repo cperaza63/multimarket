@@ -40,7 +40,7 @@
                                 <ul class="nav nav-sm flex-column">
                                     
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>userNew/" class="nav-link" data-key="t-crm"> Usuario Admin </a>
+                                        <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Usuario Admin </a>
                                     </li>
                                     
                                     <li class="nav-item">

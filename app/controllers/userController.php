@@ -526,10 +526,19 @@
 
 			$busqueda=$this->limpiarCadena($busqueda);
 
-			if(isset($busqueda) && $busqueda!=""){
-				$consulta_datos="SELECT * FROM usuario WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') AND (firstname LIKE '%$busqueda%' OR lastname LIKE '%$busqueda%' OR email LIKE '%$busqueda%' OR login LIKE '%$busqueda%')) ORDER BY lastname, firstname ASC";
+			if(isset($busqueda) && $busqueda!="*"){
+				$consulta_datos="SELECT * FROM usuario 
+				WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') 
+				AND (
+				concat(firstname, ' ', lastname) LIKE '%$busqueda%'
+				OR concat(lastname, ' ', firstname) LIKE '%$busqueda%' 
+				OR firstname LIKE '%$busqueda%' 
+				OR lastname LIKE '%$busqueda%' OR email LIKE '%$busqueda%' 
+				OR login LIKE '%$busqueda%')) 
+				ORDER BY lastname, firstname ASC";
 			}else{
-				$consulta_datos="SELECT * FROM usuario WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY lastname ASC";
+				$consulta_datos="SELECT * FROM usuario 
+				WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY lastname ASC limit 300";
 			}
 
 			$datos = $this->ejecutarConsulta($consulta_datos);
@@ -632,11 +641,11 @@
 		    	$datos=$datos->fetch();
 			}
 		    
-			if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$login)){
+			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$login)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al registrar Usuario",
-					"texto"=>"El login no coincide con el formato solicitado",
+					"texto"=>"El login $login no coincide con el formato solicitado",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -941,7 +950,7 @@
 			//return json_encode($_POST['usuario_id']);
 			//exit;
 
-			$id = $this->limpiarCadena($_POST['usuario_id']);
+			$id = $this->limpiarCadena($_POST['user_id']);
 
 			# Verificando usuario #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user_id='$id'");
@@ -960,6 +969,7 @@
 
 			# Directorio de imagenes #
     		$img_dir="../views/fotos/";
+
 
     		# Comprobar si se selecciono una imagen #
     		if($_FILES['usuario_foto']['name']=="" && $_FILES['usuario_foto']['size']<=0){
