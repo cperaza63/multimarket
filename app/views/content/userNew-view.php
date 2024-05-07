@@ -44,7 +44,7 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="firstnameInput" class="form-label">Primer nombre</label>
                                                     <input name="firstname" type="text" class="form-control" name="usuario_nombre" 
@@ -54,7 +54,7 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="lastnameInput" class="form-label">Apellido</label>
                                                     <input name="lastname" type="text" class="form-control" id="lastnameInput" 
