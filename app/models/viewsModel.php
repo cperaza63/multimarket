@@ -9,6 +9,8 @@
 
 			$listaBlanca=["dashboard","cashierNew","cashierList","cashierSearch","cashierUpdate",
 			"userNew","userList","userUpdate", "userUpdateAdmin", "userSearch","userPhoto",
+			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto", 
+			"companyNew","companyList","companyUpdate", "companyUpdateAdmin", "companySearch","companyPhoto",
 			"clientNew","clientList","clientSearch","clientUpdate",
 			"categoryNew","categoryList","categorySearch","categoryUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",

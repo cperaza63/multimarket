@@ -3,10 +3,10 @@
 	namespace app\controllers;
 	use app\models\mainModel; 
 
-	class userController extends mainModel{
+	class controlController extends mainModel{
 
 		/*----------  Controlador registrar usuario  ----------*/
-		public function registrarUsuarioControlador(){
+		public function registrarControlControlador(){
 
 			//return json_encode("regstrar usuario");
 			
@@ -295,7 +295,7 @@
 				],
 				[
 					"campo_nombre"=>"usuario_foto",
-					"campo_marcador"=>":Usuario_foto",
+					"campo_marcador"=>":Control_foto",
 					"campo_valor"=>$foto
 				],
 				[
@@ -318,7 +318,7 @@
 			if($registrar_usuario->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
-					"titulo"=>"Usuario registrado",
+					"titulo"=>"Control registrado",
 					"texto"=>"El usuario ".$firstname." ".$lastname." se registro con exito",
 					"icono"=>"success"
 				];
@@ -343,7 +343,7 @@
 		/*----------  Controlador registrar usuario  ----------*/
 		public function actualizarPasswordControlador(){
 		# Almacenando datos#
-		$login=$this->limpiarCadena($_POST['login']);
+		$login=	$this->limpiarCadena($_POST['login']);
 		$user_id=$this->limpiarCadena($_POST['user_id']);
 		$clave= $this->limpiarCadena($_POST['old_password']);
 		$clave1=$this->limpiarCadena($_POST['new_password']);
@@ -380,7 +380,7 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"2 Ocurrió un error inesperado",
-					"texto"=>"Usuario o clave incorrectos al momento de validar",
+					"texto"=>"Control o clave incorrectos al momento de validar",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -434,7 +434,7 @@
 		if($registrar_usuario->rowCount()==1){
 			$alerta=[
 				"tipo"=>"limpiar",
-				"titulo"=>"Clave del Usuario registrado",
+				"titulo"=>"Clave del Control registrado",
 				"texto"=>"El usuario se registro con exito",
 				"icono"=>"success"
 			];
@@ -450,7 +450,7 @@
 	}
 
 		/*----------  Controlador listar usuario  ----------*/
-		public function listarUsuarioControlador($pagina,$registros,$url,$busqueda){
+		public function listarControlControlador($pagina,$registros,$url,$busqueda){
 
 			$pagina=$this->limpiarCadena($pagina);
 			$registros=$this->limpiarCadena($registros);
@@ -493,7 +493,7 @@
 		                <tr>
 		                    <th class="has-text-centered">#</th>
 		                    <th class="has-text-centered">Nombre</th>
-		                    <th class="has-text-centered">Usuario</th>
+		                    <th class="has-text-centered">Control</th>
 		                    <th class="has-text-centered">Email</th>
 		                    <th class="has-text-centered">Foto</th>
 		                    <th class="has-text-centered">Actualizar</th>
@@ -575,25 +575,20 @@
 		
 		
 		/*----------  Controlador listar usuario  ----------*/
-		public function listarTodosUsuarioControlador($busqueda){
+		public function listarTodosControlControlador($busqueda){
 
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM usuario 
-				WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') 
-				AND (
-				concat(firstname, ' ', lastname) LIKE '%$busqueda%'
-				OR concat(lastname, ' ', firstname) LIKE '%$busqueda%' 
-				OR firstname LIKE '%$busqueda%' 
-				OR lastname LIKE '%$busqueda%' OR email LIKE '%$busqueda%' 
-				OR login LIKE '%$busqueda%')) 
-				ORDER BY lastname, firstname ASC";
+				$consulta_datos="SELECT * FROM control WHERE ( 
+				codigo LIKE '%$busqueda%'
+				OR nombre LIKE '%$busqueda%' 
+				OR tipo LIKE '%$busqueda%' )
+				) 
+				ORDER BY tipo, nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM usuario 
-				WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY lastname ASC limit 300";
+				$consulta_datos="SELECT * FROM control ORDER BY tipo, nombre ASC limit 500";
 			}
-
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 
@@ -602,9 +597,9 @@
 		}
 
 		/*----------  Controlador eliminar usuario  ----------*/
-		public function eliminarUsuarioControlador(){
+		public function eliminarControlControlador(){
 
-			$id=$this->limpiarCadena($_POST['user_id']);
+			$id=$this->limpiarCadena($_POST['control_id']);
 
 			//return json_encode($id);
 			//exit();
@@ -613,7 +608,7 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el usuario principal del sistema",
+					"texto"=>"No podemos eliminar el item de la tabla de control",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -621,12 +616,12 @@
 			}
 
 			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user_id='$id' and estatus<>1");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id' and estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en Estado ACTIVO, deberá inactivarlo primero",
+					"texto"=>"No hemos encontrado el control en Estado ACTIVO, deberá inactivarlo primero",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -636,31 +631,31 @@
 		    }
 
 		    # Verificando ventas #
-		    $check_ventas=$this->ejecutarConsulta("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
-		    if($check_ventas->rowCount()>0){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el usuario del sistema ya que tiene ventas asociadas",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
+		    #$check_ventas=$this->ejecutarConsulta("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
+		    #if($check_ventas->rowCount()>0){
+		    #    $alerta=[
+			#		"tipo"=>"simple",
+			#		"titulo"=>"Ocurrió un error inesperado",
+			#		"texto"=>"No podemos eliminar el usuario del sistema ya que tiene ventas asociadas",
+			#		"icono"=>"error"
+			#	];
+			#	return json_encode($alerta);
+		     #   exit();
+		    #}
 
-		    $eliminarUsuario=$this->eliminarRegistro("usuario","user_id",$id);
+		    $eliminarControl=$this->eliminarRegistro("control","control_id",$id);
 
-		    if($eliminarUsuario->rowCount()==1){
+		    if($eliminarControl->rowCount()==1){
 
-		    	if(is_file("../views/fotos/usuarios/".$datos['usuario_foto'])){
-		            chmod("../views/fotos/usuarios/".$datos['usuario_foto'],0777);
-		            unlink("../views/fotos/usuarios/".$datos['usuario_foto']);
+		    	if(is_file("../views/fotos/control/".$datos['control_foto'])){
+		            chmod("../views/fotos/control/".$datos['usuario_foto'],0777);
+		            unlink("../views/fotos/control/".$datos['usuario_foto']);
 		        }
 
 		        $alerta=[
 					"tipo"=>"recargar",
-					"titulo"=>"Usuario eliminado",
-					"texto"=>"El usuario ".$datos['firstname']." ".$datos['lastname']." ha sido eliminado del sistema correctamente",
+					"titulo"=>"Item de la tabla de Control eliminado",
+					"texto"=>"El Item $id ha sido eliminado del sistema correctamente",
 					"icono"=>"success"
 				];
 
@@ -668,16 +663,15 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido eliminar el usuario ".$datos['firstname']." ".$datos['lastname']." del sistema, por favor intente nuevamente",
+					"texto"=>"No hemos podido eliminar el item $id del sistema, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 		    }
-
 		    return json_encode($alerta);
 		}
 
 		/*----------  Controlador actualizar usuario  ----------*/
-		public function actualizarUsuarioControlador(){
+		public function actualizarControlControlador(){
 
 			$user_id=$this->limpiarCadena($_POST['user_id']);
 			$login = $this->limpiarCadena($_POST['login']);
@@ -700,7 +694,7 @@
 			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$login)){
 		        $alerta=[
 					"tipo"=>"simple",
-					"titulo"=>"Error al registrar Usuario",
+					"titulo"=>"Error al registrar Control",
 					"texto"=>"El login $login no coincide con el formato solicitado",
 					"icono"=>"error"
 				];
@@ -909,7 +903,7 @@
 
 			$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Usuario actualizado",
+				"titulo"=>"Control actualizado",
 				"texto"=>"Los datos del usuario ".$datos['firstname']." ".$datos['lastname']." se actualizaron correctamente",
 				"icono"=>"success"
 			];
@@ -926,7 +920,7 @@
 		}
 
 		/*----------  Controlador eliminar foto usuario  ----------*/
-		public function eliminarFotoUsuarioControlador(){
+		public function eliminarFotoControlControlador(){
 
 			$id=$this->limpiarCadena($_POST['usuario_id']);
 
@@ -1014,7 +1008,7 @@
 		}
 
 		/*----------  Controlador actualizar foto usuario  ----------*/
-		public function actualizarFotoUsuarioControlador(){
+		public function actualizarFotoControlControlador(){
 
 			//return json_encode($_POST['usuario_id']);
 			//exit;

@@ -6,8 +6,8 @@
         <div class="container-fluid">
         
             <?php
-            use app\controllers\userController;
-            $insMarket = new userController();
+            use app\controllers\companyController;
+            $insMarket = new companyController();
             ?>
         
             <div class="row">
@@ -66,9 +66,9 @@
             <?php
 
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insMarket->listarTodosUsuarioControlador($_SESSION[$url[0]]);
+                $datos = $insMarket->listarTodosCompanyControlador($_SESSION[$url[0]]);
             }else{
-                $datos = $insMarket->listarTodosUsuarioControlador("*");
+                $datos = $insMarket->listarTodosCompanyControlador("*");
             }
             ?>
             <div class="row">

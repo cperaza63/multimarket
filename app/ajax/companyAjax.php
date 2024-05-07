@@ -3,12 +3,12 @@
 	require_once "../views/inc/session_start.php";
 	require_once "../../autoload.php";
 	 
-	use app\controllers\userController;
+	use app\controllers\companyController;
 
 	if(isset($_POST['modulo_company'])){
 
 		
-		$insCompany = new userController();
+		$insCompany = new companyController();
 
 		if($_POST['modulo_company']=="registrar"){
 			echo $insCompany->registrarCompanyControlador();
@@ -27,7 +27,7 @@
 		}
 
 		if($_POST['modulo_company']=="eliminarFoto"){
-			echo $insCompany->eliminarFotoUsuarioControlador();
+			echo $insCompany->eliminarFotoCompanyControlador();
 		}
 		
 	}else{

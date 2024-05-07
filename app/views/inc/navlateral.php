@@ -44,9 +44,11 @@
                                     </li>
                                     
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>userList/" class="nav-link" data-key="t-crm"> Lista de Usuarios </a>
+                                        <a href="<?php echo APP_URL; ?>userList/" class="nav-link" data-key="t-crm"> Tabla de Usuarios </a>
                                     </li>
-
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>controlList/" class="nav-link" data-key="t-analytics"> Tablas de Control </a>
+                                    </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Datos empresa </a>
                                     </li>

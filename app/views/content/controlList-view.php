@@ -6,8 +6,8 @@
         <div class="container-fluid">
         
             <?php
-            use app\controllers\userController;
-            $insMarket = new userController();
+            use app\controllers\controlController;
+            $insControl = new controlController();
             ?>
         
             <div class="row">
@@ -28,7 +28,7 @@
                                                     name="txt_buscador" placeholder="¿Qué estas buscando?..." pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,30}" maxlength="30" required >
                                                     
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>userNew/" class="btn btn-success" >Agregar Usuario</a>
+                                                    <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Control</a>
                                                     
                                                 </div>
                                             </div>
@@ -66,16 +66,16 @@
             <?php
 
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insMarket->listarTodosUsuarioControlador($_SESSION[$url[0]]);
+                $datos = $insControl->listarTodosControlControlador($_SESSION[$url[0]]);
             }else{
-                $datos = $insMarket->listarTodosUsuarioControlador("*");
+                $datos = $insControl->listarTodosControlControlador("*");
             }
             ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de Usuarios</h5>
+                            <h5 class="card-title mb-0">Lista de valores de la Tabla Control</h5>
                         </div>
                         <div class="card-body">
                             <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -88,12 +88,12 @@
                                         </th>
                                         
                                         <th>Img</th>
-                                        <th>Usuario</th>
+                                        <th>Control</th>
                                         <th>Action</th>
-                                        <th>Email</th>
-                                        <th>Telefono</th>
-                                        <th>Status</th>
-                                        <th>Create Date</th>
+                                        <th>Código</th>
+                                        <th>Nombre</th>
+                                        <th>Estatus</th>
+                                        <th>Negocio</th>
                                         <!--<th>Status</th>-->
                                        
                                     </tr>
@@ -103,10 +103,10 @@
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
-                                            if($rows['usuario_foto'] != ""){
-                                                $usuario_foto = APP_URL . "app/views/fotos/usuarios/".$rows['usuario_foto'];
+                                            if($rows['control_foto'] != ""){
+                                                $control_foto = APP_URL . "app/views/fotos/control/".$rows['control_foto'];
                                             }else{
-                                                $usuario_foto = "http://localhost/multimarket/app/views/images/users/avatar-1.jpg";
+                                                $control_foto = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }
                                             
                                             ?>
@@ -119,11 +119,11 @@
                                                 
                                                 <td>
                                                     <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$usuario_foto?>" 
-                                                    alt="Header Avatar">
+                                                    src="<?=$control_foto; ?>" 
+                                                    alt="Foto del item de la tabla">
                                                 </td>
                                                 
-                                                <td><?=$rows['firstname'] . " " . $rows['lastname'];?></td>
+                                                <td><?=$rows['tipo'] . " " . $rows['codigo'];?></td>
                                                 
                                                 <td>
                                                     <div class="dropdown d-inline-block">
@@ -131,14 +131,14 @@
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a href="<?= APP_URL.'userUpdate/'.$rows['user_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
+                                                            <li><a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
                                                             <li>
 
                                                             <li>
-                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/usuarioAjax.php" method="POST" autocomplete="off" >
+                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/controlAjax.php" method="POST" autocomplete="off" >
 
-                                                                    <input type="hidden" name="modulo_usuario" value="eliminar">
-                                                                    <input type="hidden" name="user_id" value="<?=$rows['user_id']?>">
+                                                                    <input type="hidden" name="modulo_control" value="eliminar">
+                                                                    <input type="hidden" name="control_id" value="<?=$rows['control_id']?>">
 
                                                                     <button type="submit" class="dropdown-item" > <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
                                                                     </button>
@@ -147,19 +147,19 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?=$rows['email'];?></td>
-                                                <td><?=$rows['tcarea']."-".$rows['tcnumber'];?></td>
+                                                <td><?=$rows['codigo'];?></td>
+                                                <td><?=$rows['nombre'];?></td>
                                                 
                                                 <td>
                                                     <?php
-                                                    if($rows['estatus'] == 1 ){
+                                                    if($rows['estatus'] ==1 ){
                                                         ?><span class="badge bg-success">Activo<?php
                                                     }else{
-                                                        ?><span class="badge bg-danger">Borrado<?php
+                                                        ?><span class="badge bg-danger">Inactivo<?php
                                                     }?>
                                                     </span>
                                                 </td>
-                                                <td><?=$rows['tcarea']."-".$rows['created_at'];?></td>
+                                                <td><?=$rows['company_id'];?></td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
                                             </tr>
