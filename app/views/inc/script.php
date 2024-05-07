@@ -1,6 +1,6 @@
-<script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script>
-<!-- <script src="<php echo APP_URL; ?>app/views/js/main.js" ></script>-->
-<!-- JAVASCRIPT -->
+
+   <!-- <script src="<php echo APP_URL; ?>app/views/js/main.js" ></script>-->
+   <!-- JAVASCRIPT -->
    <script src="http://localhost/multimarket/app/views/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="http://localhost/multimarket/app/views/libs/simplebar/simplebar.min.js"></script>
     <script src="http://localhost/multimarket/app/views/libs/node-waves/waves.min.js"></script>
@@ -37,8 +37,6 @@
    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
 
    <script src="http://localhost/multimarket/app/views/js/pages/datatables.init.js"></script>
-
-
 
    <!-- App js -->
    <script src="http://localhost/multimarket/app/views/js/app.js"></script>

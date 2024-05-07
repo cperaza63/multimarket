@@ -28,6 +28,7 @@
                                                     name="txt_buscador" placeholder="¿Qué estas buscando?..." pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,30}" maxlength="30" required >
                                                     
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
+                                                    <a href="<?php echo APP_URL; ?>userNew/" class="btn btn-success" >Agregar Usuario</a>
                                                     
                                                 </div>
                                             </div>
@@ -120,16 +121,19 @@
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-
                                                             <li><a href="<?= APP_URL.'userUpdate/'.$rows['user_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
                                                             <li>
 
-                                                            <li><a href="#!" class="dropdown-item"><i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i> Borrar</a></li>
                                                             <li>
+                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/usuarioAjax.php" method="POST" autocomplete="off" >
 
-                                                           
+                                                                    <input type="hidden" name="modulo_usuario" value="eliminar">
+                                                                    <input type="hidden" name="user_id" value="<?=$rows['user_id']?>">
 
-                                                            
+                                                                    <button type="submit" class="dropdown-item" > <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
+                                                                    </button>
+                                                                </form>
+                                                            <li>
                                                         </ul>
                                                     </div>
                                                 </td>

@@ -287,7 +287,7 @@
 			return json_encode($alerta);
 		}
 
-				/*----------  Controlador registrar usuario  ----------*/
+		/*----------  Controlador registrar usuario  ----------*/
 		public function actualizarPasswordControlador(){
 		# Almacenando datos#
 		$login=$this->limpiarCadena($_POST['login']);
@@ -551,7 +551,10 @@
 		/*----------  Controlador eliminar usuario  ----------*/
 		public function eliminarUsuarioControlador(){
 
-			$id=$this->limpiarCadena($_POST['usuario_id']);
+			$id=$this->limpiarCadena($_POST['user_id']);
+
+			//return json_encode($id);
+			//exit();
 
 			if($id==1){
 				$alerta=[
@@ -565,12 +568,12 @@
 			}
 
 			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user_id='$id' and estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en el sistema",
+					"texto"=>"No hemos encontrado el usuario en Estado ACTIVO, deberá inactivarlo primero",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -592,7 +595,7 @@
 		        exit();
 		    }
 
-		    $eliminarUsuario=$this->eliminarRegistro("usuario","usuario_id",$id);
+		    $eliminarUsuario=$this->eliminarRegistro("usuario","user_id",$id);
 
 		    if($eliminarUsuario->rowCount()==1){
 
@@ -604,7 +607,7 @@
 		        $alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Usuario eliminado",
-					"texto"=>"El usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." ha sido eliminado del sistema correctamente",
+					"texto"=>"El usuario ".$datos['firstname']." ".$datos['lastname']." ha sido eliminado del sistema correctamente",
 					"icono"=>"success"
 				];
 
@@ -612,7 +615,7 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido eliminar el usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." del sistema, por favor intente nuevamente",
+					"texto"=>"No hemos podido eliminar el usuario ".$datos['firstname']." ".$datos['lastname']." del sistema, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 		    }
