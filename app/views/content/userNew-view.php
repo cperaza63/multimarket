@@ -24,7 +24,7 @@
 
                             <div class="text-center">
                                 <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                    <img src="http://localhost/multimarket/app/views/fotos/default.png" 
+                                    <img src="http://localhost/multimarket/app/views/fotos/usuarios/default.png" 
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                     alt="user-profile-image">
                                     <div class="avatar-xs p-0 rounded-circle ">
@@ -44,7 +44,7 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                         <div class="row">
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="firstnameInput" class="form-label">Primer nombre</label>
                                                     <input name="firstname" type="text" class="form-control" name="usuario_nombre" 
@@ -54,7 +54,7 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-6">
+                                            <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="lastnameInput" class="form-label">Apellido</label>
                                                     <input name="lastname" type="text" class="form-control" id="lastnameInput" 
@@ -64,7 +64,6 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="email" class="form-label">Email Address</label>
@@ -114,7 +113,7 @@
                                                         <option value="USUARIO"
                                                         >Estudiante</option>
                                                         <option value="ASISTENTE"
-                                                        >ASISTENTE</option>
+                                                        >Asistente</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -174,7 +173,6 @@
                                                 <div class="mb-3">
                                                     <label for="gender" class="form-label">Género</label>
                                                     <select name="gender" class="form-control" data-choices data-choices-text-unique-true id="gender">
-                                                        <option value="">Seleccione su opción</option>
                                                         <option value="M"
                                                         >Masculino</option>
                                                         <option value="F"
@@ -205,14 +203,14 @@
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="newpasswordInput" class="form-label">Nuevo Password*</label>
-                                                        <input name="new_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
+                                                        <input name="new_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="password" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="confirmpasswordInput" class="form-label">Confirmar Password*</label>
-                                                        <input name="repeat_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
+                                                        <input name="repeat_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="password" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
                                                     </div>
                                                 </div>
                                             </div>

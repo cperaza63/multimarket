@@ -19,6 +19,9 @@
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
                 $usuario_foto = $datos['usuario_foto'];
+                if( $datos['usuario_foto'] ==""){
+                    $usuario_foto = "http://localhost/multimarket/app/views/fotos/usuarios/default.png";
+                }
                 $pasa = 1;
             }else{
                 // registro es nuevo
@@ -44,7 +47,7 @@
 
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                             
-                                            <img src="http://localhost/multimarket/app/views/fotos/<?php echo $usuario_foto; ?>" 
+                                            <img src="http://localhost/multimarket/app/views/fotos/usuarios/<?php echo $usuario_foto; ?>" 
                                             class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                             alt="user-profile-image">
                                             

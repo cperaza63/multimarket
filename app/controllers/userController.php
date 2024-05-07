@@ -8,25 +8,37 @@
 		/*----------  Controlador registrar usuario  ----------*/
 		public function registrarUsuarioControlador(){
 
-			return json_encode("regstrar usuario");
+			//return json_encode("regstrar usuario");
 			
 			# Almacenando datos#
-		    $nombre=$this->limpiarCadena($_POST['usuario_nombre']);
-		    $apellido=$this->limpiarCadena($_POST['usuario_apellido']);
-
-		    $usuario=$this->limpiarCadena($_POST['login']);
-		    $email=$this->limpiarCadena($_POST['usuario_email']);
-		    $clave1=$this->limpiarCadena($_POST['usuario_clave_1']);
-		    $clave2=$this->limpiarCadena($_POST['usuario_clave_2']);
-
-		    $caja=$this->limpiarCadena($_POST['usuario_caja']);
-
+		    $firstname=$this->limpiarCadena($_POST['firstname']);
+		    $lastname=$this->limpiarCadena($_POST['lastname']);
+		    $email=$this->limpiarCadena($_POST['email']);
+		    $tcarea=$this->limpiarCadena($_POST['tcarea']);
+		    $tcnumber=$this->limpiarCadena($_POST['tcnumber']);
+		    $tipo=$this->limpiarCadena($_POST['tipo']);
+			$city=$this->limpiarCadena($_POST['city']);
+			$state=$this->limpiarCadena($_POST['state']);
+			$country=$this->limpiarCadena($_POST['country']);
+			$departamento=$this->limpiarCadena($_POST['departamento']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$location=$this->limpiarCadena($_POST['location']);
+			$gender=$this->limpiarCadena($_POST['gender']);
+			$rif=$this->limpiarCadena($_POST['rif']);
+			$clave1=$this->limpiarCadena($_POST['new_password']);
+			$clave2=$this->limpiarCadena($_POST['repeat_password']);
+			$dateofbirth=$this->limpiarCadena($_POST['dateofbirth']);
+			$created_at = date("Y-m-d");
 
 		    # Verificando campos obligatorios #
-		    if($nombre=="" || $apellido=="" || $usuario=="" || $clave1=="" || $clave2==""){
-		    	$alerta=[
+		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 
+			|| $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" 
+			|| $tcarea=="" || $tcnumber==""|| $location ==""|| $country=="" || $gender=="" || $rif=="" 
+			|| $clave1=="" || $clave2=="" || $dateofbirth==""
+			){
+		        $alerta=[
 					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
+					"titulo"=>"Error al actualizar registro",
 					"texto"=>"No has llenado todos los campos que son obligatorios",
 					"icono"=>"error"
 				];
@@ -34,77 +46,63 @@
 		        exit();
 		    }
 
-		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$nombre)){
-		    	$alerta=[
+		    if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
+				$alerta=[
 					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El NOMBRE no coincide con el formato solicitado",
+					"titulo"=>"Error en la entrada de datos",
+					"texto"=>"Ha ingresado un correo electrónico no valido",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
-		        exit();
-		    }
-
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$apellido)){
-		    	$alerta=[
+				exit();
+			}
+			
+			$check_email=$this->ejecutarConsulta("SELECT email FROM usuario WHERE email='$email'");
+			if($check_email->rowCount()>0){
+				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El APELLIDO no coincide con el formato solicitado",
+					"texto"=>"El EMAIL que acaba de ingresar ya se encuentra registrado en el sistema, por favor utilice otro correo",
 					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-			if($this->verificarDatos("[a-zA-Z0-9]{4,20}",$usuario)){
-		    	$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El USUARIO no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave1) || $this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$clave2)){
-		    	$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"Las CLAVES no coinciden con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    # Verificando email #
-		    if($email!=""){
-				if(filter_var($email, FILTER_VALIDATE_EMAIL)){
-					$check_email=$this->ejecutarConsulta("SELECT usuario_email FROM usuario WHERE usuario_email='$email'");
-					if($check_email->rowCount()>0){
-						$alerta=[
-							"tipo"=>"simple",
-							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"2 que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
-							"icono"=>"error"
-						];
-						return json_encode($alerta);
-						exit();
-					}
-				}else{
-					$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Ha ingresado un correo electrónico no valido",
-						"icono"=>"error"
 					];
-					return json_encode($alerta);
-					exit();
-				}
-            }
+				return json_encode($alerta);
+				exit();
+			} 
 
+		    # Verificando integridad de los datos #
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$firstname)){
+		         $alerta=[
+			 		"tipo"=>"simple",
+			 		"titulo"=>"Ocurrió un error inesperado",
+			 		"texto"=>"El NOMBRE no coincide con el formato solicitado",
+			 		"icono"=>"error"
+			 	];
+			 	return json_encode($alerta);
+		         exit();
+		    }
+
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$lastname)){
+		         $alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"Ocurrió un error inesperado",
+				"texto"=>"El APELLIDO no coincide con el formato solicitado",
+				"icono"=>"error"
+				];
+				return json_encode($alerta);
+		    	exit();
+		    }
+			
+			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}",$departamento)){
+		    	$alerta=[
+				"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"El DEPARTAMENTO... no coincide con el formato solicitado",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
             # Verificando claves #
             if($clave1!=$clave2){
 				$alerta=[
@@ -120,25 +118,12 @@
             }
 
             # Verificando usuario #
-		    $check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE login='$usuario'");
+		    $check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE login='$email'");
 		    if($check_usuario->rowCount()>0){
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El USUARIO ingresado ya se encuentra registrado, por favor elija otro",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    # Verificando caja #
-		    $check_caja=$this->ejecutarConsulta("SELECT caja_id FROM caja WHERE caja_id='$caja'");
-		    if($check_caja->rowCount()<=0){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"La caja seleccionada no existe en el sistema",
+					"texto"=>"El USUARIO ingresado ya se encuentra registrado, por favor cambie su email",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -146,7 +131,7 @@
 		    }
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/";
+    		$img_dir="../views/fotos/usuarios/";
 
     		# Comprobar si se selecciono una imagen #
     		if($_FILES['usuario_foto']['name']!="" && $_FILES['usuario_foto']['size']>0){
@@ -190,7 +175,7 @@
 		        }
 
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_",$nombre);
+		        $foto=str_ireplace(" ","_",$company_id."_".$firstname.$lastname);
 		        $foto=$foto."_".rand(0,100);
 
 		        # Extension de la imagen #
@@ -220,45 +205,113 @@
     		}else{
     			$foto="";
     		}
-
-
+			
 		    $usuario_datos_reg=[
 				[
-					"campo_nombre"=>"usuario_nombre",
-					"campo_marcador"=>":Nombre",
-					"campo_valor"=>$nombre
-				],
-				[
-					"campo_nombre"=>"usuario_apellido",
-					"campo_marcador"=>":Apellido",
-					"campo_valor"=>$apellido
-				],
-				[
 					"campo_nombre"=>"login",
-					"campo_marcador"=>":Usuario",
-					"campo_valor"=>$usuario
+					"campo_marcador"=>":Login",
+					"campo_valor"=>$email
 				],
 				[
-					"campo_nombre"=>"usuario_email",
+					"campo_nombre"=>"email",
 					"campo_marcador"=>":Email",
 					"campo_valor"=>$email
 				],
 				[
-					"campo_nombre"=>"usuario_clave",
-					"campo_marcador"=>":Clave",
+					"campo_nombre"=>"firstname",
+					"campo_marcador"=>":Firstname",
+					"campo_valor"=>$firstname
+				],
+				[
+					"campo_nombre"=>"lastname",
+					"campo_marcador"=>":Lastname",
+					"campo_valor"=>$lastname
+				],
+				[
+					"campo_nombre"=>"nombre_completo",
+					"campo_marcador"=>":Nombre_completo",
+					"campo_valor"=>$firstname." ".$lastname
+				],
+				[
+					"campo_nombre"=>"tcarea",
+					"campo_marcador"=>":Tcarea",
+					"campo_valor"=>$tcarea
+				],
+				[
+					"campo_nombre"=>"tcnumber",
+					"campo_marcador"=>":Tcnumber",
+					"campo_valor"=>$tcnumber
+				],
+				[
+					"campo_nombre"=>"tipo",
+					"campo_marcador"=>":Tipo",
+					"campo_valor"=>$tipo
+				],
+				[
+					"campo_nombre"=>"city",
+					"campo_marcador"=>":City",
+					"campo_valor"=>$city
+				],
+
+				[
+					"campo_nombre"=>"state",
+					"campo_marcador"=>":State",
+					"campo_valor"=>$state
+				],
+				[
+					"campo_nombre"=>"country",
+					"campo_marcador"=>":Country",
+					"campo_valor"=>$country
+				],
+				[
+					"campo_nombre"=>"departamento",
+					"campo_marcador"=>":Departamento",
+					"campo_valor"=>$departamento
+				],
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"location",
+					"campo_marcador"=>":Location",
+					"campo_valor"=>$location
+				],
+				[
+					"campo_nombre"=>"gender",
+					"campo_marcador"=>":Gender",
+					"campo_valor"=>$gender
+				],
+				[
+					"campo_nombre"=>"rif",
+					"campo_marcador"=>":Rif",
+					"campo_valor"=>$rif
+				],
+				[
+					"campo_nombre"=>"password",
+					"campo_marcador"=>":Password",
 					"campo_valor"=>$clave
 				],
 				[
 					"campo_nombre"=>"usuario_foto",
-					"campo_marcador"=>":Foto",
+					"campo_marcador"=>":Usuario_foto",
 					"campo_valor"=>$foto
 				],
 				[
-					"campo_nombre"=>"caja_id",
-					"campo_marcador"=>":Caja",
-					"campo_valor"=>$caja
+					"campo_nombre"=>"created_at",
+					"campo_marcador"=>":Created_at",
+					"campo_valor"=>$created_at
+				],
+				[
+					"campo_nombre"=>"dateofbirth",
+					"campo_marcador"=>":Dateofbirth",
+					"campo_valor"=>$dateofbirth
 				]
+
 			];
+
+			//return json_encode("regstrar usuario");
 
 			$registrar_usuario=$this->guardarDatos("usuario",$usuario_datos_reg);
 
@@ -266,7 +319,7 @@
 				$alerta=[
 					"tipo"=>"limpiar",
 					"titulo"=>"Usuario registrado",
-					"texto"=>"El usuario ".$nombre." ".$apellido." se registro con exito",
+					"texto"=>"El usuario ".$firstname." ".$lastname." se registro con exito",
 					"icono"=>"success"
 				];
 			}else{
@@ -355,7 +408,7 @@
 			$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"4 Ocurrió un error al validar al usuario",
-				"texto"=>"$clave El USUARIO no fue encontrado, por favor revise",
+				"texto"=>"El USUARIO no fue encontrado, por favor revise",
 				"icono"=>"error"
 			];
 			return json_encode($alerta);
@@ -382,7 +435,7 @@
 			$alerta=[
 				"tipo"=>"limpiar",
 				"titulo"=>"Clave del Usuario registrado",
-				"texto"=>"$clave El usuario se registro con exito",
+				"texto"=>"El usuario se registro con exito",
 				"icono"=>"success"
 			];
 		}else{
@@ -669,11 +722,14 @@
 			$location=$this->limpiarCadena($_POST['location']);
 			$gender=$this->limpiarCadena($_POST['gender']);
 			$rif=$this->limpiarCadena($_POST['rif']);
+			$dateofbirth=$this->limpiarCadena($_POST['dateofbirth']);
+			$created_at = date("Y-m-d");
 
 		    # Verificando campos obligatorios #
 		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 
 			|| $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" 
 			|| $tcarea=="" || $tcnumber==""|| $location ==""|| $country=="" || $gender=="" || $rif=="" 
+			|| $dateofbirth=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -688,7 +744,7 @@
 			if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
 				$alerta=[
 					"tipo"=>"simple",
-					"titulo"=>"Error el la entrada de datos",
+					"titulo"=>"Error en la entrada de datos",
 					"texto"=>"Ha ingresado un correo electrónico no valido",
 					"icono"=>"error"
 				];
@@ -765,6 +821,11 @@
 					"campo_valor"=>$lastname
 				],
 				[
+					"campo_nombre"=>"nombre_completo",
+					"campo_marcador"=>":Nombre_completo",
+					"campo_valor"=>$firstname." ".$lastname
+				],
+				[
 					"campo_nombre"=>"tcarea",
 					"campo_marcador"=>":Tcarea",
 					"campo_valor"=>$tcarea
@@ -824,6 +885,11 @@
 					"campo_nombre"=>"rif",
 					"campo_marcador"=>":Rif",
 					"campo_valor"=>$rif
+				],
+				[
+					"campo_nombre"=>"dateofbirth",
+					"campo_marcador"=>":Dateofbirth",
+					"campo_valor"=>$dateofbirth
 				]
 			];
 
@@ -880,7 +946,7 @@
 		    }
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/";
+    		$img_dir="../views/fotos/usuarios/";
 
     		chmod($img_dir,0777);
 
@@ -971,7 +1037,7 @@
 		    }
 
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/";
+    		$img_dir="../views/fotos/usuarios/";
 
 
     		# Comprobar si se selecciono una imagen #
@@ -1029,8 +1095,9 @@
 		        $foto=explode(".", $datos['usuario_foto']);
 		        $foto=$foto[0];
 	        }else{
-	        	$foto=str_ireplace(" ","_",$datos['firstname']);
-	        	$foto=$foto."_".rand(0,100);
+	
+			$foto=str_ireplace(" ","_",$datos['company_id']."_".$datos['firstname'].$datos['lastname']);
+			$foto=$foto."_".rand(0,100);
 	        }
 	        
 

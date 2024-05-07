@@ -12,7 +12,7 @@ if(isset($_GET['views'])){
     $url=["login"];
 }
 
-echo "Vista= " . $_GET['views'];
+//echo "Vista= " . $_GET['views'];
 
 ?>
 
@@ -62,16 +62,7 @@ echo "Vista= " . $_GET['views'];
         require_once "./app/views/inc/footer.php"; 
         require_once "./app/views/inc/script.php"; 
         
-        if(isset($_GET['views']) && $_GET['views']!=""){
-            if( $_GET['views'] == "userList.../"){
-                ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
-            }else{
-                ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
-            }
-            ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
-        }else{
-            ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
-        }
+        
         ?>
 </body>
 </html>
