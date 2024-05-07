@@ -191,7 +191,7 @@
                                         <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                             <form action="javascript:void(0);">
                                                 <div class="row">
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="firstnameInput" class="form-label">Primer nombre</label>
                                                             <input name="firstname" type="text" class="form-control" name="usuario_nombre" 
@@ -202,7 +202,7 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="lastnameInput" class="form-label">Apellido</label>
                                                             <input name="lastname" type="text" class="form-control" id="lastnameInput" 
@@ -213,7 +213,20 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="estatus" class="form-label">Estatus</label>
+                                                            <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="gender">
+                                                                <option value="A"
+                                                                <?php if( $datos['estatus'] == '1'  ) echo"selected" ?>
+                                                                >Activo</option>
+                                                                <option value="F"
+                                                                <?php if( $datos['estatus'] == '0'  ) echo"selected" ?>
+                                                                >Suspendido</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="email" class="form-label">Email Address</label>
