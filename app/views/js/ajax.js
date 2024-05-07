@@ -3,9 +3,9 @@ const formularios_ajax=document.querySelectorAll(".FormularioAjax");
 
 formularios_ajax.forEach(formularios => {
 
-    formularios.addEventListener("submit",function(e){         
+    formularios.addEventListener("submit",function(e){
         e.preventDefault();
-        let a = "";
+        let a = "1";
         if ( a == ""){ 
             Swal.fire({
                 title: '¿Estás seguro?',

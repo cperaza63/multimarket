@@ -398,7 +398,7 @@
                                                 <div class="col-lg-4">
                                                     <div>
                                                         <label for="oldpasswordInput" class="form-label">Actual Password*</label>
-                                                        <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual" value="<?=$login?>">
+                                                        <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
                                                     </div>
                                                 </div>
                                                 <!--end col-->
