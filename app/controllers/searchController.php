@@ -11,6 +11,7 @@
 			$listaModulos=[
 				'userSearch', 'userList',
 				'controlSearch', 'controlList',
+				'ubicacionSearch', 'ubicacionList',
 				'cashierSearch', 'clientSearch',
 				'categorySearch',
 				'productSearch',
