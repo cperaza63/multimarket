@@ -118,9 +118,9 @@
                                                 </th>
                                                 
                                                 <td>
-                                                    <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$usuario_foto?>" 
-                                                    alt="Header Avatar">
+        <a href="<?= APP_URL.'userUpdate/'.$rows['user_id'].'/'?>">
+            <img class="rounded-circle header-profile-user" src="<?=$usuario_foto?>" alt="Header Avatar">
+                                                    </a>
                                                 </td>
                                                 
                                                 <td><?=$rows['firstname'] . " " . $rows['lastname'];?></td>

@@ -605,7 +605,7 @@
 		public function eliminarUsuarioControlador(){
 
 			$id=$this->limpiarCadena($_POST['user_id']);
-
+ 
 			//return json_encode($id);
 			//exit();
 
@@ -729,7 +729,7 @@
 		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 
 			|| $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" 
 			|| $tcarea=="" || $tcnumber==""|| $location ==""|| $country=="" || $gender=="" || $rif=="" 
-			|| $dateofbirth=="" 
+			|| $dateofbirth=="" || $estatus == ""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -890,6 +890,11 @@
 					"campo_nombre"=>"dateofbirth",
 					"campo_marcador"=>":Dateofbirth",
 					"campo_valor"=>$dateofbirth
+				],
+				[
+					"campo_nombre"=>"estatus",
+					"campo_marcador"=>":Estatus",
+					"campo_valor"=>$estatus
 				]
 			];
 

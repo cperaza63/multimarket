@@ -78,7 +78,7 @@
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="submit" class="btn btn-primary">Agregar a la Tabla</button>
-                                                    <a href="href="<?php echo APP_URL; ?>controlList/" class="btn btn-soft-success">Cancelar</a>
+                                                    <a href="<?php echo APP_URL; ?>controlList/" class="btn btn-soft-success">Cancelar</a>
                                                     
                                                 </div>
                                                 <p class="has-text-centered pt-6">
