@@ -18,16 +18,12 @@
 			echo $insControl->eliminarControlControlador();
 		}
 
-		if($_POST['modulo_control']=="actualizarFoto"){
-			echo $insControl->actualizarFotoControlControlador();
-		}
-
-		if($_POST['modulo_control']=="actualizarClave"){
-			echo $insControl->actualizarPasswordControlador();
-		}
-		
 		if($_POST['modulo_control']=="actualizar"){
 			echo $insControl->actualizarControlControlador();
+		}
+		
+		if($_POST['modulo_control']=="actualizarFoto"){
+			echo $insControl->actualizarFotoControlControlador();
 		}
 
 		if($_POST['modulo_control']=="eliminarFoto"){

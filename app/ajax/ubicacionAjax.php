@@ -18,20 +18,8 @@
 			echo $insControl->eliminarUbicacionControlador();
 		}
 
-		if($_POST['modulo_ubicacion']=="actualizarFoto"){
-			echo $insControl->actualizarFotoUbicacionControlador();
-		}
-
-		if($_POST['modulo_ubicacion']=="actualizarClave"){
-			echo $insControl->actualizarPasswordControlador();
-		}
-		
 		if($_POST['modulo_ubicacion']=="actualizar"){
 			echo $insControl->actualizarUbicacionControlador();
-		}
-
-		if($_POST['modulo_ubicacion']=="eliminarFoto"){
-			echo $insControl->eliminarFotoUbicacionControlador();
 		}
 		
 	}else{
