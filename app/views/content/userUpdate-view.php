@@ -217,12 +217,12 @@
                                                         <div class="mb-3">
                                                             <label for="estatus" class="form-label">Estatus</label>
                                                             <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="gender">
-                                                                <option value="A"
+                                                                <option value="1"
                                                                 <?php if( $datos['estatus'] == '1'  ) echo"selected" ?>
                                                                 >Activo</option>
-                                                                <option value="F"
+                                                                <option value="0"
                                                                 <?php if( $datos['estatus'] == '0'  ) echo"selected" ?>
-                                                                >Suspendido</option>
+                                                                >Inactivo</option>
                                                             </select>
                                                         </div>
                                                     </div>

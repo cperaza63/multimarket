@@ -9,10 +9,9 @@
 		public function modulosBusquedaControlador($modulo){
 
 			$listaModulos=[
-				'userSearch',
-				'userList',
-				'cashierSearch',
-				'clientSearch',
+				'userSearch', 'userList',
+				'controlSearch', 'controlList',
+				'cashierSearch', 'clientSearch',
 				'categorySearch',
 				'productSearch',
 				'saleSearch'];

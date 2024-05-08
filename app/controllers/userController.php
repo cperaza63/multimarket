@@ -723,7 +723,7 @@
 			$gender=$this->limpiarCadena($_POST['gender']);
 			$rif=$this->limpiarCadena($_POST['rif']);
 			$dateofbirth=$this->limpiarCadena($_POST['dateofbirth']);
-			$created_at = date("Y-m-d");
+			$estatus = $this->limpiarCadena($_POST['estatus']);
 
 		    # Verificando campos obligatorios #
 		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 

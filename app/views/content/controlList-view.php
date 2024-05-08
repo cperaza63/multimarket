@@ -16,7 +16,9 @@
                         <div class="card-body">
                             <div class="columns">
                                 <div class="column">
-                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" method="POST" autocomplete="off" >
+                                    <form class="FormularioAjax" 
+                                    action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" 
+                                    method="POST" autocomplete="off" >
                                         <input type="hidden" name="modulo_buscador" value="buscar">
                                         <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
 
@@ -118,9 +120,11 @@
                                                 </th>
                                                 
                                                 <td>
+                                                    <a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>">
                                                     <img class="rounded-circle header-profile-user" 
                                                     src="<?=$control_foto; ?>" 
                                                     alt="Foto del item de la tabla">
+                                                    </a>
                                                 </td>
                                                 
                                                 <td><?=$rows['tipo'] . " " . $rows['codigo'];?></td>

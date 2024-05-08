@@ -443,7 +443,7 @@
 				$consulta_datos="SELECT * FROM control WHERE ( 
 				codigo LIKE '%$busqueda%'
 				OR nombre LIKE '%$busqueda%' 
-				OR tipo LIKE '%$busqueda%' )
+				OR tipo LIKE '%$busqueda%' 
 				) 
 				ORDER BY tipo, nombre ASC limit 500";
 			}else{
@@ -524,7 +524,9 @@
 			$codigo = $this->limpiarCadena($_POST['codigo']);
 			$nombre = $this->limpiarCadena($_POST['nombre']);
 			$tipo=$this->limpiarCadena($_POST['tipo']);
-
+			$estatus=$this->limpiarCadena($_POST['estatus']);
+			
+			//return json_encode($estatus);
 			# Verificando usuario #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$control_id'");
 		    if($datos->rowCount()<=0){
@@ -563,7 +565,7 @@
 		    }
 
 		    # Verificando campos obligatorios #
-		    if($codigo=="" || $nombre=="" || $tipo=="" 
+		    if($codigo=="" || $nombre=="" || $tipo=="" || $estatus=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -591,6 +593,11 @@
 					"campo_marcador"=>":Tipo",
 					"campo_valor"=>$tipo
 				],
+				[
+					"campo_nombre"=>"estatus",
+					"campo_marcador"=>":Estatus",
+					"campo_valor"=>$estatus
+				]
 			];
 
 			$condicion=[

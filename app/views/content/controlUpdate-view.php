@@ -108,7 +108,7 @@
                                         <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                             <form action="javascript:void(0);">
                                                 <div class="row">
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="codigo" class="form-label">Código</label>
                                                             <input name="codigo" type="text" class="form-control" name="codigo" 
@@ -119,7 +119,7 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="lastnameInput" class="form-label">Nombre</label>
                                                             <input name="nombre" type="text" class="form-control" id="nombre" 
@@ -130,13 +130,27 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                             <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                                 <option value="market"
                                                                 <?php if( $datos['tipo'] == 'market'  ) echo"selected" ?>
                                                                 >Market Place</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="estatus" class="form-label">Estado</label>
+                                                            <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="estatus">
+                                                                <option value="1"
+                                                                <?php if( $datos['estatus'] == '1'  ) echo"selected" ?>
+                                                                >Activo</option>
+                                                                <option value="0"
+                                                                <?php if( $datos['estatus'] == '0'  ) echo"selected" ?>
+                                                                >Inactivo</option>
                                                             </select>
                                                         </div>
                                                     </div>
