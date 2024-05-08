@@ -1,10 +1,8 @@
 <?php
-
 	namespace app\controllers;
 	use app\models\mainModel; 
-
 	class ubicacionController extends mainModel{
-
+		#C-R-U-D
 		/*----------  Controlador registrar usuario  ----------*/
 		public function registrarUbicacionControlador(){
 			//return json_encode("regstrar usuario");
@@ -100,21 +98,24 @@
 
 			return json_encode($alerta);
 		}
-		
 		/*----------  Ubicacionador listar usuario  ----------*/
 		public function listarTodosUbicacionControlador($busqueda){
 
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM ubicacion WHERE ( 
-				codigo LIKE '%$busqueda%'
-				OR nombre LIKE '%$busqueda%' 
-				OR tipo LIKE '%$busqueda%' 
+				$consulta_datos="SELECT * FROM ubicacion WHERE 
+				country='".APP_COUNTRY."' AND 
+				( 
+				state_name LIKE '%$busqueda%'OR 
+				state_abbreviation LIKE '%$busqueda%' OR 
+				city LIKE '%$busqueda%' OR
+				country LIKE '%$busqueda%'
 				) 
-				ORDER BY tipo, nombre ASC limit 500";
+				ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city";
 			}else{
-				$consulta_datos="SELECT * FROM ubicacion ORDER BY tipo, nombre ASC limit 500";
+				$consulta_datos="
+				SELECT * FROM ubicacion where country='".APP_COUNTRY."' ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city LIMIT 300";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -122,68 +123,6 @@
 			return $datos;
 			exit();
 		}
-
-		/*----------  Ubicacionador eliminar usuario  ----------*/
-		public function eliminarUbicacionControlador(){
-
-			$id=$this->limpiarCadena($_POST['ubicacion_id']);
-
-			//return json_encode($id);
-			//exit();
-
-			if($id==1){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el item de la tabla de ubicacion",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-			}
-
-			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM ubicacion WHERE ubicacion_id='$id' and estatus<>1");
-		    if($datos->rowCount()<=0){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el ubicacion en Estado ACTIVO, deberá inactivarlo primero",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }else{
-		    	$datos=$datos->fetch();
-		    }
-
-		    $eliminarUbicacion=$this->eliminarRegistro("ubicacion","ubicacion_id",$id);
-
-		    if($eliminarUbicacion->rowCount()==1){
-
-		    	if(is_file("../views/fotos/ubicacion/".$datos['ubicacion_foto'])){
-		            chmod("../views/fotos/ubicacion/".$datos['usuario_foto'],0777);
-		            unlink("../views/fotos/ubicacion/".$datos['usuario_foto']);
-		        }
-
-		        $alerta=[
-					"tipo"=>"recargar",
-					"titulo"=>"Item de la tabla de Ubicacion eliminado",
-					"texto"=>"El Item $id ha sido eliminado del sistema correctamente",
-					"icono"=>"success"
-				];
-
-		    }else{
-		    	$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos podido eliminar el item $id del sistema, por favor intente nuevamente",
-					"icono"=>"error"
-				];
-		    }
-		    return json_encode($alerta);
-		}
-
 		/*----------  Ubicacionador actualizar usuario  ----------*/
 		public function actualizarUbicacionControlador(){
 
@@ -291,5 +230,64 @@
 
 			return json_encode($alerta);
 		}
+		/*----------  Ubicacionador eliminar usuario  ----------*/
+		public function eliminarUbicacionControlador(){
 
+			$id=$this->limpiarCadena($_POST['ubicacion_id']);
+
+			//return json_encode($id);
+			//exit();
+
+			if($id==1){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No podemos eliminar el item de la tabla de ubicacion",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+			}
+
+			# Verificando usuario #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM ubicacion WHERE ubicacion_id='$id' and estatus<>1");
+		    if($datos->rowCount()<=0){
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos encontrado el ubicacion en Estado ACTIVO, deberá inactivarlo primero",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }else{
+		    	$datos=$datos->fetch();
+		    }
+
+		    $eliminarUbicacion=$this->eliminarRegistro("ubicacion","ubicacion_id",$id);
+
+		    if($eliminarUbicacion->rowCount()==1){
+
+		    	if(is_file("../views/fotos/ubicacion/".$datos['ubicacion_foto'])){
+		            chmod("../views/fotos/ubicacion/".$datos['usuario_foto'],0777);
+		            unlink("../views/fotos/ubicacion/".$datos['usuario_foto']);
+		        }
+
+		        $alerta=[
+					"tipo"=>"recargar",
+					"titulo"=>"Item de la tabla de Ubicacion eliminado",
+					"texto"=>"El Item $id ha sido eliminado del sistema correctamente",
+					"icono"=>"success"
+				];
+
+		    }else{
+		    	$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos podido eliminar el item $id del sistema, por favor intente nuevamente",
+					"icono"=>"error"
+				];
+		    }
+		    return json_encode($alerta);
+		}
 	}

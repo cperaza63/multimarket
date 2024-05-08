@@ -71,7 +71,6 @@ if(isset($_GET['views'])){
                 }else{
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
                 }
-                ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
             }else{
                 ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
             }

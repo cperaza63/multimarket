@@ -40,15 +40,21 @@
                                 <ul class="nav nav-sm flex-column">
                                     
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Usuario Admin </a>
+                                        <a href="<?php echo APP_URL; ?>userList/" class="nav-link" data-key="t-crm"> Tabla de Usuarios </a>
                                     </li>
                                     
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>userList/" class="nav-link" data-key="t-crm"> Tabla de Usuarios </a>
-                                    </li>
-                                    <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>controlList/" class="nav-link" data-key="t-analytics"> Tablas de Control </a>
                                     </li>
+                                    
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>ubicacionList/" class="nav-link" data-key="t-analytics"> Tabla Ciudades y Estados  </a>
+                                    </li>
+                                    
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>
+                                    </li>
+
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Datos empresa </a>
                                     </li>
@@ -68,6 +74,9 @@
                                     <li class="nav-item">
                                         <a href="dashboard-job.html" class="nav-link" data-key="t-job">Job</a>
                                     </li>
+
+                                    
+
                                 </ul>
                             </div>
                         </li> <!-- end Dashboard Menu -->

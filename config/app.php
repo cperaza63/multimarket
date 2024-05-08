@@ -3,6 +3,7 @@
 	const APP_URL="http://localhost/multimarket/";
 	const APP_NAME="VENTAS";
 	const APP_SESSION_NAME="POS";
+	const APP_COUNTRY="VEN";
 
 	/*----------  Tipos de documentos  ----------*/
 	const DOCUMENTOS_USUARIOS=["DUI","DNI","Cedula","Licencia","Pasaporte","Otro"];

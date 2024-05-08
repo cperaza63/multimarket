@@ -1,3 +1,8 @@
+<style>
+    table.dataTable.dataTable_width_auto {
+     width: auto;
+    }
+</style>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -6,8 +11,8 @@
         <div class="container-fluid">
         
             <?php
-            use app\controllers\controlController;
-            $insControl = new controlController();
+            use app\controllers\ubicacionController;
+            $insControl = new ubicacionController();
             ?>
         
             <div class="row">
@@ -30,7 +35,7 @@
                                                     name="txt_buscador" placeholder="¿Qué estas buscando?..." pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,30}" maxlength="30" required >
                                                     
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Control</a>
+                                                    <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Ubicacion</a>
                                                     
                                                 </div>
                                             </div>
@@ -68,19 +73,19 @@
             <?php
 
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insControl->listarTodosControlControlador($_SESSION[$url[0]]);
+                $datos = $insControl->listarTodosUbicacionControlador($_SESSION[$url[0]]);
             }else{
-                $datos = $insControl->listarTodosControlControlador("*");
+                $datos = $insControl->listarTodosUbicacionControlador("*");
             }
             ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de valores de la Tabla Control</h5>
+                            <h5 class="card-title mb-0">Lista de valores de la Tabla de Ciudades y Estados</h5>
                         </div>
                         <div class="card-body">
-                            <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
+                            <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle display dataTable_width_auto" style="width:100%">
                                 <thead>
                                     <tr>
                                         <th scope="col" style="width: 10px;">
@@ -88,16 +93,11 @@
                                                 <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        
-                                        <th>Img</th>
-                                        <th>Control</th>
-                                        <th>Action</th>
-                                        <th>Código</th>
-                                        <th>Nombre</th>
-                                        <th>Estatus</th>
-                                        <th>Negocio</th>
-                                        <!--<th>Status</th>-->
-                                       
+                                        <th>Ciudad</th>
+                                        <th>Acción</th>
+                                        <th>Estado</th>
+                                        <th>Tipo</th>
+                                        <th>País</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -105,12 +105,17 @@
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
-                                            if($rows['control_foto'] != ""){
-                                                $control_foto = APP_URL . "app/views/fotos/control/".$rows['control_foto'];
+
+                                            if( $rows['capital']=="*"){
+                                                $tipo = "Capital";
+                                                $color="danger";
+                                            }elseif($rows['city']==""){
+                                                $tipo = "Estado";
+                                                $color="success";
                                             }else{
-                                                $control_foto = APP_URL . "app/views/fotos/nophoto.jpg";
+                                                $tipo = "Ciudad";
+                                                $color="info";
                                             }
-                                            
                                             ?>
                                             <tr>
                                                 <th scope="row">
@@ -118,31 +123,25 @@
                                                         <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
                                                     </div>
                                                 </th>
-                                                
                                                 <td>
-                                                    <a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>">
-                                                    <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$control_foto; ?>" 
-                                                    alt="Foto del item de la tabla">
+                                                    <a href="<?= APP_URL.'ubicacionUpdate/'.$rows['id'].'/'?>">
+                                                    <?=$rows['city']==""? $rows['state_name'].", ".$rows['country'] : $rows['city'];?>
                                                     </a>
                                                 </td>
-                                                
-                                                <td><?=$rows['tipo'] . " " . $rows['codigo'];?></td>
-                                                
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
+                                                            <li><a href="<?= APP_URL.'ubicacionUpdate/'.$rows['id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
                                                             <li>
 
                                                             <li>
-                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/controlAjax.php" method="POST" autocomplete="off" >
+                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/ubicacionAjax.php" method="POST" autocomplete="off" >
 
                                                                     <input type="hidden" name="modulo_control" value="eliminar">
-                                                                    <input type="hidden" name="control_id" value="<?=$rows['control_id']?>">
+                                                                    <input type="hidden" name="id" value="<?=$rows['id']?>">
 
                                                                     <button type="submit" class="dropdown-item" > <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
                                                                     </button>
@@ -151,21 +150,10 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?=$rows['codigo'];?></td>
-                                                <td><?=$rows['nombre'];?></td>
-                                                
-                                                <td>
-                                                    <?php
-                                                    if($rows['estatus'] ==1 ){
-                                                        ?><span class="badge bg-success">Activo<?php
-                                                    }else{
-                                                        ?><span class="badge bg-danger">Inactivo<?php
-                                                    }?>
-                                                    </span>
-                                                </td>
-                                                <td><?=$rows['company_id'];?></td>
-                                            <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
-                                                
+                                                <td><?=$rows['state_name'];?></td>
+                                                <td><span class="badge bg-<?=$color;?>"><?=$tipo;?></span></td>
+                                                <td><?=$rows['country'];?></td>
+
                                             </tr>
                                     <?php
                                         }    
