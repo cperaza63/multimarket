@@ -218,7 +218,7 @@
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="submit" class="btn btn-primary">Agregar Usuario</button>
-                                                    <button type="button" class="btn btn-soft-success">Cancelar</button>
+                                                    <a href="<?php echo APP_URL; ?>userList/" class="btn btn-soft-success">Cancelar</a>
                                                     
                                                 </div>
                                                 <p class="has-text-centered pt-6">

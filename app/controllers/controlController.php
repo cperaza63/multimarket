@@ -490,19 +490,6 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    # Verificando ventas #
-		    #$check_ventas=$this->ejecutarConsulta("SELECT usuario_id FROM venta WHERE usuario_id='$id' LIMIT 1");
-		    #if($check_ventas->rowCount()>0){
-		    #    $alerta=[
-			#		"tipo"=>"simple",
-			#		"titulo"=>"Ocurrió un error inesperado",
-			#		"texto"=>"No podemos eliminar el usuario del sistema ya que tiene ventas asociadas",
-			#		"icono"=>"error"
-			#	];
-			#	return json_encode($alerta);
-		     #   exit();
-		    #}
-
 		    $eliminarControl=$this->eliminarRegistro("control","control_id",$id);
 
 		    if($eliminarControl->rowCount()==1){
@@ -533,16 +520,18 @@
 		/*----------  Controlador actualizar usuario  ----------*/
 		public function actualizarControlControlador(){
 
-			$user_id=$this->limpiarCadena($_POST['user_id']);
-			$login = $this->limpiarCadena($_POST['login']);
+			$control_id=$this->limpiarCadena($_POST['control_id']);
+			$codigo = $this->limpiarCadena($_POST['codigo']);
+			$nombre = $this->limpiarCadena($_POST['nombre']);
+			$tipo=$this->limpiarCadena($_POST['tipo']);
 
 			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user_id='$user_id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$control_id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en el sistema",
+					"texto"=>"No hemos encontrado el item de la tabla en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -551,39 +540,30 @@
 		    	$datos=$datos->fetch();
 			}
 		    
-			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$login)){
+			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$codigo)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al registrar Control",
-					"texto"=>"El login $login no coincide con el formato solicitado",
+					"texto"=>"El codigo $codigo no coincide con el formato solicitado",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
-			# Almacenando datos#
-		    $firstname=$this->limpiarCadena($_POST['firstname']);
-		    $lastname=$this->limpiarCadena($_POST['lastname']);
-		    $email=$this->limpiarCadena($_POST['email']);
-		    $tcarea=$this->limpiarCadena($_POST['tcarea']);
-		    $tcnumber=$this->limpiarCadena($_POST['tcnumber']);
-		    $tipo=$this->limpiarCadena($_POST['tipo']);
-			$city=$this->limpiarCadena($_POST['city']);
-			$state=$this->limpiarCadena($_POST['state']);
-			$country=$this->limpiarCadena($_POST['country']);
-			$departamento=$this->limpiarCadena($_POST['departamento']);
-			$company_id=$this->limpiarCadena($_POST['company_id']);
-			$location=$this->limpiarCadena($_POST['location']);
-			$gender=$this->limpiarCadena($_POST['gender']);
-			$rif=$this->limpiarCadena($_POST['rif']);
-			$dateofbirth=$this->limpiarCadena($_POST['dateofbirth']);
-			$created_at = date("Y-m-d");
+
+			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}",$nombre)){
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al registrar Control",
+					"texto"=>"El nombre del $codigo no coincide con el formato solicitado",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
 
 		    # Verificando campos obligatorios #
-		    if($firstname=="" || $lastname=="" || $email=="" || $tcarea=="" || $tcnumber=="" 
-			|| $tipo=="" || $city==""|| $state==""|| $country=="" || $departamento=="" || $company_id=="" 
-			|| $tcarea=="" || $tcnumber==""|| $location ==""|| $country=="" || $gender=="" || $rif=="" 
-			|| $dateofbirth=="" 
+		    if($codigo=="" || $nombre=="" || $tipo=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -595,183 +575,42 @@
 		        exit();
 		    }
 
-			if(!filter_var($email, FILTER_VALIDATE_EMAIL)){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Ha ingresado un correo electrónico no valido",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-				exit();
-			}
-			if($email!="" && $datos['email']!=$email){
-				$check_email=$this->ejecutarConsulta("SELECT email FROM usuario WHERE email='$email'");
-				if($check_email->rowCount()>0){
-					$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"El EMAIL 1 que acaba de ingresar ya se encuentra registrado en el sistema, por favor verifique e intente nuevamente",
-						"icono"=>"error"
-						];
-					return json_encode($alerta);
-					exit();
-				}
-			} 
-
-		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$firstname)){
-		         $alerta=[
-			 		"tipo"=>"simple",
-			 		"titulo"=>"Ocurrió un error inesperado",
-			 		"texto"=>"El NOMBRE no coincide con el formato solicitado",
-			 		"icono"=>"error"
-			 	];
-			 	return json_encode($alerta);
-		         exit();
-		    }
-
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$lastname)){
-		         $alerta=[
-				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El APELLIDO no coincide con el formato solicitado",
-				"icono"=>"error"
-				];
-				return json_encode($alerta);
-		    	exit();
-		    }
-
-			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}",$departamento)){
-		    	$alerta=[
-				"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El DEPARTAMENTO... no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-            $usuario_datos_up=[
+            $control_datos_up=[
 				[
-					"campo_nombre"=>"login",
-					"campo_marcador"=>":Login",
-					"campo_valor"=>$login
+					"campo_nombre"=>"codigo",
+					"campo_marcador"=>":Codigo",
+					"campo_valor"=>$codigo
 				],
 				[
-					"campo_nombre"=>"email",
-					"campo_marcador"=>":Email",
-					"campo_valor"=>$email
-				],
-				[
-					"campo_nombre"=>"firstname",
-					"campo_marcador"=>":Firstname",
-					"campo_valor"=>$firstname
-				],
-				[
-					"campo_nombre"=>"lastname",
-					"campo_marcador"=>":Lastname",
-					"campo_valor"=>$lastname
-				],
-				[
-					"campo_nombre"=>"nombre_completo",
-					"campo_marcador"=>":Nombre_completo",
-					"campo_valor"=>$firstname." ".$lastname
-				],
-				[
-					"campo_nombre"=>"tcarea",
-					"campo_marcador"=>":Tcarea",
-					"campo_valor"=>$tcarea
-				],
-				[
-					"campo_nombre"=>"tcnumber",
-					"campo_marcador"=>":Tcnumber",
-					"campo_valor"=>$tcnumber
+					"campo_nombre"=>"nombre",
+					"campo_marcador"=>":Nombre",
+					"campo_valor"=>$nombre
 				],
 				[
 					"campo_nombre"=>"tipo",
 					"campo_marcador"=>":Tipo",
 					"campo_valor"=>$tipo
 				],
-				[
-					"campo_nombre"=>"city",
-					"campo_marcador"=>":City",
-					"campo_valor"=>$city
-				],
-
-				[
-					"campo_nombre"=>"state",
-					"campo_marcador"=>":State",
-					"campo_valor"=>$state
-				],
-				[
-					"campo_nombre"=>"country",
-					"campo_marcador"=>":Country",
-					"campo_valor"=>$country
-				],
-				[
-					"campo_nombre"=>"departamento",
-					"campo_marcador"=>":Departamento",
-					"campo_valor"=>$departamento
-				],
-				[
-					"campo_nombre"=>"company_id",
-					"campo_marcador"=>":Company_id",
-					"campo_valor"=>$company_id
-				],
-				[
-					"campo_nombre"=>"country",
-					"campo_marcador"=>":Country",
-					"campo_valor"=>$country
-				],
-				[
-					"campo_nombre"=>"location",
-					"campo_marcador"=>":Location",
-					"campo_valor"=>$location
-				],
-				[
-					"campo_nombre"=>"gender",
-					"campo_marcador"=>":Gender",
-					"campo_valor"=>$gender
-				],
-				[
-					"campo_nombre"=>"rif",
-					"campo_marcador"=>":Rif",
-					"campo_valor"=>$rif
-				],
-				[
-					"campo_nombre"=>"dateofbirth",
-					"campo_marcador"=>":Dateofbirth",
-					"campo_valor"=>$dateofbirth
-				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"user_id",
-				"condicion_marcador"=>":User_id",
-				"condicion_valor"=>$user_id
+				"condicion_campo"=>"control_id",
+				"condicion_marcador"=>":Control_id",
+				"condicion_valor"=>$control_id
 			];
 
-			if($this->actualizarDatos("usuario", $usuario_datos_up, $condicion)){
-
-				if($user_id == $_SESSION['id']){
-					$_SESSION['nombre']=$firstname;
-					$_SESSION['apellido']=$lastname;
-					$_SESSION['usuario']=$login;
-			}
-
-			$alerta=[
+			if($this->actualizarDatos("control", $control_datos_up, $condicion)){
+				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
-				"texto"=>"Los datos del usuario ".$datos['firstname']." ".$datos['lastname']." se actualizaron correctamente",
+				"texto"=>"Los datos de la tabla de control ".$datos['tipo']." se actualizaron correctamente",
 				"icono"=>"success"
-			];
+				];
 			}else{
 				$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos del usuario ".$datos['firstname']." ".$datos['lastname'].", por favor intente nuevamente",
+				"texto"=>"No hemos podido actualizar los datos de la tabla de control ".$datos['tipo'].", por favor intente nuevamente",
 				"icono"=>"error"
 			];
 			}
