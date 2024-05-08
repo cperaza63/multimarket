@@ -6,12 +6,19 @@
         <div class="container-fluid">
         
         <?php
+            use app\controllers\ubicacionController;
+            $ubicacionController = new ubicacionController();
+            $paises = $ubicacionController->obtenerUbicacionControlador('paises');
+            print_r($paises);
+            //
+            if (isset($_POS['country'])){
+
+            }else{
+                
+            }
             // por ahora actualizamos datos del administrador
-
             $usuario_id = $insLogin->limpiarCadena($url[1]);
-
             $datos = $insLogin->seleccionarDatos( "Unico", "usuario", "user_id", $usuario_id );
-
             if($datos->rowCount()==1){
                 $datos = $datos->fetch();
                 $user_id = $datos['user_id'];
@@ -319,27 +326,63 @@
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
+                                                            <label for="countryInput" class="form-label">País</label>
+                                                            <?php
+                                                            if(is_array($paises)){
+                                                                foreach($paises as $pais){
+                                                                    ?>
+                                                                     <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
+                                                                            <option value="">Seleccione su opción</option>
+                                                                            <option value="<?=$pais['country'];?>"
+                                                                                <?php 
+                                                                                if (isset($_POST['country']) ){
+                                                                                    if( $pais['country'] == $_POST['country']  ) echo"selected";
+                                                                                }
+                                                                                 ?>
+                                                                                ><?=$pais['country'];?>
+                                                                            </option>
+                                                                    </select>
+                                                                    <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="state" class="form-label">Estado/Provincia</label>
+                                                            <?php
+                                                            if(is_array($estados)){
+                                                                foreach($estados as $estado){
+                                                                    ?>
+                                                                     <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
+                                                                            <option value="">Seleccione su opción</option>
+                                                                            <option value="<?=$estado['state_abbreviation'];?>"
+                                                                                <?php 
+                                                                                if (isset($_POST['state']) ){
+                                                                                    if( $estado['state_abbreviation'] == $_POST['state']  ) echo"selected";
+                                                                                }
+                                                                                 ?>
+                                                                                ><?=$pais['state_name'];?>
+                                                                            </option>
+                                                                    </select>
+                                                                    <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
                                                             <label for="city" class="form-label">Ciudad</label>
                                                             <input name="city" type="text" class="form-control" id="cityInput" placeholder="Ciudad" 
                                                             value="<?php echo $datos['city']; ?>" />
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3">
-                                                            <label for="state" class="form-label">Estado/Provincia</label>
-                                                            <input name="state" type="text" class="form-control" minlength="2" maxlength="10" id="state" placeholder="Enter Estado/provincia" value="<?php echo $datos['state']; ?>">
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3">
-                                                            <label for="countryInput" class="form-label">País</label>
-                                                            <input name="country" type="text" class="form-control" id="country" placeholder="Pais"  
-                                                            value="<?php echo $datos['country']; ?>" />
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
+
                                                     <div class="col-lg-12">
                                                         <div class="mb-3 pb-2">
                                                             <label for="location" class="form-label">Dirección</label>

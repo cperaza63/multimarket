@@ -98,10 +98,36 @@
 
 			return json_encode($alerta);
 		}
+		
+		/*----------  Ubicacionador listar usuario  ----------*/
+		public function obtenerUbicacionControlador($busqueda){
+			$busqueda=$this->limpiarCadena($busqueda); 
+			if(isset($busqueda) && $busqueda!="*"){
+				if( $busqueda == "paises"){
+					$consulta_datos="
+				SELECT * FROM ubicacion GROUP BY country ";
+				}else{
+					$consulta_datos="SELECT * FROM ubicacion WHERE 
+					country='".APP_COUNTRY."' AND 
+					( 
+					state_name LIKE '%$busqueda%'OR 
+					state_abbreviation LIKE '%$busqueda%' OR 
+					city LIKE '%$busqueda%' OR
+					country LIKE '%$busqueda%'
+					) 
+					ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city";
+				}
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+
 		/*----------  Ubicacionador listar usuario  ----------*/
 		public function listarTodosUbicacionControlador($busqueda){
 
-			$busqueda=$this->limpiarCadena($busqueda);
+			$busqueda=$this->limpiarCadena($busqueda); 
 
 			if(isset($busqueda) && $busqueda!="*"){
 				$consulta_datos="SELECT * FROM ubicacion WHERE 
