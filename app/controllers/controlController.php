@@ -201,7 +201,7 @@
 		}
 
 		/*----------  Controlador listar control  ----------*/
-		public function listarTodosControlControlador($busqueda){
+		public function listarTodosControlControlador($busqueda){	
 
 			$busqueda=$this->limpiarCadena($busqueda);
 
@@ -218,6 +218,19 @@
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 
+			return $datos;
+			exit();
+		}
+
+		/*----------  Controlador listar control  ----------*/
+		public function listarSoloTipoControlador($busqueda){	
+			$busqueda=$this->limpiarCadena($busqueda);
+			
+			if(isset($busqueda)){
+				$consulta_datos="SELECT * FROM control WHERE tipo = '$busqueda' ORDER BY tipo";
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
 			return $datos;
 			exit();
 		}

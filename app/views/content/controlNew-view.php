@@ -1,3 +1,10 @@
+<?php
+ // busco market
+use app\controllers\controlController;
+$controlController = new controlController();
+$mercados = $controlController->listarSoloTipoControlador('market');
+//print_r($mercados);
+?>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -16,7 +23,7 @@
                                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                    |<li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                            <i class="fas fa-home"></i> Información de Control del sistema
+                                            <i class="fas fa-home"></i> CREACION - Información de Control del sistema
                                         </a>
                                     </li>
                                 </ul>
@@ -54,7 +61,7 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-8">
                                                 <div class="mb-3">
                                                     <label for="nombre" class="form-label">Nombre</label>
                                                     <input name="nombre" type="text" class="form-control" id="nombre" 
@@ -64,24 +71,30 @@
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                     <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                         <option value="">Seleccione un tipo</option>
                                                         <option value="market">Market Place</option>
-                                                        <option value="market_cat">Categorias Market</option>
+                                                        <option value="market_cat">Categoría de Market Place</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="tipo" class="form-label">Si es una categoria de Market</label>
                                                     <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                         <option value="">Seleccione un Market</option>
-                                                        <option value="market">CiudadHive Market</option>
-                                                        <option value="market_cat">Comida Market</option>
+                                                        <?php
+                                                        if(is_array($mercados)){
+                                                            foreach($mercados as $mercado){?>
+                                                                <option value="<?=$mercado['control_id']?>"><?=ucfirst($mercado['nombre'])?></option>
+                                                            <?php
+                                                            }
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </div>
@@ -95,6 +108,7 @@
                                                 <p class="has-text-centered pt-6">
                                                     <small>Los campos marcados con <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
                                                 </p>
+                                                <br><br><br><br><br><br><br><br><br><br>
                                             </div>
                                             <!--end col-->
                                         </div>

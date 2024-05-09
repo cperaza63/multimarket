@@ -43,7 +43,7 @@ if ($mysqli -> connect_errno) {
                 $boton_accion = "Agregar";
             }
             // busco paises
-            $paises = $ubicacionController->obtenerPaisControlador('paises', 0);
+            $paises = $ubicacionController->obtenerPaisControlador();
             // busco estados
             if (isset($_POST['country'])){
                 $estados = $ubicacionController->obtenerEstadosControlador($_POST['country']);

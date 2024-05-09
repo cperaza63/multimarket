@@ -100,14 +100,8 @@
 		}
 		
 		/*----------  Ubicacionador listar paises  ----------*/
-		public function obtenerPaisControlador($busqueda){
-			$busqueda=$this->limpiarCadena($busqueda); 
-
-			if( isset($busqueda) ){
-				if( $busqueda == "paises" ){
-					$consulta_datos="SELECT * FROM ubicacion GROUP BY country ";
-				}
-			}
+		public function obtenerPaisControlador(){ 
+			$consulta_datos="SELECT * FROM ubicacion GROUP BY country ";
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;

@@ -6,6 +6,11 @@
         <div class="container-fluid">
         
         <?php
+            // busco market
+           use app\controllers\controlController;
+           $controlController = new controlController();
+           $mercados = $controlController->listarSoloTipoControlador('market');
+           //print_r($mercados);
             // por ahora actualizamos datos del administrador
 
             $control_id = $insLogin->limpiarCadena($url[1]);
@@ -26,9 +31,9 @@
                 $pasa = 1;
             }else{
                 // registro es nuevo
-                $pasa = 0;
                 $accion = "registrar";
                 $boton_accion = "Agregar";
+                $pasa = 0;
             }
             //print_r($control_foto);
             //exit();
@@ -98,20 +103,22 @@
                                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                         |<li class="nav-item">
                                             <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                                <i class="fas fa-home"></i> Información del Item
+                                                <i class="fas fa-home"></i> ACTUALIZAR - Información del Item
                                             </a>
                                         </li>
-                                        <li li class="nav-item">
+
+                                        <!--<li li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#subcategorias" role="tab">
                                                 <i class="far fa-user"></i> Subcategorias
                                             </a>
                                         </li>
                                         
-                                        <!-- <li class="nav-item">
+                                         <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
                                                 <i class="far fa-envelope"></i> Disponible
                                             </a>
                                         </li> -->
+
                                     </ul>
                                 </div>
                                 <div class="card-body p-4">
@@ -141,18 +148,44 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                             <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                                 <option value="market"
                                                                 <?php if( $datos['tipo'] == 'market'  ) echo"selected" ?>
                                                                 >Market Place</option>
+                                                                <option value="market"
+                                                                <?php if( $datos['tipo'] == 'market_cat'  ) echo"selected" ?>
+                                                                >Categoría de Market Place</option>
                                                             </select>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-6">
+                                                    <?php
+                                                    if ($datos['tipo'] == 'market'){
+                                                    ?>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="tipo" class="form-label">Si es una categoria de Market</label>
+                                                            <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                                <option value="">Seleccione un Market</option>
+                                                                <?php
+                                                                if(is_array($mercados)){
+                                                                    foreach($mercados as $mercado){?>
+    <option value="<?=$mercado['control_id']?>"><?=ucfirst($mercado['nombre'])?></option>
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                    <!--end col-->
+                                                    <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="estatus" class="form-label">Estado</label>
                                                             <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="estatus">
