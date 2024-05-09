@@ -904,6 +904,9 @@
 				"condicion_valor"=>$user_id
 			];
 
+			// return json_encode($usuario_datos_up);
+			// exit;
+
 			if($this->actualizarDatos("usuario", $usuario_datos_up, $condicion)){
 
 				if($user_id == $_SESSION['id']){

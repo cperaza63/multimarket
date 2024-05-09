@@ -61,8 +61,6 @@ formularios_ajax.forEach(formularios => {
                 return alertas_ajax(respuesta);
             });
         }
-
-
     });
 
 });

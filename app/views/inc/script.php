@@ -38,5 +38,4 @@
 
    <script src="http://localhost/multimarket/app/views/js/pages/datatables.init.js"></script>
 
-   <!-- App js -->
-   <script src="http://localhost/multimarket/app/views/js/app.js"></script>
+   

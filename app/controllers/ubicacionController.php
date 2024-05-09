@@ -99,25 +99,43 @@
 			return json_encode($alerta);
 		}
 		
-		/*----------  Ubicacionador listar usuario  ----------*/
-		public function obtenerUbicacionControlador($busqueda){
+		/*----------  Ubicacionador listar paises  ----------*/
+		public function obtenerPaisControlador($busqueda){
 			$busqueda=$this->limpiarCadena($busqueda); 
-			if(isset($busqueda) && $busqueda!="*"){
-				if( $busqueda == "paises"){
-					$consulta_datos="
-				SELECT * FROM ubicacion GROUP BY country ";
-				}else{
-					$consulta_datos="SELECT * FROM ubicacion WHERE 
-					country='".APP_COUNTRY."' AND 
-					( 
-					state_name LIKE '%$busqueda%'OR 
-					state_abbreviation LIKE '%$busqueda%' OR 
-					city LIKE '%$busqueda%' OR
-					country LIKE '%$busqueda%'
-					) 
-					ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city";
+
+			if( isset($busqueda) ){
+				if( $busqueda == "paises" ){
+					$consulta_datos="SELECT * FROM ubicacion GROUP BY country ";
 				}
 			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+
+		/*----------  Ubicacionador listar ciudaddes y estados  ----------*/
+		public function obtenerEstadosControlador($busqueda){
+			$busqueda=$this->limpiarCadena($busqueda);
+			if( isset($busqueda) ){
+				$consulta_datos="SELECT * FROM ubicacion 
+				WHERE country='". $busqueda. "' GROUP BY state_abbreviation"; 
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+
+		/*----------  Ubicacionador listar ciudaddes y estados  ----------*/
+		public function obtenerCiudadesControlador($busqueda){
+			$busqueda=$this->limpiarCadena($busqueda);
+
+			if( isset($busqueda) ){
+				$consulta_datos="SELECT * FROM ubicacion 
+				WHERE state_abbreviation<>'' and state_abbreviation='".$busqueda."' ORDER BY capital desc, city"; 
+			}
+
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;

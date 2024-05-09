@@ -74,8 +74,17 @@ if(isset($_GET['views'])){
             }else{
                 ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
             }
+
+            if(isset($_GET['views']) && $_GET['views']!=""){
+                if( substr($_GET['views'], 0, 11) == "userUpdate/"){
+                    ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
+                }else{
+                    ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
+                }
+            }else{
+                ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
+            }
         }
         ?>
-
 </body>
 </html>

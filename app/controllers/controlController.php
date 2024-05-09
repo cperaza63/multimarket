@@ -5,10 +5,10 @@
 
 	class controlController extends mainModel{
 
-		/*----------  Controlador registrar usuario  ----------*/
+		/*----------  Controlador registrar control  ----------*/
 		public function registrarControlControlador(){
 
-			//return json_encode("regstrar usuario");
+			//return json_encode("regstrar control");
 			
 			# Almacenando datos#
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
@@ -62,13 +62,13 @@
 		        exit();
 		    }
 
-            # Verificando usuario #
-		    #$check_usuario=$this->ejecutarConsulta("SELECT login FROM usuario WHERE login='$email'");
-		    #if($check_usuario->rowCount()>0){
+            # Verificando control #
+		    #$check_control=$this->ejecutarConsulta("SELECT login FROM control WHERE login='$email'");
+		    #if($check_control->rowCount()>0){
 		   	# 	$alerta=[
 			#		"tipo"=>"simple",
 			#		"titulo"=>"Ocurrió un error inesperado",
-			#		"texto"=>"El USUARIO ingresado ya se encuentra registrado, por favor cambie su email",
+			#		"texto"=>"El control ingresado ya se encuentra registrado, por favor cambie su email",
 			#		"icono"=>"error"
 			#	];
 			#	return json_encode($alerta);
@@ -171,7 +171,7 @@
 				]
 			];
 
-			//return json_encode("regstrar usuario");
+			//return json_encode("regstrar control");
 
 			$registrar_control=$this->guardarDatos("control",$control_datos_reg);
 
@@ -200,7 +200,7 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador listar usuario  ----------*/
+		/*----------  Controlador listar control  ----------*/
 		public function listarTodosControlControlador($busqueda){
 
 			$busqueda=$this->limpiarCadena($busqueda);
@@ -222,7 +222,7 @@
 			exit();
 		}
 
-		/*----------  Controlador eliminar usuario  ----------*/
+		/*----------  Controlador eliminar control  ----------*/
 		public function eliminarControlControlador(){
 
 			$id=$this->limpiarCadena($_POST['control_id']);
@@ -241,7 +241,7 @@
 		        exit();
 			}
 
-			# Verificando usuario #
+			# Verificando control #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id' and estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -261,8 +261,8 @@
 		    if($eliminarControl->rowCount()==1){
 
 		    	if(is_file("../views/fotos/control/".$datos['control_foto'])){
-		            chmod("../views/fotos/control/".$datos['usuario_foto'],0777);
-		            unlink("../views/fotos/control/".$datos['usuario_foto']);
+		            chmod("../views/fotos/control/".$datos['control_foto'],0777);
+		            unlink("../views/fotos/control/".$datos['control_foto']);
 		        }
 
 		        $alerta=[
@@ -283,7 +283,7 @@
 		    return json_encode($alerta);
 		}
 
-		/*----------  Controlador actualizar usuario  ----------*/
+		/*----------  Controlador actualizar control  ----------*/
 		public function actualizarControlControlador(){
 
 			$control_id=$this->limpiarCadena($_POST['control_id']);
@@ -293,7 +293,7 @@
 			$estatus=$this->limpiarCadena($_POST['estatus']);
 			
 			//return json_encode($estatus);
-			# Verificando usuario #
+			# Verificando control #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$control_id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
@@ -391,18 +391,18 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador eliminar foto usuario  ----------*/
+		/*----------  Controlador eliminar foto control  ----------*/
 		public function eliminarFotoControlControlador(){
 
-			$id=$this->limpiarCadena($_POST['usuario_id']);
+			$id=$this->limpiarCadena($_POST['control_id']);
 
-			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE usuario_id='$id'");
+			# Verificando control #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en el sistema",
+					"texto"=>"No hemos encontrado el control en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -412,19 +412,19 @@
 		    }
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/usuarios/";
+    		$img_dir="../views/fotos/control/";
 
     		chmod($img_dir,0777);
 
-    		if(is_file($img_dir.$datos['usuario_foto'])){
+    		if(is_file($img_dir.$datos['control_foto'])){
 
-		        chmod($img_dir.$datos['usuario_foto'],0777);
+		        chmod($img_dir.$datos['control_foto'],0777);
 
-		        if(!unlink($img_dir.$datos['usuario_foto'])){
+		        if(!unlink($img_dir.$datos['control_foto'])){
 		            $alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Error al intentar eliminar la foto del usuario, por favor intente nuevamente",
+						"texto"=>"Error al intentar eliminar la foto del control, por favor intente nuevamente",
 						"icono"=>"error"
 					];
 					return json_encode($alerta);
@@ -434,28 +434,28 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado la foto del usuario en el sistema",
+					"texto"=>"No hemos encontrado la foto del control en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
 
-		    $usuario_datos_up=[
+		    $control_datos_up=[
 				[
-					"campo_nombre"=>"usuario_foto",
+					"campo_nombre"=>"control_foto",
 					"campo_marcador"=>":Foto",
 					"campo_valor"=>""
 				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"usuario_id",
+				"condicion_campo"=>"control_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
+			if($this->actualizarDatos("control",$control_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']="";
@@ -464,14 +464,14 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"La foto del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido']." se elimino correctamente",
+					"texto"=>"La foto del control ".$datos['control_nombre']." ".$datos['control_apellido']." se elimino correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"No hemos podido actualizar algunos datos del usuario ".$datos['usuario_nombre']." ".$datos['usuario_apellido'].", sin embargo la foto ha sido eliminada correctamente",
+					"texto"=>"No hemos podido actualizar algunos datos del control ".$datos['control_nombre']." ".$datos['control_apellido'].", sin embargo la foto ha sido eliminada correctamente",
 					"icono"=>"warning"
 				];
 			}
@@ -479,21 +479,17 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador actualizar foto usuario  ----------*/
+		/*----------  Controlador actualizar foto control  ----------*/
 		public function actualizarFotoControlControlador(){
+			$id = $this->limpiarCadena($_POST['control_id']);
 
-			//return json_encode($_POST['usuario_id']);
-			//exit;
-
-			$id = $this->limpiarCadena($_POST['user_id']);
-
-			# Verificando usuario #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM usuario WHERE user_id='$id'");
+			# Verificando control #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el usuario en el sistema",
+					"texto"=>"No hemos encontrado el control en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -503,115 +499,93 @@
 		    }
 
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/usuarios/";
-
+    		$img_dir="../views/fotos/control/";
 
     		# Comprobar si se selecciono una imagen #
-    		if($_FILES['usuario_foto']['name']=="" && $_FILES['usuario_foto']['size']<=0){
-    			$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No ha seleccionado una foto para el usuario",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-    		}
-
-    		# Creando directorio #
-	        if(!file_exists($img_dir)){
-	            if(!mkdir($img_dir,0777)){
-	                $alerta=[
+    		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
+    			# Creando directorio #
+		        if(!file_exists($img_dir)){
+		            if(!mkdir($img_dir,0777)){
+		            	$alerta=[
+							"tipo"=>"simple",
+							"titulo"=>"Ocurrió un error inesperado",
+							"texto"=>"Error al crear el directorio",
+							"icono"=>"error"
+						];
+						return json_encode($alerta);
+		                exit();
+		            } 
+		        }
+		        # Verificando formato de imagenes #
+		        if(mime_content_type($_FILES['control_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['control_foto']['tmp_name'])!="image/png"){
+		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Error al crear el directorio",
+						"texto"=>"La imagen que ha seleccionado es de un formato no permitido (solo jpg/png)",
 						"icono"=>"error"
 					];
 					return json_encode($alerta);
-	                exit();
-	            } 
-	        }
+		            exit();
+		        }
 
-	        # Verificando formato de imagenes #
-	        if(mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['usuario_foto']['tmp_name'])!="image/png"){
-	            $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"La imagen que ha seleccionado es de un formato no permitido",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-	            exit();
-	        }
+		        # Verificando peso de imagen #
+		        if(($_FILES['control_foto']['size']/1024)>5120){
+		        	$alerta=[
+						"tipo"=>"simple",
+						"titulo"=>"Ocurrió un error inesperado",
+						"texto"=>"La imagen que ha seleccionado supera el peso permitido (hasta 500K)",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
+		            exit();
+		        }
 
-	        # Verificando peso de imagen #
-	        if(($_FILES['usuario_foto']['size']/1024)>5120){
-	            $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"La imagen que ha seleccionado supera el peso permitido",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-	            exit();
-	        }
+		        # Nombre de la foto #
+		        $foto=str_ireplace(" ","_",$id);
+		        $foto=$foto."_".rand(0,100);
 
-	        # Nombre de la foto #
-	        if($datos['usuario_foto']!=""){
-		        $foto=explode(".", $datos['usuario_foto']);
-		        $foto=$foto[0];
-	        }else{
-	
-			$foto=str_ireplace(" ","_",$datos['company_id']."_".$datos['firstname'].$datos['lastname']);
-			$foto=$foto."_".rand(0,100);
-	        }
-	        
+		        # Extension de la imagen #
+		        switch(mime_content_type($_FILES['control_foto']['tmp_name'])){
+		            case 'image/jpeg':
+		                $foto=$foto.".jpg";
+		            break;
+		            case 'image/png':
+		                $foto=$foto.".png";
+		            break;
+		        }
 
-	        # Extension de la imagen #
-	        switch(mime_content_type($_FILES['usuario_foto']['tmp_name'])){
-	            case 'image/jpeg':
-	                $foto=$foto.".jpg";
-	            break;
-	            case 'image/png':
-	                $foto=$foto.".png";
-	            break;
-	        }
+		        chmod($img_dir,0777);
 
-	        chmod($img_dir,0777);
+		        # Moviendo imagen al directorio #
+		        if(!move_uploaded_file($_FILES['control_foto']['tmp_name'],$img_dir.$foto)){
+		        	$alerta=[
+						"tipo"=>"simple",
+						"titulo"=>"Ocurrió un error inesperado",
+						"texto"=>"No podimos subir la imagen al sistema, intente mas tarde",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
+		            exit();
+		        }
+    		}else{
+    			$foto="";
+    		}
 
-	        # Moviendo imagen al directorio #
-	        if(!move_uploaded_file($_FILES['usuario_foto']['tmp_name'],$img_dir.$foto)){
-	            $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos subir la imagen al sistema en este momento",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-	            exit();
-	        }
-
-	        # Eliminando imagen anterior #
-	        if(is_file($img_dir.$datos['usuario_foto']) && $datos['usuario_foto']!=$foto){
-		        chmod($img_dir.$datos['usuario_foto'], 0777);
-		        unlink($img_dir.$datos['usuario_foto']);
-		    }
-
-		    $usuario_datos_up=[
+		    $control_datos_up=[
 				[
-					"campo_nombre"=>"usuario_foto",
+					"campo_nombre"=>"control_foto",
 					"campo_marcador"=>":Foto",
 					"campo_valor"=>$foto
 				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"user_id",
+				"condicion_campo"=>"control_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("usuario",$usuario_datos_up,$condicion)){
+			if($this->actualizarDatos("control",$control_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
@@ -620,7 +594,7 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"La foto del usuario ".$datos['firstname']." ".$datos['lastname']." se actualizo correctamente",
+					"texto"=>"La foto del item $id se actualizo correctamente",
 					"icono"=>"success"
 				];
 			}else{
@@ -628,7 +602,7 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"No hemos podido actualizar algunos datos del usuario ".$datos['firstname']." ".$datos['lastname']." , sin embargo la foto ha sido actualizada",
+					"texto"=>"No hemos podido actualizar algunos datos del item $id, sin embargo la foto ha sido actualizada",
 					"icono"=>"warning"
 				];
 			}

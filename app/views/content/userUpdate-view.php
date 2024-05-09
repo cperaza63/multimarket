@@ -1,4 +1,14 @@
 <!-- ============================================================== -->
+<!-- BASE DE DATOS PARA AJAX -->
+<!-- ============================================================== -->
+<?php
+$mysqli = new mysqli("localhost","root","","multimarket");
+if ($mysqli -> connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+    exit();
+}
+?>
+<!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="main-content">
@@ -8,14 +18,6 @@
         <?php
             use app\controllers\ubicacionController;
             $ubicacionController = new ubicacionController();
-            $paises = $ubicacionController->obtenerUbicacionControlador('paises');
-            print_r($paises);
-            //
-            if (isset($_POS['country'])){
-
-            }else{
-                
-            }
             // por ahora actualizamos datos del administrador
             $usuario_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos( "Unico", "usuario", "user_id", $usuario_id );
@@ -23,6 +25,9 @@
                 $datos = $datos->fetch();
                 $user_id = $datos['user_id'];
                 $login   = $datos['login'];
+                $country_user = $datos['country'];
+                $state_user = $datos['state'];
+                $city_user = $datos['city'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
                 $usuario_foto = $datos['usuario_foto'];
@@ -33,8 +38,30 @@
             }else{
                 // registro es nuevo
                 $pasa = 0;
+                $country_user = 0;
                 $accion = "registrar";
                 $boton_accion = "Agregar";
+            }
+            // busco paises
+            $paises = $ubicacionController->obtenerPaisControlador('paises', 0);
+            // busco estados
+            if (isset($_POST['country'])){
+                $estados = $ubicacionController->obtenerEstadosControlador($_POST['country']);
+            }else{
+                if($country_user > 0 ){
+                    $estados = $ubicacionController->obtenerEstadosControlador($country_user);
+                
+                }else{
+                    $estados = $ubicacionController->obtenerEstadosControlador(APP_COUNTRY);
+                }
+            }
+            // Parametros para el ajax de Ciudad
+            if (isset($_POST['state'])){
+                $q=$_POST['state'];
+                $c=$_POST['city'];
+            }else{
+                $q=$state_user;
+                $c=$city_user;
             }
             //print_r($usuario_foto);
             //exit();
@@ -223,7 +250,7 @@
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="estatus" class="form-label">Estatus</label>
-                                                            <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="gender">
+                                                            <select name="estatus" class="form-control" data-choices data-choices-text-unique-true id="estatus">
                                                                 <option value="1"
                                                                 <?php if( $datos['estatus'] == '1'  ) echo"selected" ?>
                                                                 >Activo</option>
@@ -328,15 +355,19 @@
                                                         <div class="mb-3">
                                                             <label for="countryInput" class="form-label">País</label>
                                                             <?php
+                                                            
                                                             if(is_array($paises)){
+                                                                
                                                                 foreach($paises as $pais){
                                                                     ?>
                                                                      <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
-                                                                            <option value="">Seleccione su opción</option>
+                                                                            
                                                                             <option value="<?=$pais['country'];?>"
                                                                                 <?php 
                                                                                 if (isset($_POST['country']) ){
                                                                                     if( $pais['country'] == $_POST['country']  ) echo"selected";
+                                                                                }else{
+                                                                                    if( $pais['country'] == $country_user  ) echo"selected";
                                                                                 }
                                                                                  ?>
                                                                                 ><?=$pais['country'];?>
@@ -348,37 +379,53 @@
                                                             ?>
                                                         </div>
                                                     </div>
-                                                    
+
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="state" class="form-label">Estado/Provincia</label>
+                                                            <select name="state" 
+                                                            language="javascript:void(0)" 
+                                                            onchange="loadAjaxCiudadHive(this.value, <?=$city_user?>)"
+                                                            class="form-control" data-choices data-choices-text-unique-true id="state">
                                                             <?php
                                                             if(is_array($estados)){
                                                                 foreach($estados as $estado){
                                                                     ?>
-                                                                     <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
-                                                                            <option value="">Seleccione su opción</option>
-                                                                            <option value="<?=$estado['state_abbreviation'];?>"
-                                                                                <?php 
-                                                                                if (isset($_POST['state']) ){
-                                                                                    if( $estado['state_abbreviation'] == $_POST['state']  ) echo"selected";
-                                                                                }
-                                                                                 ?>
-                                                                                ><?=$pais['state_name'];?>
-                                                                            </option>
-                                                                    </select>
-                                                                    <?php
+                                                                    <option value="<?=$estado['state_abbreviation'];?>"
+                                                                        <?php 
+                                                                        if (isset($_POST['state']) ){
+                                                                            if( $estado['state_abbreviation'] == $_POST['state']  ) echo"selected";
+                                                                        }else{
+                                                                            if( $estado['state_abbreviation'] == $state_user  ) echo"selected";
+                                                                        }
+                                                                        ?>
+                                                                        ><?=$estado['state_name'];?>
+                                                                    </option>
+                                                                <?php
                                                                 }
                                                             }
                                                             ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
+                                                    
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="city" class="form-label">Ciudad</label>
-                                                            <input name="city" type="text" class="form-control" id="cityInput" placeholder="Ciudad" 
-                                                            value="<?php echo $datos['city']; ?>" />
+                                                            <label for="city" class="form-label">Ciudades</label>
+                                                            <select name="city" class="form-control" data-choices data-choices-text-unique-true id="city">
+                                                            <?php
+                                                                if ($res = $mysqli -> query("SELECT * FROM ubicacion WHERE state_abbreviation<>'' AND 
+                                                                state_abbreviation='$q' ORDER BY city")) {
+                                                                ?>
+                                                                    <?php while($fila=mysqli_fetch_array($res)){ ?>
+                                                                    <option value="<?php echo $fila['id']; ?>" <?php if($c==$fila['id'])echo "selected"; ?>>
+                                                                    <?php echo $fila['city']==""?"Seleccione Ciudad": $fila['city']; ?></option>
+                                                                    <?php } ?>
+                                                                <?php
+                                                                }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -802,3 +849,4 @@
         <!-- container-fluid -->
     </div><!-- End Page-content -->
 </div>
+

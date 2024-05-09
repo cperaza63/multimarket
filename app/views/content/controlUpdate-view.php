@@ -21,7 +21,7 @@
                 $boton_accion = "Actualizar";
                 $control_foto = $datos['control_foto'];
                 if( $datos['control_foto'] ==""){
-                    $control_foto = "http://localhost/multimarket/app/views/fotos/default.png";
+                    $control_foto = "nophoto.jpg";
                 }
                 $pasa = 1;
             }else{
@@ -96,11 +96,22 @@
                             <div class="card mt-xxl-n5">
                                 <div class="card-header">
                                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
-                                    |<li class="nav-item">
+                                        |<li class="nav-item">
                                             <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
                                                 <i class="fas fa-home"></i> Información del Item
                                             </a>
                                         </li>
+                                        <li li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#subcategorias" role="tab">
+                                                <i class="far fa-user"></i> Subcategorias
+                                            </a>
+                                        </li>
+                                        
+                                        <!-- <li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
+                                                <i class="far fa-envelope"></i> Disponible
+                                            </a>
+                                        </li> -->
                                     </ul>
                                 </div>
                                 <div class="card-body p-4">
@@ -173,6 +184,56 @@
                                             </form>
                                         </div>
                                         <!--end tab-pane-->
+
+                                        <div class="tab-pane" id="subcategorias" role="tabpanel">
+
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
+                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                                <!--    Campos parametros     -->
+                                        
+                                                <input type="hidden" name="modulo_usuario" value="actualizarClave">
+                                                <input type="hidden" name="user_id" value="<php echo $datos['user_id']; ?>">
+                                                <input type="hidden" name="login" value="<php echo $datos['login']; ?>">
+                                                <div class="row g-2">
+                                                    <div class="col-lg-4">
+                                                        <div>
+                                                            <label for="oldpasswordInput" class="form-label">Actual Password*</label>
+                                                            <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-4">
+                                                        <div>
+                                                            <label for="newpasswordInput" class="form-label">Nuevo Password*</label>
+                                                            <input name="new_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-4">
+                                                        <div>
+                                                            <label for="confirmpasswordInput" class="form-label">Confirmar Password*</label>
+                                                            <input name="repeat_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-12">
+                                                        <div class="mb-3">
+                                                            <a href="javascript:void(0);" class="link-primary text-decoration-underline">Olvido su Password ?</a>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-12">
+                                                        <div class="text-end">
+                                                            <button type="submit" class="btn btn-success">Cambiar Password</button>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                        </div>
+                                        <!--end tab-pane-->
+
                                     </div>
                                 </div>
                             </div>
