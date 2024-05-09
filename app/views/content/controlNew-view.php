@@ -56,7 +56,7 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                                     <label for="codigo" class="form-label">Código</label>
                                                     <input name="codigo" type="text" class="form-control" name="codigo" 
                                                     id="codigo" placeholder="Entre su codigo" 
-                                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" 
+                                                    pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}" 
                                                     maxlength="40" required>
                                                 </div>
                                             </div>
@@ -66,8 +66,8 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                                     <label for="nombre" class="form-label">Nombre</label>
                                                     <input name="nombre" type="text" class="form-control" id="nombre" 
                                                     placeholder="Entre el nombre"
-                                                    pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" 
-                                                    maxlength="40" required>
+                                                    pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}" 
+                                                    maxlength="80" required>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -84,9 +84,9 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                             <!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
-                                                    <label for="tipo" class="form-label">Si es una categoria de Market</label>
-                                                    <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                        <option value="">Seleccione un Market</option>
+                                                    <label for="unidad" class="form-label">Categoria de la Tabla</label>
+                                                    <select name="unidad" class="form-control" data-choices data-choices-text-unique-true id="unidad">
+                                                        <option value="">Seleccione una Categoria</option>
                                                         <?php
                                                         if(is_array($mercados)){
                                                             foreach($mercados as $mercado){?>

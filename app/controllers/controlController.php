@@ -8,14 +8,28 @@
 		/*----------  Controlador registrar control  ----------*/
 		public function registrarControlControlador(){
 
-			//return json_encode("regstrar control");
-			
+			// return json_encode("regstrar control");
+			// exit();
 			# Almacenando datos#
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
 		    $nombre=$this->limpiarCadena($_POST['nombre']);
 		    $tipo=$this->limpiarCadena($_POST['tipo']);
+			$unidad=$this->limpiarCadena($_POST['unidad']);
 
-		    # Verificando campos obligatorios #
+		    
+			if( $unidad>0 && $tipo == "")
+			{
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has seleccionado un tipo de tabla, dato obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
+			# Verificando campos obligatorios #
 		    if($codigo=="" || $nombre=="" || $tipo=="" )
 			{
 		        $alerta=[
@@ -24,12 +38,12 @@
 					"texto"=>"No has llenado todos los campos que son obligatorios",
 					"icono"=>"error"
 				];
-				return json_encode($codigo);
+				return json_encode($alerta);
 		        exit();
-		    } 
-
+		    }
+			
 		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,45}",$codigo)){
+		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}",$codigo)){
 		         $alerta=[
 			 		"tipo"=>"simple",
 			 		"titulo"=>"Ocurrió un error inesperado",
@@ -40,7 +54,7 @@
 		         exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}",$nombre)){
+		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}",$nombre)){
 		         $alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
@@ -49,18 +63,7 @@
 				];
 				return json_encode($alerta);
 		    	exit();
-		    }
-			
-			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,20}",$tipo)){
-		    	$alerta=[
-				"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El TIPO de tabla asiGnado no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
+			}
 
             # Verificando control #
 		    #$check_control=$this->ejecutarConsulta("SELECT login FROM control WHERE login='$email'");
@@ -168,6 +171,11 @@
 					"campo_nombre"=>"control_foto",
 					"campo_marcador"=>":Control_foto",
 					"campo_valor"=>$foto
+				],
+				[
+					"campo_nombre"=>"unidad",
+					"campo_marcador"=>":Unidad",
+					"campo_valor"=>$unidad
 				]
 			];
 

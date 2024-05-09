@@ -63,7 +63,7 @@ if(isset($_GET['views'])){
         require_once "./app/views/inc/script.php"; 
         
         // desativamos el ajax para hacer prueas
-        $a=1;
+        $a=0;
         if ($a == 1){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList.../"){

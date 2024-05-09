@@ -162,18 +162,16 @@
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <?php
-                                                    if ($datos['tipo'] == 'market'){
-                                                    ?>
+                                                    
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="tipo" class="form-label">Si es una categoria de Market</label>
-                                                            <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                                <option value="">Seleccione un Market</option>
+                                                            <label for="unidad" class="form-label">Categoria del tipo de tabla</label>
+                                                            <select name="unidad" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                                <option value="">Seleccione una Categoria</option>
                                                                 <?php
                                                                 if(is_array($mercados)){
                                                                     foreach($mercados as $mercado){?>
-    <option value="<?=$mercado['control_id']?>"><?=ucfirst($mercado['nombre'])?></option>
+                                                                        <option value="<?=$mercado['control_id']?>"><?=ucfirst($mercado['nombre'])?></option>
                                                                     <?php
                                                                     }
                                                                 }
@@ -181,9 +179,7 @@
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                    
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
