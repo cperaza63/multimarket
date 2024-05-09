@@ -69,8 +69,19 @@
                                                     <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                     <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                         <option value="">Seleccione un tipo</option>
-                                                        <option value="market"
-                                                        >Market Place</option>
+                                                        <option value="market">Market Place</option>
+                                                        <option value="market_cat">Categorias Market</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="tipo" class="form-label">Si es una categoria de Market</label>
+                                                    <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                        <option value="">Seleccione un Market</option>
+                                                        <option value="market">CiudadHive Market</option>
+                                                        <option value="market_cat">Comida Market</option>
                                                     </select>
                                                 </div>
                                             </div>
