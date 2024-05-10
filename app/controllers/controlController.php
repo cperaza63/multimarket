@@ -329,7 +329,7 @@
 		    	$datos=$datos->fetch();
 			}
 		    
-			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}",$codigo)){
+			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,45}",$codigo)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al registrar Control",
@@ -340,7 +340,7 @@
 		        exit();
 		    }
 
-			if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}",$nombre)){
+			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,80}",$nombre)){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al registrar Control",
@@ -503,6 +503,7 @@
 		/*----------  Controlador actualizar foto control  ----------*/
 		public function actualizarFotoControlControlador(){
 			$id = $this->limpiarCadena($_POST['control_id']);
+			$control_tipo = $this->limpiarCadena($_POST['control_tipo']);
 
 			# Verificando control #
 		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
@@ -518,11 +519,13 @@
 		    }else{
 		    	$datos=$datos->fetch();
 		    }
-
+			
 			# Directorio de imagenes #
     		$img_dir="../views/fotos/control/";
 
-    		# Comprobar si se selecciono una imagen #
+			return json_encode($_FILES['control_foto']['name']);
+			exit();
+			# Comprobar si se selecciono una imagen #
     		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
     			# Creando directorio #
 		        if(!file_exists($img_dir)){
@@ -537,7 +540,9 @@
 		                exit();
 		            } 
 		        }
-		        # Verificando formato de imagenes #
+		        
+
+				# Verificando formato de imagenes #
 		        if(mime_content_type($_FILES['control_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['control_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
@@ -560,10 +565,11 @@
 					return json_encode($alerta);
 		            exit();
 		        }
-
+				
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_",$id);
-		        $foto=$foto."_".rand(0,100);
+		        $foto=str_ireplace(" ","_",$control_tipo."-".$id);
+		        
+				$foto=$foto."_".rand(0,100);
 
 		        # Extension de la imagen #
 		        switch(mime_content_type($_FILES['control_foto']['tmp_name'])){
@@ -574,8 +580,8 @@
 		                $foto=$foto.".png";
 		            break;
 		        }
-
-		        chmod($img_dir,0777);
+		        
+				chmod($img_dir,0777);
 
 		        # Moviendo imagen al directorio #
 		        if(!move_uploaded_file($_FILES['control_foto']['tmp_name'],$img_dir.$foto)){
@@ -592,9 +598,9 @@
     			$foto="";
     		}
 
-		    $control_datos_up=[
+			$control_datos_up=[
 				[
-					"campo_nombre"=>"control_foto",
+					"campo_nombre"=>$control_tipo,
 					"campo_marcador"=>":Foto",
 					"campo_valor"=>$foto
 				]
@@ -605,21 +611,21 @@
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
+			
+			
 
 			if($this->actualizarDatos("control",$control_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
 				}
-
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"La foto del item $id se actualizo correctamente",
+					"texto"=>"La foto $control_tipo del item $id se actualizo correctamente...",
 					"icono"=>"success"
 				];
 			}else{
-
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
@@ -627,7 +633,6 @@
 					"icono"=>"warning"
 				];
 			}
-
 			return json_encode($alerta);
 		}
 

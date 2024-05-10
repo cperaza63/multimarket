@@ -28,6 +28,25 @@
                 if( $datos['control_foto'] ==""){
                     $control_foto = "nophoto.jpg";
                 }
+                $control_card = $datos['control_card'];
+                if( $datos['control_card'] ==""){
+                    $control_card = "nophoto.jpg";
+                }
+                $control_banner1 = $datos['control_banner1'];
+                if( $datos['control_banner1'] ==""){
+                    $control_banner1 = "nophoto.jpg";
+                }
+
+                $control_banner2 = $datos['control_banner2'];
+                if( $datos['control_banner2'] ==""){
+                    $control_banner2 = "nophoto.jpg";
+                }
+                
+                $control_banner3 = $datos['control_banner3'];
+                if( $datos['control_banner3'] ==""){
+                    $control_banner3 = "nophoto.jpg";
+                }
+
                 $pasa = 1;
             }else{
                 // registro es nuevo
@@ -45,11 +64,15 @@
                         <div class="card mt-n6">
                             <div class="card-body p-1">
                                 <div class="text-center">
-                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+
+
+
+                                    <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                         method="POST" autocomplete="off" enctype="multipart/form-data" >
                                         <!--    Campos parametros     -->
                                         <input type="hidden" name="modulo_control" value="actualizarFoto">
                                         <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
+                                        <input type="hidden" name="control_tipo" value="control_foto">
 
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                             
@@ -81,6 +104,9 @@
                                             </table>
                                         </div>
                                     </form>
+                                    
+                                    
+                                    
                                     <h5 class="fs-16 mb-1"><?php echo $datos['nombre']; ?></h5>
                                     <p class="text-muted mb-0"><?php echo $datos['codigo'] . " Item # " . $datos['control_id']; ?></p>
                                 </div>
@@ -88,15 +114,6 @@
                         </div>
                     </div>
                     <!--end col-->
-                    <form class="FormularioAjax" 
-                        action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
-                        method="POST" autocomplete="off" 
-                        enctype="multipart/form-data" >
-                        
-                        <input type="hidden" name="modulo_control" value="<?=$accion;?>">
-                        <input type="hidden" name="control_id" value="<?=$control_id;?>">
-                        <input type="hidden" name="codigo" value="<?=$codigo;?>">
-
                         <div class="col-xxl-9">
                             <div class="card mt-xxl-n5">
                                 <div class="card-header">
@@ -107,12 +124,12 @@
                                             </a>
                                         </li>
 
-                                        <!--<li li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" href="#subcategorias" role="tab">
-                                                <i class="far fa-user"></i> Subcategorias
+                                        <li li class="nav-item">
+                                            <a class="nav-link" data-bs-toggle="tab" href="#multimedia" role="tab">
+                                                <i class="far fa-user"></i> Multimedia
                                             </a>
                                         </li>
-                                        
+                                        <!--
                                          <li class="nav-item">
                                             <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
                                                 <i class="far fa-envelope"></i> Disponible
@@ -124,7 +141,14 @@
                                 <div class="card-body p-4">
                                     <div class="tab-content">
                                         <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                            <form action="javascript:void(0);">
+                                            <form class="FormularioAjax" 
+                                                action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                                                method="POST" autocomplete="off">
+                                            
+                                                <input type="hidden" name="modulo_control" value="<?=$accion;?>">
+                                                <input type="hidden" name="control_id" value="<?=$control_id;?>">
+                                                <input type="hidden" name="codigo" value="<?=$codigo;?>">
+
                                                 <div class="row">
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
@@ -132,7 +156,7 @@
                                                             <input name="codigo" type="text" class="form-control" name="codigo" 
                                                             id="firstnameInput" placeholder="Entre el codigo" 
                                                             value="<?php echo $datos['codigo']; ?>"
-                                                            pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,40}" 
+                                                            pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,45}" 
                                                             maxlength="40" required>
                                                         </div>
                                                     </div>
@@ -143,7 +167,7 @@
                                                             <input name="nombre" type="text" class="form-control" id="nombre" 
                                                             placeholder="Entre el nombre del item" 
                                                             value="<?php echo $datos['nombre']; ?>"
-                                                            pattern="[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,80}" 
+                                                            pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,80}" 
                                                             maxlength="40" required>
                                                         </div>
                                                     </div>
@@ -167,7 +191,6 @@
                                                         <div class="mb-3">
                                                             <label for="unidad" class="form-label">Categoria del tipo de tabla</label>
                                                             <select name="unidad" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                                <option value="">Seleccione una Categoria</option>
                                                                 <?php
                                                                 if(is_array($mercados)){
                                                                     foreach($mercados as $mercado){?>
@@ -213,65 +236,204 @@
                                             </form>
                                         </div>
                                         <!--end tab-pane-->
+                                        <div class="tab-pane" id="multimedia" role="tabpanel">
+                                            <div class="row">
+                                                <div class="col-lg-3">
+                                                    <div class="card-body p-1">
+                                                        <div class="text-center">
+                                                            <form name="<?php echo $control_tipo; ?>" class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                                                <!--    Campos parametros     -->
+                                                                <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
+                                                                <input type="hidden" name="control_tipo" value="control_card">
 
-                                        <div class="tab-pane" id="subcategorias" role="tabpanel">
+                                                                <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                                                                    
+                                                                    <img src="http://localhost/multimarket/app/views/fotos/control/<?php echo $control_card; ?>" 
+                                                                    class="rounded avatar-xl img-thumbnail user-profile-image  shadow" 
+                                                                    alt="user-profile-image">
+                                                                    
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button type="submit" class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                        <i class="ri-upload-2-fill"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            <td>
 
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
-                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
-                                                <!--    Campos parametros     -->
-                                        
-                                                <input type="hidden" name="modulo_usuario" value="actualizarClave">
-                                                <input type="hidden" name="user_id" value="<php echo $datos['user_id']; ?>">
-                                                <input type="hidden" name="login" value="<php echo $datos['login']; ?>">
-                                                <div class="row g-2">
-                                                    <div class="col-lg-4">
-                                                        <div>
-                                                            <label for="oldpasswordInput" class="form-label">Actual Password*</label>
-                                                            <input name="old_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="oldpasswordInput" placeholder="Coloque password actual">
+                                                                                <div class="avatar-xs p-0 rounded-circle ">
+                                                                                    <input id="profile-img-file-input" name="control_foto" type="file" 
+                                                                                    accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                                    
+                                                                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                                                                        <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                            <i class="ri-camera-fill"></i>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </td>
+                                                                        
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </form>
+                                                            <strong><h4 class="fs-16 mb-1">Tarjeta - Card</h4></strong>
+                                                            <p class="text-muted mb-0"><?php echo $datos['codigo'] . " Item # " . $datos['control_id']; ?></p>
                                                         </div>
                                                     </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-4">
-                                                        <div>
-                                                            <label for="newpasswordInput" class="form-label">Nuevo Password*</label>
-                                                            <input name="new_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="newpasswordInput" placeholder="Coloque nuevo password">
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-4">
-                                                        <div>
-                                                            <label for="confirmpasswordInput" class="form-label">Confirmar Password*</label>
-                                                            <input name="repeat_password" pattern="[a-zA-Z0-9$@.-]{7,100}" type="text" class="form-control" id="confirmpasswordInput" placeholder="Confirme nuevo password">
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-12">
-                                                        <div class="mb-3">
-                                                            <a href="javascript:void(0);" class="link-primary text-decoration-underline">Olvido su Password ?</a>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-12">
-                                                        <div class="text-end">
-                                                            <button type="submit" class="btn btn-success">Cambiar Password</button>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
                                                 </div>
-                                                <!--end row-->
-                                            </form>
+                                                <!--end tab-pane-->
+                                                <div class="col-lg-3">
+                                                    <div class="card-body p-1">
+                                                        <div class="text-center">
+                                                            <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                                                <!--    Campos parametros     -->
+                                                                <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
+                                                                <input type="hidden" name="control_tipo" value="control_banne1">
+
+                                                                <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                                                                    
+                                                                    <img src="http://localhost/multimarket/app/views/fotos/control/<?php echo $control_banner1; ?>" 
+                                                                    class="rounded avatar-xl img-thumbnail user-profile-image  shadow" 
+                                                                    alt="user-profile-image">
+                                                                    
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button type="submit" class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                        <i class="ri-upload-2-fill"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="avatar-xs p-0 rounded-circle ">
+                                                                                    <input id="profile-img-file-input" name="control_foto" type="file" 
+                                                                                    accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                                    
+                                                                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                                                                        <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                            <i class="ri-camera-fill"></i>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </td>
+                                                                        
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </form>
+                                                            <h5 class="fs-16 mb-1">Banner #1</h5>
+                                                            <p class="text-muted mb-0"><?php echo $datos['codigo'] . " Item # " . $datos['control_id']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end tab-pane-->
+                                                <div class="col-lg-3">
+                                                    <div class="card-body p-1">
+                                                        <div class="text-center">
+                                                            <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                                                <!--    Campos parametros     -->
+                                                                <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
+                                                                <input type="hidden" name="control_tipo" value="control_banner2">
+                                                                <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                                                                    
+                                                                    <img src="http://localhost/multimarket/app/views/fotos/control/<?php echo $control_banner2; ?>" 
+                                                                    class="rounded avatar-xl img-thumbnail user-profile-image  shadow" 
+                                                                    alt="user-profile-image">
+                                                                    
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button type="submit" class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                        <i class="ri-upload-2-fill"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="avatar-xs p-0 rounded-circle ">
+                                                                                    <input id="profile-img-file-input" name="control_foto" type="file" 
+                                                                                    accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                                    
+                                                                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                                                                        <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                            <i class="ri-camera-fill"></i>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </td>
+                                                                        
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </form>
+                                                            <h5 class="fs-16 mb-1">Banner #2</h5>
+                                                            <p class="text-muted mb-0"><?php echo $datos['codigo'] . " Item # " . $datos['control_id']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end tab-pane-->
+                                                <div class="col-lg-3">
+                                                    <div class="card-body p-1">
+                                                        <div class="text-center">
+                                                            <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                                                                method="POST" autocomplete="off" enctype="multipart/form-data" >
+                                                                <!--    Campos parametros     -->
+                                                                <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
+                                                                <input type="hidden" name="control_tipo" value="control_banner3">
+                                                                <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
+                                                                    
+                                                                    <img src="http://localhost/multimarket/app/views/fotos/control/<?php echo $control_banner3; ?>" 
+                                                                    class="rounded avatar-xl img-thumbnail user-profile-image  shadow" 
+                                                                    alt="user-profile-image">
+                                                                    
+                                                                    <table>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <button type="submit" class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                        <i class="ri-upload-2-fill"></i>
+                                                                                </button>
+                                                                            </td>
+                                                                            <td>
+                                                                                <div class="avatar-xs p-0 rounded-circle ">
+                                                                                    <input id="profile-img-file-input" name="control_foto" type="file" 
+                                                                                    accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                                    
+                                                                                    <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
+                                                                                        <span class="avatar-title rounded-circle bg-light text-body shadow">
+                                                                                            <i class="ri-camera-fill"></i>
+                                                                                        </span>
+                                                                                    </label>
+                                                                                </div>
+                                                                            </td>
+                                                                        
+                                                                        </tr>
+                                                                    </table>
+                                                                </div>
+                                                            </form>
+                                                            <h5 class="fs-16 mb-1">Banner #3</h5>
+                                                            <p class="text-muted mb-0"><?php echo $datos['codigo'] . " Item # " . $datos['control_id']; ?></p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
                                         </div>
                                         <!--end tab-pane-->
 
                                     </div>
+                                    <!--end tab-pane-->
+
                                 </div>
                             </div>
                         </div>
-                        <!--end col-->
-                    </form>
-
-                </div>
-                <!--end row-->
+                    </div>
+            </div>
+            <!--end row-->
             <?php
             }
             ?>
