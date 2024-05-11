@@ -111,7 +111,7 @@ if ($mysqli -> connect_errno) {
                                         </div>
                                     </form>
                                     
-                                    <h5 class="fs-16 mb-1"><?php echo $datos['nombre_completo']; ?></h5>
+                                    <h5 class="fs-16 mb-1"><?php echo "ACTUALIZANDO USUARIO " . $datos['nombre_completo']; ?></h5>
                                     <p class="text-muted mb-0"><?php echo $datos['login'] . " Afiliado # " . $datos['user_id']; ?></p>
                                 </div>
                             </div>

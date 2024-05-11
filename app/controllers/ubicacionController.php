@@ -153,7 +153,7 @@
 				ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city";
 			}else{
 				$consulta_datos="
-				SELECT * FROM ubicacion where country='".APP_COUNTRY."' ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city LIMIT 300";
+				SELECT * FROM ubicacion where country='".APP_COUNTRY."' ORDER BY state_name, zipcode, capital desc, state_Abbreviation, city LIMIT 200";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();

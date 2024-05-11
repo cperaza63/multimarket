@@ -62,8 +62,10 @@ if(isset($_GET['views'])){
         require_once "./app/views/inc/footer.php"; 
         require_once "./app/views/inc/script.php"; 
         
+        // recuerda el tab de las pestañas
+        
         // desativamos el ajax para hacer prueas
-        $a=0;
+        $a=1;
         if ($a == 1){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList.../"){
@@ -86,5 +88,6 @@ if(isset($_GET['views'])){
             }
         }
         ?>
+
 </body>
 </html>

@@ -523,8 +523,6 @@
 			# Directorio de imagenes #
     		$img_dir="../views/fotos/control/";
 
-			return json_encode($_FILES['control_foto']['name']);
-			exit();
 			# Comprobar si se selecciono una imagen #
     		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
     			# Creando directorio #
@@ -636,5 +634,160 @@
 			return json_encode($alerta);
 		}
 
+		public function actualizarFotoMasaControlador(){
+			$id = $this->limpiarCadena($_POST['control_id']);
+			# Verificando control #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
+		    if($datos->rowCount()<=0){
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos encontrado el control en el sistema",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }else{
+		    	$datos=$datos->fetch();
+		    }
+			$img_dir="../views/fotos/control/";
+			$array=[0,0,0,0];
+			$foto_array=["","","",""];
+			$num_archivos=count($_FILES['archivo']['name']);
+			for ($i=0; $i <= 3; $i++) {
+				//return json_encode($_FILES['archivo']['size'][$i]);
+				//exit();
+				if($_FILES['archivo']['name'][$i]!="" && $_FILES['archivo']['size'][$i]>0){
+					
+					if( $i == 0 ){
+						$array[$i] = "control_card";
+					}elseif($i == 1){
+						$array[$i] = "control_banner1";
+					}elseif($i == 2){
+						$array[$i] = "control_banner2";
+					}elseif($i == 3){	
+						$array[$i] =  "control_banner3";
+					}
+					if(!file_exists($img_dir)){
+						if(!mkdir($img_dir,0777)){
+							$alerta=[
+								"tipo"=>"simple",
+								"titulo"=>"Ocurrió un error inesperado",
+								"texto"=>"Error al crear el directorio",
+								"icono"=>"error"
+							];
+							return json_encode($alerta);
+							exit();
+						} 
+					}
+					# Verificando formato de imagenes #
+					if(mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
+					&& mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/png"){
+						$alerta=[
+							"tipo"=>"simple",
+							"titulo"=>"Ocurrió un error inesperado",
+							"texto"=>"La imagen que ha seleccionado es de un formato no permitido (solo jpg/png)",
+							"icono"=>"error"
+						];
+						return json_encode($alerta);
+						exit();
+					}
+	
+					# Verificando peso de imagen #
+					if(($_FILES['archivo']['size'][$i]/1024)>5120){
+						$alerta=[
+							"tipo"=>"simple",
+							"titulo"=>"Ocurrió un error inesperado",
+							"texto"=>"La imagen que ha seleccionado supera el peso permitido (hasta 500K)",
+							"icono"=>"error"
+						];
+						return json_encode($alerta);
+						exit();
+					}
+					
+					# Nombre de la foto #
+					$foto_array[$i] = str_ireplace(" ","_",$array[$i]."-".$id);
+					
+					$foto_array[$i] = $foto_array[$i]."_".rand(0,100);
+	
+					# Extension de la imagen #
+					switch(mime_content_type($_FILES['archivo']['tmp_name'][$i])){
+						case 'image/jpeg':
+							$foto_array[$i]=$foto_array[$i].".jpg";
+						break;
+						case 'image/png':
+							$foto_array[$i]=$foto_array[$i].".png";
+						break;
+					}
+					
+					chmod($img_dir,0777);
+	
+					# Moviendo imagen al directorio #
+					if(!move_uploaded_file($_FILES['archivo']['tmp_name'][$i],$img_dir.$foto_array[$i])){
+						$alerta=[
+							"tipo"=>"simple",
+							"titulo"=>"Ocurrió un error inesperado",
+							"texto"=>"No podimos subir la imagen al sistema, intente mas tarde",
+							"icono"=>"error"
+						];
+						return json_encode($alerta);
+						exit();
+					}
+				}else{
+					$foto_array[$i] = "";
+				}
+				
+				if ( $array[$i] != "" && $array[$i] != "0" ) {
+					$control_datos_up=[
+						[
+							"campo_nombre"=>$array[$i],
+							"campo_marcador"=>":Foto_$array[$i]",
+							"campo_valor"=>$foto_array[$i]
+						]
+					];
+					$condicion=[
+						"condicion_campo"=>"control_id",
+						"condicion_marcador"=>":ID",
+						"condicion_valor"=>$id
+					];
+					$this->actualizarDatos("control",$control_datos_up,$condicion);
+					
+					// elimino la fot anterior
+					if(is_file($img_dir.$datos[$array[$i]])){
+						chmod($img_dir.$datos[$array[$i]],0777);
+						if(!unlink($img_dir.$datos[$array[$i]])){
+							$alerta=[
+								"tipo"=>"simple",
+								"titulo"=>"Ocurrió un error inesperado",
+								"texto"=>"Error al intentar eliminar la foto del control, por favor intente nuevamente",
+								"icono"=>"error"
+							];
+							return json_encode($alerta);
+							exit();
+						}
+					}
+				}
+			}
 
+			if($id==$_SESSION['id']){
+				$_SESSION['foto']=$foto_array[$i];
+			}
+			$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Foto actualizada",
+				"texto"=>"La foto del item $id se actualizo correctamente...",
+				"icono"=>"success"
+				];
+			return json_encode($alerta);
+
+			// end For
+			// $alerta=[
+			// 	"tipo"=>"simple",
+			// 	"titulo"=>"proceso finalizado",
+			// 	"texto"=>"Todo bien $foto_array[0] $foto_array[1] $foto_array[2] $foto_array[3]",
+			// 	"icono"=>"success"
+			// ];
+			// return json_encode($alerta);
+			// exit();
+		}
 	}

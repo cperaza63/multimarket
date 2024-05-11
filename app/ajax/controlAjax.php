@@ -26,6 +26,10 @@
 			echo $insControl->actualizarFotoControlControlador();
 		}
 
+		if($_POST['modulo_control']=="actualizarFotoMasa"){
+			echo $insControl->actualizarFotoMasaControlador();
+		}
+
 		if($_POST['modulo_control']=="eliminarFoto"){
 			echo $insControl->eliminarFotoControlControlador();
 		}

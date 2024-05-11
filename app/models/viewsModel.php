@@ -12,13 +12,14 @@
 			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto", 
 			"ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
 			"companyNew","companyList","companyUpdate", "companyUpdateAdmin", "companySearch","companyPhoto",
+			"marketNew", "marketList", "marketSearch", "marketUpdate",
 			"clientNew","clientList","clientSearch","clientUpdate",
 			"categoryNew","categoryList","categorySearch","categoryUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
 			"companyNew",
 			"saleNew","saleList","saleSearch","saleDetail",
-			"logOut", 
-			"marketNew", "marketList", "marketSearch", "marketUpdate"];
+			"logOut"
+			];
 
 			if(in_array($vista, $listaBlanca)){
 				if(is_file("./app/views/content/".$vista."-view.php")){
