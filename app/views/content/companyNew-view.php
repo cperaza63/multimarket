@@ -33,7 +33,6 @@ if (isset($_POST['state'])){
     <div class="page-content">
         <div class="container-fluid"> 
             <div class="row">
-
                 <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                     <input type="hidden" name="modulo_company" value="registrar">
@@ -184,7 +183,27 @@ if (isset($_POST['state'])){
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="company_phone" class="form-label">Teléfono contacto</label>
+                                                    <input name="company_phone" type="text" class="form-control" 
+                                                    id="codigo" placeholder="Entre su numero de contacto" 
+                                                    pattern="[a-zA-Z0-9$@.-]{7,80}" 
+                                                    maxlength="80" required>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="company_rif" class="form-label">Número de Rif</label>
+                                                    <input name="company_rif" type="text" class="form-control" 
+                                                    id="codigo" placeholder="Entre su numero de rif" 
+                                                    pattern="[a-zA-Z0-9$@.-]{7,80}" 
+                                                    maxlength="20" required>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-2">
                                                 <div class="mb-3">
                                                     <label for="company_estatus" class="form-label">Estatus Actual</label>
                                                     <select name="company_estatus" class="form-control" required 
@@ -192,16 +211,6 @@ if (isset($_POST['state'])){
                                                         <option value="1">Activo</option>
                                                         <option value="0">Inactivo</option>
                                                     </select>
-                                                </div>
-                                            </div>
-                                            <!--end col-->
-                                            <div class="col-lg-4">
-                                                <div class="mb-3">
-                                                    <label for="company_phone" class="form-label">Teléfono contacto</label>
-                                                    <input name="company_phone" type="text" class="form-control" 
-                                                    id="codigo" placeholder="Entre su numero de contacto" 
-                                                    pattern=""[a-zA-Z0-9$@.-]{7,80}" 
-                                                    maxlength="80" required>
                                                 </div>
                                             </div>
                                             <!--end col-->

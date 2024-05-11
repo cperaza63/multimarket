@@ -7,31 +7,25 @@
 
 		/*----------  Controlador registrar company  ----------*/
 		public function registrarCompanyControlador(){
-
-			// return json_encode("regstrar company");
-			// exit();
 			# Almacenando datos#
-		    $codigo=$this->limpiarCadena($_POST['codigo']);
-		    $nombre=$this->limpiarCadena($_POST['nombre']);
-		    $tipo=$this->limpiarCadena($_POST['tipo']);
-			$unidad=$this->limpiarCadena($_POST['unidad']);
+		    $company_name = $this->limpiarCadena($_POST['company_name']);
+		    $company_type = $this->limpiarCadena($_POST['company_type']);
+		    $company_description = $this->limpiarCadena($_POST['company_description']);
+		    $company_address = $this->limpiarCadena($_POST['company_address']);
+		    $company_country = $this->limpiarCadena($_POST['company_country']);
+		    $company_state = $this->limpiarCadena($_POST['company_state']);
+			$company_city = $this->limpiarCadena($_POST['company_city']);
+			$company_email = $this->limpiarCadena($_POST['company_email']);
+			$company_estatus = $this->limpiarCadena($_POST['company_estatus']);
+			$company_phone = $this->limpiarCadena($_POST['company_phone']);
+			$company_rif = $this->limpiarCadena($_POST['company_rif']);
+			$created_at = date("Y-m-d");
 
-		    
-			if( $unidad>0 && $tipo == "")
-			{
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has seleccionado un tipo de tabla, dato obligatorios",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-			
-			# Verificando campos obligatorios #
-		    if($codigo=="" || $nombre=="" || $tipo=="" )
-			{
+		    # Verificando campos obligatorios #
+		    if($company_name=="" || $company_type=="" || $company_email=="" || $company_description=="" 
+			|| $company_address=="" || $company_country=="" || $company_city==""|| $company_state==""
+			|| $company_estatus=="" || $company_phone=="" || $company_rif==""
+			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
@@ -41,166 +35,142 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-			
+
+			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$company_rif)){
+		    	$alerta=[
+				"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"El RIF no coincide con el formato solicitado",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+    		}
+
 		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}",$codigo)){
+		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,45}",$company_name)){
 		         $alerta=[
 			 		"tipo"=>"simple",
 			 		"titulo"=>"Ocurrió un error inesperado",
-			 		"texto"=>"El CODIGO ASIGNADO no coincide con el formato solicitado",
+			 		"texto"=>"El NOMBRE no coincide con el formato solicitado",
 			 		"icono"=>"error"
 			 	];
 			 	return json_encode($alerta);
 		         exit();
 		    }
 
-		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}",$nombre)){
-		         $alerta=[
+			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$company_phone)){
+		    	$alerta=[
 				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El NOMBRE ASIGNADO no coincide con el formato solicitado",
-				"icono"=>"error"
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"El TELEFONO no coincide con el formato solicitado",
+					"icono"=>"error"
 				];
 				return json_encode($alerta);
-		    	exit();
-			}
-
-            # Verificando company #
-		    #$check_control=$this->ejecutarConsulta("SELECT login FROM company WHERE login='$email'");
-		    #if($check_control->rowCount()>0){
-		   	# 	$alerta=[
-			#		"tipo"=>"simple",
-			#		"titulo"=>"Ocurrió un error inesperado",
-			#		"texto"=>"El company ingresado ya se encuentra registrado, por favor cambie su email",
-			#		"icono"=>"error"
-			#	];
-			#	return json_encode($alerta);
-		     #   exit();
-		    #}
-
-		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/company/";
-
-    		# Comprobar si se selecciono una imagen #
-    		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
-    			# Creando directorio #
-		        if(!file_exists($img_dir)){
-		            if(!mkdir($img_dir,0777)){
-		            	$alerta=[
-							"tipo"=>"simple",
-							"titulo"=>"Ocurrió un error inesperado",
-							"texto"=>"Error al crear el directorio",
-							"icono"=>"error"
-						];
-						return json_encode($alerta);
-		                exit();
-		            } 
-		        }
-		        # Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['control_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['control_foto']['tmp_name'])!="image/png"){
-		        	$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"La imagen que ha seleccionado es de un formato no permitido (solo jpg/png)",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-		            exit();
-		        }
-
-		        # Verificando peso de imagen #
-		        if(($_FILES['control_foto']['size']/1024)>5120){
-		        	$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"La imagen que ha seleccionado supera el peso permitido (hasta 500K)",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-		            exit();
-		        }
-
-		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_",$codigo);
-		        $foto=$foto."_".rand(0,100);
-
-		        # Extension de la imagen #
-		        switch(mime_content_type($_FILES['control_foto']['tmp_name'])){
-		            case 'image/jpeg':
-		                $foto=$foto.".jpg";
-		            break;
-		            case 'image/png':
-		                $foto=$foto.".png";
-		            break;
-		        }
-
-		        chmod($img_dir,0777);
-
-		        # Moviendo imagen al directorio #
-		        if(!move_uploaded_file($_FILES['control_foto']['tmp_name'],$img_dir.$foto)){
-		        	$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"No podimos subir la imagen al sistema, intente mas tarde",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-		            exit();
-		        }
-    		}else{
-    			$foto="";
-    		}
+		        exit();
+		    }
 			
-		    $control_datos_reg=[
+			if(!filter_var($company_email, FILTER_VALIDATE_EMAIL)){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error en la entrada de datos",
+					"texto"=>"Ha ingresado un correo electrónico no valido",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			} 
+           
+			# Verificando usuario #
+			$sin_rif = str_replace ( "-", '', $company_rif);
+			$sin_rif = str_replace ( " ", '', $sin_rif);
+			$sin_rif = ucfirst($sin_rif);
+			$check_company=$this->ejecutarConsulta("SELECT * FROM company WHERE company_rif = '$sin_rif'");
+			if($check_company->rowCount()==1){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"Rif ya se encuentra registrado en el sistema",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+			
+		    $company_datos_reg=[
 				[
-					"campo_nombre"=>"codigo",
-					"campo_marcador"=>":Codigo",
-					"campo_valor"=>$codigo
+					"campo_nombre"=>"company_name",
+					"campo_marcador"=>":Company_name",
+					"campo_valor"=>$company_name
 				],
 				[
-					"campo_nombre"=>"nombre",
-					"campo_marcador"=>":Nombre",
-					"campo_valor"=>$nombre
+					"campo_nombre"=>"company_email",
+					"campo_marcador"=>":Company_email",
+					"campo_valor"=>$company_email
 				],
 				[
-					"campo_nombre"=>"tipo",
-					"campo_marcador"=>":Tipo",
-					"campo_valor"=>$tipo
+					"campo_nombre"=>"$company_description",
+					"campo_marcador"=>":Company_description",
+					"campo_valor"=>$company_description
 				],
 				[
-					"campo_nombre"=>"control_foto",
-					"campo_marcador"=>":Control_foto",
-					"campo_valor"=>$foto
+					"campo_nombre"=>"$company_address",
+					"campo_marcador"=>":Company_address",
+					"campo_valor"=>$company_address
 				],
 				[
-					"campo_nombre"=>"unidad",
-					"campo_marcador"=>":Unidad",
-					"campo_valor"=>$unidad
+					"campo_nombre"=>"$company_estatus",
+					"campo_marcador"=>":Company_estatus",
+					"campo_valor"=>$company_estatus
+				],
+				[
+					"campo_nombre"=>"$company_phone",
+					"campo_marcador"=>":Company_phone",
+					"campo_valor"=>$company_phone
+				],
+				[
+					"campo_nombre"=>"$company_rif",
+					"campo_marcador"=>":Company_rif",
+					"campo_valor"=>$company_rif
+				],
+				[
+					"campo_nombre"=>"$company_country",
+					"campo_marcador"=>":Company_country",
+					"campo_valor"=>$company_country
+				],
+				[
+					"campo_nombre"=>"$company_state",
+					"campo_marcador"=>":Company_state",
+					"campo_valor"=>$company_state
+				],
+				[
+					"campo_nombre"=>"$company_city",
+					"campo_marcador"=>":Company_city",
+					"campo_valor"=>$company_city
+				],
+				[
+					"campo_nombre"=>"$created_at",
+					"campo_marcador"=>":Created_at",
+					"campo_valor"=>$created_at
 				]
 			];
 
 			//return json_encode("regstrar company");
 
-			$registrar_control=$this->guardarDatos("company",$control_datos_reg);
+			$registrar_company=$this->guardarDatos("company",$company_datos_reg);
 
-			if($registrar_control->rowCount()==1){
+			if($registrar_company->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
 					"titulo"=>"Control registrado",
-					"texto"=>"El item de codigo ".$codigo." ".$nombre." se registro con exito",
+					"texto"=>"El item de codigo ".$company_name." se registro con exito",
 					"icono"=>"success"
 				];
 			}else{
-				
-				if(is_file($img_dir.$foto)){
-		            chmod($img_dir.$foto,0777);
-		            unlink($img_dir.$foto);
-		        }
-
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No se pudo registrar el item de la tabla, por favor intente nuevamente",
+					"texto"=>"No se pudo registrar el negocio de la tabla, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}
