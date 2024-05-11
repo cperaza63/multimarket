@@ -11,7 +11,7 @@
 			"userNew","userList","userUpdate", "userUpdateAdmin", "userSearch","userPhoto",
 			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto", 
 			"ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
-			"companyNew","companyList","companyUpdate", "companyUpdateAdmin", "companySearch","companyPhoto",
+			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
 			"marketNew", "marketList", "marketSearch", "marketUpdate",
 			"clientNew","clientList","clientSearch","clientUpdate",
 			"categoryNew","categoryList","categorySearch","categoryUpdate",

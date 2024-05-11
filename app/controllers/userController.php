@@ -601,6 +601,18 @@
 			exit();
 		}
 
+		/*----------  Controlador listar usuario  que aun no estan asignados a ninguna empresa----------*/
+		public function listarUsuarioNegocioControlador(){
+			$consulta_datos="SELECT * FROM usuario 
+				WHERE company_id == 0) 
+				ORDER BY company_name";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+
+
 		/*----------  Controlador eliminar usuario  ----------*/
 		public function eliminarUsuarioControlador(){
 

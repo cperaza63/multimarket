@@ -1,4 +1,14 @@
 <!-- ============================================================== -->
+<!-- BASE DE DATOS PARA AJAX -->
+<!-- ============================================================== -->
+<?php
+$mysqli = new mysqli("localhost","root","","multimarket");
+if ($mysqli -> connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
+    exit();
+}
+?>
+<!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
 <div class="main-content">
@@ -136,31 +146,73 @@
                                             <!--end col-->
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="city" class="form-label">Ciudad</label>
-                                                    <input name="city" type="text" class="form-control" id="cityInput" placeholder="Ciudad" 
-                                                    />
+                                                    <label for="countryInput" class="form-label">País</label>
+                                                    <?php
+                                                    
+                                                    if(is_array($paises)){
+                                                        
+                                                        foreach($paises as $pais){
+                                                            ?>
+                                                                <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
+                                                                    
+                                                                    <option value="<?=$pais['country'];?>"
+                                                                        ><?=$pais['country'];?>
+                                                                    </option>
+                                                            </select>
+                                                            <?php
+                                                        }
+                                                    }
+                                                    ?>
                                                 </div>
                                             </div>
-                                            <!--end col-->
+
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="state" class="form-label">Estado/Provincia</label>
-                                                    <input name="state" type="text" class="form-control" minlength="2" maxlength="10" id="state" placeholder="Enter Estado/provincia" >
+                                                    <select name="state" 
+                                                    language="javascript:void(0)" 
+                                                    onchange="loadAjaxCiudadHive(this.value, <?=$city_user?>)"
+                                                    class="form-control" data-choices data-choices-text-unique-true id="state">
+                                                    <?php
+                                                    if(is_array($estados)){
+                                                        foreach($estados as $estado){
+                                                            ?>
+                                                            <option value="<?=$estado['state_abbreviation'];?>"><?=$estado['state_name'];?>
+                                                            </option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
+                                            
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="countryInput" class="form-label">País</label>
-                                                    <input name="country" type="text" class="form-control" id="country" placeholder="Pais"  
-                                                    />
+                                                    <label for="city" class="form-label">Ciudades</label>
+                                                    <select name="city" class="form-control" data-choices data-choices-text-unique-true id="city">
+                                                    <?php
+                                                        if ($res = $mysqli -> query("SELECT * FROM ubicacion WHERE state_abbreviation<>'' AND 
+                                                        state_abbreviation='$q' ORDER BY city")) {
+                                                        ?>
+                                                            <?php while($fila=mysqli_fetch_array($res)){ ?>
+                                                            <option value="<?php echo $fila['id']; ?>">
+                                                            <?php echo $fila['city']==""?"Seleccione Ciudad": $fila['city']; ?></option>
+                                                            <?php } ?>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div class="mb-3 pb-2">
                                                     <label for="location" class="form-label">Dirección</label>
-                                                    <textarea name="location" class="form-control" id="exampleFormControlTextarea" placeholder="Dirección de habitación" rows="3"></textarea>
+                                                    <textarea name="location" class="form-control" 
+                                                    id="exampleFormControlTextarea" 
+                                                    placeholder="Dirección de habitación" rows="3"></textarea>
                                                 </div>
                                             </div>
                                             <!--end col-->
@@ -193,7 +245,8 @@
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="created_at" class="form-label">Usuario a incorporar</label>
-                                                    <input name="created_at" disabled name="created_at" type="date" class="form-control"  id="created_at"
+                                                    <input name="created_at" disabled name="created_at" type="date" 
+                                                    class="form-control"  id="created_at"
                                                     value="<?php echo $createdAt; ?>"
                                                     />
                                                 </div>

@@ -50,6 +50,14 @@
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>ubicacionList/" class="nav-link" data-key="t-analytics"> Tabla Ciudades y Estados  </a>
                                     </li>
+
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>companyList/" class="nav-link" data-key="t-analytics"> Tiendas y Empresas  </a>
+                                    </li>
+
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>marketList/" class="nav-link" data-key="t-analytics"> Market Place  </a>
+                                    </li>
                                     
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>

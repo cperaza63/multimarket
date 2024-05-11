@@ -54,7 +54,7 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
                                                     <label for="codigo" class="form-label">Código</label>
-                                                    <input name="codigo" type="text" class="form-control" name="codigo" 
+                                                    <input name="codigo" type="text" class="form-control" 
                                                     id="codigo" placeholder="Entre su codigo" 
                                                     pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}" 
                                                     maxlength="40" required>

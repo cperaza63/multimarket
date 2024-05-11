@@ -3,12 +3,12 @@
 	namespace app\controllers;
 	use app\models\mainModel; 
 
-	class controlController extends mainModel{
+	class companyController extends mainModel{
 
-		/*----------  Controlador registrar control  ----------*/
-		public function registrarControlControlador(){
+		/*----------  Controlador registrar company  ----------*/
+		public function registrarCompanyControlador(){
 
-			// return json_encode("regstrar control");
+			// return json_encode("regstrar company");
 			// exit();
 			# Almacenando datos#
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
@@ -65,13 +65,13 @@
 		    	exit();
 			}
 
-            # Verificando control #
-		    #$check_control=$this->ejecutarConsulta("SELECT login FROM control WHERE login='$email'");
+            # Verificando company #
+		    #$check_control=$this->ejecutarConsulta("SELECT login FROM company WHERE login='$email'");
 		    #if($check_control->rowCount()>0){
 		   	# 	$alerta=[
 			#		"tipo"=>"simple",
 			#		"titulo"=>"Ocurrió un error inesperado",
-			#		"texto"=>"El control ingresado ya se encuentra registrado, por favor cambie su email",
+			#		"texto"=>"El company ingresado ya se encuentra registrado, por favor cambie su email",
 			#		"icono"=>"error"
 			#	];
 			#	return json_encode($alerta);
@@ -79,7 +79,7 @@
 		    #}
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/control/";
+    		$img_dir="../views/fotos/company/";
 
     		# Comprobar si se selecciono una imagen #
     		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
@@ -179,9 +179,9 @@
 				]
 			];
 
-			//return json_encode("regstrar control");
+			//return json_encode("regstrar company");
 
-			$registrar_control=$this->guardarDatos("control",$control_datos_reg);
+			$registrar_control=$this->guardarDatos("company",$control_datos_reg);
 
 			if($registrar_control->rowCount()==1){
 				$alerta=[
@@ -208,20 +208,23 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador listar control  ----------*/
-		public function listarTodosControlControlador($busqueda){	
+		/*----------  Controlador listar company  ----------*/
+		public function listarTodosCompanyControlador($busqueda){	
 
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM control WHERE ( 
-				codigo LIKE '%$busqueda%'
-				OR nombre LIKE '%$busqueda%' 
-				OR tipo LIKE '%$busqueda%' 
+				$consulta_datos="SELECT * FROM company WHERE ( 
+				company_phone LIKE '%$busqueda%'
+				OR company_name LIKE '%$busqueda%' 
+				OR company_description LIKE '%$busqueda%'
+				OR company_rif LIKE '%$busqueda%' 
+				OR company_email LIKE '%$busqueda%' 
+				OR company_address LIKE '%$busqueda%' 
 				) 
-				ORDER BY tipo, nombre ASC limit 500";
+				ORDER BY company_type, company_name ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM control ORDER BY tipo, nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company ORDER BY company_type, company_name ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -230,12 +233,13 @@
 			exit();
 		}
 
-		/*----------  Controlador listar control  ----------*/
+		/*----------  Controlador listar company  ----------*/
 		public function listarSoloTipoControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
 			
 			if(isset($busqueda)){
-				$consulta_datos="SELECT * FROM control WHERE tipo = '$busqueda' ORDER BY tipo";
+				$consulta_datos="SELECT * FROM company WHERE company_type = '$busqueda' 
+				ORDER BY company_type";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -243,8 +247,8 @@
 			exit();
 		}
 
-		/*----------  Controlador eliminar control  ----------*/
-		public function eliminarControlControlador(){
+		/*----------  Controlador eliminar company  ----------*/
+		public function eliminarCompanyControlador(){
 
 			$id=$this->limpiarCadena($_POST['control_id']);
 
@@ -255,20 +259,20 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el item de la tabla de control",
+					"texto"=>"No podemos eliminar el item de la tabla de company",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 			}
 
-			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id' and estatus<>1");
+			# Verificando company #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id' and estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el control en Estado ACTIVO, deberá inactivarlo primero",
+					"texto"=>"No hemos encontrado el company en Estado ACTIVO, deberá inactivarlo primero",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -277,13 +281,13 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    $eliminarControl=$this->eliminarRegistro("control","control_id",$id);
+		    $eliminarControl=$this->eliminarRegistro("company","control_id",$id);
 
 		    if($eliminarControl->rowCount()==1){
 
-		    	if(is_file("../views/fotos/control/".$datos['control_foto'])){
-		            chmod("../views/fotos/control/".$datos['control_foto'],0777);
-		            unlink("../views/fotos/control/".$datos['control_foto']);
+		    	if(is_file("../views/fotos/company/".$datos['control_foto'])){
+		            chmod("../views/fotos/company/".$datos['control_foto'],0777);
+		            unlink("../views/fotos/company/".$datos['control_foto']);
 		        }
 
 		        $alerta=[
@@ -304,8 +308,8 @@
 		    return json_encode($alerta);
 		}
 
-		/*----------  Controlador actualizar control  ----------*/
-		public function actualizarControlControlador(){
+		/*----------  Controlador actualizar company  ----------*/
+		public function actualizarCompanyControlador(){
 
 			$control_id=$this->limpiarCadena($_POST['control_id']);
 			$codigo = $this->limpiarCadena($_POST['codigo']);
@@ -314,8 +318,8 @@
 			$estatus=$this->limpiarCadena($_POST['estatus']);
 			
 			//return json_encode($estatus);
-			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$control_id'");
+			# Verificando company #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$control_id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -393,18 +397,18 @@
 				"condicion_valor"=>$control_id
 			];
 
-			if($this->actualizarDatos("control", $control_datos_up, $condicion)){
+			if($this->actualizarDatos("company", $control_datos_up, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
-				"texto"=>"Los datos de la tabla de control ".$datos['tipo']." se actualizaron correctamente",
+				"texto"=>"Los datos de la tabla de company ".$datos['tipo']." se actualizaron correctamente",
 				"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos de la tabla de control ".$datos['tipo'].", por favor intente nuevamente",
+				"texto"=>"No hemos podido actualizar los datos de la tabla de company ".$datos['tipo'].", por favor intente nuevamente",
 				"icono"=>"error"
 			];
 			}
@@ -412,18 +416,18 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador eliminar foto control  ----------*/
-		public function eliminarFotoControlControlador(){
+		/*----------  Controlador eliminar foto company  ----------*/
+		public function eliminarFotoCompanyControlador(){
 
 			$id=$this->limpiarCadena($_POST['control_id']);
 
-			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
+			# Verificando company #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el control en el sistema",
+					"texto"=>"No hemos encontrado el company en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -433,7 +437,7 @@
 		    }
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/control/";
+    		$img_dir="../views/fotos/company/";
 
     		chmod($img_dir,0777);
 
@@ -445,7 +449,7 @@
 		            $alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Error al intentar eliminar la foto del control, por favor intente nuevamente",
+						"texto"=>"Error al intentar eliminar la foto del company, por favor intente nuevamente",
 						"icono"=>"error"
 					];
 					return json_encode($alerta);
@@ -455,7 +459,7 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado la foto del control en el sistema",
+					"texto"=>"No hemos encontrado la foto del company en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -476,7 +480,7 @@
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("control",$control_datos_up,$condicion)){
+			if($this->actualizarDatos("company",$control_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']="";
@@ -485,14 +489,14 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"La foto del control ".$datos['control_nombre']." ".$datos['control_apellido']." se elimino correctamente",
+					"texto"=>"La foto del company ".$datos['control_nombre']." ".$datos['control_apellido']." se elimino correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"No hemos podido actualizar algunos datos del control ".$datos['control_nombre']." ".$datos['control_apellido'].", sin embargo la foto ha sido eliminada correctamente",
+					"texto"=>"No hemos podido actualizar algunos datos del company ".$datos['control_nombre']." ".$datos['control_apellido'].", sin embargo la foto ha sido eliminada correctamente",
 					"icono"=>"warning"
 				];
 			}
@@ -500,18 +504,18 @@
 			return json_encode($alerta);
 		}
 
-		/*----------  Controlador actualizar foto control  ----------*/
-		public function actualizarFotoControlControlador(){
+		/*----------  Controlador actualizar foto company  ----------*/
+		public function actualizarFotoCompanyControlador(){
 			$id = $this->limpiarCadena($_POST['control_id']);
 			$control_tipo = $this->limpiarCadena($_POST['control_tipo']);
 
-			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
+			# Verificando company #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el control en el sistema",
+					"texto"=>"No hemos encontrado el company en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -521,7 +525,7 @@
 		    }
 			
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/control/";
+    		$img_dir="../views/fotos/company/";
 
 			# Comprobar si se selecciono una imagen #
     		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
@@ -612,7 +616,7 @@
 			
 			
 
-			if($this->actualizarDatos("control",$control_datos_up,$condicion)){
+			if($this->actualizarDatos("company",$control_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
@@ -636,13 +640,13 @@
 
 		public function actualizarFotoMasaControlador(){
 			$id = $this->limpiarCadena($_POST['control_id']);
-			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM control WHERE control_id='$id'");
+			# Verificando company #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el control en el sistema",
+					"texto"=>"No hemos encontrado el company en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -650,7 +654,7 @@
 		    }else{
 		    	$datos=$datos->fetch();
 		    }
-			$img_dir="../views/fotos/control/";
+			$img_dir="../views/fotos/company/";
 			$array=[0,0,0,0];
 			$foto_array=["","","",""];
 			$num_archivos=count($_FILES['archivo']['name']);
@@ -750,7 +754,7 @@
 						"condicion_marcador"=>":ID",
 						"condicion_valor"=>$id
 					];
-					$this->actualizarDatos("control",$control_datos_up,$condicion);
+					$this->actualizarDatos("company",$control_datos_up,$condicion);
 					
 					// elimino la fot anterior
 					if(is_file($img_dir.$datos[$array[$i]])){
@@ -759,7 +763,7 @@
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"Error al intentar eliminar la foto del control, por favor intente nuevamente",
+								"texto"=>"Error al intentar eliminar la foto del company, por favor intente nuevamente",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);

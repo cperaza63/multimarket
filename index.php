@@ -76,9 +76,12 @@ if(isset($_GET['views'])){
             }else{
                 ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
             }
-
+            // Se debe colocar el controlador que usara AJAX
             if(isset($_GET['views']) && $_GET['views']!=""){
-                if( substr($_GET['views'], 0, 11) == "userUpdate/"){
+                if( substr($_GET['views'], 0, 11) == "userUpdate/"
+                    || substr($_GET['views'], 0, 8) == "userNew/"
+                    || substr($_GET['views'], 0, 11) == "companyNew/"
+                ){
                     ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
                 }else{
                     ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php

@@ -60,7 +60,7 @@
                                     action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                         method="POST" autocomplete="off" enctype="multipart/form-data" >
                                         <!--    Campos parametros     -->
-                                        <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                        <input type="hidden" name="modulo_company" value="actualizarFoto">
                                         <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                         <input type="hidden" name="control_tipo" value="control_foto">
 
@@ -133,7 +133,7 @@
                                                 action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                 method="POST" autocomplete="off">
                                             
-                                                <input type="hidden" name="modulo_control" value="<?=$accion;?>">
+                                                <input type="hidden" name="modulo_company" value="<?=$accion;?>">
                                                 <input type="hidden" name="control_id" value="<?=$control_id;?>">
                                                 <input type="hidden" name="codigo" value="<?=$codigo;?>">
 
@@ -228,7 +228,7 @@
                                                         action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                         method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                         <!--    Campos parametros     -->
-                                                        <input type="hidden" name="modulo_control" value="actualizarFotoMasa">
+                                                        <input type="hidden" name="modulo_company" value="actualizarFotoMasa">
                                                         <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                                         <form action="<?php echo APP_URL; ?>app/views/inc/procesar_archivos.php"
                                                             method="POST" enctype="multipart/form-data">
@@ -253,7 +253,7 @@
                                                                 <form name="<?php echo $control_tipo; ?>" class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                                     <!--    Campos parametros     -->
-                                                                    <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                    <input type="hidden" name="modulo_company" value="actualizarFoto">
                                                                     <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                                                     <input type="hidden" name="control_tipo" value="control_card">
                                                                     <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
@@ -282,7 +282,7 @@
                                                                 <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                                     <!--    Campos parametros     -->
-                                                                    <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                    <input type="hidden" name="modulo_company" value="actualizarFoto">
                                                                     <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                                                     <input type="hidden" name="control_tipo" value="control_banne1">
 
@@ -312,7 +312,7 @@
                                                                 <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                                     <!--    Campos parametros     -->
-                                                                    <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                    <input type="hidden" name="modulo_company" value="actualizarFoto">
                                                                     <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                                                     <input type="hidden" name="control_tipo" value="control_banner2">
                                                                     <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
@@ -341,7 +341,7 @@
                                                                 <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
                                                                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                                     <!--    Campos parametros     -->
-                                                                    <input type="hidden" name="modulo_control" value="actualizarFoto">
+                                                                    <input type="hidden" name="modulo_company" value="actualizarFoto">
                                                                     <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
                                                                     <input type="hidden" name="control_tipo" value="control_banner3">
                                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
