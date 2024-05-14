@@ -641,8 +641,8 @@
 		    	$datos=$datos->fetch();
 		    }
 			$img_dir="../views/fotos/company/$id/";
-			$array=[0,0,0,0];
-			$foto_array=["","","",""];
+			$array=[0,0,0,0,0];
+			$foto_array=["","","","",""];
 
 			for ($i=0; $i <= 3; $i++) {
 				//return json_encode($_FILES['archivo']['size'][$i]);
@@ -656,6 +656,8 @@
 						$array[$i] = "company_banner2";
 					}elseif($i == 3){	
 						$array[$i] = "company_banner3";
+					}elseif($i == 4){	
+						$array[$i] = "company_pdf";
 					}
 					if(!file_exists($img_dir)){
 						if(!mkdir($img_dir,0777)){
@@ -700,13 +702,19 @@
 					$foto_array[$i] = $foto_array[$i]."_".rand(0,100);
 	
 					# Extension de la imagen #
-					switch(mime_content_type($_FILES['archivo']['tmp_name'][$i])){
-						case 'image/jpeg':
-							$foto_array[$i]=$foto_array[$i].".jpg";
-						break;
-						case 'image/png':
-							$foto_array[$i]=$foto_array[$i].".png";
-						break;
+					if($id != 4 ){
+						switch(mime_content_type($_FILES['archivo']['tmp_name'][$i])){
+							case 'image/jpeg':
+								$foto_array[$i]=$foto_array[$i].".jpg";
+							break;
+							case 'image/png':
+								$foto_array[$i]=$foto_array[$i].".png";
+							break;
+						}
+					}else{
+						if(mime_content_type($_FILES['archivo']['tmp_name'][$i]) == 'application/pdf' ){
+							$foto_array[$i]=$foto_array[$i].".pdf";
+						}
 					}
 					
 					chmod($img_dir,0777);
