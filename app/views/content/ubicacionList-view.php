@@ -169,3 +169,9 @@
         <!-- container-fluid -->
     </div><!-- End Page-content -->
 </div>
+
+<script>
+    $(document).ready( function(){
+        $('fixed-header').DataTable();
+    });
+</script>

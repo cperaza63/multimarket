@@ -65,7 +65,6 @@ if ($mysqli -> connect_errno) {
             }
             //print_r($usuario_foto);
             //exit();
-
             if($pasa == 1){
             ?>
                 <div class="row">

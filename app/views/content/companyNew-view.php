@@ -33,9 +33,13 @@ if (isset($_POST['state'])){
     <div class="page-content">
         <div class="container-fluid"> 
             <div class="row">
-                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" 
+                <!-- 
+                    FORMULARIO  
+                                -->
+                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                     <input type="hidden" name="modulo_company" value="registrar">
+                    <input type="hidden" name="company_user" value="<?=$_SESSION['id']?>">
 
                     <div class="col-xxl-9">
                         <div class="card mt-xxl-n5">
@@ -47,26 +51,6 @@ if (isset($_POST['state'])){
                                         </a>
                                     </li>
                                 </ul>
-                            </div>
-
-                            <div class="text-center">
-                                <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                    <img src="http://localhost/multimarket/app/views/fotos/nophoto.jpg" 
-                                    class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
-                                    alt="user-profile-image">
-                                    <div class="avatar-xs p-0 rounded-circle ">
-                                        <input id="profile-img-file-input" name="company_logo" type="file" 
-                                        accept=".jpg, .png, .jpeg" class="profile-img-file-input">
-                                        
-                                        <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
-                                            <span class="avatar-title rounded-circle bg-light text-body shadow">
-                                                <i class="ri-camera-fill"></i>
-                                            </span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="companyDetalis" role="tabpanel">
@@ -76,7 +60,7 @@ if (isset($_POST['state'])){
                                                     <label for="company_name" class="form-label">Nombre Tienda/negocio</label>
                                                     <input name="company_name" type="text" class="form-control" 
                                                     id="codigo" placeholder="Entre el nombre oficial" 
-                                                    pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}" 
+                                                    pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{5,80}" 
                                                     maxlength="80" required>
                                                 </div>
                                             </div>
@@ -89,7 +73,7 @@ if (isset($_POST['state'])){
                                                         <option value="E">Tienda de un Negocio</option>
                                                         <option value="U">Mini Tienda de un Usuario</option>
                                                         <option value="C">Corporación (Múltiples tiendas)</option>
-                                                        <option value="U">Servicio de Delivery a tiendas</option>
+                                                        <option value="D">Servicio de Delivery a tiendas</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -120,7 +104,7 @@ if (isset($_POST['state'])){
                                                     if(is_array($paises)){
                                                         foreach($paises as $pais){
                                                             ?>
-                                                                <select name="country" class="form-control" 
+                                                                <select name="company_country" class="form-control" 
                                                                 data-choices data-choices-text-unique-true id="country">
                                                                     <option value="<?=$pais['country'];?>"
                                                                         ><?=$pais['country'];?>
@@ -135,8 +119,8 @@ if (isset($_POST['state'])){
 
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="state" class="form-label">Estado/Provincia</label>
-                                                    <select name="state" 
+                                                    <label for="company_state" class="form-label">Estado/Provincia</label>
+                                                    <select name="company_state" 
                                                     language="javascript:void(0)" 
                                                     onchange="loadAjaxCiudadHive(this.value, <?=$city_user?>)"
                                                     class="form-control" data-choices data-choices-text-unique-true id="state">
@@ -157,8 +141,8 @@ if (isset($_POST['state'])){
                                             
                                             <div class="col-lg-4">
                                                 <div class="mb-3">
-                                                    <label for="city" class="form-label">Ciudades</label>
-                                                    <select name="city" class="form-control" data-choices data-choices-text-unique-true id="city">
+                                                    <label for="company_city" class="form-label">Ciudades</label>
+                                                    <select name="company_city" class="form-control" data-choices data-choices-text-unique-true id="city">
                                                     <?php
                                                         if ($res = $mysqli -> query("SELECT * FROM ubicacion WHERE state_abbreviation<>'' AND 
                                                         state_abbreviation='$q' ORDER BY city")) {
@@ -178,7 +162,7 @@ if (isset($_POST['state'])){
                                                 <div class="mb-3">
                                                     <label for="company_email" class="form-label">Email del negocio</label>
                                                     <input name="company_email" type="email" class="form-control" 
-                                                    id="company_email" placeholder="Enail de la empresa" reqiured 
+                                                    id="company_email" placeholder="Enail de la empresa" required 
                                                     />
                                                 </div>
                                             </div>
@@ -186,9 +170,8 @@ if (isset($_POST['state'])){
                                             <div class="col-lg-3">
                                                 <div class="mb-3">
                                                     <label for="company_phone" class="form-label">Teléfono contacto</label>
-                                                    <input name="company_phone" type="text" class="form-control" 
+                                                    <input name="company_phone" type="number" class="form-control" 
                                                     id="codigo" placeholder="Entre su numero de contacto" 
-                                                    pattern="[a-zA-Z0-9$@.-]{7,80}" 
                                                     maxlength="80" required>
                                                 </div>
                                             </div>
@@ -197,8 +180,7 @@ if (isset($_POST['state'])){
                                                 <div class="mb-3">
                                                     <label for="company_rif" class="form-label">Número de Rif</label>
                                                     <input name="company_rif" type="text" class="form-control" 
-                                                    id="codigo" placeholder="Entre su numero de rif" 
-                                                    pattern="[a-zA-Z0-9$@.-]{7,80}" 
+                                                    id="codigo" placeholder="Entre su numero de rif, ejemplo: J12304567890" 
                                                     maxlength="20" required>
                                                 </div>
                                             </div>
@@ -221,7 +203,7 @@ if (isset($_POST['state'])){
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
                                                     <button type="submit" class="btn btn-primary">Agregar el Negocio</button>
-                                                    <a href="<?php echo APP_URL; ?>controlList/" 
+                                                    <a href="<?php echo APP_URL; ?>companyList/" 
                                                     class="btn btn-soft-success">Cancelar</a>
                                                     
                                                 </div>

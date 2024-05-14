@@ -6,7 +6,8 @@ btn_menu.addEventListener("click", function(e){
     let navLateral=document.getElementById('navLateral');
     let pageContent=document.getElementById('pageContent');
 
-    if(navLateral.classList.contains('navLateral-change') && pageContent.classList.contains('pageContent-change')){
+    if(navLateral.classList.contains('navLateral-change') 
+      && pageContent.classList.contains('pageContent-change')){
         navLateral.classList.remove('navLateral-change');
         pageContent.classList.remove('pageContent-change');
     }else{

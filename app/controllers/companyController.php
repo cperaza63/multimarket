@@ -10,6 +10,7 @@
 			# Almacenando datos#
 		    $company_name = $this->limpiarCadena($_POST['company_name']);
 		    $company_type = $this->limpiarCadena($_POST['company_type']);
+			$company_user = $this->limpiarCadena($_POST['company_user']);
 		    $company_description = $this->limpiarCadena($_POST['company_description']);
 		    $company_address = $this->limpiarCadena($_POST['company_address']);
 		    $company_country = $this->limpiarCadena($_POST['company_country']);
@@ -20,11 +21,13 @@
 			$company_phone = $this->limpiarCadena($_POST['company_phone']);
 			$company_rif = $this->limpiarCadena($_POST['company_rif']);
 			$created_at = date("Y-m-d");
-
-		    # Verificando campos obligatorios #
+			//$company_city = 0;
+			
+		    # Verificando campos obligatorios 
 		    if($company_name=="" || $company_type=="" || $company_email=="" || $company_description=="" 
-			|| $company_address=="" || $company_country=="" || $company_city==""|| $company_state==""
-			|| $company_estatus=="" || $company_phone=="" || $company_rif==""
+			|| $company_address=="" || $company_country=="" 
+			|| $company_state=="" || $company_city=="" || $company_estatus=="" || $company_phone=="" 
+			|| $company_rif==""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -36,30 +39,7 @@
 		        exit();
 		    }
 
-			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$company_rif)){
-		    	$alerta=[
-				"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El RIF no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-    		}
-
-		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-ZáéíóúÁÉÍÓÚñÑ ]{3,45}",$company_name)){
-		         $alerta=[
-			 		"tipo"=>"simple",
-			 		"titulo"=>"Ocurrió un error inesperado",
-			 		"texto"=>"El NOMBRE no coincide con el formato solicitado",
-			 		"icono"=>"error"
-			 	];
-			 	return json_encode($alerta);
-		         exit();
-		    }
-
-			if($this->verificarDatos("[a-zA-Z0-9$@.-]{7,100}",$company_phone)){
+			if($this->verificarDatos("[0-9$-]{7,100}",$company_phone)){
 		    	$alerta=[
 				"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -82,7 +62,7 @@
 			} 
            
 			# Verificando usuario #
-			$sin_rif = str_replace ( "-", '', $company_rif);
+			$sin_rif = str_replace ( "-", '', strtoupper($company_rif));
 			$sin_rif = str_replace ( " ", '', $sin_rif);
 			$sin_rif = ucfirst($sin_rif);
 			$check_company=$this->ejecutarConsulta("SELECT * FROM company WHERE company_rif = '$sin_rif'");
@@ -109,53 +89,56 @@
 					"campo_valor"=>$company_email
 				],
 				[
-					"campo_nombre"=>"$company_description",
+					"campo_nombre"=>"company_description",
 					"campo_marcador"=>":Company_description",
 					"campo_valor"=>$company_description
 				],
 				[
-					"campo_nombre"=>"$company_address",
+					"campo_nombre"=>"company_address",
 					"campo_marcador"=>":Company_address",
 					"campo_valor"=>$company_address
 				],
 				[
-					"campo_nombre"=>"$company_estatus",
+					"campo_nombre"=>"company_estatus",
 					"campo_marcador"=>":Company_estatus",
 					"campo_valor"=>$company_estatus
 				],
 				[
-					"campo_nombre"=>"$company_phone",
+					"campo_nombre"=>"company_phone",
 					"campo_marcador"=>":Company_phone",
 					"campo_valor"=>$company_phone
 				],
 				[
-					"campo_nombre"=>"$company_rif",
+					"campo_nombre"=>"company_rif",
 					"campo_marcador"=>":Company_rif",
 					"campo_valor"=>$company_rif
 				],
 				[
-					"campo_nombre"=>"$company_country",
+					"campo_nombre"=>"company_country",
 					"campo_marcador"=>":Company_country",
 					"campo_valor"=>$company_country
 				],
 				[
-					"campo_nombre"=>"$company_state",
+					"campo_nombre"=>"company_state",
 					"campo_marcador"=>":Company_state",
 					"campo_valor"=>$company_state
 				],
 				[
-					"campo_nombre"=>"$company_city",
+					"campo_nombre"=>"company_city",
 					"campo_marcador"=>":Company_city",
 					"campo_valor"=>$company_city
 				],
 				[
-					"campo_nombre"=>"$created_at",
+					"campo_nombre"=>"company_user",
+					"campo_marcador"=>":Company_user",
+					"campo_valor"=>$company_user
+				],
+				[
+					"campo_nombre"=>"created_at",
 					"campo_marcador"=>":Created_at",
 					"campo_valor"=>$created_at
 				]
 			];
-
-			//return json_encode("regstrar company");
 
 			$registrar_company=$this->guardarDatos("company",$company_datos_reg);
 
@@ -476,11 +459,11 @@
 
 		/*----------  Controlador actualizar foto company  ----------*/
 		public function actualizarFotoCompanyControlador(){
-			$id = $this->limpiarCadena($_POST['control_id']);
-			$control_tipo = $this->limpiarCadena($_POST['control_tipo']);
+			$id = $this->limpiarCadena($_POST['company_id']);
+			$company_tipo = $this->limpiarCadena($_POST['company_tipo']);
 
 			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE company_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -495,10 +478,10 @@
 		    }
 			
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/company/";
+    		$img_dir="../views/fotos/company/$id/";
 
 			# Comprobar si se selecciono una imagen #
-    		if($_FILES['control_foto']['name']!="" && $_FILES['control_foto']['size']>0){
+    		if($_FILES['company_logo']['name']!="" && $_FILES['company_logo']['size']>0){
     			# Creando directorio #
 		        if(!file_exists($img_dir)){
 		            if(!mkdir($img_dir,0777)){
@@ -515,7 +498,8 @@
 		        
 
 				# Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['control_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['control_foto']['tmp_name'])!="image/png"){
+		        if(mime_content_type($_FILES['company_logo']['tmp_name'])!="image/jpeg" 
+				&& mime_content_type($_FILES['company_logo']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -527,7 +511,7 @@
 		        }
 
 		        # Verificando peso de imagen #
-		        if(($_FILES['control_foto']['size']/1024)>5120){
+		        if(($_FILES['company_logo']['size']/1024)>5120){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -539,12 +523,12 @@
 		        }
 				
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_",$control_tipo."-".$id);
+		        $foto=str_ireplace(" ","_",$company_tipo."-".$id);
 		        
 				$foto=$foto."_".rand(0,100);
 
 		        # Extension de la imagen #
-		        switch(mime_content_type($_FILES['control_foto']['tmp_name'])){
+		        switch(mime_content_type($_FILES['company_logo']['tmp_name'])){
 		            case 'image/jpeg':
 		                $foto=$foto.".jpg";
 		            break;
@@ -556,7 +540,7 @@
 				chmod($img_dir,0777);
 
 		        # Moviendo imagen al directorio #
-		        if(!move_uploaded_file($_FILES['control_foto']['tmp_name'],$img_dir.$foto)){
+		        if(!move_uploaded_file($_FILES['company_logo']['tmp_name'],$img_dir.$foto)){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -572,14 +556,14 @@
 
 			$control_datos_up=[
 				[
-					"campo_nombre"=>$control_tipo,
+					"campo_nombre"=>$company_tipo,
 					"campo_marcador"=>":Foto",
 					"campo_valor"=>$foto
 				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"control_id",
+				"condicion_campo"=>"company_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
@@ -594,7 +578,7 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto actualizada",
-					"texto"=>"La foto $control_tipo del item $id se actualizo correctamente...",
+					"texto"=>"La foto del negocio $id se actualizo correctamente...",
 					"icono"=>"success"
 				];
 			}else{
@@ -609,14 +593,14 @@
 		}
 
 		public function actualizarFotoMasaControlador(){
-			$id = $this->limpiarCadena($_POST['control_id']);
+			$id = $this->limpiarCadena($_POST['company_id']);
 			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE company_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el company en el sistema",
+					"texto"=>"No hemos encontrado el negocio en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -624,23 +608,22 @@
 		    }else{
 		    	$datos=$datos->fetch();
 		    }
-			$img_dir="../views/fotos/company/";
+			$img_dir="../views/fotos/company/$id/";
 			$array=[0,0,0,0];
 			$foto_array=["","","",""];
-			$num_archivos=count($_FILES['archivo']['name']);
+
 			for ($i=0; $i <= 3; $i++) {
 				//return json_encode($_FILES['archivo']['size'][$i]);
 				//exit();
 				if($_FILES['archivo']['name'][$i]!="" && $_FILES['archivo']['size'][$i]>0){
-					
 					if( $i == 0 ){
-						$array[$i] = "control_card";
+						$array[$i] = "company_card";
 					}elseif($i == 1){
-						$array[$i] = "control_banner1";
+						$array[$i] = "company_banner1";
 					}elseif($i == 2){
-						$array[$i] = "control_banner2";
+						$array[$i] = "company_banner2";
 					}elseif($i == 3){	
-						$array[$i] =  "control_banner3";
+						$array[$i] = "company_banner3";
 					}
 					if(!file_exists($img_dir)){
 						if(!mkdir($img_dir,0777)){
@@ -720,7 +703,7 @@
 						]
 					];
 					$condicion=[
-						"condicion_campo"=>"control_id",
+						"condicion_campo"=>"company_id",
 						"condicion_marcador"=>":ID",
 						"condicion_valor"=>$id
 					];
@@ -733,7 +716,7 @@
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"Error al intentar eliminar la foto del company, por favor intente nuevamente",
+								"texto"=>"Error al intentar eliminar la foto del negocio, por favor intente nuevamente",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);
@@ -742,7 +725,6 @@
 					}
 				}
 			}
-
 			if($id==$_SESSION['id']){
 				$_SESSION['foto']=$foto_array[$i];
 			}
@@ -753,15 +735,5 @@
 				"icono"=>"success"
 				];
 			return json_encode($alerta);
-
-			// end For
-			// $alerta=[
-			// 	"tipo"=>"simple",
-			// 	"titulo"=>"proceso finalizado",
-			// 	"texto"=>"Todo bien $foto_array[0] $foto_array[1] $foto_array[2] $foto_array[3]",
-			// 	"icono"=>"success"
-			// ];
-			// return json_encode($alerta);
-			// exit();
 		}
 	}

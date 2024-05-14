@@ -16,6 +16,7 @@ function loadAjaxCiudadHive(str, ciudad){
             //console.log("error", xmlhttp.readyState + ", " + xmlhttp.status);
         }
     }
+    //console.log("error ", str + " " +  ciudad);
     xmlhttp.open("GET","http://localhost/multimarket/app/views/inc/findcity.php?q="+str+"&c="+ciudad,true);
     xmlhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
     xmlhttp.send("q="+str);

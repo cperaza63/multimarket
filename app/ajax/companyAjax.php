@@ -29,8 +29,13 @@
 		if($_POST['modulo_company']=="eliminarFoto"){
 			echo $insCompany->eliminarFotoCompanyControlador();
 		}
+
+		if($_POST['modulo_company']=="actualizarFotoMasa"){
+			echo $insCompany->actualizarFotoMasaControlador();
+		}
 		
 	}else{
+		//echo "fin de sesion";
 		session_destroy();
 		header("Location: ".APP_URL."login/");
 	}

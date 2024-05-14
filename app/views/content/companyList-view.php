@@ -88,16 +88,14 @@
                                                 <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        
                                         <th>Logo</th>
-                                        <th>Negocio</th>
-                                        <th>Acción</th>
-                                        <th>Código</th>
                                         <th>Nombre</th>
+                                        <th>Acción</th>
+                                        <th>Id</th>
+                                        <th>Email</th>
+                                        <th>Telefono</th>
                                         <th>Ubicación</th>
                                         <th>Estatus</th>
-                                        <!--<th>Status</th>-->
-                                       
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -110,7 +108,6 @@
                                             }else{
                                                 $company_logo = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }
-                                            
                                             ?>
                                             <tr>
                                                 <th scope="row">
@@ -118,7 +115,6 @@
                                                         <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
                                                     </div>
                                                 </th>
-                                                
                                                 <td>
                                                     <a href="<?= APP_URL.'companyUpdate/'.$rows['company_id'].'/'?>">
                                                     <img class="rounded-circle header-profile-user" 
@@ -126,9 +122,7 @@
                                                     alt="Logo de la empresa de la tabla">
                                                     </a>
                                                 </td>
-                                                
-                                                <td><?=$rows['company_id'];?></td>
-                                                
+                                                <td><?=$rows['company_name'];?></td>
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -152,19 +146,18 @@
                                                     </div>
                                                 </td>
                                                 <td><?=$rows['company_id'];?></td>
-                                                <td><?=$rows['company_name'];?></td>
+                                                <td><?=$rows['company_email'];?></td>
+                                                <td><?=$rows['company_phone'];?></td>
                                                 <td><?=$rows['company_address'];?></td>
                                                 <td>
                                                     <?php
-                                                    if($rows['estatus'] ==1 ){
+                                                    if($rows['company_estatus'] ==1 ){
                                                         ?><span class="badge bg-success">Activo<?php
                                                     }else{
                                                         ?><span class="badge bg-danger">Inactivo<?php
                                                     }?>
                                                     </span>
                                                 </td>
-                                            <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
-                                                
                                             </tr>
                                     <?php
                                         }    
