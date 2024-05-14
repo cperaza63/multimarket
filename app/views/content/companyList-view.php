@@ -104,7 +104,7 @@
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
                                             if($rows['company_logo'] != ""){
-                                                $company_logo = APP_URL . "app/views/fotos/company/".$rows['company_logo'];
+                                                $company_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/".$rows['company_logo'];
                                             }else{
                                                 $company_logo = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }

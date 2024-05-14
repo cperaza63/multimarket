@@ -95,10 +95,11 @@ if ($mysqli->connect_errno) {
                         <div class="card mt-n6">
                             <div class="card-body p-1">
                                 <div class="text-center">
-                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
+                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                    method="POST" autocomplete="off" enctype="multipart/form-data">
                                         <!--    Campos parametros     -->
                                         <input type="hidden" name="modulo_company" value="actualizarFoto">
-                                        <input type="hidden" name="company_id" value="<?php echo $datos['company_id']; ?>">
+                                        <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
                                         <input type="hidden" name="company_tipo" value="company_logo">
 
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
@@ -164,6 +165,7 @@ if ($mysqli->connect_errno) {
                                         method="POST" autocomplete="off">
                                             <input type="hidden" name="modulo_company" value="<?= $accion; ?>">
                                             <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                            <input type="hidden" name="company_user" value="<?=$_SESSION['id']?>">
 
                                             <div class="row">
                                                 <div class="col-lg-2">
@@ -175,14 +177,17 @@ if ($mysqli->connect_errno) {
                                                 <!--end col-->
                                                 <div class="col-lg-6">
                                                     <div class="mb-3">
-                                                        <label for="lastnameInput" class="form-label">Nombre de Negocio</label>
-                                                        <input name="nombre" type="text" class="form-control" id="nombre" placeholder="Entre el nombre del item" value="<?php echo $datos['company_name']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,80}" maxlength="40" required>
+                                                        <label for="company_name" class="form-label">Nombre de Negocio</label>
+                                                        <input name="company_name" type="text" class="form-control" id="company_name" 
+                                                        placeholder="Entre el nombre del negocio" 
+                                                        value="<?php echo $datos['company_name']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,80}" 
+                                                        maxlength="40" required>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div class="mb-3">
-                                                        <label for="tipo" class="form-label">Tipo de Negocio</label>
+                                                        <label for="company_type" class="form-label">Tipo de Negocio</label>
                                                         <select name="company_type" class="form-control" required data-choices data-choices-text-unique-true id="tipo">
                                                             <option value="E" <?php if ($datos['company_type'] == 'E') echo "selected" ?>>Tienda de un Negocio</option>
                                                             <option value="U" <?php if ($datos['company_type'] == 'U') echo "selected" ?>>Mini Tienda de un Usuario</option>

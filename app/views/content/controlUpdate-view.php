@@ -9,8 +9,6 @@
             use app\controllers\controlController;
 
             $controlController = new controlController();
-            $mercados = $controlController->listarSoloTipoControlador('market');
-            //print_r($mercados);
             // por ahora actualizamos datos del administrador
             $control_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "control", "control_id", $control_id);
@@ -148,7 +146,7 @@
                                                         <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                         <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                             <option value="market" <?php if ($datos['tipo'] == 'market') echo "selected" ?>>Market Place</option>
-                                                            <option value="market" <?php if ($datos['tipo'] == 'market_cat') echo "selected" ?>>Categoría de Market Place</option>
+                                                            <option value="market_cat" <?php if ($datos['tipo'] == 'market_cat') echo "selected" ?>>Categoría de Market Place</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -159,9 +157,12 @@
                                                         <label for="unidad" class="form-label">Categoria del tipo de tabla</label>
                                                         <select name="unidad" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                             <?php
+                                                            $mercados = $controlController->listarSoloTipoControlador($datos['tipo']);
                                                             if (is_array($mercados)) {
                                                                 foreach ($mercados as $mercado) { ?>
-                                                                    <option value="<?= $mercado['control_id'] ?>"><?= ucfirst($mercado['nombre']) ?></option>
+                                                                    <option value="<?= $mercado['codigo'] ?>"
+                                                                    <?php if ($mercado['codigo'] == $datos['codigo']) echo "selected" ?>
+                                                                    ><?= ucfirst($mercado['nombre']) ?></option>
                                                             <?php
                                                                 }
                                                             }

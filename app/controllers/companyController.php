@@ -263,53 +263,27 @@
 
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarCompanyControlador(){
-
-			$control_id=$this->limpiarCadena($_POST['control_id']);
-			$codigo = $this->limpiarCadena($_POST['codigo']);
-			$nombre = $this->limpiarCadena($_POST['nombre']);
-			$tipo=$this->limpiarCadena($_POST['tipo']);
-			$estatus=$this->limpiarCadena($_POST['estatus']);
+			# Almacenando datos#
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+		    $company_name = $this->limpiarCadena($_POST['company_name']);
+		    $company_type = $this->limpiarCadena($_POST['company_type']);
+			$company_user = $this->limpiarCadena($_POST['company_user']);
+		    $company_description = $this->limpiarCadena($_POST['company_description']);
+		    $company_address = $this->limpiarCadena($_POST['company_address']);
+		    $company_country = $this->limpiarCadena($_POST['company_country']);
+		    $company_state = $this->limpiarCadena($_POST['company_state']);
+			$company_city = $this->limpiarCadena($_POST['company_city']);
+			$company_email = $this->limpiarCadena($_POST['company_email']);
+			$company_estatus = $this->limpiarCadena($_POST['company_estatus']);
+			$company_phone = $this->limpiarCadena($_POST['company_phone']);
+			$company_rif = $this->limpiarCadena($_POST['company_rif']);
+			//$company_city = 0;
 			
-			//return json_encode($estatus);
-			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$control_id'");
-		    if($datos->rowCount()<=0){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el item de la tabla en el sistema",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }else{
-		    	$datos=$datos->fetch();
-			}
-		    
-			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,45}",$codigo)){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al registrar Control",
-					"texto"=>"El codigo $codigo no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,80}",$nombre)){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al registrar Control",
-					"texto"=>"El nombre del $codigo no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-
-		    # Verificando campos obligatorios #
-		    if($codigo=="" || $nombre=="" || $tipo=="" || $estatus=="" 
+		    # Verificando campos obligatorios 
+		    if($company_name=="" || $company_type=="" || $company_email=="" || $company_description=="" 
+			|| $company_address=="" || $company_country=="" || $company_id == "" 
+			|| $company_state=="" || $company_city=="" || $company_estatus=="" || $company_phone=="" 
+			|| $company_rif==""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -321,51 +295,109 @@
 		        exit();
 		    }
 
-            $control_datos_up=[
+			if($this->verificarDatos("[0-9$-]{7,100}",$company_phone)){
+		    	$alerta=[
+				"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"El TELEFONO no coincide con el formato solicitado",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
+			if(!filter_var($company_email, FILTER_VALIDATE_EMAIL)){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error en la entrada de datos",
+					"texto"=>"Ha ingresado un correo electrónico no valido",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			} 
+			
+		    $company_datos_reg=[
 				[
-					"campo_nombre"=>"codigo",
-					"campo_marcador"=>":Codigo",
-					"campo_valor"=>$codigo
+					"campo_nombre"=>"company_name",
+					"campo_marcador"=>":Company_name",
+					"campo_valor"=>$company_name
 				],
 				[
-					"campo_nombre"=>"nombre",
-					"campo_marcador"=>":Nombre",
-					"campo_valor"=>$nombre
+					"campo_nombre"=>"company_email",
+					"campo_marcador"=>":Company_email",
+					"campo_valor"=>$company_email
 				],
 				[
-					"campo_nombre"=>"tipo",
-					"campo_marcador"=>":Tipo",
-					"campo_valor"=>$tipo
+					"campo_nombre"=>"company_description",
+					"campo_marcador"=>":Company_description",
+					"campo_valor"=>$company_description
 				],
 				[
-					"campo_nombre"=>"estatus",
-					"campo_marcador"=>":Estatus",
-					"campo_valor"=>$estatus
+					"campo_nombre"=>"company_address",
+					"campo_marcador"=>":Company_address",
+					"campo_valor"=>$company_address
+				],
+				[
+					"campo_nombre"=>"company_estatus",
+					"campo_marcador"=>":Company_estatus",
+					"campo_valor"=>$company_estatus
+				],
+				[
+					"campo_nombre"=>"company_phone",
+					"campo_marcador"=>":Company_phone",
+					"campo_valor"=>$company_phone
+				],
+				[
+					"campo_nombre"=>"company_rif",
+					"campo_marcador"=>":Company_rif",
+					"campo_valor"=>$company_rif
+				],
+				[
+					"campo_nombre"=>"company_country",
+					"campo_marcador"=>":Company_country",
+					"campo_valor"=>$company_country
+				],
+				[
+					"campo_nombre"=>"company_state",
+					"campo_marcador"=>":Company_state",
+					"campo_valor"=>$company_state
+				],
+				[
+					"campo_nombre"=>"company_city",
+					"campo_marcador"=>":Company_city",
+					"campo_valor"=>$company_city
+				],
+				[
+					"campo_nombre"=>"company_user",
+					"campo_marcador"=>":Company_user",
+					"campo_valor"=>$company_user
 				]
 			];
-
 			$condicion=[
-				"condicion_campo"=>"control_id",
-				"condicion_marcador"=>":Control_id",
-				"condicion_valor"=>$control_id
+				"condicion_campo"=>"company_id",
+				"condicion_marcador"=>":Company_id",
+				"condicion_valor"=>$company_id
 			];
 
-			if($this->actualizarDatos("company", $control_datos_up, $condicion)){
+			//return json_encode($company_datos_reg);
+			//exit();
+
+			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
-				"texto"=>"Los datos de la tabla de company ".$datos['tipo']." se actualizaron correctamente",
+				"texto"=>"Los datos de la tabla de control ".$company_name." se actualizaron correctamente",
 				"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos de la tabla de company ".$datos['tipo'].", por favor intente nuevamente",
+				"texto"=>"No hemos podido actualizar los datos de la tabla de control ".$company_name.", por favor intente nuevamente",
 				"icono"=>"error"
 			];
 			}
-
 			return json_encode($alerta);
 		}
 
