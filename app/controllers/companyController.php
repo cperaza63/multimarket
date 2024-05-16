@@ -564,31 +564,20 @@
 
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarZonaHorariaControlado(){
-			# Almacenando datos#
 			$company_id=$this->limpiarCadena($_POST['company_id']);
-			if(isset($_POST['aplica_dia'])){
-				$aplica_horario="dia";
-			}else{
-				if(isset($_POST['aplica_semana'])){
-					$aplica_horario="semana";
-				}else{
-					$alerta=[
-						"tipo"=>"simple",
-						"titulo"=>"Error en la entrada de datos",
-						"texto"=>"Debe seleccionar un tipo de acción",
-						"icono"=>"error"
-					];
-					return json_encode($alerta);
-					exit();
-				}
-			}
-
 			$dia_semana = $this->limpiarCadena($_POST['dia_semana']);
 			$hora_desde = $this->limpiarCadena($_POST['hora_desde']);
 			$hora_hasta = $this->limpiarCadena($_POST['hora_hasta']);
-			# Verificando campos obligatorios 
-		    if($hora_desde=="" || $hora_hasta=="" 
-			){
+			$aplica_submit = $this->limpiarCadena($_POST['submit']);
+			$company_horario_desde = explode("|", $this->limpiarCadena($_POST['company_horario_desde']));
+			$company_horario_hasta = explode("|", $this->limpiarCadena($_POST['company_horario_hasta']));
+			//return json_encode($company_horario_hasta);
+		    //exit();
+			$vector_desde = [];
+			$vector_hasta = [];
+			//
+			if($dia_semana=="" || $hora_desde=="" || $hora_hasta=="" 
+			|| $company_horario_desde=="" || $company_horario_hasta=="") {
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
@@ -598,34 +587,68 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-			$company_horario_desde = explode("|", $this->limpiarCadena($_POST['company_horario_desde']));
-			$company_horario_hasta = explode("|", $this->limpiarCadena($_POST['company_horario_hasta']));
-			
-			// separo los dias en un vector
-			$vector_desde = [];
-			$vector_desde = [];
+			if($aplica_submit != "dia" && $aplica_submit != "semana"){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error en la entrada de datos",
+					"texto"=>"Debe presioar el button tipo de acción día o semana",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
 
-			if ($aplica_horario== "dia"){
+			if($aplica_submit == "dia"){
+				$cadena_desde = "";
+				$cadena_hasta = "";
+				for($i=0;$i<=6;$i++ ){
+					if($i == $dia_semana){
+						$vector_desde[$i] = $hora_desde;
+						$vector_hasta[$i] = $hora_hasta;
+					}else{
+						$vector_desde[$i] = $company_horario_desde[$i];
+						$vector_hasta[$i] = $company_horario_hasta[$i];
+					}
+					$cadena_desde = $cadena_desde . "|". $vector_desde[$i];
+					$cadena_hasta = $cadena_hasta . "|". $vector_hasta[$i];
+				}
+				$cadena_desde = substr($cadena_desde, 1, 100);
+				$cadena_hasta = substr($cadena_hasta, 1, 100);
+				//echo $cadena; //retorna 1,5,9,6,8
 				$company_datos_reg=[
 					[
-						"campo_nombre"=>"company_red1",
-						"campo_marcador"=>":Company_red1",
-						"campo_valor"=>$company_red1
+						"campo_nombre"=>"company_horario_desde",
+						"campo_marcador"=>":Company_horario_desde",
+						"campo_valor"=>$cadena_desde
 					],
 					[
-						"campo_nombre"=>"company_iva",
-						"campo_marcador"=>":Company_iva",
-						"campo_valor"=>$company_iva
-					],
-					[
-						"campo_nombre"=>"company_red2",
-						"campo_marcador"=>":Company_red2",
-						"campo_valor"=>$company_red2
-					],
-					
+						"campo_nombre"=>"company_horario_hasta",
+						"campo_marcador"=>":Company_horario_hasta",
+						"campo_valor"=>$cadena_hasta
+					]
 				];
 			}else{
-
+				$cadena_desde = "";
+				$cadena_hasta = "";
+				for($i=0;$i<=6;$i++ ){
+					$cadena_desde = $cadena_desde . "|". $hora_desde;
+					$cadena_hasta = $cadena_hasta . "|". $hora_hasta;
+				}
+				$cadena_desde = substr($cadena_desde, 1, 100);
+				$cadena_hasta = substr($cadena_hasta, 1, 100);
+				//echo $cadena; //retorna 1,5,9,6,8
+				$company_datos_reg=[
+					[
+						"campo_nombre"=>"company_horario_desde",
+						"campo_marcador"=>":Company_horario_desde",
+						"campo_valor"=>$cadena_desde
+					],
+					[
+						"campo_nombre"=>"company_horario_hasta",
+						"campo_marcador"=>":Company_horario_hasta",
+						"campo_valor"=>$cadena_hasta
+					]
+				];
 			}
 
 			$condicion=[
@@ -633,9 +656,6 @@
 				"condicion_marcador"=>":Company_id",
 				"condicion_valor"=>$company_id
 			];
-
-			return json_encode($company_datos_reg);
-			exit();
 
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[

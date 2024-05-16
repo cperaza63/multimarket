@@ -145,7 +145,9 @@ if ($mysqli->connect_errno) {
                     <?php
                     //echo "==". $_SESSION["tab"]; 
                     $tab1="";$tab2="";$tab3="";$tab4="";$tab5="";$tab6="";
-                    
+                    if(!isset($_SESSION["tab"])){
+                        $_SESSION["tab"]="personaldetails";
+                    }
                     if($_SESSION["tab"]=="personaldetails") {
                         ?><script>location.href="#personaldetails";</script><?php
                         $tab1 = "active";
@@ -747,13 +749,13 @@ if ($mysqli->connect_errno) {
                                                             <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
                                                             <select name="dia_semana" class="form-control" 
                                                                 data-choices data-choices-text-unique-true id="tipo">
-                                                                <option value="lunes">Lunes</option>
-                                                                <option value="martes">Martes</option>
-                                                                <option value="miercoles">Miércoles</option>
-                                                                <option value="jueves">Jueves</option>
-                                                                <option value="viernes">Viernes</option>
-                                                                <option value="sabado">Sábado</option>
-                                                                <option value="domingo">Domingo</option>
+                                                                <option value="0">Lunes</option>
+                                                                <option value="1">Martes</option>
+                                                                <option value="2">Miércoles</option>
+                                                                <option value="3">Jueves</option>
+                                                                <option value="4">Viernes</option>
+                                                                <option value="5">Sábado</option>
+                                                                <option value="6">Domingo</option>
                                                             </select>
                                                         </div>
                                                     </div>
@@ -815,8 +817,8 @@ if ($mysqli->connect_errno) {
                                                         <div class="mb-3">
                                                         <label for="company_slogan" class="form-label">
                                                             <strong>Acción</strong></label><br>
-                                                            <button type="submit" name="aplica_dia" class="btn btn-info">Aplica al dia</button>
-                                                            <button type="submit" name="aplica_semana" class="btn btn-danger">Aplica a semana</button>
+                                                            <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                                            <button type="submit" name="submit" value="semana" class="btn btn-danger">Aplica a semana</button>
                                                         </div>
                                                     </div>
 
