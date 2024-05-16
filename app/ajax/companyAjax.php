@@ -33,7 +33,9 @@
 		if($_POST['modulo_company']=="actualizarMasInformacion"){
 			echo $insCompany->actualizarMasInformacionControlador();
 		}
-
+		if($_POST['modulo_company']=="actualizarZonaHoraria"){
+			echo $insCompany->actualizarZonaHorariaControlado();
+		}
 		if($_POST['modulo_company']=="eliminarFoto"){
 			echo $insCompany->eliminarFotoCompanyControlador();
 		}

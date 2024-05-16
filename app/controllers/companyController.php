@@ -562,6 +562,99 @@
 			return json_encode($alerta);
 		}
 
+		/*----------  Controlador actualizar company  ----------*/
+		public function actualizarZonaHorariaControlado(){
+			# Almacenando datos#
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			if(isset($_POST['aplica_dia'])){
+				$aplica_horario="dia";
+			}else{
+				if(isset($_POST['aplica_semana'])){
+					$aplica_horario="semana";
+				}else{
+					$alerta=[
+						"tipo"=>"simple",
+						"titulo"=>"Error en la entrada de datos",
+						"texto"=>"Debe seleccionar un tipo de acción",
+						"icono"=>"error"
+					];
+					return json_encode($alerta);
+					exit();
+				}
+			}
+
+			$dia_semana = $this->limpiarCadena($_POST['dia_semana']);
+			$hora_desde = $this->limpiarCadena($_POST['hora_desde']);
+			$hora_hasta = $this->limpiarCadena($_POST['hora_hasta']);
+			# Verificando campos obligatorios 
+		    if($hora_desde=="" || $hora_hasta=="" 
+			){
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			$company_horario_desde = explode("|", $this->limpiarCadena($_POST['company_horario_desde']));
+			$company_horario_hasta = explode("|", $this->limpiarCadena($_POST['company_horario_hasta']));
+			
+			// separo los dias en un vector
+			$vector_desde = [];
+			$vector_desde = [];
+
+			if ($aplica_horario== "dia"){
+				$company_datos_reg=[
+					[
+						"campo_nombre"=>"company_red1",
+						"campo_marcador"=>":Company_red1",
+						"campo_valor"=>$company_red1
+					],
+					[
+						"campo_nombre"=>"company_iva",
+						"campo_marcador"=>":Company_iva",
+						"campo_valor"=>$company_iva
+					],
+					[
+						"campo_nombre"=>"company_red2",
+						"campo_marcador"=>":Company_red2",
+						"campo_valor"=>$company_red2
+					],
+					
+				];
+			}else{
+
+			}
+
+			$condicion=[
+				"condicion_campo"=>"company_id",
+				"condicion_marcador"=>":Company_id",
+				"condicion_valor"=>$company_id
+			];
+
+			return json_encode($company_datos_reg);
+			exit();
+
+			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Control actualizado",
+				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
+				"icono"=>"success"
+				];
+			}else{
+				$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"Ocurrió un error inesperado",
+				"texto"=>"No hemos podido actualizar los datos de información adicional ".$company_id.", por favor intente nuevamente",
+				"icono"=>"error"
+			];
+			}
+			return json_encode($alerta);
+		}
+
 		/*----------  Controlador eliminar foto company  ----------*/
 		public function eliminarFotoCompanyControlador(){
 

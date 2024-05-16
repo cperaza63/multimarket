@@ -87,7 +87,6 @@ if ($mysqli->connect_errno) {
                 $q = $state_company;
                 $c = $city_company;
             }
-
             //print_r($company_logo);
             //exit();
             if ($pasa == 1) {
@@ -143,25 +142,31 @@ if ($mysqli->connect_errno) {
                         </div>
                     </div>
                     <!--end col-->
-                    <?php 
+                    <?php
+                    //echo "==". $_SESSION["tab"]; 
                     $tab1="";$tab2="";$tab3="";$tab4="";$tab5="";$tab6="";
+                    
                     if($_SESSION["tab"]=="personaldetails") {
-                        $tab1 = "active";
                         ?><script>location.href="#personaldetails";</script><?php
+                        $tab1 = "active";
                     }else if($_SESSION["tab"]=="multimedia"){
-                        $tab2 = "active";
                         ?><script>location.href="#multimedia";</script><?php
+                        $tab2 = "active";
                     }else if($_SESSION["tab"]=="masinformacion"){
-                        $tab = "active";
-                    }else if($_SESSION["tab"]=="preferencias"){
+                        ?><script>location.href="#masinformacion";</script><?php
+                        $tab3 = "active";
+                    }else if($_SESSION["tab"]=="horario"){
+                        ?><script>location.href="#horario";</script><?php
                         $tab4 = "active";
                     }else if($_SESSION["tab"]=="ubicacion"){
+                        ?><script>location.href="#ubicacion";</script><?php
                         $tab5 = "active";
                     }else if($_SESSION["tab"]=="contratos"){
+                        ?><script>location.href="#contratos";</script><?php
                         $tab6 = "active";
                     }else{
-                        $tab1 = "active";
                         ?><script>location.href="#personaldetails";</script><?php
+                        $tab1 = "active";
                     }
                     ?>
                     <div class="col-xxl-9">
@@ -187,8 +192,8 @@ if ($mysqli->connect_errno) {
                                     </li>
 
                                     <li li class="nav-item">
-                                        <a class="nav-link <?=$tab4?>" id="tab-header-4" data-bs-toggle="tab" href="#preferencias" role="tab">
-                                            <i class="far fa-user"></i> Preferencias
+                                        <a class="nav-link <?=$tab4?>" id="tab-header-4" data-bs-toggle="tab" href="#horario" role="tab">
+                                            <i class="far fa-user"></i> Horario
                                         </a>
                                     </li>
 
@@ -357,7 +362,7 @@ if ($mysqli->connect_errno) {
                                                 <div class="col-lg-12">
                                                     <div class="hstack gap-2 justify-content-end">
                                                         <button type="submit" class="btn btn-primary">Actualizar el Negocio</button>
-                                                        <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Cancelar</a>
+                                                        <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
 
                                                     </div>
                                                     <p class="has-text-centered pt-6">
@@ -391,6 +396,7 @@ if ($mysqli->connect_errno) {
                                                             <input class="form-control" type="file" name="archivo[4]"></label>
                                                         <br>
                                                         <button class="btn btn-success" type="submit">Enviar</button>
+                                                        <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
                                                     </div>
                                                 </form>
                                                 <hr class="my-4">
@@ -697,6 +703,142 @@ if ($mysqli->connect_errno) {
                                     </div>
                                     <!--end tab-pane-->
 
+                                    <div class="tab-pane  <?=$tab4?>" id="horario" role="tabpanel">
+                                        <div class="row">
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                            method="POST" autocomplete="off">
+                                            <input type="hidden" name="modulo_company" value="actualizarZonaHoraria">
+                                            <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                            <input type="hidden" name="company_user" value="<?= $_SESSION['id'] ?>">
+                                            <input type="hidden" name="tab" value="horario">
+                                            <input type="hidden" name="company_horario_desde" value="<?=$datos['company_horario_desde']?>">
+                                            <input type="hidden" name="company_horario_hasta" value="<?=$datos['company_horario_hasta']?>">
+
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-">
+                                                            <label for="codigo" class="form-label">Código Negocio</label>
+                                                            <input name="codigo" type="text" class="form-control" name="codigo" 
+                                                            id="company_id" value="<?php echo $datos['company_id']; ?>" maxlength="40" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="company_name" class="form-label">Nombre del Negocio</label>
+                                                            <input name="company_name" type="text" class="form-control" 
+                                                            id="company_name" value="<?php echo $datos['company_name']; ?>" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="company_type" class="form-label">Tipo de Negocio</label>
+                                                            <select name="company_type" class="form-control" disabled data-choices data-choices-text-unique-true id="tipo">
+                                                                <option value="E" <?php if ($datos['company_type'] == 'E') echo "selected" ?>>Tienda de un Negocio</option>
+                                                                <option value="U" <?php if ($datos['company_type'] == 'U') echo "selected" ?>>Mini Tienda de un Usuario</option>
+                                                                <option value="C" <?php if ($datos['company_type'] == 'C') echo "selected" ?>>Corporación (Múltiples tiendas)</option>
+                                                                <option value="D" <?php if ($datos['company_type'] == 'D') echo "selected" ?>>Servicio de Delivery a tiendas</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <hr>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
+                                                            <select name="dia_semana" class="form-control" 
+                                                                data-choices data-choices-text-unique-true id="tipo">
+                                                                <option value="lunes">Lunes</option>
+                                                                <option value="martes">Martes</option>
+                                                                <option value="miercoles">Miércoles</option>
+                                                                <option value="jueves">Jueves</option>
+                                                                <option value="viernes">Viernes</option>
+                                                                <option value="sabado">Sábado</option>
+                                                                <option value="domingo">Domingo</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-3">
+                                                        <div class="mb-3">
+                                                            <label for="hora_desde" class="form-label">
+                                                            <strong>Hora Desde</strong></label>
+                                                            <select name="hora_desde" class="form-control" 
+                                                                data-choices data-choices-text-unique-true id="tipo">
+                                                                <?php
+                                                                    $tabla_horas=[];
+                                                                    $tabla_minutos=["00","15","30","45"];
+                                                                    $k=0;
+                                                                    for ($i=0; $i <= 23; $i++) { 
+                                                                        if($i<10) {$i_text = "0".$i;} else {$i_text = "".$i;};
+                                                                        for ($j=0; $j <= 3; $j++) {
+                                                                            $k++; 
+                                                                            $tabla_horas[$k]=$i_text.":".$tabla_minutos[$j];
+                                                                            ?>
+                                                                            <option value="<?=$tabla_horas[$k]?>"
+                                                                            <?=$tabla_horas[$k]== "08:00" ? "selected": "";?>
+                                                                            ><?="Entrando: " . $tabla_horas[$k]?></option><?php
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3">
+                                                        <div class="mb-3">
+                                                            <label for="hora_hasta" class="form-label">
+                                                            <strong>Hora Hasta</strong></label>
+                                                            <select name="hora_hasta" class="form-control" 
+                                                                data-choices data-choices-text-unique-true id="tipo">
+                                                                <?php
+                                                                    $tabla_horas=[];
+                                                                    $tabla_minutos=["00","15","30","45"];
+                                                                    $k=0;
+                                                                    for ($i=0; $i <= 23; $i++) { 
+                                                                        if($i<10) {$i_text = "0".$i;} else {$i_text = "".$i;};
+                                                                        for ($j=0; $j <= 3; $j++) {
+                                                                            $k++; 
+                                                                            $tabla_horas[$k]=$i_text.":".$tabla_minutos[$j];
+                                                                            ?>
+                                                                            <option value="<?=$tabla_horas[$k]?>"
+                                                                            <?=$tabla_horas[$k]== "18:00" ? "selected": "";?>
+                                                                            ><?="Saliendo: " . $tabla_horas[$k]?></option><?php
+                                                                        }
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                        <label for="company_slogan" class="form-label">
+                                                            <strong>Acción</strong></label><br>
+                                                            <button type="submit" name="aplica_dia" class="btn btn-info">Aplica al dia</button>
+                                                            <button type="submit" name="aplica_semana" class="btn btn-danger">Aplica a semana</button>
+                                                        </div>
+                                                    </div>
+
+                                                    <hr>
+                                                    <div class="col-lg-12">
+                                                        <div class="hstack gap-2 justify-content-end">
+                                                            <button type="submit" class="btn btn-primary">Actualizar Mas Información</button>
+                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                        </div>
+                                                        <p class="has-text-centered pt-6">
+                                                            <small>Los campos marcados con
+                                                                <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                        </p>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                            <!--end tab-pane-->
+                                        </div>
+                                    </div>
+                                    <!--end tab-pane-->
 
                                 </div>
                                 <!--end tab-pane-->
