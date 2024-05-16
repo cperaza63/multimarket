@@ -545,16 +545,15 @@ if ($mysqli->connect_errno) {
                                                                     Red Social #
                                                                     <?php if($i==0){ echo"</strong>";}?>
                                                                 </label>
-                                                                <select name="company_red<?=$i?>" class="form-control" required data-choices data-choices-text-unique-true 
+                                                                <select name="company_red<?=$i+1?>" class="form-control" required data-choices data-choices-text-unique-true 
                                                                     id="company_red<?=$i+1;?>">
-                                                                    <option value="">Seleccione Red</option>
-                                                                    <option value="facebook" <?php if ($datos['company_type'] == 'facebook') echo "selected" ?>>facebook</option>
-                                                                    <option value="instagram" <?php if ($datos['company_type'] == 'instagram') echo "selected" ?>>instagram</option>
-                                                                    <option value="twitterx" <?php if ($datos['company_type'] == 'twitterx') echo "selected" ?>>twitterx</option>
-                                                                    <option value="tiktok" <?php if ($datos['company_type'] == 'tiktok') echo "selected" ?>>tiktok</option>
-                                                                    <option value="youtube" <?php if ($datos['company_type'] == 'youtube') echo "selected" ?>>youtube</option>
-                                                                    <option value="pinterest" <?php if ($datos['company_type'] == 'pinterest') echo "selected" ?>>pinterest</option>
-                                                                    <option value="linkedin" <?php if ($datos['company_type'] == 'linkedin') echo "selected" ?>>linkedin</option>
+                                                                    <option value="facebook" <?php if ($datos['company_red'.($i+1)] == 'facebook') echo "selected" ?>>facebook</option>
+                                                                    <option value="instagram" <?php if ($datos['company_red'.($i+1)] == 'instagram') echo "selected" ?>>instagram</option>
+                                                                    <option value="twitterx" <?php if ($datos['company_red'.($i+1)] == 'twitterx') echo "selected" ?>>twitterx</option>
+                                                                    <option value="tiktok" <?php if ($datos['company_red'.($i+1)] == 'tiktok') echo "selected" ?>>tiktok</option>
+                                                                    <option value="youtube" <?php if ($datos['company_red'.($i+1)] == 'youtube') echo "selected" ?>>youtube</option>
+                                                                    <option value="pinterest" <?php if ($datos['company_red'.($i+1)] == 'pinterest') echo "selected" ?>>pinterest</option>
+                                                                    <option value="linkedin" <?php if ($datos['company_red'.($i+1)] == 'linkedin') echo "selected" ?>>linkedin</option>
                                                                 </select>
                                                             </div>
                                                         </div>
@@ -572,7 +571,7 @@ if ($mysqli->connect_errno) {
                                                     }
                                                     ?>
                                                     <hr>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-5">
                                                         <div class="mb-3">
                                                             <label for="company_slogan" class="form-label">
                                                             <strong>Slogan del Negocio</strong></label>
@@ -582,12 +581,21 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-5">
                                                         <div class="mb-3">
                                                             <label for="company_web" class="form-label">Página Web del negocio</label>
                                                             <input name="company_web" type="url" class="form-control" 
                                                             value="<?= $datos["company_web"] ?>" id="company_web" 
                                                             placeholder="Entre Pagina web del negocio" maxlength="240" required>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="company_iva" class="form-label">% de IVA</label>
+                                                            <input name="company_iva" type="number" step='0.01' class="form-control" 
+                                                            value="<?= $datos["company_iva"] ?>" id="company_iva" 
+                                                            placeholder="Ejemplo:16.00%" maxlength="20" required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->

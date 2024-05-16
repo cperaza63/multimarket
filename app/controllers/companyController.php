@@ -405,25 +405,29 @@
 		public function actualizarMasInformacionControlador(){
 			# Almacenando datos#
 			$company_id=$this->limpiarCadena($_POST['company_id']);
-		    $company_name = $this->limpiarCadena($_POST['company_name']);
-		    $company_type = $this->limpiarCadena($_POST['company_type']);
-			$company_user = $this->limpiarCadena($_POST['company_user']);
-		    $company_description = $this->limpiarCadena($_POST['company_description']);
-		    $company_address = $this->limpiarCadena($_POST['company_address']);
-		    $company_country = $this->limpiarCadena($_POST['company_country']);
-		    $company_state = $this->limpiarCadena($_POST['company_state']);
-			$company_city = $this->limpiarCadena($_POST['company_city']);
-			$company_email = $this->limpiarCadena($_POST['company_email']);
-			$company_estatus = $this->limpiarCadena($_POST['company_estatus']);
-			$company_phone = $this->limpiarCadena($_POST['company_phone']);
-			$company_rif = $this->limpiarCadena($_POST['company_rif']);
-			//$company_city = 0;
-			
-		    # Verificando campos obligatorios 
-		    if($company_name=="" || $company_type=="" || $company_email=="" || $company_description=="" 
-			|| $company_address=="" || $company_country=="" || $company_id == "" 
-			|| $company_state=="" || $company_city=="" || $company_estatus=="" || $company_phone=="" 
-			|| $company_rif==""
+			$company_iva = $this->limpiarCadena($_POST['company_iva']);
+			$company_red1 = $this->limpiarCadena($_POST['company_red1']);
+			$company_red_valor1 = $this->limpiarCadena($_POST['company_red_valor1']);
+			$company_red2 = $this->limpiarCadena($_POST['company_red2']);
+			$company_red_valor2 = $this->limpiarCadena($_POST['company_red_valor2']);
+			$company_red3 = $this->limpiarCadena($_POST['company_red3']);
+			$company_red_valor3 = $this->limpiarCadena($_POST['company_red_valor3']);
+		    $company_slogan = $this->limpiarCadena($_POST['company_slogan']);
+		    $company_web = $this->limpiarCadena($_POST['company_web']);
+		    $company_servicio_email = $this->limpiarCadena($_POST['company_servicio_email']);
+			$company_servicio_email_envio = $this->limpiarCadena($_POST['company_servicio_email_envio']);
+			$company_servicio_email_password = $this->limpiarCadena($_POST['company_servicio_email_password']);
+			$company_servicio_email_puerto = $this->limpiarCadena($_POST['company_servicio_email_puerto']);
+			$company_youtube_index = $this->limpiarCadena($_POST['company_youtube_index']);
+		    $company_logo_witdh= $this->limpiarCadena($_POST['company_logo_witdh']);
+			$company_logo_height= $this->limpiarCadena($_POST['company_logo_height']);
+			# Verificando campos obligatorios 
+		    if($company_red1=="" || $company_red_valor1=="" || $company_red2=="" || $company_iva=="" 
+			|| $company_red_valor2=="" || $company_red3=="" || $company_red_valor3==""
+			|| $company_web=="" || $company_slogan=="" || $company_youtube_index=="" 
+			|| $company_logo_witdh==""|| $company_logo_height=="" 
+			|| $company_servicio_email=="" || $company_servicio_email_envio=="" 
+			|| $company_servicio_email_password=="" || $company_servicio_email_puerto=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -434,19 +438,8 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-
-			if($this->verificarDatos("[0-9$-]{7,100}",$company_phone)){
-		    	$alerta=[
-				"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El TELEFONO no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
 			
-			if(!filter_var($company_email, FILTER_VALIDATE_EMAIL)){
+			if(!filter_var($company_servicio_email_envio, FILTER_VALIDATE_EMAIL)){
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error en la entrada de datos",
@@ -457,61 +450,89 @@
 				exit();
 			} 
 			
+			//return json_encode($company_iva);
+			//exit();
+
 		    $company_datos_reg=[
 				[
-					"campo_nombre"=>"company_name",
-					"campo_marcador"=>":Company_name",
-					"campo_valor"=>$company_name
+					"campo_nombre"=>"company_red1",
+					"campo_marcador"=>":Company_red1",
+					"campo_valor"=>$company_red1
 				],
 				[
-					"campo_nombre"=>"company_email",
-					"campo_marcador"=>":Company_email",
-					"campo_valor"=>$company_email
+					"campo_nombre"=>"company_iva",
+					"campo_marcador"=>":Company_iva",
+					"campo_valor"=>$company_iva
 				],
 				[
-					"campo_nombre"=>"company_description",
-					"campo_marcador"=>":Company_description",
-					"campo_valor"=>$company_description
+					"campo_nombre"=>"company_red2",
+					"campo_marcador"=>":Company_red2",
+					"campo_valor"=>$company_red2
 				],
 				[
-					"campo_nombre"=>"company_address",
-					"campo_marcador"=>":Company_address",
-					"campo_valor"=>$company_address
+					"campo_nombre"=>"company_red3",
+					"campo_marcador"=>":Company_red3",
+					"campo_valor"=>$company_red3
 				],
 				[
-					"campo_nombre"=>"company_estatus",
-					"campo_marcador"=>":Company_estatus",
-					"campo_valor"=>$company_estatus
+					"campo_nombre"=>"company_red_valor1",
+					"campo_marcador"=>":Company_red_valor1",
+					"campo_valor"=>$company_red_valor1
 				],
 				[
-					"campo_nombre"=>"company_phone",
-					"campo_marcador"=>":Company_phone",
-					"campo_valor"=>$company_phone
+					"campo_nombre"=>"company_red_valor2",
+					"campo_marcador"=>":Company_valor2",
+					"campo_valor"=>$company_red_valor2
 				],
 				[
-					"campo_nombre"=>"company_rif",
-					"campo_marcador"=>":Company_rif",
-					"campo_valor"=>$company_rif
+					"campo_nombre"=>"company_red_valor3",
+					"campo_marcador"=>":Company_red_valor3",
+					"campo_valor"=>$company_red_valor3
 				],
 				[
-					"campo_nombre"=>"company_country",
-					"campo_marcador"=>":Company_country",
-					"campo_valor"=>$company_country
+					"campo_nombre"=>"company_web",
+					"campo_marcador"=>":Company_web",
+					"campo_valor"=>$company_web
 				],
 				[
-					"campo_nombre"=>"company_state",
-					"campo_marcador"=>":Company_state",
-					"campo_valor"=>$company_state
+					"campo_nombre"=>"company_slogan",
+					"campo_marcador"=>":Company_slogan",
+					"campo_valor"=>$company_slogan
 				],
 				[
-					"campo_nombre"=>"company_city",
-					"campo_marcador"=>":Company_city",
-					"campo_valor"=>$company_city
+					"campo_nombre"=>"company_logo_witdh",
+					"campo_marcador"=>":Company_logo_witdh",
+					"campo_valor"=>$company_logo_witdh
 				],
 				[
-					"campo_nombre"=>"company_user",
-					"campo_marcador"=>":Company_user",
-					"campo_valor"=>$company_user
+					"campo_nombre"=>"company_logo_height",
+					"campo_marcador"=>":Company_logo_height",
+					"campo_valor"=>$company_logo_height
+				],
+				[
+					"campo_nombre"=>"company_youtube_index",
+					"campo_marcador"=>":Company_youtube_index",
+					"campo_valor"=>$company_youtube_index
+				],
+				[
+					"campo_nombre"=>"company_servicio_email",
+					"campo_marcador"=>":Company_servicio_email",
+					"campo_valor"=>$company_servicio_email
+				],
+				[
+					"campo_nombre"=>"company_servicio_email_envio",
+					"campo_marcador"=>":Company_servicio_email_envio",
+					"campo_valor"=>$company_servicio_email_envio
+				],
+				[
+					"campo_nombre"=>"company_servicio_email_password",
+					"campo_marcador"=>":Company_servicio_email_password",
+					"campo_valor"=>$company_servicio_email_password
+				],
+				[
+					"campo_nombre"=>"company_servicio_email_puerto",
+					"campo_marcador"=>":Company_servicio_email_puerto",
+					"campo_valor"=>$company_servicio_email_puerto
 				]
 			];
 			$condicion=[
@@ -520,21 +541,21 @@
 				"condicion_valor"=>$company_id
 			];
 
-			//return json_encode($company_datos_reg);
-			//exit();
+			return json_encode($company_datos_reg);
+			exit();
 
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
-				"texto"=>"Los datos de la tabla de control ".$company_name." se actualizaron correctamente",
+				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 				"tipo"=>"simple",
 				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos de la tabla de control ".$company_name.", por favor intente nuevamente",
+				"texto"=>"No hemos podido actualizar los datos de información adicional ".$company_id.", por favor intente nuevamente",
 				"icono"=>"error"
 			];
 			}
