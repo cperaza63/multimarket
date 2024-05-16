@@ -5,6 +5,10 @@
 	 
 	use app\controllers\controlController;
 
+	if(isset($_POST['tab'])){
+		$_SESSION['tab'] = $_POST['tab']; 
+	}
+	
 	if(isset($_POST['modulo_control'])){
 
 		

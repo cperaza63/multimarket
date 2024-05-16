@@ -65,7 +65,23 @@ if ($mysqli -> connect_errno) {
             }
             //print_r($usuario_foto);
             //exit();
-            if($pasa == 1){
+
+            echo $_SESSION["tab"];
+            if($pasa == 1){ 
+                $tab1="";$tab2="";$tab3="";
+                if($_SESSION["tab"]=="personaldetails") {
+                    $tab1 = "active";
+                    ?><script>location.href="#personaldetails";</script><?php
+                }else if($_SESSION["tab"]=="changepassword"){
+                    $tab2 = "active";
+                    ?><script>location.href="#changepassword";</script><?php
+                }else if($_SESSION["tab"]=="miscompras"){
+                    $tab = "active";
+                    ?><script>location.href="#miscompras";</script><?php
+                }else{
+                    $tab1 = "active";
+                    ?><script>location.href="#personaldetails";</script><?php
+                }
             ?>
                 <div class="row">
                     <div class="col-xxl-3">
@@ -77,7 +93,6 @@ if ($mysqli -> connect_errno) {
                                         <!--    Campos parametros     -->
                                         <input type="hidden" name="modulo_usuario" value="actualizarFoto">
                                         <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
-
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                             
                                             <img src="http://localhost/multimarket/app/views/fotos/usuarios/<?php echo $usuario_foto; ?>" 
@@ -180,7 +195,6 @@ if ($mysqli -> connect_errno) {
                         <!--end card-->
                     </div>
                     <!--end col-->
-
                     <form class="FormularioAjax" 
                         action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
                         method="POST" autocomplete="off" 
@@ -189,25 +203,25 @@ if ($mysqli -> connect_errno) {
                         <input type="hidden" name="modulo_usuario" value="<?=$accion;?>">
                         <input type="hidden" name="user_id" value="<?=$user_id;?>">
                         <input type="hidden" name="login" value="<?=$login;?>">
-
+                        
                         <div class="col-xxl-9">
                             <div class="card mt-xxl-n5">
                                 <div class="card-header">
                                     <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                     |<li class="nav-item">
-                                            <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
+                                            <a class="nav-link <?=$tab1?>" data-bs-toggle="tab" href="#personaldetails" role="tab">
                                                 <i class="fas fa-home"></i> Información personal
                                             </a>
                                         </li>
     
                                         <li li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" href="#changePassword" role="tab">
+                                            <a class="nav-link <?=$tab2?>" data-bs-toggle="tab" href="#changepassword" role="tab">
                                                 <i class="far fa-user"></i> Cambiar su Clave
                                             </a>
                                         </li>
                                         
                                         <li class="nav-item">
-                                            <a class="nav-link" data-bs-toggle="tab" href="#experience" role="tab">
+                                            <a class="nav-link <?=$tab3?>" data-bs-toggle="tab" href="#miscompras" role="tab">
                                                 <i class="far fa-envelope"></i> Mis compras
                                             </a>
                                         </li>
@@ -221,8 +235,9 @@ if ($mysqli -> connect_errno) {
                                 </div>
                                 <div class="card-body p-4">
                                     <div class="tab-content">
-                                        <div class="tab-pane active" id="personalDetails" role="tabpanel">
+                                        <div class="tab-pane <?=$tab1?>" id="personaldetails" role="tabpanel">
                                             <form action="javascript:void(0);">
+                                                <input type="hidden" name="tab" value="personaldetails">
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
@@ -494,15 +509,15 @@ if ($mysqli -> connect_errno) {
                                             </form>
                                         </div>
                                         <!--end tab-pane-->
-                                        <div class="tab-pane" id="changePassword" role="tabpanel">
+                                        <div class="tab-pane <?=$tab2?>" id="changepassword" role="tabpanel">
 
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/usuarioAjax.php" 
                                                 method="POST" autocomplete="off" enctype="multipart/form-data" >
                                                 <!--    Campos parametros     -->
-                                        
                                                 <input type="hidden" name="modulo_usuario" value="actualizarClave">
                                                 <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
                                                 <input type="hidden" name="login" value="<?php echo $datos['login']; ?>">
+                                                <input type="hidden" name="tab" value="changepassword">
                                                 <div class="row g-2">
                                                     <div class="col-lg-4">
                                                         <div>
@@ -605,8 +620,10 @@ if ($mysqli -> connect_errno) {
                                             </div> -->
                                         </div>
                                         <!--end tab-pane-->
-                                        <div class="tab-pane" id="experience" role="tabpanel">
+                                        <div class="tab-pane <?=$tab3?>" id="miscompras" role="tabpanel">
                                             <form>
+                                            <input type="hidden" name="tab" value="miscompras">
+                                            
                                                 <div id="newlink">
                                                     <div id="1">
                                                         <div class="row">
@@ -720,7 +737,7 @@ if ($mysqli -> connect_errno) {
                                             </form>
                                         </div>
                                         <!--end tab-pane-->
-                                        <div class="tab-pane" id="privacy" role="tabpanel">
+                                        <div class="tab-pane <?=$tab4?>" id="privacy" role="tabpanel">
                                             <div class="mb-4 pb-2">
                                                 <h5 class="card-title text-decoration-underline mb-3">Security:</h5>
                                                 <div class="d-flex flex-column flex-sm-row mb-4 mb-sm-0">

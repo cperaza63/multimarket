@@ -5,6 +5,10 @@
 	 
 	use app\controllers\companyController;
 
+	if(isset($_POST['tab'])){
+		$_SESSION['tab'] = $_POST['tab']; 
+	}
+	
 	if(isset($_POST['modulo_company'])){
 
 		
@@ -24,6 +28,10 @@
 		
 		if($_POST['modulo_company']=="actualizar"){
 			echo $insCompany->actualizarCompanyControlador();
+		}
+
+		if($_POST['modulo_company']=="actualizarMasInformacion"){
+			echo $insCompany->actualizarMasInformacionControlador();
 		}
 
 		if($_POST['modulo_company']=="eliminarFoto"){
