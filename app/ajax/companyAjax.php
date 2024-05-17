@@ -36,6 +36,9 @@
 		if($_POST['modulo_company']=="actualizarZonaHoraria"){
 			echo $insCompany->actualizarZonaHorariaControlador();
 		}
+		if($_POST['modulo_company']=="actualizarMarket"){
+			echo $insCompany->actualizarMarketControlador();
+		}
 		if($_POST['modulo_company']=="actualizarUbicacion"){
 			echo $insCompany->actualizarUbicacionControlador();
 		}

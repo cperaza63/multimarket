@@ -17,12 +17,15 @@ if ($mysqli->connect_errno) {
             <?php
 
             use app\controllers\ubicacionController;
-
             $ubicacionController = new ubicacionController();
-            // busco market
-            use app\controllers\companyController;
 
+            use app\controllers\controlController;
+            $controlController = new controlController();
+            $listaMarket = $controlController->obtenerListaMarketControlador();
+            //print_r($listaMarket);
+            use app\controllers\companyController;
             $companyController = new companyController();
+
             //print_r($mercados);
             // por ahora actualizamos datos del administrador
             $company_id = $insLogin->limpiarCadena($url[1]);
@@ -152,6 +155,7 @@ if ($mysqli->connect_errno) {
                     $tab4 = "";
                     $tab5 = "";
                     $tab6 = "";
+                    $tab7 = "";
                     if (!isset($_SESSION["tab"])) {
                         $_SESSION["tab"] = "personaldetails";
                     }
@@ -175,18 +179,17 @@ if ($mysqli->connect_errno) {
                     } else if ($_SESSION["tab"] == "ubicacion") {
                         ?><script>location.href = "#ubicacion";</script><?php
                         $tab5 = "active";
+                    } else if ($_SESSION["tab"] == "market") {
+                        ?><script>location.href = "#market";</script><?php
+                        $tab6 = "active";
                     } else if ($_SESSION["tab"] == "contratos") {
-                                    ?><script>
-                            location.href = "#contratos";
-                        </script><?php
-                                    $tab6 = "active";
-                                } else {
-                                    ?><script>
-                            location.href = "#personaldetails";
-                        </script><?php
-                                    $tab1 = "active";
-                                }
-                                    ?>
+                        ?><script>location.href = "#contratos";</script><?php
+                        $tab7 = "active";
+                    } else {
+                        ?><script>location.href = "#personaldetails";</script><?php
+                        $tab1 = "active";
+                    }
+                    ?>
                     <div class="col-xxl-9">
                         <div class="card mt-xxl-n5">
                             <div class="card-header">
@@ -222,7 +225,13 @@ if ($mysqli->connect_errno) {
                                     </li>
 
                                     <li li class="nav-item">
-                                        <a class="nav-link <?= $tab6 ?>" id="tab-header-6" data-bs-toggle="tab" href="#contratos" role="tab">
+                                        <a class="nav-link <?= $tab6 ?>" id="tab-header-6" data-bs-toggle="tab" href="#market" role="tab">
+                                            <i class="far fa-user"></i> MarketPlace
+                                        </a>
+                                    </li>
+
+                                    <li li class="nav-item">
+                                        <a class="nav-link <?= $tab7 ?>" id="tab-header-6" data-bs-toggle="tab" href="#contratos" role="tab">
                                             <i class="far fa-user"></i> Contratos
                                         </a>
                                     </li>
@@ -907,6 +916,115 @@ if ($mysqli->connect_errno) {
                                                         <small>Los campos marcados con
                                                         <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
                                                     </p>
+                                                    </div>
+                                                    <!--end col-->
+                                                </div>
+                                                <!--end row-->
+                                            </form>
+                                            <!--end tab-pane-->
+                                        </div>
+                                    </div>
+                                    <!--end tab-pane-->
+                                    <div class="tab-pane  <?= $tab6 ?>" id="market" role="tabpanel">
+                                        <div class="row">
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off">
+                                                <input type="hidden" name="modulo_company" value="actualizarMarket">
+                                                <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                                <input type="hidden" name="tab" value="market">
+                                                <div class="row">
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-">
+                                                            <label for="codigo" class="form-label">Código Negocio</label>
+                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="company_id" value="<?php echo $datos['company_id']; ?>" maxlength="40" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="company_name" class="form-label">Nombre del Negocio</label>
+                                                            <input name="company_name" type="text" class="form-control" id="company_name" value="<?php echo $datos['company_name']; ?>" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="company_type" class="form-label">Tipo de Negocio</label>
+                                                            <select name="company_type" class="form-control" disabled data-choices data-choices-text-unique-true id="tipo">
+                                                                <option value="E" <?php if ($datos['company_type'] == 'E') echo "selected" ?>>Tienda de un Negocio</option>
+                                                                <option value="U" <?php if ($datos['company_type'] == 'U') echo "selected" ?>>Mini Tienda de un Usuario</option>
+                                                                <option value="C" <?php if ($datos['company_type'] == 'C') echo "selected" ?>>Corporación (Múltiples tiendas)</option>
+                                                                <option value="D" <?php if ($datos['company_type'] == 'D') echo "selected" ?>>Servicio de Delivery a tiendas</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <hr>
+                                                    <div class="col-lg-6">
+                                                        <div class="mb-3">
+                                                            <label for="market_cat" class="form-label"><strong>Categorias de MarketPlace</strong></label>
+                                                            <select name="market_cat" class="form-control size="5" multiple="MULTIPLE" 
+                                                            data-choices data-choices-text-unique-true id="dia_semana">
+                                                                <?php
+                                                                    foreach($listaMarket as $market){
+                                                                        ?><option value="<?=$market["control_id"];?>">
+                                                                        <?=$market["nombre"]." - ". $market["nombre_cat"];?></option><?php
+                                                                    }
+                                                                ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-5">
+                                                        <div class="mb-3">
+                                                            <label for="company_slogan" class="form-label">
+                                                                <strong>Acción</strong></label><br>
+                                                            <button type="submit" name="submit" value="agregar" class="btn btn-info">Agregar</button>
+                                                            <button type="submit" name="submit" value="eliminar" class="btn btn-danger">Eliminar</button>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                                    <div class="col-lg-12">
+                                                        <div class="hstack gap-2 justify-content-end">
+                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                        </div>
+                                                        <hr>
+                                                        <table class="table">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th scope="row">Horario</th>
+                                                                    <td>Lunes</td>
+                                                                    <td>Martes</td>
+                                                                    <td>Miercoles</td>
+                                                                    <td>Jueves</td>
+                                                                    <td>Viernes</td>
+                                                                    <td>Sábado</td>
+                                                                    <td>Domingo</td>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                <tr>
+                                                                    <th scope="row">Entrada</th>
+                                                                    <?php
+                                                                    for ($i=0; $i <=6 ; $i++) { 
+                                                                        ?><td><?=$desdehora[$i];?></td><?php
+                                                                    }
+                                                                    ?>
+                                                                </tr>
+                                                                <tr>
+                                                                <th scope="row">Salida</th>
+                                                                    <?php
+                                                                    for ($i=0; $i <=6 ; $i++) { 
+                                                                        ?><td><?=$hastahora[$i];?></td><?php
+                                                                    }
+                                                                    ?>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                                        <div class="hstack gap-2 justify-content-end">
+                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                        </div>
+                                                        <p class="has-text-centered pt-6">
+                                                            <small>Los campos marcados con
+                                                                <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                        </p>
                                                     </div>
                                                     <!--end col-->
                                                 </div>

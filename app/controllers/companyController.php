@@ -676,6 +676,110 @@
 		}
 
 		/*----------  Controlador actualizar company  ----------*/
+		public function actualizarMarketControlador(){
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$market_cat = $this->limpiarCadena($_POST['market_cat']);
+			$aplica_submit = $this->limpiarCadena($_POST['aplica_submit']);
+			
+			$market_vector = [];
+			if($market_cat=="" || $company_id=="" || $aplica_submit=="" ) {
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			if($aplica_submit != "agregar" && $aplica_submit != "eliminiar"){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error en la entrada de datos",
+					"texto"=>"Debe presioar el button tipo de acción día o semana",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+
+			if($aplica_submit == "dia"){
+				$cadena_desde = "";
+				$cadena_hasta = "";
+				for($i=0;$i<=6;$i++ ){
+					if($i == $dia_semana){
+						$vector_desde[$i] = $hora_desde;
+						$vector_hasta[$i] = $hora_hasta;
+					}else{
+						$vector_desde[$i] = $company_horario_desde[$i];
+						$vector_hasta[$i] = $company_horario_hasta[$i];
+					}
+					$cadena_desde = $cadena_desde . "|". $vector_desde[$i];
+					$cadena_hasta = $cadena_hasta . "|". $vector_hasta[$i];
+				}
+				$cadena_desde = substr($cadena_desde, 1, 100);
+				$cadena_hasta = substr($cadena_hasta, 1, 100);
+				//echo $cadena; //retorna 1,5,9,6,8
+				$company_datos_reg=[
+					[
+						"campo_nombre"=>"company_horario_desde",
+						"campo_marcador"=>":Company_horario_desde",
+						"campo_valor"=>$cadena_desde
+					],
+					[
+						"campo_nombre"=>"company_horario_hasta",
+						"campo_marcador"=>":Company_horario_hasta",
+						"campo_valor"=>$cadena_hasta
+					]
+				];
+			}else{
+				$cadena_desde = "";
+				$cadena_hasta = "";
+				for($i=0;$i<=6;$i++ ){
+					$cadena_desde = $cadena_desde . "|". $hora_desde;
+					$cadena_hasta = $cadena_hasta . "|". $hora_hasta;
+				}
+				$cadena_desde = substr($cadena_desde, 1, 100);
+				$cadena_hasta = substr($cadena_hasta, 1, 100);
+				//echo $cadena; //retorna 1,5,9,6,8
+				$company_datos_reg=[
+					[
+						"campo_nombre"=>"company_horario_desde",
+						"campo_marcador"=>":Company_horario_desde",
+						"campo_valor"=>$cadena_desde
+					],
+					[
+						"campo_nombre"=>"company_horario_hasta",
+						"campo_marcador"=>":Company_horario_hasta",
+						"campo_valor"=>$cadena_hasta
+					]
+				];
+			}
+
+			$condicion=[
+				"condicion_campo"=>"company_id",
+				"condicion_marcador"=>":Company_id",
+				"condicion_valor"=>$company_id
+			];
+
+			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Control actualizado",
+				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
+				"icono"=>"success"
+				];
+			}else{
+				$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"Ocurrió un error inesperado",
+				"texto"=>"No hemos podido actualizar los datos de información adicional ".$company_id.", por favor intente nuevamente",
+				"icono"=>"error"
+			];
+			}
+			return json_encode($alerta);
+		}
+		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarUbicacionControlador(){
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			$latitude = $this->limpiarCadena($_POST['latitude']);
