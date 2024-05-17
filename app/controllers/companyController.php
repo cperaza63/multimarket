@@ -563,7 +563,7 @@
 		}
 
 		/*----------  Controlador actualizar company  ----------*/
-		public function actualizarZonaHorariaControlado(){
+		public function actualizarZonaHorariaControlador(){
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			$dia_semana = $this->limpiarCadena($_POST['dia_semana']);
 			$hora_desde = $this->limpiarCadena($_POST['hora_desde']);
@@ -662,6 +662,59 @@
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
 				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
+				"icono"=>"success"
+				];
+			}else{
+				$alerta=[
+				"tipo"=>"simple",
+				"titulo"=>"Ocurrió un error inesperado",
+				"texto"=>"No hemos podido actualizar los datos de información adicional ".$company_id.", por favor intente nuevamente",
+				"icono"=>"error"
+			];
+			}
+			return json_encode($alerta);
+		}
+
+		/*----------  Controlador actualizar company  ----------*/
+		public function actualizarUbicacionControlador(){
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$latitude = $this->limpiarCadena($_POST['latitude']);
+			$longitude = $this->limpiarCadena($_POST['longitude']);
+			if($latitude=="" || $longitude=="") {
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+
+			$company_datos_reg=[
+				[
+					"campo_nombre"=>"company_latitude",
+					"campo_marcador"=>":Company_latitude",
+					"campo_valor"=>$latitude
+				],
+				[
+					"campo_nombre"=>"company_longitude",
+					"campo_marcador"=>":Company_longitude",
+					"campo_valor"=>$longitude
+				]
+			];
+
+			$condicion=[
+				"condicion_campo"=>"company_id",
+				"condicion_marcador"=>":Company_id",
+				"condicion_valor"=>$company_id
+			];
+
+			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Control actualizado",
+				"texto"=>"Los datos de ubicación ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
 			}else{
