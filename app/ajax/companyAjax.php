@@ -11,7 +11,6 @@
 	
 	if(isset($_POST['modulo_company'])){
 
-		
 		$insCompany = new companyController();
 
 		if($_POST['modulo_company']=="registrar"){

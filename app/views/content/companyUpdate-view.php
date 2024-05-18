@@ -159,32 +159,24 @@ if ($mysqli->connect_errno) {
                     if (!isset($_SESSION["tab"])) {
                         $_SESSION["tab"] = "personaldetails";
                     }
-
                     if ($_SESSION["tab"] == "personaldetails") {
                         ?><script>location.href = "#personaldetails";</script><?php
                         $tab1 = "active";
-
                     } else if ($_SESSION["tab"] == "multimedia") {
                         ?><script>location.href = "#multimedia";</script><?php
                         $tab2 = "active";
-
                     } else if ($_SESSION["tab"] == "masinformacion") {
                         ?><script>location.href = "#masinformacion";</script><?php
                         $tab3 = "active";
-
                     } else if ($_SESSION["tab"] == "horario") {
                         ?><script>location.href = "#horario";</script><?php
                         $tab4 = "active";
-
                     } else if ($_SESSION["tab"] == "ubicacion") {
                         ?><script>location.href = "#ubicacion";</script><?php
                         $tab5 = "active";
                     } else if ($_SESSION["tab"] == "market") {
                         ?><script>location.href = "#market";</script><?php
                         $tab6 = "active";
-                    } else if ($_SESSION["tab"] == "contratos") {
-                        ?><script>location.href = "#contratos";</script><?php
-                        $tab7 = "active";
                     } else {
                         ?><script>location.href = "#personaldetails";</script><?php
                         $tab1 = "active";
@@ -229,20 +221,13 @@ if ($mysqli->connect_errno) {
                                             <i class="far fa-user"></i> MarketPlace
                                         </a>
                                     </li>
-
-                                    <li li class="nav-item">
-                                        <a class="nav-link <?= $tab7 ?>" id="tab-header-6" data-bs-toggle="tab" href="#contratos" role="tab">
-                                            <i class="far fa-user"></i> Contratos
-                                        </a>
-                                    </li>
-
-
                                 </ul>
                             </div>
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane <?= $tab1 ?>" id="personaldetails" role="tabpanel">
-                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off">
+                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                        method="POST" autocomplete="off">
                                             <input type="hidden" name="modulo_company" value="<?= $accion; ?>">
                                             <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                             <input type="hidden" name="tab" value="personaldetails">
@@ -405,7 +390,9 @@ if ($mysqli->connect_errno) {
                                     <div class="tab-pane <?= $tab2 ?>" id="multimedia" role="tabpanel">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <form class="FormularioAjax" name="<?php echo $company_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
+                                                <form class="FormularioAjax" name="<?php echo $company_tipo; ?>" 
+                                                action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" 
+                                                autocomplete="off" enctype="multipart/form-data">
                                                     <input type="hidden" name="modulo_company" value="actualizarFotoMasa">
                                                     <input type="hidden" name="company_id" value="<?php echo $datos['company_id']; ?>">
                                                     <input type="hidden" name="tab" value="multimedia">
@@ -490,7 +477,6 @@ if ($mysqli->connect_errno) {
                                             <div class="col-lg-3">
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
-
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $company_banner3 == "nophoto.jpg"
                                                                             ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
@@ -528,9 +514,10 @@ if ($mysqli->connect_errno) {
                                     </div>
                                     <!--end tab-pane-->
 
-                                    <div class="tab-pane  <?= $tab3 ?>" id="masinformacion" role="tabpanel">
+                                    <div class="tab-pane <?= $tab3 ?>" id="masinformacion" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off">
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                            method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_company" value="actualizarMasInformacion">
                                                 <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                                 <input type="hidden" name="company_user" value="<?= $_SESSION['id'] ?>">
@@ -700,9 +687,10 @@ if ($mysqli->connect_errno) {
                                     </div>
                                     <!--end tab-pane-->
 
-                                    <div class="tab-pane  <?= $tab4 ?>" id="horario" role="tabpanel">
+                                    <div class="tab-pane <?= $tab4 ?>" id="horario" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off">
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                                method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_company" value="actualizarZonaHoraria">
                                                 <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                                 <input type="hidden" name="company_user" value="<?= $_SESSION['id'] ?>">
@@ -868,17 +856,15 @@ if ($mysqli->connect_errno) {
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
-                                    <div class="tab-pane  <?= $tab5 ?>" id="ubicacion" role="tabpanel">
+                                    <div class="tab-pane <?= $tab5 ?>" id="ubicacion" role="tabpanel">
                                         <div class="row">
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
                                                 method="POST" autocomplete="off">
-                                                <input type="hidden" name="modulo_company" value="actualizarZonaHoraria">
+                                                <input type="hidden" name="modulo_company" value="actualizarUbicacion">
                                                 <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                                 <input type="hidden" name="company_user" value="<?= $_SESSION['id'] ?>">
                                                 <input type="hidden" name="tab" value="ubicacion">
-                                                <input type="hidden" name="company_horario_desde" value="<?= $datos['company_horario_desde'] ?>">
-                                                <input type="hidden" name="company_horario_hasta" value="<?= $datos['company_horario_hasta'] ?>">
-
+                                                
                                                 <div class="row">
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
@@ -925,9 +911,10 @@ if ($mysqli->connect_errno) {
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
-                                    <div class="tab-pane  <?= $tab6 ?>" id="market" role="tabpanel">
+                                    <div class="tab-pane <?=$tab6 ?>" id="market" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" method="POST" autocomplete="off">
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                                method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_company" value="actualizarMarket">
                                                 <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                                 <input type="hidden" name="tab" value="market">
@@ -959,9 +946,10 @@ if ($mysqli->connect_errno) {
                                                     <hr>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="market_cat" class="form-label"><strong>Categorias de MarketPlace</strong></label>
-                                                            <select name="market_cat" class="form-control size="5" multiple="MULTIPLE" 
+                                                            
+                                                            <select name="market_cat[]" class="form-control size="5"  
                                                             data-choices data-choices-text-unique-true id="dia_semana">
+                                                                    <option value="">Seleccione un Market y una categoría</option>
                                                                 <?php
                                                                     foreach($listaMarket as $market){
                                                                         ?><option value="<?=$market["control_id"];?>">
@@ -974,45 +962,36 @@ if ($mysqli->connect_errno) {
                                                     <!--end col-->
                                                     <div class="col-lg-5">
                                                         <div class="mb-3">
-                                                            <label for="company_slogan" class="form-label">
-                                                                <strong>Acción</strong></label><br>
-                                                            <button type="submit" name="submit" value="agregar" class="btn btn-info">Agregar</button>
-                                                            <button type="submit" name="submit" value="eliminar" class="btn btn-danger">Eliminar</button>
+                                                            <button type="submit" name="submit" value="agregar" class="btn btn-info">Actualizar</button>
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="col-lg-12">
-                                                        <div class="hstack gap-2 justify-content-end">
-                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
-                                                        </div>
+                                                        
                                                         <hr>
                                                         <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="row">Horario</th>
-                                                                    <td>Lunes</td>
-                                                                    <td>Martes</td>
-                                                                    <td>Miercoles</td>
-                                                                    <td>Jueves</td>
-                                                                    <td>Viernes</td>
-                                                                    <td>Sábado</td>
-                                                                    <td>Domingo</td>
-                                                                </tr>
-                                                            </thead>
                                                             <tbody>
                                                                 <tr>
-                                                                    <th scope="row">Entrada</th>
+                                                                    <th scope="row">MarketPlace<br>Categoria
+                                                                    </th>
                                                                     <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$desdehora[$i];?></td><?php
+                                                                    $cadena=[];
+                                                                    $cadena=explode("|", $datos['company_market_cat']);
+                                                                    if(count($cadena)>=8){
+                                                                        $cuenta=8;
+                                                                    }else{  
+                                                                        $cuenta= count($cadena)-1;
                                                                     }
-                                                                    ?>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">Salida</th>
-                                                                    <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$hastahora[$i];?></td><?php
+                                                                    if($cuenta>0){
+                                                                        for ($i=0; $i <= $cuenta ; $i++) {
+                                                                            $itemCat = $controlController->obtenerUnItemControlador($cadena[$i]);
+                                                                            ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                                        }
+                                                                    }else{
+                                                                        if ($cadena[0]!=""){
+                                                                            $itemCat = $controlController->obtenerUnItemControlador($cadena[0]);
+                                                                            ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                                        }
                                                                     }
                                                                     ?>
                                                                 </tr>
@@ -1034,10 +1013,8 @@ if ($mysqli->connect_errno) {
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
-
                                 </div>
                                 <!--end tab-pane-->
-
                             </div>
                         </div>
                     </div>

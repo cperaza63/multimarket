@@ -242,6 +242,27 @@
 			exit();
 		}
 
+		public function obtenerUnItemControlador($id){
+			$consulta_datos = "SELECT a.unidad, b.nombre, a.control_id, a.codigo, a.nombre as nombre_cat, 
+			a.control_foto FROM control a INNER JOIN control b ON (a.unidad = b.control_id)
+			WHERE a.control_id=$id";
+			$datos=$this->ejecutarConsulta($consulta_datos);
+			if($datos->rowCount()<=0){
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos encontrado el item de la tabla en el sistema",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}else{
+				$datos=$datos->fetch();
+			}
+			return $datos;
+			exit();
+		}
+
 		/*----------  Controlador listar control  ----------*/
 		public function listarSoloTipoControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
