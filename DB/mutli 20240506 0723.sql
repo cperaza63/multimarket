@@ -99,43 +99,61 @@ INSERT INTO `cliente` (`cliente_id`,`cliente_tipo_documento`,`cliente_numero_doc
 
 DROP TABLE IF EXISTS `company`;
 CREATE TABLE `company` (
-  `user_id` int(7) NOT NULL AUTO_INCREMENT,
-  `firstname` varchar(50) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `lastname` varchar(50) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `email` varchar(50) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `login` varchar(30) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `password` varchar(535) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `usuario_foto` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `caja_id` int(5) NOT NULL DEFAULT 0,
-  `created_at` datetime DEFAULT NULL,
-  `dateofbirth` datetime DEFAULT NULL,
-  `telefono` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `departamento` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
-  `tipo` varchar(20) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'USUARIO',
   `company_id` int(10) unsigned NOT NULL DEFAULT 0,
-  `location` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
-  `colmena_conexion` int(10) unsigned NOT NULL DEFAULT 1000,
-  `state` varchar(40) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'CA',
-  `city` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'VALENCIA',
-  `country` varchar(10) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'VEN',
-  `nombre_completo` varchar(250) COLLATE utf8_spanish2_ci NOT NULL DEFAULT ' ',
-  `pregunta_clave` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'cual es tu nombre?',
-  `respuesta_clave` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'usuario de ciudadhive',
-  `tarjeta_presentacion` varchar(250) COLLATE utf8_spanish2_ci NOT NULL DEFAULT ' ',
-  `gender` varchar(1) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'M',
-  `rif` varchar(20) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'V-',
-  `tcarea` varchar(10) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '0',
-  `tcnumber` varchar(10) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '0',
-  PRIMARY KEY (`user_id`),
-  KEY `caja_id` (`caja_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci COMMENT='archivo de company';
+  `company_name` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_description` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `company_email` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_logo` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_card` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_banner1` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_banner2` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_banner3` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_user` int(10) unsigned NOT NULL DEFAULT 0,
+  `company_phone` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_address` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `company_country` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_state` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_city` int(10) unsigned NOT NULL DEFAULT 0,
+  `company_type` varchar(1) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'E' COMMENT 'Usuario-Empresa-Corporacion-Delivery',
+  `company_rif` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `created_at` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `company_red1` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'facebook',
+  `company_red_valor1` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'https://www.facebook.com/ciudadhivemarket/',
+  `company_red2` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'instagram',
+  `company_red_valor2` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'https://www.instagram.com/ciudadcolmena/',
+  `company_red3` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'tiktok',
+  `company_red_valor3` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'https://www.tiktok.com/es/',
+  `company_web` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'https://',
+  `company_latitude` double NOT NULL DEFAULT 0,
+  `company_longitude` double NOT NULL DEFAULT 0,
+  `company_tipo_delivery` varchar(10) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '0' COMMENT '0:noDelivery, 1:delivery flat, 3-delvery distancia.peso, 4-delivery-distancia-valor',
+  `company_tarifa_delivery` double NOT NULL DEFAULT 0,
+  `company_horario_desde` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '08:00|08:00|08:00|08:00|08:00|08:00|08:00',
+  `company_horario_hasta` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '18:00|18:00|18:00|18:00|18:00|18:00|18:00',
+  `company_iva` double NOT NULL DEFAULT 0 COMMENT 'IVA dentro del precio',
+  `company_servicio_email` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'mail.ciudadhive.com',
+  `company_servicio_email_envio` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'info@ciudadhive.com',
+  `company_servicio_email_password` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'ceph7065079',
+  `company_servicio_email_puerto` int(10) unsigned NOT NULL DEFAULT 587,
+  `company_slogan` varchar(250) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_logo_witdh` int(10) unsigned NOT NULL DEFAULT 200,
+  `company_logo_height` int(10) unsigned NOT NULL DEFAULT 80,
+  `company_pdf` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `company_youtube_index` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '' COMMENT 'solo lo que va despues de v=',
+  `company_contrato` int(10) unsigned NOT NULL DEFAULT 0,
+  `company_contrato_vencimiento` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `company_market_cat` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  PRIMARY KEY (`company_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
 --
 -- Dumping data for table `multimarket`.`company`
 --
 
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
+INSERT INTO `company` (`company_id`,`company_name`,`company_description`,`company_email`,`company_logo`,`company_card`,`company_banner1`,`company_banner2`,`company_banner3`,`company_user`,`company_phone`,`company_estatus`,`company_address`,`company_country`,`company_state`,`company_city`,`company_type`,`company_rif`,`created_at`,`company_red1`,`company_red_valor1`,`company_red2`,`company_red_valor2`,`company_red3`,`company_red_valor3`,`company_web`,`company_latitude`,`company_longitude`,`company_tipo_delivery`,`company_tarifa_delivery`,`company_horario_desde`,`company_horario_hasta`,`company_iva`,`company_servicio_email`,`company_servicio_email_envio`,`company_servicio_email_password`,`company_servicio_email_puerto`,`company_slogan`,`company_logo_witdh`,`company_logo_height`,`company_pdf`,`company_youtube_index`,`company_contrato`,`company_contrato_vencimiento`,`company_market_cat`) VALUES 
+ (5,'CP Digital','Negocio administrador del sistema Ciudadhive','josegomez@gmail.com','company_logo-5_99.png','company_card-5_29.png','company_banner1-5_51.png','company_banner2-5_89.png','company_banner3-5_64.jpg',1,'04124560079',1,'Resiencias Las trinitarias Torre 9 planta baja apto pbb','VEN','CA',45414,'E','J316732630','2024-05-13 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://ciudadhive.com',10.264109,-67.894393,'0',0,'08:00|08:00|08:00|08:00|08:00|08:00|08:00','18:00|18:00|18:00|18:00|18:00|18:00|18:00',16,'mail.ciudadhive.com','info@ciudadhive.com','ceph7065079',587,'El mejor sitio para hacer negocios',200,80,'company_pdf-5_27.pdf','-VOBp-pGUQk&t=7s',0,'1900-01-01 00:00:00','23');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 
 
@@ -153,27 +171,36 @@ CREATE TABLE `control` (
   `valor` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
   `estatus` int(10) unsigned NOT NULL DEFAULT 1,
   `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0,
+  `control_card` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_banner1` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_banner2` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_banner3` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
   PRIMARY KEY (`control_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tablde control general';
+) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tablde control general';
 
 --
 -- Dumping data for table `multimarket`.`control`
 --
 
 /*!40000 ALTER TABLE `control` DISABLE KEYS */;
-INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`) VALUES 
- (1,'market','comida','marletpace de comida','','',1,0),
- (2,'market','ciudadhive','marketplace general de ciudadhive','','',1,0),
- (3,'market','autos','marletpace de autos','','',1,0),
- (4,'market','ferreteria','marletpace de ferreteria','','',1,0),
- (6,'market','industria','marletpace de industria','','',1,0),
- (7,'market','medico','marletpace de medicina','','',1,0),
- (8,'market','salud','marletpace de salud','','',1,0),
- (9,'market','nautica','marletpace de nautica','','',1,0),
- (10,'market','delhogar','marletpace del Hogar','','',1,0),
- (11,'market','tecnoligia','marletpace de tecnologia','','',1,0),
- (12,'market','vestidos','marletpace de vestidos','','',1,0),
- (15,'market','otroinvento','otro invento','','',1,0);
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`) VALUES 
+ (1,'market','comida','COMIDA','','',1,0,0,'','','',''),
+ (2,'market','ciudadhive','CIUDADHIVE','2_52.png','',1,0,0,'','','',''),
+ (3,'market','autos','AUTOS','','',1,0,0,'','','',''),
+ (4,'market','ferreteria','FERRETERIA','','',1,0,0,'','','',''),
+ (6,'market','industria','INDUSTRIA','','',1,0,0,'','','',''),
+ (7,'market','medico','MEDICINA','','',1,0,0,'','','',''),
+ (8,'market','salud','SALUD','','',1,0,0,'','','',''),
+ (9,'market','nautica','NAUTICA','','',1,0,0,'','','',''),
+ (10,'market','delhogar','DEL HOGAR','','',1,0,0,'','','',''),
+ (11,'market','tecnoligia','TECNOLOGIA','','',1,0,0,'','','',''),
+ (12,'market','vestidos','VESTIDOS','','',1,0,0,'','','',''),
+ (15,'market','deporte','DEPORTE','','',1,0,0,'','','',''),
+ (21,'market_cat','autos nuevos','autonuevos y bonitos','autos_nuevos_48.png','',1,0,3,'','','',''),
+ (22,'market_cat','autos usados','usados pero sirve los carros','control_foto-22_6.png','',1,0,3,'','','','');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`) VALUES 
+ (23,'market_cat','comida cacera','comida cacera','comida_cacera_73.jpg','',1,0,1,'','','','');
 /*!40000 ALTER TABLE `control` ENABLE KEYS */;
 
 
@@ -261,7 +288,7 @@ CREATE TABLE `ubicacion` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `country` varchar(3) NOT NULL DEFAULT 'VEN',
   `state_abbreviation` varchar(2) DEFAULT NULL,
-  `state_Name` varchar(60) DEFAULT NULL,
+  `state_name` varchar(60) DEFAULT NULL,
   `city` varchar(60) DEFAULT NULL,
   `capital` varchar(1) NOT NULL DEFAULT '' COMMENT '*',
   `latitude` varchar(15) DEFAULT NULL,
@@ -271,14 +298,14 @@ CREATE TABLE `ubicacion` (
   KEY `zipcode` (`zipcode`) USING BTREE,
   KEY `City` (`city`) USING BTREE,
   KEY `State` (`state_abbreviation`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=46825 DEFAULT CHARSET=utf8 COMMENT='pais-edo-city';
+) ENGINE=MyISAM AUTO_INCREMENT=46827 DEFAULT CHARSET=utf8 COMMENT='pais-edo-city';
 
 --
 -- Dumping data for table `multimarket`.`ubicacion`
 --
 
 /*!40000 ALTER TABLE `ubicacion` DISABLE KEYS */;
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46358,'VEN','NU','NUEVA ESPARTA','ISLA DE COCHE','','0','0',6301),
  (46357,'VEN','NU','NUEVA ESPARTA','ISLA DE MARGARITA','*','0','0',6301),
  (46355,'VEN','NU','NUEVA ESPARTA','ISLA CUBAGUA','','0','0',6301),
@@ -294,7 +321,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46314,'VEN','MO','MONAGAS','EL COROZO','','0','0',6201),
  (46312,'VEN','MO','MONAGAS','EZEQUIEL ZAMORA','','0','0',6201),
  (46308,'VEN','MO','MONAGAS','LIBERTADOR','','0','0',6201);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46306,'VEN','MO','MONAGAS','MATURIN','*','0','0',6201),
  (46302,'VEN','MO','MONAGAS','OTROS','','0','0',6201),
  (46301,'VEN','MO','MONAGAS','PIAR','','0','0',6201),
@@ -311,7 +338,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46251,'VEN','MI','MIRANDA','GUARENAS','','0','0',1061),
  (46249,'VEN','MI','MIRANDA','GUATIRE','','0','0',1061),
  (46247,'VEN','MI','MIRANDA','LOS TEQUES','*','0','0',1061);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46246,'VEN','MI','MIRANDA','SAN ANTONIO','','0','0',1061),
  (46245,'VEN','MI','MIRANDA','VALLES DEL TUY','','0','0',1061),
  (46099,'VEN','ME','MERIDA','TOVAR','','0','0',5101),
@@ -328,7 +355,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46056,'VEN','ME','MERIDA','EL VIGIA','','0','0',5101),
  (46053,'VEN','ME','MERIDA','EJIDO','','0','0',5101),
  (46046,'VEN','ME','MERIDA','BAILADORES','','0','0',5101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45987,'VEN','GU','GUARICO','ALTAGRACIA DE ORITUCO','','0','0',2301),
  (45976,'VEN','GU','GUARICO','CAZORLA','','0','0',2301),
  (45973,'VEN','GU','GUARICO','CHAGUARAMAS','','0','0',2301),
@@ -345,7 +372,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45953,'VEN','GU','GUARICO','OTRAS POBLACIONES','','0','0',2301),
  (45951,'VEN','GU','GUARICO','PARAPARA','','0','0',2301),
  (45929,'VEN','FA','FALCON','ACOSTA','','0','0',4101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45925,'VEN','FA','FALCON','BOLIVAR','','0','0',4101),
  (45923,'VEN','FA','FALCON','BUCHIVACOA','','0','0',4101),
  (45922,'VEN','FA','FALCON','CACIQUE MANAURE','','0','0',4101),
@@ -362,7 +389,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45899,'VEN','FA','FALCON','MONSEÑOR ITURRIZA','','0','0',4101),
  (45894,'VEN','FA','FALCON','MORROCOY','','0','0',4101),
  (45892,'VEN','FA','FALCON','PALMASOLA','','0','0',4101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45891,'VEN','FA','FALCON','PETIT','','0','0',4101),
  (45889,'VEN','FA','FALCON','PUNTO FIJO','','0','0',4101),
  (46781,'VEN','LA','LARA','ANDRES ELOY BLANCO','','0','0',6400),
@@ -379,7 +406,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45649,'VEN','DI','DISTRITO CAPITAL','CARACAS - SUCRE (SUR)','','0','0',1000),
  (45648,'VEN','DI','DISTRITO CAPITAL','CARACAS - SUCRE (NORESTE)','','0','0',1000),
  (45647,'VEN','DI','DISTRITO CAPITAL','CARACAS - SUCRE (ESTE)','','0','0',1000);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45646,'VEN','DI','DISTRITO CAPITAL','CARACAS - SUCRE (CENTRO)','','0','0',1000),
  (45645,'VEN','DI','DISTRITO CAPITAL','CARACAS - SUCRE','','0','0',1000),
  (45644,'VEN','DI','DISTRITO CAPITAL','CARACAS - LIBERTADOR (SUROESTE)','','0','0',1000),
@@ -392,7 +419,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45635,'VEN','DI','DISTRITO CAPITAL','CARACAS - EL HATILLO (NORTE)','','0','0',1000),
  (45633,'VEN','DI','DISTRITO CAPITAL','CARACAS - CHACAO  (NORTE)','','0','0',1000),
  (45630,'VEN','DI','DISTRITO CAPITAL','CARACAS - BARUTA (NORTE)','','0','0',1000);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45629,'VEN','DI','DISTRITO CAPITAL','CARACAS - BARUTA (ESTE)','','0','0',1000),
  (45486,'VEN','DI','DISTRITO CAPITAL','CARACAS - BARUTA (CENTRAL)','','0','0',1223),
  (45485,'VEN','DI','DISTRITO CAPITAL','CARACAS - BARUTA','','0','0',1000),
@@ -406,7 +433,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45468,'VEN','CO','COJEDES','TINACO','','0','0',2206),
  (45463,'VEN','CO','COJEDES','LAS VEGAS','','0','0',2204),
  (45460,'VEN','CO','COJEDES','GUADARRAMA','','0','0',2213);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45459,'VEN','CO','COJEDES','EL PAO','','0','0',2214),
  (45458,'VEN','CO','COJEDES','EL BAUL','','0','0',2213),
  (45457,'VEN','CO','COJEDES','EL AMPARO','','0','0',2216),
@@ -421,7 +448,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45413,'VEN','CA','CARABOBO','SAN JOAQUIN (SAN JOAQUIN)','','0','0',2001),
  (45405,'VEN','CA','CARABOBO','PUERTO CABELLO (PUERTO CABELLO)','','0','0',2001),
  (45391,'VEN','CA','CARABOBO','CARLOS ARVELO (GUIGUE)','','0','0',2001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45389,'VEN','CA','CARABOBO','NAGUANAGUA (NAGUANAGUA)','','0','0',2001),
  (45388,'VEN','CA','CARABOBO','MONTALBAN (MONTALBAN)','','0','0',2001),
  (45387,'VEN','CA','CARABOBO','MIARANDA (MIRANDA)','','0','0',2001),
@@ -437,7 +464,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45350,'VEN','BO','BOLIVAR','EL PAO','','0','0',8050),
  (45346,'VEN','BO','BOLIVAR','EL DORADO','','0','0',8050),
  (45345,'VEN','BO','BOLIVAR','EL CALLAO','','0','0',8056);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45339,'VEN','BA','BARINAS','ALBERTO ARVELO T. (SABANETA)','','0','0',5201),
  (45331,'VEN','BA','BARINAS','ANDRES ELOY GLANCO (EL CANTON)','','0','0',5201),
  (45326,'VEN','BA','BARINAS','ANTONIO JOSE DE SUCRE (SOCOPO)','','0','0',5201),
@@ -452,7 +479,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45303,'VEN','BA','BARINAS','ROJAS (LIBERTAD)','','0','0',5201),
  (45300,'VEN','BA','BARINAS','SOSA (CIUDAD DE NUTRIAS)','','0','0',5201),
  (45298,'VEN','AR','ARAGUA','SAN MATEO (BOLIVAR)','','0','0',2101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45295,'VEN','AR','ARAGUA','CAMATAGUA','','0','0',2335),
  (45294,'VEN','AR','ARAGUA','SANTA RITA (FCO. LINAREA ALCANTARA)','','0','0',2301),
  (45290,'VEN','AR','ARAGUA','MARACAY (GIRARDOT)','*','0','0',2113),
@@ -466,7 +493,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45277,'VEN','AR','ARAGUA','SAN SEBASTIAN','','0','0',2126),
  (45275,'VEN','AR','ARAGUA','TURMERO (SANTIAGO MARIÑO)','','0','0',2122),
  (45274,'VEN','AR','ARAGUA','LAS TEJERIAS (SANTOS MICHELENA)','','0','0',2101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45273,'VEN','AP','APURE','ACHAGUAS (ACHAGUAS)','','0','0',7001),
  (45272,'VEN','AP','APURE','BIRUACA (BIRUACA)','','0','0',7001),
  (45271,'VEN','AP','APURE','MUÑOZ (BRUZUAL)','','0','0',7004),
@@ -481,7 +508,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45243,'VEN','AN','ANZOATEGUI','LECHERIAS','','0','0',6001),
  (45241,'VEN','AN','ANZOATEGUI','OTRAS POBLACIONES','','0','0',6001),
  (45240,'VEN','AN','ANZOATEGUI','PUERTO LA CRUZ','','0','0',6027);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45238,'VEN','AN','ANZOATEGUI','SAN PABLO','','0','0',6001),
  (45232,'VEN','AN','ANZOATEGUI','SABANA DE UCHIRE','','0','0',6001),
  (45231,'VEN','AN','ANZOATEGUI','PIRITU','','0','0',6022),
@@ -498,7 +525,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46089,'VEN','ME','MERIDA','PUEBL NUEVO','','0','0',5101),
  (46061,'VEN','ME','MERIDA','LA AZULITA','','0','0',5101),
  (46044,'VEN','ME','MERIDA','APARTADEROS','','0','0',5101);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45859,'VEN','DI','DISTRITO CAPITAL','CARACAS - CHACAO (SUR)','','0','0',1000),
  (46765,'VEN','DI','DISTRITO CAPITAL','CARACAS','*','0','0',1000),
  (45643,'VEN','DI','DISTRITO CAPITAL','CARACAS - LIBERTADOR (OESTE)','','0','0',1000),
@@ -512,7 +539,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45414,'VEN','CA','CARABOBO','VALENCIA (GRAN VALENCIA)','*','0','0',2001),
  (45406,'VEN','CA','CARABOBO','SAN DIEGO (SAN DIEGO)','','0','0',2001),
  (45382,'VEN','CA','CARABOBO','BEJUMA (BEJUMA)','','0','0',2001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45380,'VEN','BO','BOLIVAR','OTRAS POBLACIONES','','0','0',8001),
  (45378,'VEN','BO','BOLIVAR','CIUDAD GUAYANA','','0','0',8050),
  (45376,'VEN','BO','BOLIVAR','UPATA','','0','0',8052),
@@ -528,7 +555,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46795,'VEN','FA','FALCON','CORO','*','0','0',4101),
  (46796,'VEN','FA','FALCON','CUMAREBO','','0','0',4101),
  (46797,'VEN','CO','COJEDES','TINAQUILLO','','0','0',2201);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46798,'VEN','MI','MIRANDA','CHARALLAVE','','0','0',1061),
  (45249,'VEN','AN','ANZOATEGUI','ZUATA','','0','0',6057),
  (45214,'VEN','AN','ANZOATEGUI','GUANTA','','0','0',6014),
@@ -543,7 +570,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (45472,'VEN','CO','COJEDES','OTRAS POBLACIONES','','0','0',2201),
  (45467,'VEN','CO','COJEDES','SAN CARLOS','*','0','0',2201),
  (45461,'VEN','CO','COJEDES','LA AGUADITA','','0','0',2207);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (45456,'VEN','CO','COJEDES','COJEDITOS','','0','0',2201),
  (46389,'VEN','PO','PORTUGUESA','ACARIGUA','*','0','0',3301),
  (46390,'VEN','PO','PORTUGUESA','AGUA BLANCA','','0','0',3301),
@@ -559,7 +586,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46410,'VEN','PO','PORTUGUESA','SAN RAFAEL DE ONOTO','','0','0',3301),
  (46411,'VEN','PO','PORTUGUESA','SAN CARLOS','','0','0',3301),
  (46413,'VEN','PO','PORTUGUESA','VIA BARQUISIMETO-ACARIGUA','','0','0',3301);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46414,'VEN','PO','PORTUGUESA','VILLA BRUZUAL','','0','0',3301),
  (46415,'VEN','PO','PORTUGUESA','LA CONCEPCION','','0','0',3301),
  (46416,'VEN','PO','PORTUGUESA','LA TRINIDAD','','0','0',3301),
@@ -576,7 +603,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46432,'VEN','SU','SUCRE','CUMANACOA','','0','0',6150),
  (46433,'VEN','SU','SUCRE','CUMANA','*','0','0',6150),
  (46437,'VEN','SU','SUCRE','EL PILAR','','0','0',6150);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46441,'VEN','SU','SUCRE','GOLFO DE CARIACO','','0','0',6150),
  (46442,'VEN','SU','SUCRE','GUIRIA','','0','0',6150),
  (46443,'VEN','SU','SUCRE','IRAPA','','0','0',6150),
@@ -593,7 +620,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46459,'VEN','SU','SUCRE','SAN JUAN DE UNARE','','0','0',6150),
  (46460,'VEN','SU','SUCRE','SAN JUAN DE LAS GALDONAS','','0','0',6150),
  (46461,'VEN','SU','SUCRE','SAN JOSE DE AEROCUAR','','0','0',6150);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46466,'VEN','SU','SUCRE','TUNAPUY','','0','0',6150),
  (46478,'VEN','SU','SUCRE','UNARE','','0','0',6150),
  (46479,'VEN','SU','SUCRE','VIA CARIACO-CASANAY','','0','0',6150),
@@ -610,7 +637,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46494,'VEN','TA','TACHIRA','INDEPENDENCIA','','0','0',5001),
  (46495,'VEN','TA','TACHIRA','JOSE MARIA VARGAS','','0','0',5001),
  (46496,'VEN','TA','TACHIRA','JUNIN','','0','0',5001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46497,'VEN','TA','TACHIRA','LIBERTAD','','0','0',5001),
  (46498,'VEN','TA','TACHIRA','JAUREGUI','','0','0',5001),
  (46499,'VEN','TA','TACHIRA','LIBERTADOR','','0','0',5001),
@@ -626,7 +653,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46564,'VEN','TR','TRUJILLO','EL COROZO','','0','0',5001),
  (46565,'VEN','TR','TRUJILLO','ESCUQUE','','0','0',5001),
  (46566,'VEN','TR','TRUJILLO','EL PARADERO','','0','0',5001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46567,'VEN','TR','TRUJILLO','CAMPO ELIAS','','0','0',5001),
  (46568,'VEN','TR','TRUJILLO','LA CEIBA (SANTA APOLONIA)','','0','0',5001),
  (46569,'VEN','TR','TRUJILLO','LA PUERTA','','0','0',5001),
@@ -642,7 +669,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46579,'VEN','TR','TRUJILLO','TRUJILLO','','0','0',5001),
  (46580,'VEN','TR','TRUJILLO','URDANETA (LA QUEBRADA)','','0','0',5001),
  (46581,'VEN','TR','TRUJILLO','VALERA (VALERA)','*','0','0',5001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46631,'VEN','VA','VARGAS','CARABALLEDA','','0','0',1160),
  (46632,'VEN','VA','VARGAS','CARAYACA','','0','0',1160),
  (46633,'VEN','VA','VARGAS','CARLOS SOUBLETTE','','0','0',1160),
@@ -659,7 +686,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46655,'VEN','YA','YARACUY','COROCOTE','','0','0',3201),
  (46659,'VEN','YA','YARACUY','FARRIAR','','0','0',3201),
  (46660,'VEN','YA','YARACUY','GUAMA','','0','0',3201);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46662,'VEN','YA','YARACUY','INDEPENCIA','','0','0',3201),
  (46666,'VEN','YA','YARACUY','NIRGUA','','0','0',3201),
  (46667,'VEN','YA','YARACUY','SABANA DE PARRA','','0','0',3201),
@@ -676,7 +703,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46682,'VEN','ZU','ZULIA','COLON','','0','0',4001),
  (46683,'VEN','ZU','ZULIA','FRANCISCO JAVIER PULGAR','','0','0',4001),
  (46684,'VEN','ZU','ZULIA','JESUS MARIA SEMPRUN','','0','0',4001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46685,'VEN','ZU','ZULIA','LA CAÑADA DE URDANETA','','0','0',4001),
  (46704,'VEN','ZU','ZULIA','LAGUNILLAS','','0','0',4001),
  (46710,'VEN','ZU','ZULIA','MACHIQUES DE PERIJA','','0','0',4001),
@@ -693,7 +720,7 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46734,'VEN','ZU','ZULIA','CATATUMBO','','0','0',4001),
  (46736,'VEN','ZU','ZULIA','JESUS ENRIQUE LOSSADA','','0','0',4001),
  (46749,'VEN','ZU','ZULIA','MARA','','0','0',4001);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
  (46750,'VEN','ZU','ZULIA','MIRANDA','','0','0',4001),
  (46751,'VEN','ZU','ZULIA','MORALITO','','0','0',4001),
  (46754,'VEN','ZU','ZULIA','OTRAS POBLACIONES','','0','0',4001),
@@ -706,31 +733,32 @@ INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`
  (46761,'VEN','AM','AMAZONAS','OTRAS POBLACIONES','','0','0',7101),
  (46762,'VEN','AM','AMAZONAS','RIO NEGRO (SAN CARLOS DE RIO NEGRO)','','0','0',7101),
  (46800,'VEN','GU','GUARICO','VALLE LA PASCUA','','0','0',2301),
- (46801,'VEN','AA','VENEZUELA','n/a',' ','0','0',0),
- (46802,'VEN','AM','AMAZONAS','AMAZONAS',' ','0','0',0);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
- (46803,'VEN','ZU','ZULIA','ZULIA',' ','0','0',0),
- (46804,'VEN','GU','GUARICO','GUARICO',' ','0','0',0),
- (46805,'VEN','YA','YARACUY','YARACUY',' ','0','0',0),
- (46806,'VEN','VA','VARGAS','VARGAS',' ','0','0',0),
- (46807,'VEN','TR','TRUJILLO','TRUJILLO',' ','0','0',0),
- (46808,'VEN','TA','TACHIRA','TACHIRA',' ','0','0',0),
- (46809,'VEN','SU','SUCRE','SUCRE',' ','0','0',0),
+ (46802,'VEN','AM','AMAZONAS','',' ','0','0',0),
+ (46803,'VEN','ZU','ZULIA','',' ','0','0',0);
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+ (46804,'VEN','GU','GUARICO','',' ','0','0',0),
+ (46805,'VEN','YA','YARACUY','',' ','0','0',0),
+ (46806,'VEN','VA','VARGAS','',' ','0','0',0),
+ (46807,'VEN','TR','TRUJILLO','',' ','0','0',0),
+ (46808,'VEN','TA','TACHIRA','',' ','0','0',0),
+ (46809,'VEN','SU','SUCRE','',' ','0','0',0),
  (46810,'VEN','PO','PORTUGUESA','PORTUGUESA',' ','0','0',0),
- (46811,'VEN','CO','COJEDES','COJEDES',' ','0','0',0),
- (46812,'VEN','DF','DEPENDENCIAS FEDERALES','DEPENDENCIAS FEDERALES',' ','0','0',0),
- (46814,'VEN','AN','ANZOATEGUI','ANZOATEGUI',' ','0','0',0),
- (46815,'VEN','NE','NUEVA ESPARTA','NUEVA ESPARTA',' ','0','0',0),
- (46816,'VEN','MO','MONAGAS','MONAGAS',' ','0','0',0),
- (46817,'VEN','CA','CARABOBO','CARABOBO',' ','0','0',0),
- (46818,'VEN','AR','ARAGUA','ARAGUA',' ','0','0',0),
- (46819,'VEN','FA','FALCON','FALCON',' ','0','0',0);
-INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_Name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
- (46820,'VEN','ME','MERIDA','MERIDA',' ','0','0',0),
- (46821,'VEN','MI','MIRANDA','MIRANDA',' ','0','0',0),
- (46822,'VEN','BO','BOLIVAR','BOLIVAR',' ','0','0',0),
- (46823,'VEN','LA','LARA','LARA',' ','0','0',0),
- (46824,'VEN','DI','DISTRITO CAPITAL','DISTRITO CAPITAL',' ','0','0',0);
+ (46811,'VEN','CO','COJEDES','',' ','0','0',0),
+ (46812,'VEN','DF','DEPENDENCIAS FEDERALES','',' ','0','0',0),
+ (46814,'VEN','AN','ANZOATEGUI','',' ','0','0',0),
+ (46815,'VEN','NE','NUEVA ESPARTA','',' ','0','0',0),
+ (46816,'VEN','MO','MONAGAS','',' ','0','0',0),
+ (46817,'VEN','CA','CARABOBO','',' ','0','0',0),
+ (46818,'VEN','AR','ARAGUA','',' ','0','0',0),
+ (46819,'VEN','FA','FALCON','',' ','0','0',0),
+ (46820,'VEN','ME','MERIDA','',' ','0','0',0),
+ (46821,'VEN','MI','MIRANDA','',' ','0','0',0),
+ (46822,'VEN','BO','BOLIVAR','',' ','0','0',0),
+ (46823,'VEN','LA','LARA','',' ','0','0',0);
+INSERT INTO `ubicacion` (`id`,`country`,`state_abbreviation`,`state_name`,`city`,`capital`,`latitude`,`longitude`,`zipcode`) VALUES 
+ (46824,'VEN','DI','DISTRITO CAPITAL','',' ','0','0',0),
+ (46825,'VEN','AP','APURE','','','0','0',0),
+ (46826,'VEN','DE','DELTA AMACURO','','','0','0',0);
 /*!40000 ALTER TABLE `ubicacion` ENABLE KEYS */;
 
 
@@ -757,8 +785,8 @@ CREATE TABLE `usuario` (
   `company_id` int(10) unsigned NOT NULL DEFAULT 0,
   `location` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
   `colmena_conexion` int(10) unsigned NOT NULL DEFAULT 1000,
-  `state` varchar(40) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'CA',
-  `city` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'VALENCIA',
+  `state` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '0',
+  `city` int(10) unsigned NOT NULL DEFAULT 0,
   `country` varchar(10) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'VEN',
   `nombre_completo` varchar(250) COLLATE utf8_spanish2_ci NOT NULL DEFAULT ' ',
   `pregunta_clave` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT 'cual es tu nombre?',
@@ -778,9 +806,9 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`user_id`,`firstname`,`lastname`,`email`,`login`,`password`,`usuario_foto`,`caja_id`,`created_at`,`dateofbirth`,`telefono`,`departamento`,`estatus`,`tipo`,`company_id`,`location`,`colmena_conexion`,`state`,`city`,`country`,`nombre_completo`,`pregunta_clave`,`respuesta_clave`,`tarjeta_presentacion`,`gender`,`rif`,`tcarea`,`tcnumber`) VALUES 
- (1,'Administrador Ppal','De CiudadHive','ciudadhive@gmail.com','ciudadhive@gmail.com','$2y$10$DuMw9s52hxi01c2tnA5pfewoFpHxAv4UovPtagI3k1rlj9dhsFyr6','Administrador_18.jpg',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ADMINISTRATOR',1212,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA','VALENCIA','VEN','Administrador Ppal De CiudadHive','cual es tu nombre?','usuario de ciudadhive',' ','M','V-7065079','0414','4840676'),
- (2,'Carlos','Peraza','carlosperazavz@gmail.com','carlosperazavz@gmail.com','$2y$10$oMBj1uqWpkmUbJUAnIw76OLVyrmO7v9riCoW6Aojv9huuViLl1Eh6','Carlos_67.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ASISTENTE',1212,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA','VALENCIA','VEN','Administrador Principal De ciudadhive','cual es tu nombre?','Carlos',' ','M','V-7065079','0414','4840676'),
- (8,'Virginia','Sanchez','josegomez@gmail.com','josegomez@gmail.com','$2y$10$.KN93Vu/iHz7VFgl8.DxweQZtJQFicnBii0oF0kxGvnOwBNpuzYm.','1234_VirginiaSanchez_24.png',0,'2024-05-07 00:00:00','2024-05-07 00:00:00','','Ventas',1,'VENDOR',1234,'Carribbean Suits\r\nTucasa',1000,'FALCON','Boca de Aroa','Venezuela','Virginia Sanchez','cual es tu nombre?','usuario de ciudadhive',' ','F','7065079','412','4560079');
+ (1,'Administrador Ppal','De CiudadHive','ciudadhive@gmail.com','ciudadhive@gmail.com','$2y$10$DuMw9s52hxi01c2tnA5pfewoFpHxAv4UovPtagI3k1rlj9dhsFyr6','Administrador_18.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ADMINISTRATOR',1,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Administrador Ppal De CiudadHive','cual es tu nombre?','usuario de ciudadhive',' ','M','V-7065079','0414','4840676'),
+ (2,'Carlos','Peraza','carlosperazavz@gmail.com','carlosperazavz@gmail.com','$2y$10$oMBj1uqWpkmUbJUAnIw76OLVyrmO7v9riCoW6Aojv9huuViLl1Eh6','Carlos_67.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ASISTENTE',0,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Carlos Peraza','cual es tu nombre?','Carlos',' ','M','V-7065079','0414','4840676'),
+ (8,'Virginia','Sanchez','josegomez@gmail.com','josegomez@gmail.com','$2y$10$.KN93Vu/iHz7VFgl8.DxweQZtJQFicnBii0oF0kxGvnOwBNpuzYm.','1234_VirginiaSanchez_24.jpg',0,'2024-05-07 00:00:00','2024-05-07 00:00:00','','Ventas',1,'VENDOR',0,'Carribbean Suits\r\nTucasa',1000,'CA',45414,'VEN','Virginia Sanchez','cual es tu nombre?','usuario de ciudadhive',' ','F','7065079','412','4560079');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
