@@ -19,6 +19,11 @@ if (!isset($_SESSION["tab"])) {
         <div class="container-fluid">
         
         <?php
+            // busco empresas
+            use app\controllers\companyController;
+            $companyController = new companyController();
+            $empresas = $companyController->listarTodosCompanyControlador("");
+            // busco ciudades
             use app\controllers\ubicacionController;
             $ubicacionController = new ubicacionController();
             // por ahora actualizamos datos del administrador
@@ -31,6 +36,7 @@ if (!isset($_SESSION["tab"])) {
                 $country_user = $datos['country'];
                 $state_user = $datos['state'];
                 $city_user = $datos['city'];
+                $company_id = $datos['company_id'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
                 $usuario_foto = $datos['usuario_foto'];
@@ -44,6 +50,9 @@ if (!isset($_SESSION["tab"])) {
                 $country_user = 0;
                 $accion = "registrar";
                 $boton_accion = "Agregar";
+            }
+            if (isset($_POST['company_id'])){
+                $company_id = $_POST['comoany_id'];
             }
             // busco paises
             $paises = $ubicacionController->obtenerPaisControlador();
@@ -68,8 +77,6 @@ if (!isset($_SESSION["tab"])) {
             }
             //print_r($usuario_foto);
             //exit();
-
-            echo $_SESSION["tab"];
             if($pasa == 1){ 
                 $tab1="";$tab2="";$tab3="";
                 if($_SESSION["tab"]=="personaldetails") {
@@ -244,7 +251,7 @@ if (!isset($_SESSION["tab"])) {
                                                 <div class="row">
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="firstnameInput" class="form-label">Primer nombre</label>
+                                                            <label for="firstname" class="form-label">Primer nombre</label>
                                                             <input name="firstname" type="text" class="form-control" name="usuario_nombre" 
                                                             id="firstnameInput" placeholder="Enter your firstname" 
                                                             value="<?php echo $datos['firstname']; ?>"
@@ -255,7 +262,7 @@ if (!isset($_SESSION["tab"])) {
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="lastnameInput" class="form-label">Apellido</label>
+                                                            <label for="lastname" class="form-label">Apellido</label>
                                                             <input name="lastname" type="text" class="form-control" id="lastnameInput" 
                                                             placeholder="Enter your lastname" 
                                                             value="<?php echo $datos['lastname']; ?>"
@@ -364,36 +371,53 @@ if (!isset($_SESSION["tab"])) {
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="company_id" class="form-label">Empresa/Tienda asignada</label>
-                                                            <input name="company_id" type="text" class="form-control" id="company_id" placeholder="Tienda asignada" value="<?php echo $datos['company_id']; ?>" />
+                                                            <select name="company_id" class="form-control" data-choices data-choices-text-unique-true id="company_id">
+                                                                <option value="">Selecciones Negocio</option>
+                                                                <?php
+                                                                if(is_array($empresas)){
+                                                                    foreach($empresas as $empresa){
+                                                                    ?>
+                                                                        <option value="<?=$empresa['company_id'];?>"
+                                                                            <?php 
+                                                                            if (isset($_POST['company_id']) ){
+                                                                                if( $empresa['company_id'] == $_POST['company_id']  ) echo"selected";
+                                                                            }else{
+                                                                                if( $empresa['company_id'] == $company_id  ) echo"selected";
+                                                                            }
+                                                                            ?>
+                                                                            ><?=$empresa['company_name']. " (".$empresa['company_id'].")";?>
+                                                                        </option>
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="countryInput" class="form-label">País</label>
-                                                            <?php
-                                                            
-                                                            if(is_array($paises)){
-                                                                
-                                                                foreach($paises as $pais){
+                                                            <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
+                                                                <?php
+                                                                if(is_array($paises)){
+                                                                    foreach($paises as $pais){
                                                                     ?>
-                                                                     <select name="country" class="form-control" data-choices data-choices-text-unique-true id="country">
-                                                                            
-                                                                            <option value="<?=$pais['country'];?>"
-                                                                                <?php 
-                                                                                if (isset($_POST['country']) ){
-                                                                                    if( $pais['country'] == $_POST['country']  ) echo"selected";
-                                                                                }else{
-                                                                                    if( $pais['country'] == $country_user  ) echo"selected";
-                                                                                }
-                                                                                 ?>
-                                                                                ><?=$pais['country'];?>
-                                                                            </option>
-                                                                    </select>
+                                                                        <option value="<?=$pais['country'];?>"
+                                                                            <?php 
+                                                                            if (isset($_POST['country']) ){
+                                                                                if( $pais['country'] == $_POST['country']  ) echo"selected";
+                                                                            }else{
+                                                                                if( $pais['country'] == $country_user  ) echo"selected";
+                                                                            }
+                                                                            ?>
+                                                                            ><?=$pais['country'];?>
+                                                                        </option>
                                                                     <?php
+                                                                    }
                                                                 }
-                                                            }
-                                                            ?>
+                                                                ?>
+                                                            </select>
                                                         </div>
                                                     </div>
 

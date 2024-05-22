@@ -230,10 +230,9 @@
 			exit();
 		}
 
-		public function obtenerListaMarketControlador(){
-			$consulta_datos = "SELECT a.unidad, b.nombre, a.control_id, a.codigo, a.nombre as nombre_cat, 
-			a.control_foto FROM control a INNER JOIN control b ON (a.unidad = b.control_id)
-			WHERE a.estatus=1 AND a.tipo='market_cat' AND a.unidad>0 ORDER BY a.unidad, a.codigo";
+		public function obtenerListaMarketControlador($tipo){
+			$consulta_datos = "SELECT * FROM control 
+			WHERE estatus=1 AND tipo='$tipo' AND a.company_id=0 ORDER BY a.tipo, a.nombre";
 			//
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();

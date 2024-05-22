@@ -580,7 +580,8 @@
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM usuario 
+				$consulta_datos="SELECT a.*, b.company_name FROM usuario a inner join company b
+				ON (a.company_id = b.company_id) 
 				WHERE ((user_id!='".$_SESSION['id']."' AND user_id!='1') 
 				AND (
 				concat(firstname, ' ', lastname) LIKE '%$busqueda%'
@@ -590,8 +591,9 @@
 				OR login LIKE '%$busqueda%')) 
 				ORDER BY lastname, firstname ASC";
 			}else{
-				$consulta_datos="SELECT * FROM usuario 
-				WHERE user_id!='".$_SESSION['id']."' AND user_id!='1' ORDER BY lastname ASC limit 300";
+				$consulta_datos="SELECT a.*, b.company_name FROM usuario a inner join company b
+				ON (a.company_id = b.company_id) 
+				WHERE A.user_id!='".$_SESSION['id']."' AND A.user_id!='1' ORDER BY A.lastname ASC limit 300";
 			}
 
 			$datos = $this->ejecutarConsulta($consulta_datos);

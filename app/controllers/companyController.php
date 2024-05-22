@@ -163,9 +163,7 @@
 
 		/*----------  Controlador listar company  ----------*/
 		public function listarTodosCompanyControlador($busqueda){	
-
 			$busqueda=$this->limpiarCadena($busqueda);
-
 			if(isset($busqueda) && $busqueda!="*"){
 				$consulta_datos="SELECT * FROM company WHERE ( 
 				company_phone LIKE '%$busqueda%'
@@ -175,9 +173,10 @@
 				OR company_email LIKE '%$busqueda%' 
 				OR company_address LIKE '%$busqueda%' 
 				) 
-				ORDER BY company_type, company_name ASC limit 500";
+				ORDER BY company_type, company_name ASC";
 			}else{
-				$consulta_datos="SELECT * FROM company ORDER BY company_type, company_name ASC limit 500";
+				$consulta_datos="SELECT * FROM company WHERE company_estatus=1 
+				ORDER BY company_type, company_name ASC";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -268,6 +267,8 @@
 		    $company_name = $this->limpiarCadena($_POST['company_name']);
 		    $company_type = $this->limpiarCadena($_POST['company_type']);
 			$company_user = $this->limpiarCadena($_POST['company_user']);
+			$company_membresia = $this->limpiarCadena($_POST['company_membresia']);
+			$company_market_cat = $this->limpiarCadena($_POST['company_market_cat']);
 		    $company_description = $this->limpiarCadena($_POST['company_description']);
 		    $company_address = $this->limpiarCadena($_POST['company_address']);
 		    $company_country = $this->limpiarCadena($_POST['company_country']);
@@ -283,7 +284,7 @@
 		    if($company_name=="" || $company_type=="" || $company_email=="" || $company_description=="" 
 			|| $company_address=="" || $company_country=="" || $company_id == "" 
 			|| $company_state=="" || $company_city=="" || $company_estatus=="" || $company_phone=="" 
-			|| $company_rif==""
+			|| $company_rif=="" || $company_membresia == "" || $company_market_cat == ""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -339,9 +340,19 @@
 					"campo_valor"=>$company_address
 				],
 				[
-					"campo_nombre"=>"company_estatus",
-					"campo_marcador"=>":Company_estatus",
-					"campo_valor"=>$company_estatus
+					"campo_nombre"=>"company_membresia",
+					"campo_marcador"=>":Company_membresia",
+					"campo_valor"=>$company_membresia
+				],
+				[
+					"campo_nombre"=>"company_membresia",
+					"campo_marcador"=>":Company_membresia",
+					"campo_valor"=>$company_membresia
+				],
+				[
+					"campo_nombre"=>"company_market_cat",
+					"campo_marcador"=>":Company_market_cat",
+					"campo_valor"=>$company_market_cat
 				],
 				[
 					"campo_nombre"=>"company_phone",

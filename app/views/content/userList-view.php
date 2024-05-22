@@ -93,7 +93,7 @@
                                         <th>Email</th>
                                         <th>Telefono</th>
                                         <th>Status</th>
-                                        <th>Create Date</th>
+                                        <th>Empresa</th>
                                         <!--<th>Status</th>-->
                                        
                                     </tr>
@@ -159,7 +159,7 @@
                                                     }?>
                                                     </span>
                                                 </td>
-                                                <td><?=$rows['tcarea']."-".$rows['created_at'];?></td>
+                                                <td><?=$rows['company_name']." (".$rows['company_id'].")";?></td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
                                             </tr>

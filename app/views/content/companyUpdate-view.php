@@ -19,7 +19,7 @@ if ($mysqli->connect_errno) {
             $ubicacionController = new ubicacionController();
             use app\controllers\controlController;
             $controlController = new controlController();
-            $listaMarket = $controlController->obtenerListaMarketControlador();
+            $listaMarket = $controlController->listarTodosControlControlador("market");
             //print_r($listaMarket);
             use app\controllers\companyController;
             $companyController = new companyController();
@@ -37,6 +37,7 @@ if ($mysqli->connect_errno) {
                 $datos = $datos->fetch();
                 $company_id = $datos['company_id'];
                 $company_name   = $datos['company_name'];
+                $company_membresia   = $datos['company_membresia'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
                 $company_logo = $datos['company_logo'];
@@ -66,6 +67,7 @@ if ($mysqli->connect_errno) {
                 $country_company = $datos['company_country'];
                 $state_company = $datos['company_state'];
                 $city_company = $datos['company_city'];
+                $marketCat_company = $datos['company_market_cat'];
                 $pasa = 1;
             } else {
                 // registro es nuevo
@@ -73,7 +75,9 @@ if ($mysqli->connect_errno) {
                 $boton_accion = "Agregar";
                 $pasa = 0;
             }
-
+            if (isset($_POST['membresia_id'])){
+                $company_membresia = $_POST['company_membresia'];
+            }
             // busco paises
             $paises = $ubicacionController->obtenerPaisControlador();
             // busco estados
@@ -278,6 +282,59 @@ if ($mysqli->connect_errno) {
                                                     </div>
                                                 </div>
                                                 <!--end col-->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="company_membresia" class="form-label">Membresia/MarketPlace</label>
+                                                        <select name="company_membresia" class="form-control" 
+                                                        language="javascript:void(0)" 
+                                                        onchange="loadAjaxMarketCat(this.value, <?= $marketCat_company ?>)"
+                                                        data-choices data-choices-text-unique-true id="company_membresia">
+                                                            <option value="">Seleccione MarketPlace</option>
+                                                            <?php
+                                                            if(is_array($listaMarket)){
+                                                                foreach($listaMarket as $market){
+                                                                ?>
+                                                                    <option value="<?=$market['control_id'];?>"
+                                                                        <?php 
+                                                                        if (isset($_POST['company_membresia']) ){
+                                                                            if( $market['control_id'] == $_POST['company_membresia']  ) echo"selected";
+                                                                        }else{
+                                                                            if( $market['control_id'] == $company_membresia  ) echo"selected";
+                                                                        }
+                                                                        ?>
+                                                                        ><?=strtoupper($market['tipo']) . " " . strtoupper($market['nombre']) ;?>
+                                                                    </option>
+                                                                <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--end col-->
+                                                <div class="col-lg-6">
+                                                    <div class="mb-3">
+                                                        <label for="company_market_cat" class="form-label">Categoria de Market</label>
+                                                        <select name="company_market_cat" class="form-control" data-choices data-choices-text-unique-true id="company_market_cat">
+                                                            <option value="">seleccione Categoria Market</option>
+                                                            <?php
+                                                            if ($res = $mysqli->query("SELECT * FROM control WHERE unidad=$company_membresia AND 
+                                                            estatus=1 and tipo='market_cat' ORDER BY nombre")) {
+                                                            ?>
+                                                                <?php while ($fila = mysqli_fetch_array($res)) { ?>
+                                                                    <option value="<?php echo $fila['control_id']; ?>" <?php if ($fila['control_id'] == $datos["company_market_cat"]) echo "selected"; ?>>
+                                                                        <?php echo $fila['control_id'] == "" ? "Seleccione Categoria Market" : $fila['nombre']; ?>
+                                                                    </option>
+                                                                <?php } ?>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <!--end col-->
+                                                
+                                                
                                                 <div class="col-lg-4">
                                                     <div class="mb-3">
                                                         <label for="countryInput" class="form-label">País</label>
@@ -300,7 +357,7 @@ if ($mysqli->connect_errno) {
                                                 <div class="col-lg-4">
                                                     <div class="mb-3">
                                                         <label for="company_state" class="form-label">Estado/Provincia</label>
-                                                        <select name="company_state" language="javascript:void(0)" onchange="loadAjaxCiudadHive(this.value, <?= $city_company ?>)" class="form-control" data-choices data-choices-text-unique-true id="state">
+                                                        <select name="company_state" language="javascript:void(0)" onchange="loadAjaxCiudadHive(this.value, <?= $city_company ?>)" class="form-control" data-choices data-choices-text-unique-true id="company_state">
                                                             <?php
                                                             if (is_array($estados)) {
                                                                 foreach ($estados as $estado) {
