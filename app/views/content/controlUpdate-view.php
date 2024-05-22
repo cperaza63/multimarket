@@ -20,6 +20,7 @@
                 $control_id = $datos['control_id'];
                 $codigo   = $datos['codigo'];
                 $nombre   = $datos['nombre'];
+                $unidad = $datos['unidad'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
                 $control_foto = $datos['control_foto'];

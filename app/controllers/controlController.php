@@ -14,27 +14,11 @@
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
 		    $nombre=$this->limpiarCadena($_POST['nombre']);
 		    $tipo=$this->limpiarCadena($_POST['tipo']);
-			if(!isset($_POST['unidad'])){
-				$unidad=0;
-			}else{
-				$unidad=$this->limpiarCadena($_POST['unidad']);
-			}
-			if( $unidad>0 && $tipo == "")
-			{
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has seleccionado un tipo de tabla, dato obligatorios",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }else{
-				$unidad=0;
-			}
+			$unidad=$this->limpiarCadena($_POST['unidad']);
+
 			
 			# Verificando campos obligatorios #
-		    if($codigo=="" || $nombre=="" || $tipo=="" )
+		    if($codigo=="" || $nombre=="" || $tipo=="" || $unidad=="" )
 			{
 		        $alerta=[
 					"tipo"=>"simple",
@@ -45,43 +29,6 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-			
-		    # Verificando integridad de los datos #
-		    // if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}",$codigo)){
-		    //      $alerta=[
-			//  		"tipo"=>"simple",
-			//  		"titulo"=>"Ocurrió un error inesperado",
-			//  		"texto"=>"El CODIGO ASIGNADO no coincide con el formato solicitado",
-			//  		"icono"=>"error"
-			//  	];
-			//  	return json_encode($alerta);
-		    //      exit();
-		    // }
-
-		    // if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}",$nombre)){
-		    //      $alerta=[
-			// 	"tipo"=>"simple",
-			// 	"titulo"=>"Ocurrió un error inesperado",
-			// 	"texto"=>"El NOMBRE ASIGNADO no coincide con el formato solicitado",
-			// 	"icono"=>"error"
-			// 	];
-			// 	return json_encode($alerta);
-		    // 	exit();
-			// }
-
-            # Verificando control #
-		    #$check_control=$this->ejecutarConsulta("SELECT login FROM control WHERE login='$email'");
-		    #if($check_control->rowCount()>0){
-		   	# 	$alerta=[
-			#		"tipo"=>"simple",
-			#		"titulo"=>"Ocurrió un error inesperado",
-			#		"texto"=>"El control ingresado ya se encuentra registrado, por favor cambie su email",
-			#		"icono"=>"error"
-			#	];
-			#	return json_encode($alerta);
-		     #   exit();
-		    #}
-
 		    # Directorio de imagenes #
     		$img_dir="../views/fotos/control/";
 
@@ -365,27 +312,27 @@
 		    	$datos=$datos->fetch();
 			}
 		    
-			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,45}",$codigo)){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al registrar Control",
-					"texto"=>"El codigo $codigo no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
+			// if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,45}",$codigo)){
+		    //     $alerta=[
+			// 		"tipo"=>"simple",
+			// 		"titulo"=>"Error al registrar Control",
+			// 		"texto"=>"El codigo $codigo no coincide con el formato solicitado",
+			// 		"icono"=>"error"
+			// 	];
+			// 	return json_encode($alerta);
+		    //     exit();
+		    // }
 
-			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,80}",$nombre)){
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al registrar Control",
-					"texto"=>"El nombre del $codigo no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
+			// if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,80}",$nombre)){
+		    //     $alerta=[
+			// 		"tipo"=>"simple",
+			// 		"titulo"=>"Error al registrar Control",
+			// 		"texto"=>"El nombre del $codigo no coincide con el formato solicitado",
+			// 		"icono"=>"error"
+			// 	];
+			// 	return json_encode($alerta);
+		    //     exit();
+		    // }
 
 		    # Verificando campos obligatorios #
 		    if($codigo=="" || $nombre=="" || $tipo=="" || $estatus=="" 
