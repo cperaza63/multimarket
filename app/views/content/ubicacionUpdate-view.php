@@ -6,6 +6,9 @@
         <div class="container-fluid">
         
         <?php
+            if (!isset($_SESSION["tab"])) {
+                $_SESSION["tab"] = "";
+            }
             // por ahora actualizamos datos del administrador
 
             $control_id = $insLogin->limpiarCadena($url[1]);

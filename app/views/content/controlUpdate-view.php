@@ -5,6 +5,9 @@
     <div class="page-content">
         <div class="container-fluid">
             <?php
+            if (!isset($_SESSION["tab"])) {
+                $_SESSION["tab"] = "";
+            }
             // busco market
             use app\controllers\controlController;
 
