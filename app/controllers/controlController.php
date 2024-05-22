@@ -14,9 +14,11 @@
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
 		    $nombre=$this->limpiarCadena($_POST['nombre']);
 		    $tipo=$this->limpiarCadena($_POST['tipo']);
-			$unidad=$this->limpiarCadena($_POST['unidad']);
-
-		    
+			if(!isset($_POST['unidad'])){
+				$unidad=0;
+			}else{
+				$unidad=$this->limpiarCadena($_POST['unidad']);
+			}
 			if( $unidad>0 && $tipo == "")
 			{
 		        $alerta=[
@@ -27,7 +29,9 @@
 				];
 				return json_encode($alerta);
 		        exit();
-		    }
+		    }else{
+				$unidad=0;
+			}
 			
 			# Verificando campos obligatorios #
 		    if($codigo=="" || $nombre=="" || $tipo=="" )
@@ -43,27 +47,27 @@
 		    }
 			
 		    # Verificando integridad de los datos #
-		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}",$codigo)){
-		         $alerta=[
-			 		"tipo"=>"simple",
-			 		"titulo"=>"Ocurrió un error inesperado",
-			 		"texto"=>"El CODIGO ASIGNADO no coincide con el formato solicitado",
-			 		"icono"=>"error"
-			 	];
-			 	return json_encode($alerta);
-		         exit();
-		    }
+		    // if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{3,40}",$codigo)){
+		    //      $alerta=[
+			//  		"tipo"=>"simple",
+			//  		"titulo"=>"Ocurrió un error inesperado",
+			//  		"texto"=>"El CODIGO ASIGNADO no coincide con el formato solicitado",
+			//  		"icono"=>"error"
+			//  	];
+			//  	return json_encode($alerta);
+		    //      exit();
+		    // }
 
-		    if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}",$nombre)){
-		         $alerta=[
-				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"El NOMBRE ASIGNADO no coincide con el formato solicitado",
-				"icono"=>"error"
-				];
-				return json_encode($alerta);
-		    	exit();
-			}
+		    // if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\- ]{5,80}",$nombre)){
+		    //      $alerta=[
+			// 	"tipo"=>"simple",
+			// 	"titulo"=>"Ocurrió un error inesperado",
+			// 	"texto"=>"El NOMBRE ASIGNADO no coincide con el formato solicitado",
+			// 	"icono"=>"error"
+			// 	];
+			// 	return json_encode($alerta);
+		    // 	exit();
+			// }
 
             # Verificando control #
 		    #$check_control=$this->ejecutarConsulta("SELECT login FROM control WHERE login='$email'");

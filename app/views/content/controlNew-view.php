@@ -4,6 +4,11 @@ use app\controllers\controlController;
 $controlController = new controlController();
 $mercados = $controlController->listarSoloTipoControlador('market');
 //print_r($mercados);
+
+use app\controllers\companyController;
+$companyController = new companyController();
+$empresas = $companyController->listarTodosCompanyControlador("");
+
 ?>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -51,7 +56,7 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
                                         <div class="row">
-                                            <div class="col-lg-4">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="codigo" class="form-label">Código</label>
                                                     <input name="codigo" type="text" class="form-control" 
@@ -61,7 +66,7 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                                 </div>
                                             </div>
                                             <!--end col-->
-                                            <div class="col-lg-8">
+                                            <div class="col-lg-6">
                                                 <div class="mb-3">
                                                     <label for="nombre" class="form-label">Nombre</label>
                                                     <input name="nombre" type="text" class="form-control" id="nombre" 
@@ -76,8 +81,14 @@ $mercados = $controlController->listarSoloTipoControlador('market');
                                                     <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                     <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                         <option value="">Seleccione un tipo</option>
-                                                        <option value="market">Market Place</option>
-                                                        <option value="market_cat">Categoría de Market Place</option>
+                                                        <option value="market">market - Market Place</option>
+                                                        <option value="market_cat">market_cat - Categoría de Market Place</option>
+                                                        <option value="unidades">unidades - Unidades de medida</option>
+                                                        <option value="monedas">monedas - Tipos de Moneda</option>
+                                                        <option value="contratos">contratos - Contratos</option>
+                                                        <option value="bancos">bancos - Bancos</option>
+                                                        <option value="delivery">delivery - Tipos de Delivery</option>
+                                                        <option value="vehiculos">vehiculos - Tipo de Vehiculos</option>
                                                     </select>
                                                 </div>
                                             </div>

@@ -27,7 +27,7 @@
                                                 <label for=""></label>
                                                 <div class="input-group">
                                                     <input class="form-control is-rounded" type="text"
-                                                    name="txt_buscador" placeholder="¿Qué estas buscando?..." pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ ]{1,30}" maxlength="30" required >
+                                                    name="txt_buscador" placeholder="¿Qué estas buscando?..." maxlength="30" required >
                                                     
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
                                                     <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Control</a>

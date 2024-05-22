@@ -52,16 +52,16 @@
 		        exit();
 			}
 
-			if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\- ]{1,30}",$texto)){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"El termino de busqueda no coincide con el formato solicitado",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-			}
+			// if($this->verificarDatos("[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ\- ]{1,30}",$texto)){
+			// 	$alerta=[
+			// 		"tipo"=>"simple",
+			// 		"titulo"=>"Ocurrió un error inesperado",
+			// 		"texto"=>"El termino de busqueda no coincide con el formato solicitado",
+			// 		"icono"=>"error"
+			// 	];
+			// 	return json_encode($alerta);
+		    //     exit();
+			// }
 
 			$_SESSION[$url]=$texto;
 
