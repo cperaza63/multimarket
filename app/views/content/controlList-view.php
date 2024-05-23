@@ -26,9 +26,10 @@
                                             <div class="form-group">
                                                 <label for=""></label>
                                                 <div class="input-group">
-                                                    <input class="form-control is-rounded" type="text"
-                                                    name="txt_buscador" placeholder="¿Qué estas buscando?..." maxlength="30" required >
-                                                    
+                                                <input class="form-control is-rounded" type="text"
+                                                    name="txt_buscador" placeholder="¿Qué estas buscando?..." 
+                                                    value="<?php echo isset($_SESSION[$url[0]])?$_SESSION[$url[0]]:""; ?>"
+                                                    maxlength="30" required >
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
                                                     <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Control</a>
                                                     
@@ -48,7 +49,6 @@
                                         <form class="form-control FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" method="POST" autocomplete="off" >
                                             <input type="hidden" name="modulo_buscador" value="eliminar">
                                             <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
-                                            <i class="fas fa-search fa-fw"></i> &nbsp; Estas buscando <strong>“<?php echo $_SESSION[$url[0]]; ?>”</strong>
                                             
                                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar busqueda</button>
                                         </form>

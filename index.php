@@ -85,6 +85,10 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 8) == "userNew/"
                 || substr($_GET['views'], 0, 11) == "companyNew/"
                 || substr($_GET['views'], 0, 14) == "companyUpdate/"
+                || substr($_GET['views'], 0, 11) == "controlNew/"
+                || substr($_GET['views'], 0, 14) == "controlUpdate/"
+                || substr($_GET['views'], 0, 12) == "categoryNew/"
+                || substr($_GET['views'], 0, 15) == "categoryUpdate/"
             ){
                 ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
             }else{

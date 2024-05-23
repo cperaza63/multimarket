@@ -2,17 +2,6 @@
         <div class="app-menu navbar-menu">
             <!-- LOGO -->
             <div class="navbar-brand-box">
-                <>
-                <!-- Dark Logo-->
-                <a href="index.html" class="logo logo-dark">
-                    <span class="logo-sm">
-                        <img src="http://localhost/multimarket/app/views/images/logo-sm.png" alt="" height="22">
-                    </span>
-                    <span class="logo-lg">
-                        <img src="http://localhost/multimarket/app/views/images/logo-dark.png" alt="" height="17">
-                    </span>
-                </a>
-                
                 <?php
                 if ( $_SESSION['id'] == 1 ){
                     $logo_lg = "http://localhost/multimarket/app/views/images/market.png";
@@ -20,25 +9,40 @@
                 }else{
                     $logo_lg = "http://localhost/multimarket/app/views/fotos/company/" 
                     . $_SESSION['user_company_id']."/".$_SESSION['user_company_logo'];
+                    $logo_sm = "http://localhost/multimarket/app/views/fotos/company/" 
+                    . $_SESSION['user_company_id']."/".$_SESSION['user_company_logo'];
+                }
+                if( !empty($_SESSION['foto']) ){
+                    $foto_user = "http://localhost/multimarket/app/views/fotos/usuarios/" 
+                    . $_SESSION['foto'];
+                }else{
+                    $foto_user = "http://localhost/multimarket/app/views/images/users/avatar-1.jpg";
                 }
                 ?>
-                <!-- Light Logo-->
-                <a href="http://localhost/multimarket/dashboard/" class="logo logo-light">
-                    <span class="logo-sm">
+                <!-- Dark Logo-->
+                <a href="index.html" class="logo logo-dark">
+                    <span class="logo-sm" style="margin-left: -5px;">
                         <img class="rounded-circle" src="<?=$logo_sm;?>" alt="" height=33">
                     </span>
-                    <span class="logo-lg">
-                        <img src="<?=$logo_lg;?>" alt="" height=40">
+                    <span class="logo-lg" style="margin-left: -20px;">
+                        <img src="<?=$logo_lg;?>" alt="" height=60">
+                    </span>
+                </a>
+                <!-- Light Logo-->
+                <a href="http://localhost/multimarket/dashboard/" class="logo logo-light">
+                    <span class="logo-sm" style="margin-left: -5px;">
+                        <img class="rounded-circle" src="<?=$logo_sm;?>" alt="" height=33">
+                    </span>
+                    <span class="logo-lg" style="margin-left: -20px;">
+                        <img src="<?=$logo_lg;?>" alt="" height=60">
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
                     <i class="ri-record-circle-line"></i>
                 </button>
             </div>
-
             <div id="scrollbar">
                 <div class="container-fluid">
-
                     <div id="two-column-menu">
                     </div>
                     <ul class="navbar-nav" id="navbar-nav">
@@ -67,7 +71,7 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>marketList/" class="nav-link" data-key="t-analytics"> Categorias  </a>
+                                        <a href="<?php echo APP_URL; ?>categoryList/" class="nav-link" data-key="t-analytics"> Categorías y Subcategorias  </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
@@ -1088,7 +1092,7 @@
                 <!-- App Search-->
                 <form class="app-search d-none d-md-block">
                     <div class="position-relative">
-                        <input type="text" class="form-control" placeholder="Search..." autocomplete="off" id="search-options" value="">
+                        <input type="text" class="form-control" placeholder="Buscar..." autocomplete="off" id="search-options" value="">
                         <span class="mdi mdi-magnify search-widget-icon"></span>
                         <span class="mdi mdi-close-circle search-widget-icon search-widget-icon-close d-none" id="search-close-options"></span>
                     </div>
@@ -1734,9 +1738,9 @@
                 <div class="dropdown ms-sm-3 header-item topbar-user mb-2">
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
-                            <img class="rounded-circle header-profile-user" src="http://localhost/multimarket/app/views/images/users/avatar-1.jpg" alt="Header Avatar">
+                            <img class="rounded-circle header-profile-user" src="<?=$foto_user?>" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?=$_SESSION['nombre']."<br>".$_SESSION['apellido']?></span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?=$_SESSION['nombre']." ".$_SESSION['apellido']?></span>
                                 <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?=$_SESSION['usuario']." (".$_SESSION['id'].")"?></span>
                             </span>
                         </span>

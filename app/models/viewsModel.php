@@ -9,14 +9,13 @@
 
 			$listaBlanca=["dashboard","cashierNew","cashierList","cashierSearch","cashierUpdate",
 			"userNew","userList","userUpdate", "userUpdateAdmin", "userSearch","userPhoto",
-			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto", 
+			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto",
+			"categoryNew","categoryList","categoryUpdate","categorySearch", "categorylPhoto",
 			"ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
 			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
 			"marketNew", "marketList", "marketSearch", "marketUpdate",
 			"clientNew","clientList","clientSearch","clientUpdate",
-			"categoryNew","categoryList","categorySearch","categoryUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
-			"companyNew",
 			"saleNew","saleList","saleSearch","saleDetail",
 			"logOut"
 			];
