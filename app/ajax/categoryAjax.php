@@ -29,14 +29,6 @@
 		if($_POST['modulo_category']=="actualizarFoto"){
 			echo $insCategory->actualizarFotoCategoryControlador();
 		}
-
-		if($_POST['modulo_category']=="actualizarFotoMasa"){
-			echo $insCategory->actualizarFotoMasaControlador();
-		}
-
-		if($_POST['modulo_category']=="eliminarFoto"){
-			echo $insCategory->eliminarFotoCategoryControlador();
-		}
 		
 	}else{
 		echo "error";

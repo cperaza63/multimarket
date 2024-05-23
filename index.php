@@ -11,9 +11,6 @@ if(isset($_GET['views'])){
 }else{
     $url=["login"];
 }
-
-//echo "Vista= " . $_GET['views'];
-
 ?>
 
 <!DOCTYPE html>
@@ -38,38 +35,36 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         if($vista=="login" || $vista=="404"){
             require_once "./app/views/content/".$vista."-view.php";
         }else{
-        ?>
-        <main class="page-container">
+            ?>
+            <main class="page-container">
+            <?php
+            # Cerrar sesion desde aqui #
+            if((!isset($_SESSION['id']) || $_SESSION['id']=="") 
+            || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
+                $insLogin->cerrarSesionControlador();
+                exit();
+            }
+            ?>      
+                <section class="full-width pageContent scroll" id="pageContent">
+                    <?php
+                        //require_once "./app/views/inc/navbar.php";
+                        require_once "./app/views/inc/navlateral.php";
+                        require_once $vista;
+                        require_once "./app/views/inc/barra-final.php";
+                    ?>
+                </section>
+            </main>
         <?php
-        # Cerrar sesion desde aqui #
-        if((!isset($_SESSION['id']) || $_SESSION['id']=="") 
-        || (!isset($_SESSION['usuario']) || $_SESSION['usuario']=="")){
-            $insLogin->cerrarSesionControlador();
-            exit();
         }
-        ?>      
-            <section class="full-width pageContent scroll" id="pageContent">
-                <?php
-                    //     require_once "./app/views/inc/navbar.php";
-                    require_once "./app/views/inc/navlateral.php";
-                    require_once $vista;
-                    require_once "./app/views/inc/barra-final.php";
-                ?>
-            </section>
-        </main>
-        <?php
-        }
-
-        require_once "./app/views/inc/footer.php"; 
-        require_once "./app/views/inc/script.php"; 
-        
+        require_once "./app/views/inc/footer.php";
+        require_once "./app/views/inc/script.php";
         // recuerda el tab de las pestañas
-        
         // desativamos el ajax para hacer prueas
         $a=1;
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
-                if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"){
+                if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
+                || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
