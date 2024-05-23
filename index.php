@@ -17,7 +17,8 @@ if(isset($_GET['views'])){
 ?>
 
 <!DOCTYPE html>
-<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
+<html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" 
+data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
 
 <head>
     <?php 
@@ -25,7 +26,6 @@ if(isset($_GET['views'])){
     ?>
 </head>
 <body>
-
     <?php
         use app\controllers\viewsController;
         use app\controllers\loginController;

@@ -2,6 +2,7 @@
         <div class="app-menu navbar-menu">
             <!-- LOGO -->
             <div class="navbar-brand-box">
+                <>
                 <!-- Dark Logo-->
                 <a href="index.html" class="logo logo-dark">
                     <span class="logo-sm">
@@ -11,13 +12,23 @@
                         <img src="http://localhost/multimarket/app/views/images/logo-dark.png" alt="" height="17">
                     </span>
                 </a>
+                
+                <?php
+                if ( $_SESSION['id'] == 1 ){
+                    $logo_lg = "http://localhost/multimarket/app/views/images/market.png";
+                    $logo_sm = "http://localhost/multimarket/app/views/images/logoCH.png";
+                }else{
+                    $logo_lg = "http://localhost/multimarket/app/views/fotos/company/" 
+                    . $_SESSION['user_company_id']."/".$_SESSION['user_company_logo'];
+                }
+                ?>
                 <!-- Light Logo-->
-                <a href="index.html" class="logo logo-light">
+                <a href="http://localhost/multimarket/dashboard/" class="logo logo-light">
                     <span class="logo-sm">
-                        <img src="http://localhost/multimarket/app/views/images/logo-sm.png" alt="" height="22">
+                        <img class="rounded-circle" src="<?=$logo_sm;?>" alt="" height=33">
                     </span>
                     <span class="logo-lg">
-                        <img src="http://localhost/multimarket/app/views/images/logo-light.png" alt="" height="17">
+                        <img src="<?=$logo_lg;?>" alt="" height=40">
                     </span>
                 </a>
                 <button type="button" class="btn btn-sm p-0 fs-20 header-item float-end btn-vertical-sm-hover" id="vertical-hover">
@@ -56,33 +67,32 @@
                                     </li>
 
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>marketList/" class="nav-link" data-key="t-analytics"> Market Place  </a>
+                                        <a href="<?php echo APP_URL; ?>marketList/" class="nav-link" data-key="t-analytics"> Categorias  </a>
                                     </li>
-                                    
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="index.html" class="nav-link" data-key="t-ecommerce"> Proveedores </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="dashboard-crypto.html" class="nav-link" data-key="t-crypto"> Clientes </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Productos </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> Facturación</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Pedidos</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Movimientos</a>
+                                    </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>
                                     </li>
-
-                                    <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Datos empresa </a>
-                                    </li>
-                                    
-                                    <li class="nav-item">
-                                        <a href="index.html" class="nav-link" data-key="t-ecommerce"> Ecommerce </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="dashboard-crypto.html" class="nav-link" data-key="t-crypto"> Crypto </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Projects </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> NFT</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Job</a>
-                                    </li>
-
                                     
 
                                 </ul>
@@ -1721,13 +1731,13 @@
                     </div>
                 </div>
 
-                <div class="dropdown ms-sm-3 header-item topbar-user">
+                <div class="dropdown ms-sm-3 header-item topbar-user mb-2">
                     <button type="button" class="btn shadow-none" id="page-header-user-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                         <span class="d-flex align-items-center">
                             <img class="rounded-circle header-profile-user" src="http://localhost/multimarket/app/views/images/users/avatar-1.jpg" alt="Header Avatar">
                             <span class="text-start ms-xl-2">
-                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text">Anna Adame</span>
-                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text">Founder</span>
+                                <span class="d-none d-xl-inline-block ms-1 fw-medium user-name-text"><?=$_SESSION['nombre']."<br>".$_SESSION['apellido']?></span>
+                                <span class="d-none d-xl-block ms-1 fs-12 user-name-sub-text"><?=$_SESSION['usuario']." (".$_SESSION['id'].")"?></span>
                             </span>
                         </span>
                     </button>

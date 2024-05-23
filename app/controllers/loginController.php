@@ -40,27 +40,23 @@
 						</article>';
 				    }else{
 					    # Verificando usuario #
-					    $check_usuario=$this->ejecutarConsulta("SELECT * FROM usuario WHERE login='$usuario'");
+					    $check_usuario=$this->ejecutarConsulta("SELECT a.*, b.company_logo FROM usuario a left join company b on (a.company_id = b.company_id) WHERE login='$usuario'");
 					    if($check_usuario->rowCount()==1){
-
 					    	$check_usuario=$check_usuario->fetch();
-
 					    	if($check_usuario['login']==$usuario && password_verify($clave,$check_usuario['password'])){
-
 					    		$_SESSION['id']=$check_usuario['user_id'];
 					            $_SESSION['nombre']=$check_usuario['firstname'];
 					            $_SESSION['apellido']=$check_usuario['lastname'];
 					            $_SESSION['usuario']=$check_usuario['login'];
 					            $_SESSION['foto']=$check_usuario['usuario_foto'];
 					            $_SESSION['caja']=$check_usuario['caja_id'];
-
-
+								$_SESSION['user_company_id']=$check_usuario['company_id'];
+								$_SESSION['user_company_logo']=$check_usuario['company_logo'];
 					            if(headers_sent()){
 					                echo "<script> window.location.href='".APP_URL."dashboard/'; </script>";
 					            }else{
 					                header("Location: ".APP_URL."dashboard/");
 					            }
-
 					    	}else{
 					    		echo '<article class="alert alert-danger shadow">
 								  <div class="message-body">
