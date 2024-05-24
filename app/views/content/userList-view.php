@@ -73,6 +73,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
+                    <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
+                        </div>
                         <div class="card-header">
                             <h5 class="card-title mb-0">Lista de Usuarios</h5>
                         </div>
@@ -168,6 +173,11 @@
                                     ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
                         </div>
                     </div>
                 </div>

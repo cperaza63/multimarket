@@ -36,7 +36,6 @@
                                     </form>
                                 </div>
                             </div>
-                            
                             <?php
                             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
                             ?>
@@ -55,7 +54,6 @@
                             <?php 
                             }
                             ?>
-
                         </div>
                     </div>
                 </div>
@@ -63,7 +61,6 @@
             </div>
             <!--end row-->
             <?php
-
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
                 $datos = $insCategory->listarTodosCategoryControlador($_SESSION[$url[0]]);
             }else{
@@ -73,6 +70,11 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
+                    <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
+                        </div>
                         <div class="card-header">
                             <h5 class="card-title mb-0">Lista de valores de la Tabla Categoría</h5>
                         </div>
@@ -90,7 +92,7 @@
                                         <th>Categoría</th>
                                         <th>Nombre</th>
                                         <th>Estatus</th>
-                                        <!--<th>Status</th>-->
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -142,9 +144,9 @@
                                                                 </form>
                                                             <li>
                                                             <li>
-                                                                <a href="<?= APP_URL.'subcatNew/'.$rows['categoria_id'].'/'?>" 
+                                                                <a href="<?= APP_URL.'subcatList/'.$rows['categoria_id'].'/'?>" 
                                                                 class="dropdown-item"><i class="ri-add-box-fill align-bottom me-2 text-muted">
-                                                                </i> Agregar Subcategoria</a>
+                                                                </i> Subcategorias</a>
                                                             </li>
                                                         </ul>
                                                     </div>
@@ -161,15 +163,24 @@
                                                     }?>
                                                     </span>
                                                 </td>
+                                                <td>
+                                                <a href="<?= APP_URL.'subcatList/'.$rows['categoria_id'].'/'?>" 
+                                                class="dropdown-item"><span class="btn btn-info">Subcategorias</span></a>
+                                                </td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
                                             </tr>
-                                    <?php
-                                        }    
+                                        <?php
+                                        }
                                     }
                                     ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
                         </div>
                     </div>
                 </div>

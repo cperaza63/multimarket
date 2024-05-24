@@ -101,7 +101,11 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                
+                                <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
+                        </div>
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
@@ -173,6 +177,11 @@
                                     ?>
                                 </tbody>
                             </table>
+                        </div>
+                        <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
                         </div>
                     </div>
                 </div>

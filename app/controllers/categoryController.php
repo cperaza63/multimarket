@@ -149,13 +149,13 @@
 		public function listarTodosCategoryControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company_categorias WHERE ( 
+				$consulta_datos="SELECT * FROM company_categorias WHERE unidad=0  AND ( 
 				codigo LIKE '%$busqueda%'
 				OR nombre LIKE '%$busqueda%' 
 				) 
 				ORDER BY nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM company_categorias ORDER BY nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company_categorias WHERE unidad=0 ORDER BY nombre ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -173,9 +173,7 @@
 			exit();
 		}
 		public function obtenerUnItemControlador($id){
-			$consulta_datos = "SELECT a.unidad, b.nombre, a.categoria_id, a.codigo, a.nombre as nombre_cat, 
-			a.categoria_foto FROM company_categorias a INNER JOIN control b ON (a.unidad = b.categoria_id)
-			WHERE a.categoria_id=$id";
+			$consulta_datos = "SELECT * FROM company_categorias WHERE categoria_id=$id";
 			$datos=$this->ejecutarConsulta($consulta_datos);
 			if($datos->rowCount()<=0){
 				$alerta=[

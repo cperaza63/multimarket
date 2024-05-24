@@ -9,8 +9,8 @@
                 $_SESSION["tab"] = "";
             }
             // busco market
-            use app\controllers\categoryController;
-            $categoryController = new categoryController();
+            use app\controllers\subcatController;
+            $subcatController = new subcatController();
             // por ahora actualizamos datos del administrador
             $categoria_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "company_categorias", "categoria_id", $categoria_id);
@@ -42,16 +42,16 @@
                             <div class="card-body p-1">
                                 <div class="text-center">
                                     <form class="FormularioAjax" name="formAjax1" 
-                                    action="<?php echo APP_URL; ?>app/ajax/categoryAjax.php" method="POST" 
+                                    action="<?php echo APP_URL; ?>app/ajax/subcatAjax.php" method="POST" 
                                     autocomplete="off" enctype="multipart/form-data">
                                         <!--    Campos parametros     -->
-                                        <input type="hidden" name="modulo_category" value="actualizarFoto">
+                                        <input type="hidden" name="modulo_subcat" value="actualizarFoto">
                                         <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
                                         <input type="hidden" name="categoria_id" value="<?php echo $datos['categoria_id']; ?>">
+                                        <input type="hidden" name="unidad" value="<?=$unidad?>">
+                                        <input type="hidden" name="codigo" value="<?=$codigo?>">
                                         <input type="hidden" name="categoria_tipo" value="categoria_foto">
-
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-
                                             <img src="
                                             <?php
                                             echo $categoria_foto == "nophoto.jpg"
@@ -82,7 +82,7 @@
                                             </table>
                                         </div>
                                     </form>
-                                    <h5 class="fs-16 mb-1"><?php echo "CATEGORIAS<br>" . strtoupper($datos['nombre']) 
+                                    <h5 class="fs-16 mb-1"><?php echo "SUBCATEGORIAS<br>" . strtoupper($datos['nombre']) 
                                     . " Item # " . $datos['categoria_id']; ?> </h5>
                                 </div>
                             </div>
@@ -107,19 +107,20 @@
                                             <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                             <input type="hidden" name="modulo_category" value="<?= $accion; ?>">
                                             <input type="hidden" name="categoria_id" value="<?= $categoria_id; ?>">
+                                            <input type="hidden" name="unidad" value="<?= $unidad; ?>">
                                             <input type="hidden" name="codigo" value="<?= $codigo; ?>">
 
                                             <div class="row">
                                                 <div class="col-lg-4">
                                                     <div class="mb-3">
-                                                        <label for="codigo" class="form-label">Código</label>
-                                                        <input name="codigo" type="text" class="form-control" name="codigo" id="firstnameInput" placeholder="Entre el codigo" value="<?php echo $datos['codigo']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,45}" maxlength="40" required>
+                                                        <label for="codigo" class="form-label">Código Subcategoría</label>
+                                                        <input name="codigo" type="text" class="form-control" name="codigo" id="codigo" placeholder="Entre el codigo" value="<?php echo $datos['codigo']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,45}" maxlength="40" required>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
                                                 <div class="col-lg-4">
                                                     <div class="mb-3">
-                                                        <label for="lastnameInput" class="form-label">Nombre</label>
+                                                        <label for="nombre" class="form-label">Nombre Subcategoría</label>
                                                         <input name="nombre" type="text" class="form-control" id="nombre" placeholder="Entre el nombre del item" value="<?php echo $datos['nombre']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,80}" maxlength="40" required>
                                                     </div>
                                                 </div>
@@ -136,9 +137,9 @@
                                                 <!--end col-->
                                                 <div class="col-lg-12">
                                                     <div class="hstack gap-2 justify-content-end">
-                                                        <button type="submit" class="btn btn-primary">Actualizar</button>
+                                                        <button type="submit" class="btn btn-primary">Actualizar Subcategoría</button>
 
-                                                        <a href="<?php echo APP_URL; ?>categoryList/" class="btn btn-soft-success">Cancelar</a>
+                                                        <a href="<?php echo APP_URL; ?>subcatList/<?=$unidad?>/" class="btn btn-soft-success">Regresar</a>
                                                     </div>
                                                     <p class="has-text-centered pt-6">
                                                         <small>Los campos marcados con <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>

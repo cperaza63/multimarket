@@ -1,17 +1,16 @@
 <?php
 	namespace app\controllers;
 	use app\models\mainModel; 
-	class categoryController extends mainModel{
+	class subcatController extends mainModel{
 		/*----------  Controlador registrar control  ----------*/
-		public function registrarCategoryControlador(){
-			// return json_encode("regstrar control");
-			// exit();
+		public function registrarSubcatControlador(){
 			# Almacenando datos#
 		    $codigo=$this->limpiarCadena($_POST['codigo']);
 		    $nombre=$this->limpiarCadena($_POST['nombre']);
+			$categoria_id=$this->limpiarCadena($_POST['categoria_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			# Verificando campos obligatorios #
-		    if($codigo=="" || $nombre=="" || $company_id=="")
+		    if($codigo=="" || $nombre=="" || $company_id=="" || $categoria_id=="")
 			{
 		        $alerta=[
 					"tipo"=>"simple",
@@ -65,7 +64,7 @@
 		        }
 
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","cat_",$codigo);
+				$foto=str_ireplace(" ","_","subcat-$company_id-".$codigo);
 		        $foto=$foto."_".rand(0,100);
 
 		        # Extension de la imagen #
@@ -85,7 +84,7 @@
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"No podimos subir la imagen de la categoría, intente mas tarde",
+						"texto"=>"No podimos subir la imagen de la subcategoria, intente mas tarde",
 						"icono"=>"error"
 					];
 					return json_encode($alerta);
@@ -94,7 +93,7 @@
     		}else{
     			$foto="";
     		}
-		    $category_datos_reg=[
+		    $subcategory_datos_reg=[
 				[
 					"campo_nombre"=>"codigo",
 					"campo_marcador"=>":Codigo",
@@ -107,25 +106,31 @@
 				],
 				[
 					"campo_nombre"=>"categoria_foto",
-					"campo_marcador"=>":Categoria_foto",
+					"campo_marcador"=>":categoria_foto",
 					"campo_valor"=>$foto
 				],
 				[
 					"campo_nombre"=>"company_id",
 					"campo_marcador"=>":Company_id",
 					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"unidad",
+					"campo_marcador"=>":Unidad",
+					"campo_valor"=>$categoria_id
 				]
 			];
 
-			//return json_encode("regstrar control");
+			// return json_encode($categoria_id);
+			// exit();
+			
+			$registrar_subcategory=$this->guardarDatos("company_categorias",$subcategory_datos_reg);
 
-			$registrar_category=$this->guardarDatos("company_categorias",$category_datos_reg);
-
-			if($registrar_category->rowCount()==1){
+			if($registrar_subcategory->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
-					"titulo"=>"Categoría registrada",
-					"texto"=>"La categoría ".$codigo." ".$nombre." se registro con éxito",
+					"titulo"=>"Subcategoría registrada",
+					"texto"=>"La subcategoría ".$codigo." ".$nombre." se registro con éxito",
 					"icono"=>"success"
 				];
 			}else{
@@ -138,7 +143,7 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No se pudo registrar la categoría, por favor intente nuevamente",
+					"texto"=>"No se pudo registrar la subcategoría, por favor intente nuevamente",
 					"icono"=>"error"
 				];
 			}
@@ -146,16 +151,30 @@
 			return json_encode($alerta);
 		}
 		/*----------  Controlador listar control  ----------*/
-		public function listarTodosCategoryControlador($busqueda){	
-			$busqueda=$this->limpiarCadena($busqueda);
+		public function listarTodosSubcatControlador($categoria_id, $busqueda){	
+			$busqueda = $this->limpiarCadena($busqueda);
+			$categoria_id = $this->limpiarCadena($categoria_id);
+			
+			if($categoria_id=="")
+			{
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company_categorias WHERE ( 
+				$consulta_datos="SELECT * FROM company_categorias WHERE unidad = $categoria_id AND ( 
 				codigo LIKE '%$busqueda%'
 				OR nombre LIKE '%$busqueda%' 
 				) 
 				ORDER BY nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM company_categorias ORDER BY nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company_categorias WHERE unidad = $categoria_id ORDER BY nombre ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
@@ -205,27 +224,28 @@
 			exit();
 		}
 		/*----------  Controlador eliminar control  ----------*/
-		public function eliminarCategoryControlador(){
+		public function eliminarSubcatControlador(){
 			$id=$this->limpiarCadena($_POST['categoria_id']);
+			$unidad=$this->limpiarCadena($_POST['unidad']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			
 			if($id==1){
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el item de la tabla de control",
+					"texto"=>"No podemos eliminar la subcategoria",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 			}
 			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company_categorias WHERE categoria_id='$id' and estatus=0");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_categorias WHERE unidad=$unidad AND categoria_id='$id' and estatus=0");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado a la categoría en estado ACTIVO, deberá inactivarlo primero",
+					"texto"=>"La subcategoría está en estado ACTIVO, deberá inactivarlo para poder eliminarlo",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -255,9 +275,8 @@
 		    }
 		    return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar control  ----------*/
-		public function actualizarCategoryControlador(){
+		public function actualizarSubcatControlador(){
 			$categoria_id=$this->limpiarCadena($_POST['categoria_id']);
 			$codigo = $this->limpiarCadena($_POST['codigo']);
 			$nombre = $this->limpiarCadena($_POST['nombre']);
@@ -332,10 +351,10 @@
 
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar foto control  ----------*/
-		public function actualizarFotoCategoryControlador(){
+		public function actualizarFotoSubcatControlador(){
 			$id = $this->limpiarCadena($_POST['categoria_id']);
+			$codigo = $this->limpiarCadena($_POST['codigo']);
 			$company_id = $this->limpiarCadena($_POST['company_id']);
 			$categoria_tipo = $this->limpiarCadena($_POST['categoria_tipo']);
 
@@ -397,7 +416,7 @@
 		        }
 				
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_","cat-$company_id-".$id);
+		        $foto=str_ireplace(" ","_","subcat-$company_id-".$codigo);
 		        
 				$foto=$foto."_".rand(0,100);
 

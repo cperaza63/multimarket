@@ -2,21 +2,21 @@
 
 require_once "./config/app.php";
 require_once "./autoload.php"; 
-
 /*---------- Iniciando sesion ----------*/
 require_once "./app/views/inc/session_start.php";
 
+// guardo los parametros de la url
+$_SESSION['view']= "";
 if(isset($_GET['views'])){
     $url=explode("/", $_GET['views']);
+    $_SESSION['view']= $_GET['views'];
 }else{
     $url=["login"];
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" 
 data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
-
 <head>
     <?php 
     require_once "./app/views/inc/head.php";
@@ -26,12 +26,9 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
     <?php
         use app\controllers\viewsController;
         use app\controllers\loginController;
-
         $insLogin = new loginController;
-
         $viewsController= new viewsController();
         $vista=$viewsController->obtenerVistasControlador($url[0]);
-
         if($vista=="login" || $vista=="404"){
             require_once "./app/views/content/".$vista."-view.php";
         }else{
