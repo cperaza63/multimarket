@@ -1,7 +1,7 @@
 <?php
  // busco market
-use app\controllers\categoryController;
-$categoryController = new categoryController();
+use app\controllers\marcaController;
+$marcaController = new marcaController();
 ?>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -10,9 +10,9 @@ $categoryController = new categoryController();
     <div class="page-content">
         <div class="container-fluid"> 
             <div class="row">
-                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/categoryAjax.php" 
+                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/marcaAjax.php" 
                     method="POST" autocomplete="off" enctype="multipart/form-data" >
-                    <input type="hidden" name="modulo_category" value="registrar">
+                    <input type="hidden" name="modulo_marca" value="registrar">
                     <input type="hidden" name="company_id" value="<?=$_SESSION['user_company_id']?>">
                     <div class="col-xxl-9">
                         <div class="card mt-xxl-n5">
@@ -20,7 +20,7 @@ $categoryController = new categoryController();
                                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                    |<li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                            <i class="fas fa-home"></i> CREACION - Información de Categoría del sistema
+                                            <i class="fas fa-home"></i> CREACION - Información de Marcas de productos
                                         </a>
                                     </li>
                                 </ul>
@@ -31,7 +31,7 @@ $categoryController = new categoryController();
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                     alt="user-profile-image">
                                     <div class="avatar-xs p-0 rounded-circle ">
-                                        <input id="profile-img-file-input" name="categoria_foto" type="file" 
+                                        <input id="profile-img-file-input" name="marca_foto" type="file" 
                                         accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                         
                                         <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
@@ -70,8 +70,8 @@ $categoryController = new categoryController();
                                             <!--end col-->
                                             <div class="col-lg-12">
                                                 <div class="hstack gap-2 justify-content-end">
-                                                    <button type="submit" class="btn btn-primary">Agregar Categoría</button>
-                                                    <a href="<?php echo APP_URL; ?>categoryList/" class="btn btn-soft-success">Cancelar</a>
+                                                    <button type="submit" class="btn btn-primary">Agregar Marca</button>
+                                                    <a href="<?php echo APP_URL; ?>marcaList/" class="btn btn-soft-success">Cancelar</a>
                                                     
                                                 </div>
                                                 <p class="has-text-centered pt-6">

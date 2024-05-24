@@ -4,7 +4,6 @@ require_once "./config/app.php";
 require_once "./autoload.php"; 
 /*---------- Iniciando sesion ----------*/
 require_once "./app/views/inc/session_start.php";
-
 // guardo los parametros de la url
 $_SESSION['view']= "";
 if(isset($_GET['views'])){
@@ -13,6 +12,7 @@ if(isset($_GET['views'])){
 }else{
     $url=["login"];
 }
+//print_r($_SESSION['view']);
 ?>
 <!DOCTYPE html>
 <html lang="en" data-layout="vertical" data-topbar="light" data-sidebar="dark" 
@@ -61,7 +61,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
-                || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"){
+                || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
+                || $_GET['views'] == "marcaList/"){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
@@ -71,7 +72,6 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
             }
             // Se debe colocar el controlador que usara AJAX
         }
-
         if(isset($_GET['views']) && $_GET['views']!=""){
             if( substr($_GET['views'], 0, 11) == "userUpdate/"
                 || substr($_GET['views'], 0, 8) == "userNew/"
@@ -81,6 +81,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 14) == "controlUpdate/"
                 || substr($_GET['views'], 0, 12) == "categoryNew/"
                 || substr($_GET['views'], 0, 15) == "categoryUpdate/"
+                || substr($_GET['views'], 0, 9) == "marcaNew/"
+                || substr($_GET['views'], 0, 12) == "marcaUpdate/"
             ){
                 ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
             }else{
@@ -89,7 +91,6 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         }else{
             ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
         }
-
         ?>
 </body>
 </html>

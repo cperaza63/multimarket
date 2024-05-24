@@ -74,7 +74,7 @@
                                         <a href="<?php echo APP_URL; ?>categoryList/" class="nav-link" data-key="t-analytics"> Categorías y Subcategorias  </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>companyNew/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
+                                        <a href="<?php echo APP_URL; ?>marcaList/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="index.html" class="nav-link" data-key="t-ecommerce"> Proveedores </a>
