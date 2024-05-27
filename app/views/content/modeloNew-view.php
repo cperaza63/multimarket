@@ -1,5 +1,6 @@
 <?php
 //print_r($_SESSION['view']);
+
 if(isset($_SESSION['view'])){
     $view=explode("/", $_SESSION['view']);
     if( isset( $view[1]) && $view[1] != "" ){
@@ -8,9 +9,18 @@ if(isset($_SESSION['view'])){
 }else{
     echo "Error, no hay parámetro de categoría";
 }
+
+use app\controllers\marcaController;
+$insMarca = new marcaController();
+$marca = $insMarca->obtenerUnItemControlador($marca_id);
 use app\controllers\modeloController;
 $modeloController = new modeloController();
 $datos_modelo = $modeloController->obtenerUnItemControlador($marca_id);
+if ($datos_modelo == false ){
+    $haydatos = false;
+}else{
+    $haydatos = true;
+}
 ?>
 <!-- ============================================================== -->
 <!-- Start right Content here -->
@@ -31,8 +41,15 @@ $datos_modelo = $modeloController->obtenerUnItemControlador($marca_id);
                                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                    |<li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#personalDetails" role="tab">
-                                            <i class="fas fa-home"></i> CREACION <?=$marca_id?> - 
-                                            Información de Modelo <?=$datos_modelo['nombre']?>
+                                            <i class="fas fa-home"></i> CREACION <?="(".$marca_id . ") " . $marca['nombre']?> - 
+                                            Información de Modelo 
+                                            <?php
+                                             if($haydatos==0){
+                                                echo "";
+                                            }else{
+                                                echo $datos_modelo['nombre'];
+                                            }
+                                            ?>
                                         </a>
                                     </li>
                                 </ul>
@@ -63,7 +80,8 @@ $datos_modelo = $modeloController->obtenerUnItemControlador($marca_id);
                                                     <label for="cat_id" class="form-label">Marca actual<strong>
                                                     <?php echo CAMPO_OBLIGATORIO; ?></strong></label>
                                                     <input name="cat_id" type="text" class="form-control" 
-                                                    id="codigo" disabled value="<?=$marca_id." - " . $datos_modelo['nombre']?>">
+                                                    id="codigo" disabled value="<?php if ($haydatos!= ""){echo $marca_id." - " . $datos_modelo['nombre'];}else{echo trim($marca_id);}
+                                                    ?>">
                                                 </div>
                                             </div>
                                             <div class="col-lg-4">

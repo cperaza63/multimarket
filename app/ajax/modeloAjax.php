@@ -14,19 +14,19 @@
 		
 		$insCategory = new modeloController();
 
-		if($_POST['modulo_subcat']=="registrar"){
+		if($_POST['modulo_modelo']=="registrar"){
 			echo $insCategory->registrarModeloControlador();
 		}
 
-		if($_POST['modulo_subcat']=="eliminar"){
+		if($_POST['modulo_modelo']=="eliminar"){
 			echo $insCategory->eliminarModeloControlador();
 		}
 
-		if($_POST['modulo_subcat']=="actualizar"){
+		if($_POST['modulo_modelo']=="actualizar"){
 			echo $insCategory->actualizarModeloControlador();
 		}
 		
-		if($_POST['modulo_subcat']=="actualizarFoto"){
+		if($_POST['modulo_modelo']=="actualizarFoto"){
 			echo $insCategory->actualizarFotoModeloControlador();
 		}
 		

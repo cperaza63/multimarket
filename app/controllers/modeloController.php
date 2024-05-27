@@ -93,7 +93,7 @@
     		}else{
     			$foto="";
     		}
-		    $subcategory_datos_reg=[
+		    $modelo_datos_reg=[
 				[
 					"campo_nombre"=>"codigo",
 					"campo_marcador"=>":Codigo",
@@ -124,9 +124,9 @@
 			// return json_encode($marca_id);
 			// exit();
 			
-			$registrar_subcategory=$this->guardarDatos("company_marcas",$subcategory_datos_reg);
+			$registrar_modelo=$this->guardarDatos("company_marcas",$modelo_datos_reg);
 
-			if($registrar_subcategory->rowCount()==1){
+			if($registrar_modelo->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
 					"titulo"=>"Subcategoría registrada",
@@ -191,22 +191,15 @@
 			return $datos;
 			exit();
 		}
-		public function obtenerUnItemControlador($id){
+		public function obtenerUnItemControlador($id){ 
 			$consulta_datos = "SELECT a.unidad, b.nombre, a.marca_id, a.codigo, a.nombre as nombre_marca, a.marca_foto FROM company_marcas a INNER JOIN company_marcas b ON (a.unidad = b.marca_id) WHERE a.marca_id=$id";
 			$datos=$this->ejecutarConsulta($consulta_datos);
-			if($datos->rowCount()<=0){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el item de la tabla en el sistema",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-				exit();
-			}else{
+			if($datos->rowCount()>0){
 				$datos=$datos->fetch();
+				return $datos;
+			}else{
+				return false;
 			}
-			return $datos;
 			exit();
 		}
 		/*----------  Controlador listar control  ----------*/
