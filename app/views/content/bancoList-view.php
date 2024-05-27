@@ -5,8 +5,8 @@
     <div class="page-content">
         <div class="container-fluid">
             <?php
-            use app\controllers\marcaController;
-            $insMarca = new marcaController();
+            use app\controllers\bancoController;
+            $insBanco = new bancoController();
             ?>
             <div class="row">
                 <div class="col-xxl-3" style="margin-bottom: -15px;">
@@ -29,7 +29,7 @@
                                                     value="<?php echo isset($_SESSION[$url[0]])?$_SESSION[$url[0]]:""; ?>"
                                                     maxlength="30" required >
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>marcaNew/" class="btn btn-success" >Agregar Marca</a>
+                                                    <a href="<?php echo APP_URL; ?>bancoNew/" class="btn btn-success" >Agregar Marca</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -64,9 +64,9 @@
             <!--end row-->
             <?php
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insMarca->listarTodosMarcaControlador($_SESSION[$url[0]]);
+                $datos = $insBanco->listarTodosBancoControlador($_SESSION[$url[0]]);
             }else{
-                $datos = $insMarca->listarTodosMarcaControlador("*");
+                $datos = $insBanco->listarTodosBancoControlador("*");
             }
             ?>
             <div class="row">
@@ -101,10 +101,10 @@
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
-                                            if($rows['marca_foto'] != ""){
-                                                $marca_foto = APP_URL . "app/views/fotos/company/".$rows['company_id']."/marcas/".$rows['marca_foto'];
+                                            if($rows['banco_foto'] != ""){
+                                                $banco_foto = APP_URL . "app/views/fotos/company/".$rows['company_id']."/bancos/".$rows['banco_foto'];
                                             }else{
-                                                $marca_foto = APP_URL . "app/views/fotos/nophoto.jpg";
+                                                $banco_foto = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }
                                             
                                             ?>
@@ -116,9 +116,9 @@
                                                 </th>
                                                 
                                                 <td>
-                                                    <a href="<?= APP_URL.'marcaUpdate/'.$rows['marca_id'].'/'?>">
+                                                    <a href="<?= APP_URL.'bancoUpdate/'.$rows['banco_id'].'/'?>">
                                                     <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$marca_foto; ?>" 
+                                                    src="<?=$banco_foto; ?>" 
                                                     alt="Foto del item de la tabla">
                                                     </a>
                                                 </td>
@@ -130,15 +130,15 @@
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
                                                             <li>
-                                                                <a href="<?= APP_URL.'marcaUpdate/'.$rows['marca_id'].'/'?>" 
+                                                                <a href="<?= APP_URL.'bancoUpdate/'.$rows['banco_id'].'/'?>" 
                                                                 class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted">
                                                                 </i> Editar</a>
                                                             </li>
                                                             <li>
-                                                                <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/marcaAjax.php" 
+                                                                <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/bancoAjax.php" 
                                                                 method="POST" autocomplete="off" >
-                                                                    <input type="hidden" name="modulo_marca" value="eliminar">
-                                                                    <input type="hidden" name="marca_id" value="<?=$rows['marca_id']?>">
+                                                                    <input type="hidden" name="modulo_banco" value="eliminar">
+                                                                    <input type="hidden" name="banco_id" value="<?=$rows['banco_id']?>">
                                                                     <input type="hidden" name="company_id" value="<?=$rows['company_id']?>">
                                                                     <button type="submit" class="dropdown-item" > 
                                                                         <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
@@ -146,7 +146,7 @@
                                                                 </form>
                                                             <li>
                                                             <li>
-                                                                <a href="<?= APP_URL.'modeloList/'.$rows['marca_id'].'/'?>" 
+                                                                <a href="<?= APP_URL.'modeloList/'.$rows['banco_id'].'/'?>" 
                                                                 class="dropdown-item"><i class="ri-add-box-fill align-bottom me-2 text-muted">
                                                                 </i> Modelos</a>
                                                             </li>
@@ -166,7 +166,7 @@
                                                     </span>
                                                 </td>
                                                 <td>
-                                                <a href="<?= APP_URL.'modeloList/'.$rows['marca_id'].'/'?>" 
+                                                <a href="<?= APP_URL.'modeloList/'.$rows['banco_id'].'/'?>" 
                                                 class="dropdown-item"><span class="btn btn-info">Modelos</span></a>
                                                 </td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->

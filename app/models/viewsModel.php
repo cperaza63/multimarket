@@ -16,6 +16,7 @@
 			"modeloNew","modeloList","modeloUpdate","modeloSearch", "modeloPhoto",
 			"ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
 			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
+			"bancoNew","bancoList","bancoUpdate","bancoSearch", "bancoPhoto",
 			"marketNew", "marketList", "marketSearch", "marketUpdate",
 			"clientNew","clientList","clientSearch","clientUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
