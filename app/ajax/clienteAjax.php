@@ -1,28 +1,52 @@
 <?php
-	
 	require_once "../../config/app.php";
 	require_once "../views/inc/session_start.php";
 	require_once "../../autoload.php";
+	 
+	use app\controllers\proveedorController;
+
+	if(isset($_POST['tab'])){
+		$_SESSION['tab'] = $_POST['tab']; 
+	}
 	
-	use app\controllers\clientController;
+	if(isset($_POST['modulo_proveedor'])){
 
-	if(isset($_POST['modulo_cliente'])){
+		$insProveedor = new proveedorController();
 
-		$insCliente = new clientController();
-
-		if($_POST['modulo_cliente']=="registrar"){
-			echo $insCliente->registrarClienteControlador();
+		if($_POST['modulo_proveedor']=="registrar"){
+			echo $insProveedor->registrarProveedorControlador();
 		}
 
-		if($_POST['modulo_cliente']=="eliminar"){
-			echo $insCliente->eliminarClienteControlador();
+		if($_POST['modulo_proveedor']=="eliminar"){
+			echo $insProveedor->eliminarProveedorControlador();
 		}
 
-		if($_POST['modulo_cliente']=="actualizar"){
-			echo $insCliente->actualizarClienteControlador();
+		if($_POST['modulo_proveedor']=="actualizarFoto"){
+			echo $insProveedor->actualizarFotoProveedorControlador();
+		}
+		
+		if($_POST['modulo_proveedor']=="actualizar"){
+			echo $insProveedor->actualizarProveedorControlador();
+		}
+		if($_POST['modulo_proveedor']=="actualizarMasInformacion"){
+			echo $insProveedor->actualizarMasInformacionControlador();
+		}
+		if($_POST['modulo_proveedor']=="actualizarZonaHoraria"){
+			echo $insProveedor->actualizarZonaHorariaControlador();
+		}
+		if($_POST['modulo_proveedor']=="actualizarUbicacion"){
+			echo $insProveedor->actualizarUbicacionControlador();
+		}
+		if($_POST['modulo_proveedor']=="eliminarFoto"){
+			echo $insProveedor->eliminarFotoProveedorControlador();
+		}
+
+		if($_POST['modulo_proveedor']=="actualizarFotoMasa"){
+			echo $insProveedor->actualizarFotoMasaControlador();
 		}
 		
 	}else{
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "fin de sesion";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}
