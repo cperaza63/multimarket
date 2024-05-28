@@ -10,7 +10,6 @@
             }
             // busco market
             use app\controllers\controlController;
-
             $controlController = new controlController();
             // por ahora actualizamos datos del administrador
             $control_id = $insLogin->limpiarCadena($url[1]);

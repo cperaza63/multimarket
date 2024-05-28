@@ -77,6 +77,9 @@
                                         <a href="<?php echo APP_URL; ?>marcaList/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>bancoList/" class="nav-link" data-key="t-analytics"> Tabla de Bancos </a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="index.html" class="nav-link" data-key="t-ecommerce"> Proveedores </a>
                                     </li>
                                     <li class="nav-item">

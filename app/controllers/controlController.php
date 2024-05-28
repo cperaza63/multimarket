@@ -182,8 +182,7 @@
 		}
 
 		public function obtenerListaMarketControlador($tipo){
-			$consulta_datos = "SELECT * FROM control 
-			WHERE estatus=1 AND tipo='$tipo' AND a.company_id=0 ORDER BY a.tipo, a.nombre";
+			$consulta_datos = "SELECT * FROM control WHERE estatus=1 AND tipo='$tipo' AND company_id=0 ORDER BY tipo, nombre";
 			//
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();

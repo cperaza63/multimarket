@@ -9,23 +9,27 @@
                 $_SESSION["tab"] = "";
             }
             // busco market
-            use app\controllers\marcaController;
-            $marcaController = new marcaController();
+            use app\controllers\controlController;
+            $insControl = new controlController();
+            $listaBancos = $insControl->obtenerListaMarketControlador("bancos");
+            
+            use app\controllers\bancoController;
+            $bancoController = new bancoController();
             // por ahora actualizamos datos del administrador
-            $marca_id = $insLogin->limpiarCadena($url[1]);
-            $datos = $insLogin->seleccionarDatos("Unico", "company_marcas", "marca_id", $marca_id);
+            $banco_id = $insLogin->limpiarCadena($url[1]);
+            $datos = $insLogin->seleccionarDatos("Unico", "company_bancos", "banco_id", $banco_id);
             if ($datos->rowCount() == 1) {
                 $datos = $datos->fetch();
                 $company_id = $datos['company_id'];
-                $marca_id = $datos['marca_id'];
+                $banco_id = $datos['banco_id'];
                 $codigo   = $datos['codigo'];
                 $nombre   = $datos['nombre'];
                 $unidad = $datos['unidad'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
-                $marca_foto = $datos['marca_foto'];
-                if ($datos['marca_foto'] == "") {
-                    $marca_foto = "nophoto.jpg";
+                $banco_foto = $datos['banco_foto'];
+                if ($datos['banco_foto'] == "") {
+                    $banco_foto = "nophoto.jpg";
                 }
                 $pasa = 1;
             } else {
@@ -42,21 +46,21 @@
                             <div class="card-body p-1">
                                 <div class="text-center">
                                     <form class="FormularioAjax" name="formAjax1" 
-                                    action="<?php echo APP_URL; ?>app/ajax/marcaAjax.php" method="POST" 
+                                    action="<?php echo APP_URL; ?>app/ajax/bancoAjax.php" method="POST" 
                                     autocomplete="off" enctype="multipart/form-data">
                                         <!--    Campos parametros     -->
-                                        <input type="hidden" name="modulo_marca" value="actualizarFoto">
+                                        <input type="hidden" name="modulo_banco" value="actualizarFoto">
                                         <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
-                                        <input type="hidden" name="marca_id" value="<?php echo $datos['marca_id']; ?>">
-                                        <input type="hidden" name="marca_tipo" value="marca_foto">
+                                        <input type="hidden" name="banco_id" value="<?php echo $datos['banco_id']; ?>">
+                                        <input type="hidden" name="banco_tipo" value="banco_foto">
 
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
 
                                             <img src="
                                             <?php
-                                            echo $marca_foto == "nophoto.jpg"
+                                            echo $banco_foto == "nophoto.jpg"
                                                 ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                : "http://localhost/multimarket/app/views/fotos/company/" . $datos['company_id'] . "/marcas/" . $marca_foto;
+                                                : "http://localhost/multimarket/app/views/fotos/company/" . $datos['company_id'] . "/bancos/" . $banco_foto;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>
@@ -68,7 +72,7 @@
                                                     </td>
                                                     <td>
                                                         <div class="avatar-xs p-0 rounded-circle ">
-                                                            <input id="profile-img-file-input" name="marca_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                            <input id="profile-img-file-input" name="banco_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
 
                                                             <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
                                                                 <span class="avatar-title rounded-circle bg-light text-body shadow">
@@ -83,7 +87,7 @@
                                         </div>
                                     </form>
                                     <h5 class="fs-16 mb-1"><?php echo "MARCAS<br>" . strtoupper($datos['nombre']) 
-                                    . " Item # " . $datos['marca_id']; ?> </h5>
+                                    . " Item # " . $datos['banco_id']; ?> </h5>
                                 </div>
                             </div>
                         </div>
@@ -103,10 +107,10 @@
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="personalDetails" role="tabpanel">
-                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/marcaAjax.php" method="POST" autocomplete="off">
+                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/bancoAjax.php" method="POST" autocomplete="off">
                                             <input type="hidden" name="company_id" value="<?= $company_id; ?>">
-                                            <input type="hidden" name="modulo_marca" value="<?= $accion; ?>">
-                                            <input type="hidden" name="marca_id" value="<?= $marca_id; ?>">
+                                            <input type="hidden" name="modulo_banco" value="<?= $accion; ?>">
+                                            <input type="hidden" name="banco_id" value="<?= $banco_id; ?>">
                                             <input type="hidden" name="codigo" value="<?= $codigo; ?>">
 
                                             <div class="row">
@@ -137,7 +141,7 @@
                                                 <div class="col-lg-12">
                                                     <div class="hstack gap-2 justify-content-end">
                                                         <button type="submit" class="btn btn-primary">Actualizar</button>
-                                                        <a href="<?php echo APP_URL; ?>marcaList/" class="btn btn-soft-success">Cancelar</a>
+                                                        <a href="<?php echo APP_URL; ?>bancoList/" class="btn btn-soft-success">Cancelar</a>
                                                     </div>
                                                     <p class="has-text-centered pt-6">
                                                         <small>Los campos marcados con <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>

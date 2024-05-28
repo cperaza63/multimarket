@@ -117,8 +117,8 @@
 				]
 			];
 			//return json_encode("regstrar control");
-			$registrar_marca=$this->guardarDatos("company_bancos",$marca_datos_reg);
-			if($registrar_marca->rowCount()==1){
+			$registrar_banco=$this->guardarDatos("company_bancos",$marca_datos_reg);
+			if($registrar_banco->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
 					"titulo"=>"Banco registrada",
@@ -143,31 +143,21 @@
 		public function listarTodosBancoControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company_bancos WHERE unidad=0  AND ( 
+				$consulta_datos="SELECT * FROM company_bancos WHERE ( 
 				codigo LIKE '%$busqueda%'
 				OR nombre LIKE '%$busqueda%' 
 				) 
 				ORDER BY nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM company_bancos WHERE unidad=0 ORDER BY nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company_bancos ORDER BY nombre ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;
 			exit();
 		}
-		public function obtenerListaMarketControlador($tipo){
-			$consulta_datos = "SELECT * FROM company_bancos 
-			WHERE estatus=1 AND tipo='$tipo' AND a.company_id=0 ORDER BY a.tipo, a.nombre";
-			//
-			$datos = $this->ejecutarConsulta($consulta_datos);
-			$datos = $datos->fetchAll();
-
-			return $datos;
-			exit();
-		}
 		public function obtenerUnItemControlador($id){
-			$consulta_datos = "SELECT * FROM company_bancos WHERE marca_id=$id";
+			$consulta_datos = "SELECT * FROM company_bancos WHERE banco_id=$id";
 			$datos=$this->ejecutarConsulta($consulta_datos);
 			if($datos->rowCount()<=0){
 				$alerta=[
@@ -184,21 +174,9 @@
 			return $datos;
 			exit();
 		}
-		/*----------  Controlador listar control  ----------*/
-		public function listarSoloTipoControlador($busqueda){	
-			$busqueda=$this->limpiarCadena($busqueda);
-			
-			if(isset($busqueda)){
-				$consulta_datos="SELECT * FROM company_bancos WHERE tipo = '$busqueda' ORDER BY tipo";
-			}
-			$datos = $this->ejecutarConsulta($consulta_datos);
-			$datos = $datos->fetchAll();
-			return $datos;
-			exit();
-		}
 		/*----------  Controlador eliminar control  ----------*/
 		public function eliminarBancoControlador(){
-			$id=$this->limpiarCadena($_POST['marca_id']);
+			$id=$this->limpiarCadena($_POST['banco_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			
 			if($id==1){
@@ -212,7 +190,7 @@
 		        exit();
 			}
 			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company_bancos WHERE marca_id='$id' and estatus=0");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_bancos WHERE banco_id='$id' and estatus=0");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",

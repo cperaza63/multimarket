@@ -29,7 +29,7 @@
                                                     value="<?php echo isset($_SESSION[$url[0]])?$_SESSION[$url[0]]:""; ?>"
                                                     maxlength="30" required >
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>bancoNew/" class="btn btn-success" >Agregar Marca</a>
+                                                    <a href="<?php echo APP_URL; ?>bancoNew/" class="btn btn-success" >Agregar Banco</a>
                                                 </div>
                                             </div>
                                         </div>
@@ -48,7 +48,7 @@
                                             <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
                                             <i class="fas fa-search fa-fw"></i></strong>
                                             
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar busqueda</button>
+                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar búsqueda</button>
                                         </form>
                                     </div>
                                 </div>
@@ -78,7 +78,7 @@
                             </div>
                         </div>
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de valores de la Tabla Marcas</h5>
+                            <h5 class="card-title mb-0">Lista de valores de la Tabla Bancos</h5>
                         </div>
                         <div class="card-body">
                             <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -91,10 +91,9 @@
                                         </th>
                                         <th>Img</th>
                                         <th>Action</th>
-                                        <th>Marca</th>
+                                        <th>Banco</th>
                                         <th>Nombre</th>
                                         <th>Estatus</th>
-                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -145,11 +144,6 @@
                                                                     </button>
                                                                 </form>
                                                             <li>
-                                                            <li>
-                                                                <a href="<?= APP_URL.'modeloList/'.$rows['banco_id'].'/'?>" 
-                                                                class="dropdown-item"><i class="ri-add-box-fill align-bottom me-2 text-muted">
-                                                                </i> Modelos</a>
-                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -164,10 +158,6 @@
                                                         ?><span class="badge bg-danger">Inactivo<?php
                                                     }?>
                                                     </span>
-                                                </td>
-                                                <td>
-                                                <a href="<?= APP_URL.'modeloList/'.$rows['banco_id'].'/'?>" 
-                                                class="dropdown-item"><span class="btn btn-info">Modelos</span></a>
                                                 </td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
