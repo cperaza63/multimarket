@@ -2,6 +2,7 @@
  // busco market
 use app\controllers\marcaController;
 $marcaController = new marcaController();
+$company_id = $_SESSION['user_company_id'];
 ?>
 <!-- ============================================================== -->
 <!-- Start right Content here -->

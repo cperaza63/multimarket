@@ -57,12 +57,14 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         require_once "./app/views/inc/script.php";
         // recuerda el tab de las pestañas
         // desativamos el ajax para hacer prueas
-        $a=1;
+        $a=0;
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
                 || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
-                || $_GET['views'] == "marcaList/"){
+                || $_GET['views'] == "marcaList/"  || $_GET['views'] == "modeloList/" 
+                || $_GET['views'] == "proveedorList/"
+                ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
@@ -72,11 +74,14 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
             }
             // Se debe colocar el controlador que usara AJAX
         }
+
         if(isset($_GET['views']) && $_GET['views']!=""){
             if( substr($_GET['views'], 0, 11) == "userUpdate/"
                 || substr($_GET['views'], 0, 8) == "userNew/"
                 || substr($_GET['views'], 0, 11) == "companyNew/"
                 || substr($_GET['views'], 0, 14) == "companyUpdate/"
+                || substr($_GET['views'], 0, 13) == "proveedorNew/"
+                || substr($_GET['views'], 0, 16) == "proveedorUpdate/"
                 || substr($_GET['views'], 0, 11) == "controlNew/"
                 || substr($_GET['views'], 0, 14) == "controlUpdate/"
                 || substr($_GET['views'], 0, 12) == "categoryNew/"

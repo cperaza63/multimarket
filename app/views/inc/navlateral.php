@@ -80,22 +80,22 @@
                                         <a href="<?php echo APP_URL; ?>bancoList/" class="nav-link" data-key="t-analytics"> Tabla de Bancos </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="index.html" class="nav-link" data-key="t-ecommerce"> Proveedores </a>
+                                        <a href="<?php echo APP_URL; ?>proveedorList/" class="nav-link" data-key="t-ecommerce"> Proveedores por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-crypto.html" class="nav-link" data-key="t-crypto"> Clientes </a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-crypto"> Clientes por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Productos </a>
+                                        <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Productos por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> Facturación</a>
+                                        <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> Facturación por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Pedidos</a>
+                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Pedidos por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Movimientos</a>
+                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Movimientos de Ventas</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>

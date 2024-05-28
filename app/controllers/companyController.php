@@ -145,7 +145,7 @@
 			if($registrar_company->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
-					"titulo"=>"Control registrado",
+					"titulo"=>"Company registrado",
 					"texto"=>"El item de codigo ".$company_name." se registro con exito",
 					"icono"=>"success"
 				];
@@ -233,9 +233,9 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    $eliminarControl=$this->eliminarRegistro("company","control_id",$id);
+		    $eliminarCompany=$this->eliminarRegistro("company","control_id",$id);
 
-		    if($eliminarControl->rowCount()==1){
+		    if($eliminarCompany->rowCount()==1){
 
 		    	if(is_file("../views/fotos/company/".$datos['control_foto'])){
 		            chmod("../views/fotos/company/".$datos['control_foto'],0777);
@@ -244,7 +244,7 @@
 
 		        $alerta=[
 					"tipo"=>"recargar",
-					"titulo"=>"Item de la tabla de Control eliminado",
+					"titulo"=>"Item de la tabla de Company eliminado",
 					"texto"=>"El Item $id ha sido eliminado del sistema correctamente",
 					"icono"=>"success"
 				];
@@ -264,7 +264,8 @@
 		public function actualizarCompanyControlador(){
 			# Almacenando datos#
 			$company_id=$this->limpiarCadena($_POST['company_id']);
-		    $company_name = $this->limpiarCadena($_POST['company_name']);
+		    $company_email = $this->limpiarCadena($_POST['company_email']);
+			$company_name = $this->limpiarCadena($_POST['company_name']);
 		    $company_type = $this->limpiarCadena($_POST['company_type']);
 			$company_user = $this->limpiarCadena($_POST['company_user']);
 			$company_membresia = $this->limpiarCadena($_POST['company_membresia']);
@@ -397,7 +398,7 @@
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Control actualizado",
+				"titulo"=>"Company actualizado",
 				"texto"=>"Los datos de la tabla de control ".$company_name." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -552,13 +553,10 @@
 				"condicion_valor"=>$company_id
 			];
 
-			return json_encode($company_datos_reg);
-			exit();
-
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Control actualizado",
+				"titulo"=>"Company actualizado",
 				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -671,7 +669,7 @@
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Control actualizado",
+				"titulo"=>"Company actualizado",
 				"texto"=>"Los datos de información adicional ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -737,7 +735,7 @@
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Control actualizado",
+				"titulo"=>"Company actualizado",
 				"texto"=>"Los datos de Categoria de market ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -789,7 +787,7 @@
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Control actualizado",
+				"titulo"=>"Company actualizado",
 				"texto"=>"Los datos de ubicación ".$company_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];

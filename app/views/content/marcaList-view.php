@@ -7,6 +7,7 @@
             <?php
             use app\controllers\marcaController;
             $insMarca = new marcaController();
+            $company_id = $_SESSION['user_company_id'];
             ?>
             <div class="row">
                 <div class="col-xxl-3" style="margin-bottom: -15px;">
@@ -46,6 +47,7 @@
                                             method="POST" autocomplete="off" >
                                             <input type="hidden" name="modulo_buscador" value="eliminar">
                                             <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
+                                            <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
                                             <i class="fas fa-search fa-fw"></i></strong>
                                             
                                             <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar busqueda</button>

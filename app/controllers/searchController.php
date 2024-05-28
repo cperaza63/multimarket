@@ -8,7 +8,7 @@
 		/*----------  Controlador modulos de busquedas  ----------*/
 		public function modulosBusquedaControlador($modulo){
 			$listaModulos=[
-				'bancoList, modeloList', 'marcaList', 'companyList', 'userSearch', 'userList', 'controlSearch', 'controlList', 'ubicacionSearch', 'ubicacionList', 'cashierSearch', 'clientSearch', 'categorySearch', 'saleSearch', 'categoryList', 'subcatList'];
+				'proveedorList', 'bancoList', 'modeloList', 'marcaList', 'companyList', 'userSearch', 'userList', 'controlSearch', 'controlList', 'ubicacionSearch', 'ubicacionList', 'cashierSearch', 'clientSearch', 'categorySearch', 'saleSearch', 'categoryList', 'subcatList'];
 			if(in_array($modulo, $listaModulos)){
 				return false;
 			}else{
@@ -49,6 +49,8 @@
 		/*----------  Controlador eliminar busqueda  ----------*/
 		public function eliminarBuscadorControlador(){
 			$url=$this->limpiarCadena($_POST['modulo_url']);
+			// return json_encode($url);
+			// exit();
 			if($this->modulosBusquedaControlador($url)){
 				$alerta=[
 					"tipo"=>"simple",

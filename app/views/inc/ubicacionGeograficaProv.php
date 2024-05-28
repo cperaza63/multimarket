@@ -14,7 +14,7 @@
                     <form class="FormularioAjax" method="POST"
                     action="<?php echo APP_URL; ?>app/ajax/companyAjax.php">
                     <input type="hidden" name="modulo_company" value="actualizarUbicacion">
-                    <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
+                    <input type="hidden" name="proveedor_id" value="<?php echo $proveedor_id; ?>">
                     <div class="row">
                         <div class="col-lg-4">
                             <div class="mb-3">
@@ -34,13 +34,13 @@
                         <div class="col-lg-4">
                             <div class="mb-3">
                             <input name="latitude" type="text" id="txtLat" class="form-control" 
-                            placeholder="latitude" value="<?=$datos['company_latitude'];?>">
+                            placeholder="latitude" value="<?=$datos['proveedor_latitude'];?>">
                             </div>
                         </div>
                         <div class="col-lg-4">
                             <div class="mb-3">
                             <input name="longitude" type="text" id="txtLng" class="form-control" 
-                            placeholder="longitud" value="<?=$datos['company_longitude'];?>">
+                            placeholder="longitud" value="<?=$datos['proveedor_longitude'];?>">
                             </div>
                         </div>
                         <div class="col-lg-4">
@@ -92,10 +92,10 @@
             
             if (a== 1){
                 a=0;
-                    vMarker.setPosition(new google.maps.LatLng(<?=$datos['company_latitude'];?>, <?=$datos['company_longitude'];?>));
-                    map.panTo(new google.maps.LatLng(<?=$datos['company_latitude'];?>, <?=$datos['company_longitude'];?>));
-                    $("#txtLat").val(<?=$datos['company_latitude'];?>);
-                    $("#txtLng").val(<?=$datos['company_longitude'];?>);
+                    vMarker.setPosition(new google.maps.LatLng(<?=$datos['proveedor_latitude'];?>, <?=$datos['proveedor_longitude'];?>));
+                    map.panTo(new google.maps.LatLng(<?=$datos['proveedor_latitude'];?>, <?=$datos['proveedor_longitude'];?>));
+                    $("#txtLat").val(<?=$datos['proveedor_latitude'];?>);
+                    $("#txtLng").val(<?=$datos['proveedor_longitude'];?>);
                 
             }
 
