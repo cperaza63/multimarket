@@ -4,7 +4,6 @@
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
-        
             <?php
             use app\controllers\clienteController;
             $insCliente = new clienteController();
@@ -81,7 +80,7 @@
                             </div>
                         </div>
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de Clientees por Tienda</h5>
+                            <h5 class="card-title mb-0">Lista de clientes por Tienda</h5>
                         </div>
                         <div class="card-body">
                             <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -108,7 +107,7 @@
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
                                             if($rows['cliente_logo'] != ""){
-                                                $cliente_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/clientees/".$rows['cliente_logo'];
+                                                $cliente_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/clientes/".$rows['cliente_logo'];
                                             }else{
                                                 $cliente_logo = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }

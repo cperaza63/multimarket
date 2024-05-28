@@ -213,7 +213,7 @@
 				]
 			];
 
-			$registrar_cliente=$this->guardarDatos("cliente",$cliente_datos_reg);
+			$registrar_cliente=$this->guardarDatos("company_clientes",$cliente_datos_reg);
 
 			if($registrar_cliente->rowCount()==1){
 				$alerta=[
@@ -398,7 +398,7 @@
 		        exit();
 		    }
 
-		    $eliminarCliente=$this->eliminarRegistro("cliente","cliente_id",$id);
+		    $eliminarCliente=$this->eliminarRegistro("company_clientes","cliente_id",$id);
 
 		    if($eliminarCliente->rowCount()==1){
 
@@ -654,7 +654,7 @@
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("cliente",$cliente_datos_up,$condicion)){
+			if($this->actualizarDatos("company_clientes",$cliente_datos_up,$condicion)){
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Cliente actualizado",

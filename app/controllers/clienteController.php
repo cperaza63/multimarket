@@ -135,7 +135,7 @@
 				]
 			];
 
-			$registrar_cliente=$this->guardarDatos("cliente",$cliente_datos_reg);
+			$registrar_cliente=$this->guardarDatos("company_clientes",$cliente_datos_reg);
 
 			if($registrar_cliente->rowCount()==1){
 				$alerta=[
@@ -199,13 +199,13 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    $eliminarCliente=$this->eliminarRegistro("cliente","cliente_id",$id);
+		    $eliminarCliente=$this->eliminarRegistro("company_clientes","cliente_id",$id);
 
 		    if($eliminarCliente->rowCount()==1){
 
-		    	if(is_file("../views/fotos/company/".$company_id."/clientees/".$datos['cliente_foto'])){
-		            chmod("../views/fotos/company/".$company_id."/clientees/".$datos['cliente_foto'],0777);
-		            unlink("../views/fotos/company/".$company_id."/clientees/".$datos['cliente_foto']);
+		    	if(is_file("../views/fotos/company/".$company_id."/clientes/".$datos['cliente_foto'])){
+		            chmod("../views/fotos/company/".$company_id."/clientes/".$datos['cliente_foto'],0777);
+		            unlink("../views/fotos/company/".$company_id."/clientes/".$datos['cliente_foto']);
 		        }
 
 		        $alerta=[
@@ -340,7 +340,7 @@
 			//return json_encode($cliente_datos_reg);
 			//exit();
 
-			if($this->actualizarDatos("cliente", $cliente_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_clientes", $cliente_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Cliente actualizado",
@@ -446,7 +446,7 @@
 				"condicion_valor"=>$cliente_id
 			];
 
-			if($this->actualizarDatos("cliente", $cliente_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_clientes", $cliente_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
@@ -558,7 +558,7 @@
 				"condicion_valor"=>$cliente_id
 			];
 
-			if($this->actualizarDatos("cliente", $cliente_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_clientes", $cliente_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Cliente actualizado",
@@ -610,7 +610,7 @@
 				"condicion_valor"=>$cliente_id
 			];
 
-			if($this->actualizarDatos("cliente", $cliente_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_clientes", $cliente_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Cliente actualizado",
@@ -690,7 +690,7 @@
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("cliente",$cliente_datos_up,$condicion)){
+			if($this->actualizarDatos("company_clientes",$cliente_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']="";
@@ -735,7 +735,7 @@
 		    }
 			
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/company/$company_id/clientees/";
+    		$img_dir="../views/fotos/company/$company_id/clientes/";
 			
 			# Comprobar si se selecciono una imagen #
     		if($_FILES['cliente_logo']['name']!="" && $_FILES['cliente_logo']['size']>0){
@@ -827,7 +827,7 @@
 			
 			
 
-			if($this->actualizarDatos("cliente",$cliente_datos_up,$condicion)){
+			if($this->actualizarDatos("company_clientes",$cliente_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
@@ -867,7 +867,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-			$img_dir="../views/fotos/company/".$company_id."/clientees/";
+			$img_dir="../views/fotos/company/".$company_id."/clientes/";
 			$array=[0,0,0,0,0];
 			$foto_array=["","","","",""];
 			for ($i=0; $i <= 4; $i++) {
@@ -986,7 +986,7 @@
 						"condicion_marcador"=>":ID",
 						"condicion_valor"=>$id
 					];
-					$this->actualizarDatos("cliente",$cliente_datos_up,$condicion);
+					$this->actualizarDatos("company_clientes",$cliente_datos_up,$condicion);
 					
 					// elimino la fot anterior
 					if(is_file($img_dir.$datos[$array[$i]])){

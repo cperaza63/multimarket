@@ -135,7 +135,7 @@
 				]
 			];
 
-			$registrar_proveedor=$this->guardarDatos("proveedor",$proveedor_datos_reg);
+			$registrar_proveedor=$this->guardarDatos("company_proveedores",$proveedor_datos_reg);
 
 			if($registrar_proveedor->rowCount()==1){
 				$alerta=[
@@ -199,7 +199,7 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    $eliminarProveedor=$this->eliminarRegistro("proveedor","proveedor_id",$id);
+		    $eliminarProveedor=$this->eliminarRegistro("company_proveedores","proveedor_id",$id);
 
 		    if($eliminarProveedor->rowCount()==1){
 
@@ -340,7 +340,7 @@
 			//return json_encode($proveedor_datos_reg);
 			//exit();
 
-			if($this->actualizarDatos("proveedor", $proveedor_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $proveedor_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Proveedor actualizado",
@@ -446,7 +446,7 @@
 				"condicion_valor"=>$proveedor_id
 			];
 
-			if($this->actualizarDatos("proveedor", $proveedor_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $proveedor_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Control actualizado",
@@ -558,7 +558,7 @@
 				"condicion_valor"=>$proveedor_id
 			];
 
-			if($this->actualizarDatos("proveedor", $proveedor_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $proveedor_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Proveedor actualizado",
@@ -610,7 +610,7 @@
 				"condicion_valor"=>$proveedor_id
 			];
 
-			if($this->actualizarDatos("proveedor", $proveedor_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $proveedor_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Proveedor actualizado",
@@ -690,7 +690,7 @@
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("proveedor",$proveedor_datos_up,$condicion)){
+			if($this->actualizarDatos("company_proveedores",$proveedor_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']="";
@@ -827,7 +827,7 @@
 			
 			
 
-			if($this->actualizarDatos("proveedor",$proveedor_datos_up,$condicion)){
+			if($this->actualizarDatos("company_proveedores",$proveedor_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
@@ -986,7 +986,7 @@
 						"condicion_marcador"=>":ID",
 						"condicion_valor"=>$id
 					];
-					$this->actualizarDatos("proveedor",$proveedor_datos_up,$condicion);
+					$this->actualizarDatos("company_proveedores",$proveedor_datos_up,$condicion);
 					
 					// elimino la fot anterior
 					if(is_file($img_dir.$datos[$array[$i]])){

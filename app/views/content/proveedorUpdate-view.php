@@ -25,7 +25,7 @@ if ($mysqli->connect_errno) {
                 $_SESSION["tab"] = "";
             }
             $proveedor_id = $insLogin->limpiarCadena($url[1]);
-            $datos = $insLogin->seleccionarDatos("Unico", "proveedor", "proveedor_id", $proveedor_id);
+            $datos = $insLogin->seleccionarDatos("Unico", "company_proveedores", "proveedor_id", $proveedor_id);
             if ($datos->rowCount() == 1) {
 
                 $datos = $datos->fetch();

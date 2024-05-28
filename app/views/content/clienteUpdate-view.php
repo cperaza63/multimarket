@@ -25,7 +25,7 @@ if ($mysqli->connect_errno) {
                 $_SESSION["tab"] = "";
             }
             $cliente_id = $insLogin->limpiarCadena($url[1]);
-            $datos = $insLogin->seleccionarDatos("Unico", "cliente", "cliente_id", $cliente_id);
+            $datos = $insLogin->seleccionarDatos("Unico", "company_clientes", "cliente_id", $cliente_id);
             if ($datos->rowCount() == 1) {
 
                 $datos = $datos->fetch();
@@ -110,7 +110,7 @@ if ($mysqli->connect_errno) {
                                             <?php
                                             echo $cliente_logo == "nophoto.jpg"
                                                 ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientees/" . $cliente_logo;
+                                                : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientes/" . $cliente_logo;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>
@@ -396,7 +396,7 @@ if ($mysqli->connect_errno) {
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_card == "nophoto.jpg"
                                                                             ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientees/".$cliente_card;
+                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientes/".$cliente_card;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_card" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -416,7 +416,7 @@ if ($mysqli->connect_errno) {
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_card == "nophoto.jpg"
                                                                             ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientees/".$cliente_banner1;
+                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientes/".$cliente_banner1;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner1" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -437,7 +437,7 @@ if ($mysqli->connect_errno) {
 
                                                             <img src="<?php echo $cliente_banner2 == "nophoto.jpg"
                                                                             ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientees/". $cliente_banner2;
+                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientes/". $cliente_banner2;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner2" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -456,7 +456,7 @@ if ($mysqli->connect_errno) {
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_banner3 == "nophoto.jpg"
                                                                             ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientees/".$cliente_banner3;
+                                                                            : "http://localhost/multimarket/app/views/fotos/company/$company_id/clientes/".$cliente_banner3;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner3" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">

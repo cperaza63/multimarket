@@ -10,7 +10,7 @@
 
 		$id=$insLogin->limpiarCadena($url[1]);
 
-		$datos=$insLogin->seleccionarDatos("Unico","cliente","cliente_id",$id);
+		$datos=$insLogin->seleccionarDatos("Unico","company_clientes","cliente_id",$id);
 
 		if($datos->rowCount()==1){
 			$datos=$datos->fetch();
