@@ -64,6 +64,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
                 || $_GET['views'] == "marcaList/"  || $_GET['views'] == "modeloList/" 
                 || $_GET['views'] == "proveedorList/" || $_GET['views'] == "clienteList/"
+                || $_GET['views'] == "productList/" 
                 ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
@@ -90,6 +91,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 15) == "categoryUpdate/"
                 || substr($_GET['views'], 0, 9) == "marcaNew/"
                 || substr($_GET['views'], 0, 12) == "marcaUpdate/"
+                || substr($_GET['views'], 0, 11) == "productNew/"
+                || substr($_GET['views'], 0, 14) == "productUpdate/"
             ){
                 ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
             }else{

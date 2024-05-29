@@ -69,13 +69,6 @@
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>companyList/" class="nav-link" data-key="t-analytics"> Tiendas y Empresas  </a>
                                     </li>
-
-                                    <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>categoryList/" class="nav-link" data-key="t-analytics"> Categorías y Subcategorias  </a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>marcaList/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
-                                    </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>bancoList/" class="nav-link" data-key="t-analytics"> Tabla de Bancos </a>
                                     </li>
@@ -86,10 +79,13 @@
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-crypto"> Clientes por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>categoriaList/" class="nav-link" data-key="t-projects"> Categorías de Productos</a>
+                                        <a href="<?php echo APP_URL; ?>categoryList/" class="nav-link" data-key="t-analytics"> Categorías y Subcategorias  </a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-projects"> Productos de la tienda</a>
+                                        <a href="<?php echo APP_URL; ?>marcaList/" class="nav-link" data-key="t-analytics"> Marcas y Modelos </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>productList/" class="nav-link" data-key="t-projects"> Productos de la tienda</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-nft"> Facturación de la tienda</a>

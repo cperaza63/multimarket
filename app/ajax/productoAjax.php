@@ -2,53 +2,43 @@
 	require_once "../../config/app.php";
 	require_once "../views/inc/session_start.php";
 	require_once "../../autoload.php";
-	 
-	use app\controllers\productoController;
-
+	use app\controllers\productController;
 	if(isset($_POST['tab'])){
 		$_SESSION['tab'] = $_POST['tab']; 
 	}
-	
 	if(isset($_POST['modulo_producto'])){
 
-		$insCompany = new productoController();
-
+		$insProducto = new productController();
 		if($_POST['modulo_producto']=="registrar"){
-			echo $insCompany->registrarProductoControlador();
+			echo $insProducto->registrarProductoControlador();
 		}
-
 		if($_POST['modulo_producto']=="eliminar"){
-			echo $insCompany->eliminarProductoControlador();
+			echo $insProducto->eliminarProductoControlador();
 		}
-
 		if($_POST['modulo_producto']=="actualizarFoto"){
-			echo $insCompany->actualizarFotoProductoControlador();
+			echo $insProducto->actualizarFotoProductoControlador();
 		}
-		
 		if($_POST['modulo_producto']=="actualizar"){
-			echo $insCompany->actualizarProductoControlador();
+			echo $insProducto->actualizarProductoControlador();
 		}
-
 		if($_POST['modulo_producto']=="actualizarMasInformacion"){
-			echo $insCompany->actualizarMasInformacionControlador();
+			echo $insProducto->actualizarMasInformacionControlador();
 		}
 		if($_POST['modulo_producto']=="actualizarZonaHoraria"){
-			echo $insCompany->actualizarZonaHorariaControlador();
+			echo $insProducto->actualizarZonaHorariaControlador();
 		}
 		if($_POST['modulo_producto']=="actualizarMarket"){
-			echo $insCompany->actualizarMarketControlador();
+			echo $insProducto->actualizarMarketControlador();
 		}
 		if($_POST['modulo_producto']=="actualizarUbicacion"){
-			echo $insCompany->actualizarUbicacionControlador();
+			echo $insProducto->actualizarUbicacionControlador();
 		}
 		if($_POST['modulo_producto']=="eliminarFoto"){
-			echo $insCompany->eliminarFotoProductoControlador();
+			echo $insProducto->eliminarFotoProductoControlador();
 		}
-
 		if($_POST['modulo_producto']=="actualizarFotoMasa"){
-			echo $insCompany->actualizarFotoMasaControlador();
+			echo $insProducto->actualizarFotoMasaControlador();
 		}
-		
 	}else{
 		//echo "fin de sesion";
 		session_destroy();

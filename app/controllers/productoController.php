@@ -2,15 +2,12 @@
 
 	namespace app\controllers;
 	use app\models\mainModel; 
-
-	class productoController extends mainModel{
-
-		/*----------  Controlador registrar company  ----------*/
+	class productController extends mainModel{
+		/*----------  Controlador registrar proveedor  ----------*/
 		public function registrarProductoControlador(){
 			# Almacenando datos#
 		    $producto_name = $this->limpiarCadena($_POST['producto_name']);
-		    $producto_type = $this->limpiarCadena($_POST['producto_type']);
-			$producto_user = $this->limpiarCadena($_POST['producto_user']);
+			$company_id = $this->limpiarCadena($_POST['company_id']);
 		    $producto_description = $this->limpiarCadena($_POST['producto_description']);
 		    $producto_address = $this->limpiarCadena($_POST['producto_address']);
 		    $producto_country = $this->limpiarCadena($_POST['producto_country']);
@@ -22,23 +19,21 @@
 			$producto_rif = $this->limpiarCadena($_POST['producto_rif']);
 			$created_at = date("Y-m-d");
 			//$producto_city = 0;
-			
+
 		    # Verificando campos obligatorios 
-		    if($producto_name=="" || $producto_type=="" || $producto_email=="" || $producto_description=="" 
-			|| $producto_address=="" || $producto_country=="" 
-			|| $producto_state=="" || $producto_city=="" || $producto_estatus=="" || $producto_phone=="" 
-			|| $producto_rif==""
+		    if($producto_name=="" || $company_id=="" || $producto_email=="" || $producto_description=="" 
+			|| $producto_address=="" || $producto_country=="" || $producto_state=="" || $producto_city=="" 
+			|| $producto_estatus=="" || $producto_phone=="" || $producto_rif==""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios...",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
-
 			if($this->verificarDatos("[0-9$-]{7,100}",$producto_phone)){
 		    	$alerta=[
 				"tipo"=>"simple",
@@ -60,13 +55,12 @@
 				return json_encode($alerta);
 				exit();
 			} 
-           
 			# Verificando usuario #
 			$sin_rif = str_replace ( "-", '', strtoupper($producto_rif));
 			$sin_rif = str_replace ( " ", '', $sin_rif);
 			$sin_rif = ucfirst($sin_rif);
-			$check_company=$this->ejecutarConsulta("SELECT * FROM company WHERE producto_rif = '$sin_rif'");
-			if($check_company->rowCount()==1){
+			$check_proveedor=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE producto_rif = '$sin_rif'");
+			if($check_proveedor->rowCount()==1){
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
@@ -80,58 +74,59 @@
 		    $producto_datos_reg=[
 				[
 					"campo_nombre"=>"producto_name",
-					"campo_marcador"=>":Producto_name",
+					"campo_marcador"=>":Proveedor_name",
 					"campo_valor"=>$producto_name
 				],
 				[
 					"campo_nombre"=>"producto_email",
-					"campo_marcador"=>":Producto_email",
+					"campo_marcador"=>":Proveedor_email",
 					"campo_valor"=>$producto_email
+				],
+
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
 				],
 				[
 					"campo_nombre"=>"producto_description",
-					"campo_marcador"=>":Producto_description",
+					"campo_marcador"=>":Proveedor_description",
 					"campo_valor"=>$producto_description
 				],
 				[
 					"campo_nombre"=>"producto_address",
-					"campo_marcador"=>":Producto_address",
+					"campo_marcador"=>":Proveedor_address",
 					"campo_valor"=>$producto_address
 				],
 				[
 					"campo_nombre"=>"producto_estatus",
-					"campo_marcador"=>":Producto_estatus",
+					"campo_marcador"=>":Proveedor_estatus",
 					"campo_valor"=>$producto_estatus
 				],
 				[
 					"campo_nombre"=>"producto_phone",
-					"campo_marcador"=>":Producto_phone",
+					"campo_marcador"=>":Proveedor_phone",
 					"campo_valor"=>$producto_phone
 				],
 				[
 					"campo_nombre"=>"producto_rif",
-					"campo_marcador"=>":Producto_rif",
+					"campo_marcador"=>":Proveedor_rif",
 					"campo_valor"=>$producto_rif
 				],
 				[
 					"campo_nombre"=>"producto_country",
-					"campo_marcador"=>":Producto_country",
+					"campo_marcador"=>":Proveedor_country",
 					"campo_valor"=>$producto_country
 				],
 				[
 					"campo_nombre"=>"producto_state",
-					"campo_marcador"=>":Producto_state",
+					"campo_marcador"=>":Proveedor_state",
 					"campo_valor"=>$producto_state
 				],
 				[
 					"campo_nombre"=>"producto_city",
-					"campo_marcador"=>":Producto_city",
+					"campo_marcador"=>":Proveedor_city",
 					"campo_valor"=>$producto_city
-				],
-				[
-					"campo_nombre"=>"producto_user",
-					"campo_marcador"=>":Producto_user",
-					"campo_valor"=>$producto_user
 				],
 				[
 					"campo_nombre"=>"created_at",
@@ -140,12 +135,12 @@
 				]
 			];
 
-			$registrar_company=$this->guardarDatos("company",$producto_datos_reg);
+			$registrar_proveedor=$this->guardarDatos("company_proveedores",$producto_datos_reg);
 
-			if($registrar_company->rowCount()==1){
+			if($registrar_proveedor->rowCount()==1){
 				$alerta=[
 					"tipo"=>"limpiar",
-					"titulo"=>"Company registrado",
+					"titulo"=>"Proveedor registrado",
 					"texto"=>"El item de codigo ".$producto_name." se registro con exito",
 					"icono"=>"success"
 				];
@@ -160,12 +155,13 @@
 
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador listar company  ----------*/
-		public function listarTodosProductoControlador($busqueda){	
+		/*----------  Controlador listar proveedor  ----------*/
+		public function listarTodosProductoControlador($company_id, $busqueda){
+			$company_id=$this->limpiarCadena($company_id); 
 			$busqueda=$this->limpiarCadena($busqueda);
+
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company WHERE ( 
+				$consulta_datos="SELECT * FROM company_proveedores WHERE company_id= $company_id AND ( 
 				producto_phone LIKE '%$busqueda%'
 				OR producto_name LIKE '%$busqueda%' 
 				OR producto_description LIKE '%$busqueda%'
@@ -173,58 +169,27 @@
 				OR producto_email LIKE '%$busqueda%' 
 				OR producto_address LIKE '%$busqueda%' 
 				) 
-				ORDER BY producto_type, producto_name ASC";
+				ORDER BY producto_name ASC";
 			}else{
-				$consulta_datos="SELECT * FROM company WHERE producto_estatus=1 
-				ORDER BY producto_type, producto_name ASC";
-			}
-			$datos = $this->ejecutarConsulta($consulta_datos);
-			$datos = $datos->fetchAll();
-
-			return $datos;
-			exit();
-		}
-
-		/*----------  Controlador listar company  ----------*/
-		public function listarSoloTipoControlador($busqueda){	
-			$busqueda=$this->limpiarCadena($busqueda);
-			
-			if(isset($busqueda)){
-				$consulta_datos="SELECT * FROM company WHERE producto_type = '$busqueda' 
-				ORDER BY producto_type";
+				$consulta_datos="SELECT * FROM company_proveedores WHERE company_id=$company_id 
+				ORDER BY producto_name ASC";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;
 			exit();
 		}
-
-		/*----------  Controlador eliminar company  ----------*/
+		/*----------  Controlador eliminar proveedor  ----------*/
 		public function eliminarProductoControlador(){
-
-			$id=$this->limpiarCadena($_POST['control_id']);
-
-			//return json_encode($id);
-			//exit();
-
-			if($id==1){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No podemos eliminar el item de la tabla de company",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-			}
-
-			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id' and estatus<>1");
+			$id=$this->limpiarCadena($_POST['producto_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			# Verificando proveedor #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE producto_id='$id' and producto_estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el company en Estado ACTIVO, deberá inactivarlo primero",
+					"texto"=>"No hemos encontrado el proveedor en Estado ACTIVO, deberá inactivarlo primero",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -233,22 +198,21 @@
 		    	$datos=$datos->fetch();
 		    }
 
-		    $eliminarCompany=$this->eliminarRegistro("company","control_id",$id);
+		    $eliminarProveedor=$this->eliminarRegistro("company_proveedores","producto_id",$id);
 
-		    if($eliminarCompany->rowCount()==1){
+		    if($eliminarProveedor->rowCount()==1){
 
-		    	if(is_file("../views/fotos/company/".$datos['control_foto'])){
-		            chmod("../views/fotos/company/".$datos['control_foto'],0777);
-		            unlink("../views/fotos/company/".$datos['control_foto']);
+		    	if(is_file("../views/fotos/company/".$company_id."/proveedores/".$datos['producto_foto'])){
+		            chmod("../views/fotos/company/".$company_id."/proveedores/".$datos['producto_foto'],0777);
+		            unlink("../views/fotos/company/".$company_id."/proveedores/".$datos['producto_foto']);
 		        }
 
 		        $alerta=[
 					"tipo"=>"recargar",
-					"titulo"=>"Item de la tabla de Company eliminado",
+					"titulo"=>"Item de la tabla de Proveedor eliminado",
 					"texto"=>"El Item $id ha sido eliminado del sistema correctamente",
 					"icono"=>"success"
 				];
-
 		    }else{
 		    	$alerta=[
 					"tipo"=>"simple",
@@ -259,18 +223,13 @@
 		    }
 		    return json_encode($alerta);
 		}
-
-		/*----------  Controlador actualizar company  ----------*/
+		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarProductoControlador(){
 			# Almacenando datos#
 			$producto_id=$this->limpiarCadena($_POST['producto_id']);
-		    $producto_email = $this->limpiarCadena($_POST['producto_email']);
-			$producto_name = $this->limpiarCadena($_POST['producto_name']);
-		    $producto_type = $this->limpiarCadena($_POST['producto_type']);
-			$producto_user = $this->limpiarCadena($_POST['producto_user']);
-			$producto_membresia = $this->limpiarCadena($_POST['producto_membresia']);
-			$producto_market_cat = $this->limpiarCadena($_POST['producto_market_cat']);
-		    $producto_description = $this->limpiarCadena($_POST['producto_description']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+		    $producto_name = $this->limpiarCadena($_POST['producto_name']);
+			$producto_description = $this->limpiarCadena($_POST['producto_description']);
 		    $producto_address = $this->limpiarCadena($_POST['producto_address']);
 		    $producto_country = $this->limpiarCadena($_POST['producto_country']);
 		    $producto_state = $this->limpiarCadena($_POST['producto_state']);
@@ -282,15 +241,15 @@
 			//$producto_city = 0;
 			
 		    # Verificando campos obligatorios 
-		    if($producto_name=="" || $producto_type=="" || $producto_email=="" || $producto_description=="" 
+		    if($producto_name=="" || $company_id=="" || $producto_email=="" || $producto_description=="" 
 			|| $producto_address=="" || $producto_country=="" || $producto_id == "" 
 			|| $producto_state=="" || $producto_city=="" || $producto_estatus=="" || $producto_phone=="" 
-			|| $producto_rif=="" || $producto_membresia == "" || $producto_market_cat == ""
+			|| $producto_rif==""
 			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios..",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -322,84 +281,69 @@
 		    $producto_datos_reg=[
 				[
 					"campo_nombre"=>"producto_name",
-					"campo_marcador"=>":Producto_name",
+					"campo_marcador"=>":Proveedor_name",
 					"campo_valor"=>$producto_name
 				],
 				[
 					"campo_nombre"=>"producto_email",
-					"campo_marcador"=>":Producto_email",
+					"campo_marcador"=>":Proveedor_email",
 					"campo_valor"=>$producto_email
 				],
 				[
 					"campo_nombre"=>"producto_description",
-					"campo_marcador"=>":Producto_description",
+					"campo_marcador"=>":Proveedor_description",
 					"campo_valor"=>$producto_description
 				],
 				[
 					"campo_nombre"=>"producto_address",
-					"campo_marcador"=>":Producto_address",
+					"campo_marcador"=>":Proveedor_address",
 					"campo_valor"=>$producto_address
 				],
 				[
-					"campo_nombre"=>"producto_membresia",
-					"campo_marcador"=>":Producto_membresia",
-					"campo_valor"=>$producto_membresia
-				],
-				[
-					"campo_nombre"=>"producto_membresia",
-					"campo_marcador"=>":Producto_membresia",
-					"campo_valor"=>$producto_membresia
-				],
-				[
-					"campo_nombre"=>"producto_market_cat",
-					"campo_marcador"=>":Producto_market_cat",
-					"campo_valor"=>$producto_market_cat
+					"campo_nombre"=>"producto_estatus",
+					"campo_marcador"=>":Proveedor_estatus",
+					"campo_valor"=>$producto_estatus
 				],
 				[
 					"campo_nombre"=>"producto_phone",
-					"campo_marcador"=>":Producto_phone",
+					"campo_marcador"=>":Proveedor_phone",
 					"campo_valor"=>$producto_phone
 				],
 				[
 					"campo_nombre"=>"producto_rif",
-					"campo_marcador"=>":Producto_rif",
+					"campo_marcador"=>":Proveedor_rif",
 					"campo_valor"=>$producto_rif
 				],
 				[
 					"campo_nombre"=>"producto_country",
-					"campo_marcador"=>":Producto_country",
+					"campo_marcador"=>":Proveedor_country",
 					"campo_valor"=>$producto_country
 				],
 				[
 					"campo_nombre"=>"producto_state",
-					"campo_marcador"=>":Producto_state",
+					"campo_marcador"=>":Proveedor_state",
 					"campo_valor"=>$producto_state
 				],
 				[
 					"campo_nombre"=>"producto_city",
-					"campo_marcador"=>":Producto_city",
+					"campo_marcador"=>":Proveedor_city",
 					"campo_valor"=>$producto_city
-				],
-				[
-					"campo_nombre"=>"producto_user",
-					"campo_marcador"=>":Producto_user",
-					"campo_valor"=>$producto_user
 				]
 			];
 			$condicion=[
 				"condicion_campo"=>"producto_id",
-				"condicion_marcador"=>":Producto_id",
+				"condicion_marcador"=>":Proveedor_id",
 				"condicion_valor"=>$producto_id
 			];
 
 			//return json_encode($producto_datos_reg);
 			//exit();
 
-			if($this->actualizarDatos("company", $producto_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $producto_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Company actualizado",
-				"texto"=>"Los datos de la tabla de control ".$producto_name." se actualizaron correctamente",
+				"titulo"=>"Proveedor actualizado",
+				"texto"=>"Los datos de la tabla de proveedor ".$producto_name." se actualizaron correctamente",
 				"icono"=>"success"
 				];
 			}else{
@@ -412,151 +356,98 @@
 			}
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador actualizar company  ----------*/
+		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarMasInformacionControlador(){
 			# Almacenando datos#
 			$producto_id=$this->limpiarCadena($_POST['producto_id']);
-			$producto_iva = $this->limpiarCadena($_POST['producto_iva']);
 			$producto_red1 = $this->limpiarCadena($_POST['producto_red1']);
 			$producto_red_valor1 = $this->limpiarCadena($_POST['producto_red_valor1']);
 			$producto_red2 = $this->limpiarCadena($_POST['producto_red2']);
 			$producto_red_valor2 = $this->limpiarCadena($_POST['producto_red_valor2']);
 			$producto_red3 = $this->limpiarCadena($_POST['producto_red3']);
 			$producto_red_valor3 = $this->limpiarCadena($_POST['producto_red_valor3']);
-		    $producto_slogan = $this->limpiarCadena($_POST['producto_slogan']);
 		    $producto_web = $this->limpiarCadena($_POST['producto_web']);
-		    $producto_servicio_email = $this->limpiarCadena($_POST['producto_servicio_email']);
-			$producto_servicio_email_envio = $this->limpiarCadena($_POST['producto_servicio_email_envio']);
-			$producto_servicio_email_password = $this->limpiarCadena($_POST['producto_servicio_email_password']);
-			$producto_servicio_email_puerto = $this->limpiarCadena($_POST['producto_servicio_email_puerto']);
-			$producto_youtube_index = $this->limpiarCadena($_POST['producto_youtube_index']);
+		    $producto_youtube_index = $this->limpiarCadena($_POST['producto_youtube_index']);
 		    $producto_logo_witdh= $this->limpiarCadena($_POST['producto_logo_witdh']);
 			$producto_logo_height= $this->limpiarCadena($_POST['producto_logo_height']);
 			# Verificando campos obligatorios 
-		    if($producto_red1=="" || $producto_red_valor1=="" || $producto_red2=="" || $producto_iva=="" 
+		    if($producto_red1=="" || $producto_red_valor1=="" || $producto_red2=="" 
 			|| $producto_red_valor2=="" || $producto_red3=="" || $producto_red_valor3==""
-			|| $producto_web=="" || $producto_slogan=="" || $producto_youtube_index=="" 
-			|| $producto_logo_witdh==""|| $producto_logo_height=="" 
-			|| $producto_servicio_email=="" || $producto_servicio_email_envio=="" 
-			|| $producto_servicio_email_password=="" || $producto_servicio_email_puerto=="" 
+			|| $producto_web=="" || $producto_logo_witdh==""|| $producto_logo_height=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios.",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
-			
-			if(!filter_var($producto_servicio_email_envio, FILTER_VALIDATE_EMAIL)){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Ha ingresado un correo electrónico no valido",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-				exit();
-			} 
-			
 			//return json_encode($producto_iva);
 			//exit();
-
 		    $producto_datos_reg=[
 				[
 					"campo_nombre"=>"producto_red1",
-					"campo_marcador"=>":Producto_red1",
+					"campo_marcador"=>":Proveedor_red1",
 					"campo_valor"=>$producto_red1
 				],
 				[
-					"campo_nombre"=>"producto_iva",
-					"campo_marcador"=>":Producto_iva",
-					"campo_valor"=>$producto_iva
-				],
-				[
 					"campo_nombre"=>"producto_red2",
-					"campo_marcador"=>":Producto_red2",
+					"campo_marcador"=>":Proveedor_red2",
 					"campo_valor"=>$producto_red2
 				],
 				[
 					"campo_nombre"=>"producto_red3",
-					"campo_marcador"=>":Producto_red3",
+					"campo_marcador"=>":Proveedor_red3",
 					"campo_valor"=>$producto_red3
 				],
 				[
 					"campo_nombre"=>"producto_red_valor1",
-					"campo_marcador"=>":Producto_red_valor1",
+					"campo_marcador"=>":Proveedor_red_valor1",
 					"campo_valor"=>$producto_red_valor1
 				],
 				[
 					"campo_nombre"=>"producto_red_valor2",
-					"campo_marcador"=>":Producto_valor2",
+					"campo_marcador"=>":Proveedor_valor2",
 					"campo_valor"=>$producto_red_valor2
 				],
 				[
 					"campo_nombre"=>"producto_red_valor3",
-					"campo_marcador"=>":Producto_red_valor3",
+					"campo_marcador"=>":Proveedor_red_valor3",
 					"campo_valor"=>$producto_red_valor3
 				],
 				[
 					"campo_nombre"=>"producto_web",
-					"campo_marcador"=>":Producto_web",
+					"campo_marcador"=>":Proveedor_web",
 					"campo_valor"=>$producto_web
 				],
 				[
-					"campo_nombre"=>"producto_slogan",
-					"campo_marcador"=>":Producto_slogan",
-					"campo_valor"=>$producto_slogan
-				],
-				[
 					"campo_nombre"=>"producto_logo_witdh",
-					"campo_marcador"=>":Producto_logo_witdh",
+					"campo_marcador"=>":Proveedor_logo_witdh",
 					"campo_valor"=>$producto_logo_witdh
 				],
 				[
 					"campo_nombre"=>"producto_logo_height",
-					"campo_marcador"=>":Producto_logo_height",
+					"campo_marcador"=>":Proveedor_logo_height",
 					"campo_valor"=>$producto_logo_height
 				],
 				[
 					"campo_nombre"=>"producto_youtube_index",
-					"campo_marcador"=>":Producto_youtube_index",
+					"campo_marcador"=>":Proveedor_youtube_index",
 					"campo_valor"=>$producto_youtube_index
-				],
-				[
-					"campo_nombre"=>"producto_servicio_email",
-					"campo_marcador"=>":Producto_servicio_email",
-					"campo_valor"=>$producto_servicio_email
-				],
-				[
-					"campo_nombre"=>"producto_servicio_email_envio",
-					"campo_marcador"=>":Producto_servicio_email_envio",
-					"campo_valor"=>$producto_servicio_email_envio
-				],
-				[
-					"campo_nombre"=>"producto_servicio_email_password",
-					"campo_marcador"=>":Producto_servicio_email_password",
-					"campo_valor"=>$producto_servicio_email_password
-				],
-				[
-					"campo_nombre"=>"producto_servicio_email_puerto",
-					"campo_marcador"=>":Producto_servicio_email_puerto",
-					"campo_valor"=>$producto_servicio_email_puerto
 				]
 			];
 			$condicion=[
 				"condicion_campo"=>"producto_id",
-				"condicion_marcador"=>":Producto_id",
+				"condicion_marcador"=>":Proveedor_id",
 				"condicion_valor"=>$producto_id
 			];
 
-			if($this->actualizarDatos("company", $producto_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $producto_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Company actualizado",
+				"titulo"=>"Control actualizado",
 				"texto"=>"Los datos de información adicional ".$producto_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -570,8 +461,7 @@
 			}
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador actualizar company  ----------*/
+		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarZonaHorariaControlador(){
 			$producto_id=$this->limpiarCadena($_POST['producto_id']);
 			$dia_semana = $this->limpiarCadena($_POST['dia_semana']);
@@ -580,8 +470,6 @@
 			$aplica_submit = $this->limpiarCadena($_POST['submit']);
 			$producto_horario_desde = explode("|", $this->limpiarCadena($_POST['producto_horario_desde']));
 			$producto_horario_hasta = explode("|", $this->limpiarCadena($_POST['producto_horario_hasta']));
-			//return json_encode($producto_horario_hasta);
-		    //exit();
 			$vector_desde = [];
 			$vector_hasta = [];
 			//
@@ -600,7 +488,7 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Debe presioar el button tipo de acción día o semana",
+					"texto"=>"Debe presionar el button tipo de acción día o semana",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -627,12 +515,12 @@
 				$producto_datos_reg=[
 					[
 						"campo_nombre"=>"producto_horario_desde",
-						"campo_marcador"=>":Producto_horario_desde",
+						"campo_marcador"=>":Proveedor_horario_desde",
 						"campo_valor"=>$cadena_desde
 					],
 					[
 						"campo_nombre"=>"producto_horario_hasta",
-						"campo_marcador"=>":Producto_horario_hasta",
+						"campo_marcador"=>":Proveedor_horario_hasta",
 						"campo_valor"=>$cadena_hasta
 					]
 				];
@@ -649,12 +537,12 @@
 				$producto_datos_reg=[
 					[
 						"campo_nombre"=>"producto_horario_desde",
-						"campo_marcador"=>":Producto_horario_desde",
+						"campo_marcador"=>":Proveedor_horario_desde",
 						"campo_valor"=>$cadena_desde
 					],
 					[
 						"campo_nombre"=>"producto_horario_hasta",
-						"campo_marcador"=>":Producto_horario_hasta",
+						"campo_marcador"=>":Proveedor_horario_hasta",
 						"campo_valor"=>$cadena_hasta
 					]
 				];
@@ -662,14 +550,14 @@
 
 			$condicion=[
 				"condicion_campo"=>"producto_id",
-				"condicion_marcador"=>":Producto_id",
+				"condicion_marcador"=>":Proveedor_id",
 				"condicion_valor"=>$producto_id
 			];
 
-			if($this->actualizarDatos("company", $producto_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $producto_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Company actualizado",
+				"titulo"=>"Proveedor actualizado",
 				"texto"=>"Los datos de información adicional ".$producto_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -683,73 +571,7 @@
 			}
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador actualizar company  ----------*/
-		public function actualizarMarketControlador(){
-			$producto_id=$this->limpiarCadena($_POST['producto_id']);
-			$market_cat = $_POST['market_cat'];
-			$aplica_submit = $this->limpiarCadena($_POST['submit']);
-			$cadena="";
-			
-			if($market_cat=="" || $producto_id=="" || $aplica_submit=="" ) {
-		        $alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-		        exit();
-		    }
-			if($aplica_submit != "agregar"){
-				$alerta=[
-					"tipo"=>"simple",
-					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Debe presioar el button tipo de acción actualizar",
-					"icono"=>"error"
-				];
-				return json_encode($alerta);
-				exit();
-			}
-			for ($i=0;$i<count($market_cat);$i++)
-			{
-				$cadena = $cadena . "|". $market_cat[$i];
-			}
-			
-			$cadena = substr($cadena, 1, 100);
-			//echo $cadena; //retorna 1,5,9,6,8
-			$producto_datos_reg=[
-				[
-					"campo_nombre"=>"producto_market_cat",
-					"campo_marcador"=>":Producto_market_cat",
-					"campo_valor"=>$cadena
-				]
-			];
-
-			$condicion=[
-				"condicion_campo"=>"producto_id",
-				"condicion_marcador"=>":Producto_id",
-				"condicion_valor"=>$producto_id
-			];
-
-			if($this->actualizarDatos("company", $producto_datos_reg, $condicion)){
-				$alerta=[
-				"tipo"=>"recargar",
-				"titulo"=>"Company actualizado",
-				"texto"=>"Los datos de Categoria de market ".$producto_id." se actualizaron correctamente",
-				"icono"=>"success"
-				];
-			}else{
-				$alerta=[
-				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos de categoria de market ".$producto_id.", por favor intente nuevamente",
-				"icono"=>"error"
-			];
-			}
-			return json_encode($alerta);
-		}
-		/*----------  Controlador actualizar company  ----------*/
+		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarUbicacionControlador(){
 			$producto_id=$this->limpiarCadena($_POST['producto_id']);
 			$latitude = $this->limpiarCadena($_POST['latitude']);
@@ -768,26 +590,26 @@
 			$producto_datos_reg=[
 				[
 					"campo_nombre"=>"producto_latitude",
-					"campo_marcador"=>":Producto_latitude",
+					"campo_marcador"=>":Proveedor_latitude",
 					"campo_valor"=>$latitude
 				],
 				[
 					"campo_nombre"=>"producto_longitude",
-					"campo_marcador"=>":Producto_longitude",
+					"campo_marcador"=>":Proveedor_longitude",
 					"campo_valor"=>$longitude
 				]
 			];
 
 			$condicion=[
 				"condicion_campo"=>"producto_id",
-				"condicion_marcador"=>":Producto_id",
+				"condicion_marcador"=>":Proveedor_id",
 				"condicion_valor"=>$producto_id
 			];
 
-			if($this->actualizarDatos("company", $producto_datos_reg, $condicion)){
+			if($this->actualizarDatos("company_proveedores", $producto_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
-				"titulo"=>"Company actualizado",
+				"titulo"=>"Proveedor actualizado",
 				"texto"=>"Los datos de ubicación ".$producto_id." se actualizaron correctamente",
 				"icono"=>"success"
 				];
@@ -801,19 +623,17 @@
 			}
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador eliminar foto company  ----------*/
+		/*----------  Controlador eliminar foto proveedor  ----------*/
 		public function eliminarFotoProductoControlador(){
-
-			$id=$this->limpiarCadena($_POST['control_id']);
-
-			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE control_id='$id'");
+			$id=$this->limpiarCadena($_POST['producto_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			# Verificando proveedor #
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el company en el sistema",
+					"texto"=>"No hemos encontrado el proveedor en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -823,19 +643,19 @@
 		    }
 
 		    # Directorio de imagenes #
-    		$img_dir="../views/fotos/company/";
+    		$img_dir="../views/fotos/company/".$company_id."/proveedor/";
 
     		chmod($img_dir,0777);
 
-    		if(is_file($img_dir.$datos['control_foto'])){
+    		if(is_file($img_dir.$datos['producto_foto'])){
 
-		        chmod($img_dir.$datos['control_foto'],0777);
+		        chmod($img_dir.$datos['producto_foto'],0777);
 
-		        if(!unlink($img_dir.$datos['control_foto'])){
+		        if(!unlink($img_dir.$datos['producto_foto'])){
 		            $alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
-						"texto"=>"Error al intentar eliminar la foto del company, por favor intente nuevamente",
+						"texto"=>"Error al intentar eliminar la foto del proveedor, por favor intente nuevamente",
 						"icono"=>"error"
 					];
 					return json_encode($alerta);
@@ -845,28 +665,28 @@
 		    	$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado la foto del company en el sistema",
+					"texto"=>"No hemos encontrado la foto del proveedor en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 		        exit();
 		    }
 
-		    $control_datos_up=[
+		    $producto_datos_up=[
 				[
-					"campo_nombre"=>"control_foto",
+					"campo_nombre"=>"producto_foto",
 					"campo_marcador"=>":Foto",
 					"campo_valor"=>""
 				]
 			];
 
 			$condicion=[
-				"condicion_campo"=>"control_id",
+				"condicion_campo"=>"producto_id",
 				"condicion_marcador"=>":ID",
 				"condicion_valor"=>$id
 			];
 
-			if($this->actualizarDatos("company",$control_datos_up,$condicion)){
+			if($this->actualizarDatos("company_proveedores",$producto_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']="";
@@ -875,33 +695,33 @@
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"La foto del company ".$datos['control_nombre']." ".$datos['control_apellido']." se elimino correctamente",
+					"texto"=>"La foto del proveedor ".$datos['control_nombre']." ".$datos['control_apellido']." se elimino correctamente",
 					"icono"=>"success"
 				];
 			}else{
 				$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Foto eliminada",
-					"texto"=>"No hemos podido actualizar algunos datos del company ".$datos['control_nombre']." ".$datos['control_apellido'].", sin embargo la foto ha sido eliminada correctamente",
+					"texto"=>"No hemos podido actualizar algunos datos del proveedor ".$datos['control_nombre']." ".$datos['control_apellido'].", sin embargo la foto ha sido eliminada correctamente",
 					"icono"=>"warning"
 				];
 			}
 
 			return json_encode($alerta);
 		}
-
-		/*----------  Controlador actualizar foto company  ----------*/
+		/*----------  Controlador actualizar foto proveedor  ----------*/
 		public function actualizarFotoProductoControlador(){
 			$id = $this->limpiarCadena($_POST['producto_id']);
 			$producto_tipo = $this->limpiarCadena($_POST['producto_tipo']);
-
-			# Verificando company #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company WHERE producto_id='$id'");
+			$company_id =  $this->limpiarCadena($_POST['company_id']);
+			# Verificando proveedor 
+			
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado el company en el sistema",
+					"texto"=>"No hemos encontrado el proveedor en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -911,8 +731,8 @@
 		    }
 			
 			# Directorio de imagenes #
-    		$img_dir="../views/fotos/company/$id/";
-
+    		$img_dir="../views/fotos/company/$company_id/proveedores/";
+			
 			# Comprobar si se selecciono una imagen #
     		if($_FILES['producto_logo']['name']!="" && $_FILES['producto_logo']['size']>0){
     			# Creando directorio #
@@ -956,7 +776,7 @@
 		        }
 				
 		        # Nombre de la foto #
-		        $foto=str_ireplace(" ","_",$producto_tipo."-".$id);
+		        $foto=str_ireplace(" ","producto_",$id);
 		        
 				$foto=$foto."_".rand(0,100);
 
@@ -987,7 +807,7 @@
     			$foto="";
     		}
 
-			$control_datos_up=[
+			$producto_datos_up=[
 				[
 					"campo_nombre"=>$producto_tipo,
 					"campo_marcador"=>":Foto",
@@ -1003,7 +823,7 @@
 			
 			
 
-			if($this->actualizarDatos("company",$control_datos_up,$condicion)){
+			if($this->actualizarDatos("company_proveedores",$producto_datos_up,$condicion)){
 
 				if($id==$_SESSION['id']){
 					$_SESSION['foto']=$foto;
@@ -1024,12 +844,12 @@
 			}
 			return json_encode($alerta);
 		}
-
 		public function actualizarFotoMasaControlador(){
 			$id = $this->limpiarCadena($_POST['producto_id']);
-			# Verificando company #
+			$company_id = $this->limpiarCadena($_POST['company_id']);
+			# Verificando proveedor #
 			
-			$datos=$this->ejecutarConsulta("SELECT * FROM company WHERE producto_id='$id'");
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE producto_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -1043,12 +863,9 @@
 		    	$datos=$datos->fetch();
 		    }
 
-			$img_dir="../views/fotos/company/$id/";
+			$img_dir="../views/fotos/company/".$company_id."/proveedores/";
 			$array=[0,0,0,0,0];
 			$foto_array=["","","","",""];
-
-			
-
 			for ($i=0; $i <= 4; $i++) {
 				//return json_encode($_FILES['archivo']['size'][$i]);
 				//exit();
@@ -1105,11 +922,11 @@
 							exit();
 						}
 					}else{
-						if(($i==4 && $_FILES['archivo']['size'][$i]/1024)>150120){
+						if(($i == 4 && $_FILES['archivo']['size'][$i]/1024)>15120){
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"El archivo PDF supera el peso permitido (hasta 1500K)",
+								"texto"=>"El archivo PDF supera el peso permitido (hasta 900K)",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);
@@ -1153,7 +970,7 @@
 				}
 				
 				if ( $array[$i] != "" && $array[$i] != "0" ) {
-					$control_datos_up=[
+					$producto_datos_up=[
 						[
 							"campo_nombre"=>$array[$i],
 							"campo_marcador"=>":Foto_$array[$i]",
@@ -1165,7 +982,7 @@
 						"condicion_marcador"=>":ID",
 						"condicion_valor"=>$id
 					];
-					$this->actualizarDatos("company",$control_datos_up,$condicion);
+					$this->actualizarDatos("company_proveedores",$producto_datos_up,$condicion);
 					
 					// elimino la fot anterior
 					if(is_file($img_dir.$datos[$array[$i]])){
@@ -1174,7 +991,7 @@
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"Error al intentar eliminar el archivo del negocio, por favor intente nuevamente",
+								"texto"=>"Error al intentar eliminar el archivo del proveedor, por favor intente nuevamente",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);
