@@ -89,7 +89,6 @@ $empresas = $companyController->listarTodosCompanyControlador("");
                                                         <option value="bancos">bancos - Bancos</option>
                                                         <option value="delivery">delivery - Tipos de Delivery</option>
                                                         <option value="vehiculos">vehiculos - Tipo de Vehiculos</option>
-                                                        <option value="etiquetas">vehiculos - Etiquetas</option>
                                                     </select>
                                                 </div>
                                             </div>

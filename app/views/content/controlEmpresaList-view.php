@@ -95,7 +95,7 @@
                                         <th>Código</th>
                                         <th>Nombre</th>
                                         <th>Estatus</th>
-                                        <th>Market</th>
+                                        <th>Negocio</th>
                                         <!--<th>Status</th>-->
                                        
                                     </tr>
@@ -167,7 +167,7 @@
                                                     }?>
                                                     </span>
                                                 </td>
-                                                <td><?=$rows['tipo'];?></td>
+                                                <td><?=$rows['company_id'];?></td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
                                             </tr>

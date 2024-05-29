@@ -148,15 +148,8 @@
                                                     <div class="mb-3">
                                                         <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                         <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                            <option value="market" <?php if ($datos['tipo'] == 'market') echo "selected" ?>>market - Market Place</option>
-                                                            <option value="market_cat" <?php if ($datos['tipo'] == 'market_cat') echo "selected" ?>>market_cat - Categoría de Market Place</option>
-                                                            <option value="unidades" <?php if ($datos['tipo'] == 'unidades') echo "selected" ?>>unidades - Unidades de medida</option>
-                                                            <option value="monedas" <?php if ($datos['tipo'] == 'moneda') echo "selected" ?>>monedas - Tipos de Moneda</option>
-                                                            <option value="contratos" <?php if ($datos['tipo'] == 'contratos') echo "selected" ?>>contratos - Contratos</option>
-                                                            <option value="bancos" <?php if ($datos['tipo'] == 'bancos') echo "selected" ?>>bancos - Bancos</option>
-                                                            <option value="delivery" <?php if ($datos['tipo'] == 'delivery') echo "selected" ?>>delivery - Tipos de Delivery</option>
-                                                            <option value="vehiculos" <?php if ($datos['tipo'] == 'vehiculos') echo "selected" ?>>vehiculos - Tipo de Vehiculos</option>
-                                                            <option value="etiquetas" <?php if ($datos['tipo'] == 'etiquetas') echo "selected" ?>>Etiquetas</option>
+                                                            <option value="market" <?php if ($datos['tipo'] == 'market') echo "selected" ?>>Market Place</option>
+                                                            <option value="market_cat" <?php if ($datos['tipo'] == 'market_cat') echo "selected" ?>>Categoría de Market Place</option>
                                                         </select>
                                                     </div>
                                                 </div>

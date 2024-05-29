@@ -86,16 +86,19 @@
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-crypto"> Clientes por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-projects.html" class="nav-link" data-key="t-projects"> Productos por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>controlEmpresaList/" class="nav-link" data-key="t-projects"> Categorías por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-nft.html" class="nav-link" data-key="t-nft"> Facturación por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-projects"> Productos por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Pedidos por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-nft"> Facturación por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="dashboard-job.html" class="nav-link" data-key="t-job">Movimientos de Ventas</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-job">Pedidos por tienda</a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-job">Movimientos de Ventas</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>

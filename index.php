@@ -64,6 +64,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
                 || $_GET['views'] == "marcaList/"  || $_GET['views'] == "modeloList/" 
                 || $_GET['views'] == "proveedorList/" || $_GET['views'] == "clienteList/"
+                || $_GET['views'] == "controlEmpresaList/"
                 ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
@@ -86,6 +87,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 14) == "clienteUpdate/"
                 || substr($_GET['views'], 0, 11) == "controlNew/"
                 || substr($_GET['views'], 0, 14) == "controlUpdate/"
+                || substr($_GET['views'], 0, 18) == "controlEmpresaNew/"
+                || substr($_GET['views'], 0, 21) == "controlEmpresaUpdate/"
                 || substr($_GET['views'], 0, 12) == "categoryNew/"
                 || substr($_GET['views'], 0, 15) == "categoryUpdate/"
                 || substr($_GET['views'], 0, 9) == "marcaNew/"
