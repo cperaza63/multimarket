@@ -41,7 +41,8 @@
 		            } 
 		        }
 		        # Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/png"){
+		        if(mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/jpeg" 
+				&& mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -343,7 +344,8 @@
 		            } 
 		        }
 				# Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/png"){
+		        if(mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/jpeg" 
+				&& mime_content_type($_FILES['banco_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",

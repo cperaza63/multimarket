@@ -552,7 +552,7 @@ if ($mysqli->connect_errno) {
                                                     <div class="col-lg-5">
                                                         <div class="mb-3">
                                                             <label for="proveedor_web" class="form-label">Página Web del negocio</label>
-                                                            <input name="proveedor_web" type="url" class="form-control" value="<?= $datos["proveedor_web"] ?>" id="proveedor_web" placeholder="Entre Pagina web del negocio" maxlength="240" required>
+                                                            <input name="proveedor_web" type="text" class="form-control" value="<?= $datos["proveedor_web"] ?>" id="proveedor_web" placeholder="Entre Pagina web del negocio" maxlength="240">
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -560,7 +560,7 @@ if ($mysqli->connect_errno) {
                                                         <div class="mb-3">
                                                             <label for="proveedor_youtube_index" class="form-label">
                                                                 <strong>Video de Youtube</strong></label>
-                                                            <input name="proveedor_youtube_index" type="text" class="form-control" value="<?= $datos["proveedor_youtube_index"] ?>" id="proveedor_youtube_index" placeholder="Valor indice del video" required />
+                                                            <input name="proveedor_youtube_index" type="text" class="form-control" value="<?= $datos["proveedor_youtube_index"] ?>" id="proveedor_youtube_index" placeholder="Valor indice del video" />
                                                         </div>
                                                     </div>
                                                     <!--end col-->

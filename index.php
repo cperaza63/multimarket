@@ -57,7 +57,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         require_once "./app/views/inc/script.php";
         // recuerda el tab de las pestañas
         // desativamos el ajax para hacer prueas
-        $a=0;
+        $a=1;
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
@@ -82,8 +82,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 14) == "companyUpdate/"
                 || substr($_GET['views'], 0, 13) == "proveedorNew/"
                 || substr($_GET['views'], 0, 16) == "proveedorUpdate/"
-                || substr($_GET['views'], 0, 13) == "clienteNew/"
-                || substr($_GET['views'], 0, 16) == "clienteUpdate/"
+                || substr($_GET['views'], 0, 11) == "clienteNew/"
+                || substr($_GET['views'], 0, 14) == "clienteUpdate/"
                 || substr($_GET['views'], 0, 11) == "controlNew/"
                 || substr($_GET['views'], 0, 14) == "controlUpdate/"
                 || substr($_GET['views'], 0, 12) == "categoryNew/"

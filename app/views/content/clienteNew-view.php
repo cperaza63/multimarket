@@ -47,7 +47,7 @@ if (isset($_POST['state'])){
                                 <ul class="nav nav-tabs-custom rounded card-header-tabs border-bottom-0" role="tablist">
                                    |<li class="nav-item">
                                         <a class="nav-link active" data-bs-toggle="tab" href="#companyDetalis" role="tab">
-                                            <i class="fas fa-home"></i> CREACIóN DE PROVEEDORES del Negocio/Tienda
+                                            <i class="fas fa-home"></i> CREACIóN DE CLIENTES del Negocio/Tienda
                                         </a>
                                     </li>
                                 </ul>

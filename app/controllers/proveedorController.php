@@ -28,7 +28,7 @@
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios...",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -59,7 +59,7 @@
 			$sin_rif = str_replace ( "-", '', strtoupper($proveedor_rif));
 			$sin_rif = str_replace ( " ", '', $sin_rif);
 			$sin_rif = ucfirst($sin_rif);
-			$check_proveedor=$this->ejecutarConsulta("SELECT * FROM proveedor WHERE proveedor_rif = '$sin_rif'");
+			$check_proveedor=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE proveedor_rif = '$sin_rif'");
 			if($check_proveedor->rowCount()==1){
 				$alerta=[
 					"tipo"=>"simple",
@@ -161,7 +161,7 @@
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM proveedor WHERE company_id= $company_id AND ( 
+				$consulta_datos="SELECT * FROM company_proveedores WHERE company_id= $company_id AND ( 
 				proveedor_phone LIKE '%$busqueda%'
 				OR proveedor_name LIKE '%$busqueda%' 
 				OR proveedor_description LIKE '%$busqueda%'
@@ -171,10 +171,9 @@
 				) 
 				ORDER BY proveedor_name ASC";
 			}else{
-				$consulta_datos="SELECT * FROM proveedor WHERE company_id=$company_id 
+				$consulta_datos="SELECT * FROM company_proveedores WHERE company_id=$company_id 
 				ORDER BY proveedor_name ASC";
 			}
-
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;
@@ -185,7 +184,7 @@
 			$id=$this->limpiarCadena($_POST['proveedor_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			# Verificando proveedor #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM proveedor WHERE proveedor_id='$id' and proveedor_estatus<>1");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE proveedor_id='$id' and proveedor_estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -250,7 +249,7 @@
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios..",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -374,13 +373,12 @@
 			# Verificando campos obligatorios 
 		    if($proveedor_red1=="" || $proveedor_red_valor1=="" || $proveedor_red2=="" 
 			|| $proveedor_red_valor2=="" || $proveedor_red3=="" || $proveedor_red_valor3==""
-			|| $proveedor_web=="" || $proveedor_youtube_index=="" 
-			|| $proveedor_logo_witdh==""|| $proveedor_logo_height=="" 
+			|| $proveedor_web=="" || $proveedor_logo_witdh==""|| $proveedor_logo_height=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
-					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"texto"=>"No has llenado todos los campos que son obligatorios.",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
@@ -472,8 +470,6 @@
 			$aplica_submit = $this->limpiarCadena($_POST['submit']);
 			$proveedor_horario_desde = explode("|", $this->limpiarCadena($_POST['proveedor_horario_desde']));
 			$proveedor_horario_hasta = explode("|", $this->limpiarCadena($_POST['proveedor_horario_hasta']));
-			//return json_encode($proveedor_horario_hasta);
-		    //exit();
 			$vector_desde = [];
 			$vector_hasta = [];
 			//
@@ -632,7 +628,7 @@
 			$id=$this->limpiarCadena($_POST['proveedor_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			# Verificando proveedor #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM proveedor WHERE proveedor_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE proveedor_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -720,7 +716,7 @@
 			$company_id =  $this->limpiarCadena($_POST['company_id']);
 			# Verificando proveedor 
 			
-			$datos=$this->ejecutarConsulta("SELECT * FROM proveedor WHERE proveedor_id='$id'");
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE proveedor_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -853,7 +849,7 @@
 			$company_id = $this->limpiarCadena($_POST['company_id']);
 			# Verificando proveedor #
 			
-			$datos=$this->ejecutarConsulta("SELECT * FROM proveedor WHERE proveedor_id='$id'");
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_proveedores WHERE proveedor_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -912,7 +908,7 @@
 						exit();
 					}
 					
-					if(mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
+					if($i<4 && mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
 					&& mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/png") {
 					# Verificando peso de imagen #
 						if(($_FILES['archivo']['size'][$i]/1024)>5120){
@@ -926,7 +922,7 @@
 							exit();
 						}
 					}else{
-						if(($_FILES['archivo']['size'][$i]/1024)>15120){
+						if(($i == 4 && $_FILES['archivo']['size'][$i]/1024)>15120){
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",

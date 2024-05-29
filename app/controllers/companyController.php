@@ -1091,7 +1091,7 @@
 						exit();
 					}
 					
-					if(mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
+					if($i<4 && mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
 					&& mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/png") {
 					# Verificando peso de imagen #
 						if(($_FILES['archivo']['size'][$i]/1024)>5120){
@@ -1105,11 +1105,11 @@
 							exit();
 						}
 					}else{
-						if(($_FILES['archivo']['size'][$i]/1024)>15120){
+						if(($i==4 && $_FILES['archivo']['size'][$i]/1024)>150120){
 							$alerta=[
 								"tipo"=>"simple",
 								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"El archivo PDF supera el peso permitido (hasta 900K)",
+								"texto"=>"El archivo PDF supera el peso permitido (hasta 1500K)",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);

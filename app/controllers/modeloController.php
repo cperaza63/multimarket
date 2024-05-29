@@ -40,7 +40,7 @@
 		            } 
 		        }
 		        # Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/png"){
+		        if(mime_content_type($_FILES['marca_foto']['tmp_name'])!="image\/jpeg" && mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -69,7 +69,7 @@
 
 		        # Extension de la imagen #
 		        switch(mime_content_type($_FILES['marca_foto']['tmp_name'])){
-		            case 'image/jpeg':
+		            case 'image\/jpeg':
 		                $foto=$foto.".jpg";
 		            break;
 		            case 'image/png':
@@ -383,7 +383,7 @@
 		            } 
 		        }
 				# Verificando formato de imagenes #
-		        if(mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/jpeg" && mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/png"){
+		        if(mime_content_type($_FILES['marca_foto']['tmp_name'])!="image\/jpeg" && mime_content_type($_FILES['marca_foto']['tmp_name'])!="image/png"){
 		        	$alerta=[
 						"tipo"=>"simple",
 						"titulo"=>"Ocurrió un error inesperado",
@@ -413,7 +413,7 @@
 
 		        # Extension de la imagen #
 		        switch(mime_content_type($_FILES['marca_foto']['tmp_name'])){
-		            case 'image/jpeg':
+		            case 'image\/jpeg':
 		                $foto=$foto.".jpg";
 		            break;
 		            case 'image/png':

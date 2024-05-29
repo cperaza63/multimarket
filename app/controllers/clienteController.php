@@ -59,7 +59,7 @@
 			$sin_rif = str_replace ( "-", '', strtoupper($cliente_rif));
 			$sin_rif = str_replace ( " ", '', $sin_rif);
 			$sin_rif = ucfirst($sin_rif);
-			$check_cliente=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_rif = '$sin_rif'");
+			$check_cliente=$this->ejecutarConsulta("SELECT * FROM company_clientes WHERE cliente_rif = '$sin_rif'");
 			if($check_cliente->rowCount()==1){
 				$alerta=[
 					"tipo"=>"simple",
@@ -161,7 +161,7 @@
 			$busqueda=$this->limpiarCadena($busqueda);
 
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM cliente WHERE company_id= $company_id AND ( 
+				$consulta_datos="SELECT * FROM company_clientes WHERE company_id= $company_id AND ( 
 				cliente_phone LIKE '%$busqueda%'
 				OR cliente_name LIKE '%$busqueda%' 
 				OR cliente_description LIKE '%$busqueda%'
@@ -171,10 +171,9 @@
 				) 
 				ORDER BY cliente_name ASC";
 			}else{
-				$consulta_datos="SELECT * FROM cliente WHERE company_id=$company_id 
+				$consulta_datos="SELECT * FROM company_clientes WHERE company_id=$company_id 
 				ORDER BY cliente_name ASC";
 			}
-
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;
@@ -185,7 +184,7 @@
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			# Verificando cliente #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id' and cliente_estatus<>1");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_clientes WHERE cliente_id='$id' and cliente_estatus<>1");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -374,8 +373,7 @@
 			# Verificando campos obligatorios 
 		    if($cliente_red1=="" || $cliente_red_valor1=="" || $cliente_red2=="" 
 			|| $cliente_red_valor2=="" || $cliente_red3=="" || $cliente_red_valor3==""
-			|| $cliente_web=="" || $cliente_youtube_index=="" 
-			|| $cliente_logo_witdh==""|| $cliente_logo_height=="" 
+			|| $cliente_web=="" || $cliente_logo_witdh==""|| $cliente_logo_height=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -632,7 +630,7 @@
 			$id=$this->limpiarCadena($_POST['cliente_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			# Verificando cliente #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_clientes WHERE cliente_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -720,7 +718,7 @@
 			$company_id =  $this->limpiarCadena($_POST['company_id']);
 			# Verificando cliente 
 			
-			$datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_clientes WHERE cliente_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -853,7 +851,7 @@
 			$company_id = $this->limpiarCadena($_POST['company_id']);
 			# Verificando cliente #
 			
-			$datos=$this->ejecutarConsulta("SELECT * FROM cliente WHERE cliente_id='$id'");
+			$datos=$this->ejecutarConsulta("SELECT * FROM company_clientes WHERE cliente_id='$id'");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -915,10 +913,10 @@
 					if(mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/jpeg" 
 					&& mime_content_type($_FILES['archivo']['tmp_name'][$i])!="image/png") {
 					# Verificando peso de imagen #
-						if(($_FILES['archivo']['size'][$i]/1024)>5120){
+						if(($i < 4 && $_FILES['archivo']['size'][$i]/1024)>5120){
 							$alerta=[
 								"tipo"=>"simple",
-								"titulo"=>"Ocurrió un error inesperado",
+								"titulo"=>"Ocurrió un error inesperado.",
 								"texto"=>"La imagen supera el peso permitido (hasta 500K)",
 								"icono"=>"error"
 							];
@@ -926,11 +924,11 @@
 							exit();
 						}
 					}else{
-						if(($_FILES['archivo']['size'][$i]/1024)>15120){
+						if(($i== 4 && $_FILES['archivo']['size'][$i]/1024)>150120){
 							$alerta=[
 								"tipo"=>"simple",
-								"titulo"=>"Ocurrió un error inesperado",
-								"texto"=>"El archivo PDF supera el peso permitido (hasta 900K)",
+								"titulo"=>"Ocurrió un error inesperado..",
+								"texto"=>"El archivo PDF supera el peso permitido (hasta 15000K)",
 								"icono"=>"error"
 							];
 							return json_encode($alerta);
