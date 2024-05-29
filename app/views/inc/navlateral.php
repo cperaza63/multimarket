@@ -86,16 +86,16 @@
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-crypto"> Clientes por tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>controlEmpresaList/" class="nav-link" data-key="t-projects"> Categorías por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>categoriaList/" class="nav-link" data-key="t-projects"> Categorías de Productos</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-projects"> Productos por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-projects"> Productos de la tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-nft"> Facturación por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-nft"> Facturación de la tienda</a>
                                     </li>
                                     <li class="nav-item">
-                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-job">Pedidos por tienda</a>
+                                        <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-job">Pedidos a la tienda</a>
                                     </li>
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-job">Movimientos de Ventas</a>

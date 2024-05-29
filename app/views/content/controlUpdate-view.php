@@ -11,6 +11,7 @@
             // busco market
             use app\controllers\controlController;
             $controlController = new controlController();
+            $controlestabla = $controlController->listarSoloTipoControlador('control');
             // por ahora actualizamos datos del administrador
             $control_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "control", "control_id", $control_id);
@@ -58,7 +59,7 @@
                         <div class="card mt-n6">
                             <div class="card-body p-1">
                                 <div class="text-center">
-                                    <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
+                                    <form class="FormularioAjax" name="forma1" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
                                         <!--    Campos parametros     -->
                                         <input type="hidden" name="modulo_control" value="actualizarFoto">
                                         <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">
@@ -148,15 +149,17 @@
                                                     <div class="mb-3">
                                                         <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                         <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                            <option value="market" <?php if ($datos['tipo'] == 'market') echo "selected" ?>>market - Market Place</option>
-                                                            <option value="market_cat" <?php if ($datos['tipo'] == 'market_cat') echo "selected" ?>>market_cat - Categoría de Market Place</option>
-                                                            <option value="unidades" <?php if ($datos['tipo'] == 'unidades') echo "selected" ?>>unidades - Unidades de medida</option>
-                                                            <option value="monedas" <?php if ($datos['tipo'] == 'moneda') echo "selected" ?>>monedas - Tipos de Moneda</option>
-                                                            <option value="contratos" <?php if ($datos['tipo'] == 'contratos') echo "selected" ?>>contratos - Contratos</option>
-                                                            <option value="bancos" <?php if ($datos['tipo'] == 'bancos') echo "selected" ?>>bancos - Bancos</option>
-                                                            <option value="delivery" <?php if ($datos['tipo'] == 'delivery') echo "selected" ?>>delivery - Tipos de Delivery</option>
-                                                            <option value="vehiculos" <?php if ($datos['tipo'] == 'vehiculos') echo "selected" ?>>vehiculos - Tipo de Vehiculos</option>
-                                                            <option value="etiquetas" <?php if ($datos['tipo'] == 'etiquetas') echo "selected" ?>>Etiquetas</option>
+                                                            <?php
+                                                                if(is_array($controlestabla)){
+                                                                    foreach($controlestabla as $controltabla){ 
+                                                                    ?>
+                                                                        <option value="<?=$controltabla['codigo']?>"
+                                                                        <?php if ($datos['tipo'] == $controltabla['codigo']) echo "selected" ?>
+                                                                        ><?=ucfirst($controltabla['nombre'])?></option>
+                                                                    <?php
+                                                                    }
+                                                                }
+                                                            ?>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -210,7 +213,7 @@
                                     <div class="tab-pane" id="multimedia" role="tabpanel">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <form class="FormularioAjax" name="<?php echo $control_tipo; ?>" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
+                                                <form class="FormularioAjax" name="forma2" action="<?php echo APP_URL; ?>app/ajax/controlAjax.php" method="POST" autocomplete="off" enctype="multipart/form-data">
                                                     <!--    Campos parametros     -->
                                                     <input type="hidden" name="modulo_control" value="actualizarFotoMasa">
                                                     <input type="hidden" name="control_id" value="<?php echo $datos['control_id']; ?>">

@@ -4,12 +4,11 @@
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
-        
             <?php
-            use app\controllers\controlController;
-            $insControl = new controlController();
+            use app\controllers\categoriaController;
+            $insCategoria = new categoriaController();
+            $company_id = $_SESSION['user_company_id'];
             ?>
-        
             <div class="row">
                 <div class="col-xxl-3" style="margin-bottom: -15px;">
                     <div class="card">
@@ -26,31 +25,32 @@
                                             <div class="form-group">
                                                 <label for=""></label>
                                                 <div class="input-group">
-                                                <input class="form-control is-rounded" type="text"
+                                                    <input class="form-control is-rounded" type="text"
                                                     name="txt_buscador" placeholder="¿Qué estas buscando?..." 
                                                     value="<?php echo isset($_SESSION[$url[0]])?$_SESSION[$url[0]]:""; ?>"
                                                     maxlength="30" required >
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>controlNew/" class="btn btn-success" >Agregar a la Tabla de Control</a>
-                                                    
+                                                    <a href="<?php echo APP_URL; ?>categoriaNew/" class="btn btn-success" >Agregar Categoría</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </form>
                                 </div>
                             </div>
-                            
                             <?php
                             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
                             ?>
-
                                 <div class="columns">
                                     <div class="column col-xs-6 col-md-6">
-                                        <form class="form-control FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" method="POST" autocomplete="off" >
+                                        <form class="form-control FormularioAjax" 
+                                            action="<?php echo APP_URL; ?>app/ajax/buscadorAjax.php" 
+                                            method="POST" autocomplete="off" >
                                             <input type="hidden" name="modulo_buscador" value="eliminar">
                                             <input type="hidden" name="modulo_url" value="<?php echo $url[0]; ?>">
+                                            <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
+                                            <i class="fas fa-search fa-fw"></i></strong>
                                             
-                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar busqueda</button>
+                                            <button type="submit" class="btn btn-danger"><i class="fas fa-trash-restore"></i> &nbsp; Eliminar búsqueda</button>
                                         </form>
                                     </div>
                                 </div>
@@ -58,7 +58,6 @@
                             <?php 
                             }
                             ?>
-
                         </div>
                     </div>
                 </div>
@@ -66,18 +65,22 @@
             </div>
             <!--end row-->
             <?php
-
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insControl->listarTodosControlControlador($_SESSION[$url[0]]);
+                $datos = $insCategoria->listarTodosCategoriaControlador($_SESSION[$url[0]]);
             }else{
-                $datos = $insControl->listarTodosControlControlador("*");
+                $datos = $insCategoria->listarTodosCategoriaControlador("*");
             }
             ?>
             <div class="row">
                 <div class="col-lg-12">
                     <div class="card">
+                    <div class="col-lg-12">
+                            <div class="hstack gap-2 justify-content-end">
+                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
+                            </div>
+                        </div>
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de valores de la Tabla Control</h5>
+                            <h5 class="card-title mb-0">Lista de valores de la Tabla Categorias</h5>
                         </div>
                         <div class="card-body">
                             <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -88,31 +91,22 @@
                                                 <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
                                             </div>
                                         </th>
-                                        
                                         <th>Img</th>
-                                        <th>Control</th>
                                         <th>Action</th>
-                                        <th>Código</th>
+                                        <th>Categoría</th>
                                         <th>Nombre</th>
                                         <th>Estatus</th>
-                                        <th>Negocio</th>
-                                        <!--<th>Status</th>-->
-                                       
+                                        <th>Acción</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                <div class="col-lg-12">
-                            <div class="hstack gap-2 justify-content-end">
-                                <a href="<?php echo APP_URL; ?>dashboard/" class="btn btn-soft-success">Regresar</a>
-                            </div>
-                        </div>
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
-                                            if($rows['control_foto'] != ""){
-                                                $control_foto = APP_URL . "app/views/fotos/control/".$rows['control_foto'];
+                                            if($rows['categoria_foto'] != ""){
+                                                $categoria_foto = APP_URL . "app/views/fotos/company/".$rows['company_id']."/categorias/".$rows['categoria_foto'];
                                             }else{
-                                                $control_foto = APP_URL . "app/views/fotos/nophoto.jpg";
+                                                $categoria_foto = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }
                                             
                                             ?>
@@ -124,34 +118,40 @@
                                                 </th>
                                                 
                                                 <td>
-                                                    <a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>">
+                                                    <a href="<?= APP_URL.'categoriaUpdate/'.$rows['categoria_id'].'/'?>">
                                                     <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$control_foto; ?>" 
+                                                    src="<?=$categoria_foto; ?>" 
                                                     alt="Foto del item de la tabla">
                                                     </a>
                                                 </td>
                                                 
-                                                <td><?=$rows['tipo'] . " " . $rows['codigo'];?></td>
-                                                
                                                 <td>
                                                     <div class="dropdown d-inline-block">
-                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                                            <i class="ri-more-fill align-middle"></i>
+                                                        <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" 
+                                                        aria-expanded="false"><i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a href="<?= APP_URL.'controlUpdate/'.$rows['control_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
                                                             <li>
-
+                                                                <a href="<?= APP_URL.'categoriaUpdate/'.$rows['categoria_id'].'/'?>" 
+                                                                class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted">
+                                                                </i> Editar</a>
+                                                            </li>
                                                             <li>
-                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/controlAjax.php" method="POST" autocomplete="off" >
-
-                                                                    <input type="hidden" name="modulo_control" value="eliminar">
-                                                                    <input type="hidden" name="control_id" value="<?=$rows['control_id']?>">
-
-                                                                    <button type="submit" class="dropdown-item" > <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
+                                                                <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/categoriaAjax.php" 
+                                                                method="POST" autocomplete="off" >
+                                                                    <input type="hidden" name="modulo_categoria" value="eliminar">
+                                                                    <input type="hidden" name="categoria_id" value="<?=$rows['categoria_id']?>">
+                                                                    <input type="hidden" name="company_id" value="<?=$rows['company_id']?>">
+                                                                    <button type="submit" class="dropdown-item" > 
+                                                                        <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
                                                                     </button>
                                                                 </form>
                                                             <li>
+                                                            <li>
+                                                                <a href="<?= APP_URL.'subcategoriaList/'.$rows['categoria_id'].'/'?>" 
+                                                                class="dropdown-item"><i class="ri-add-box-fill align-bottom me-2 text-muted">
+                                                                </i> Subcategorías</a>
+                                                            </li>
                                                         </ul>
                                                     </div>
                                                 </td>
@@ -167,12 +167,15 @@
                                                     }?>
                                                     </span>
                                                 </td>
-                                                <td><?=$rows['company_id'];?></td>
+                                                <td>
+                                                <a href="<?= APP_URL.'subcategoriaList/'.$rows['categoria_id'].'/'?>" 
+                                                class="dropdown-item"><span class="btn btn-info">Subcategorías</span></a>
+                                                </td>
                                             <!-- <td><span class="badge bg-info-subtle text-info">Re-open</span></td> -->
                                                 
                                             </tr>
-                                    <?php
-                                        }    
+                                        <?php
+                                        }
                                     }
                                     ?>
                                 </tbody>

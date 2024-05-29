@@ -251,17 +251,18 @@
 		/*----------  Controlador actualizar control  ----------*/
 		public function actualizarMarcaControlador(){
 			$marca_id=$this->limpiarCadena($_POST['marca_id']);
+			$company_id = $this->limpiarCadena($_POST['company_id']);
 			$codigo = $this->limpiarCadena($_POST['codigo']);
 			$nombre = $this->limpiarCadena($_POST['nombre']);
 			$estatus=$this->limpiarCadena($_POST['estatus']);
 			//return json_encode($estatus);
 			# Verificando control #
-		    $datos=$this->ejecutarConsulta("SELECT * FROM company_marcas WHERE marca_id=$marca_id");
+		    $datos=$this->ejecutarConsulta("SELECT * FROM company_marcas WHERE company_id=$company_id AND marca_id=$marca_id");
 		    if($datos->rowCount()<=0){
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Ocurrió un error inesperado",
-					"texto"=>"No hemos encontrado la ctaegoria en el sistema",
+					"texto"=>"No hemos encontrado la categoria en el sistema",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);

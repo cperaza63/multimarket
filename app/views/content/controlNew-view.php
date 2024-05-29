@@ -2,8 +2,9 @@
  // busco market
 use app\controllers\controlController;
 $controlController = new controlController();
-$mercados = $controlController->listarSoloTipoControlador('market');
-//print_r($mercados);
+$categorias = $controlController->listarSoloTipoControlador('market');
+$controles = $controlController->listarSoloTipoControlador('control');
+//print_r($categorias);
 
 use app\controllers\companyController;
 $companyController = new companyController();
@@ -81,28 +82,29 @@ $empresas = $companyController->listarTodosCompanyControlador("");
                                                     <label for="tipo" class="form-label">Tipo de Tabla</label>
                                                     <select name="tipo" class="form-control" data-choices data-choices-text-unique-true id="tipo">
                                                         <option value="">Seleccione un tipo</option>
-                                                        <option value="market">market - Market Place</option>
-                                                        <option value="market_cat">market_cat - Categoría de Market Place</option>
-                                                        <option value="unidades">unidades - Unidades de medida</option>
-                                                        <option value="monedas">monedas - Tipos de Moneda</option>
-                                                        <option value="contratos">contratos - Contratos</option>
-                                                        <option value="bancos">bancos - Bancos</option>
-                                                        <option value="delivery">delivery - Tipos de Delivery</option>
-                                                        <option value="vehiculos">vehiculos - Tipo de Vehiculos</option>
-                                                        <option value="etiquetas">vehiculos - Etiquetas</option>
+                                                        <?php
+                                                        if(is_array($controles)){
+                                                            foreach($controles as $control){?>
+                                                                <option value="<?=$control['control_id']?>"><?=ucfirst($control['nombre'])?></option>
+                                                            <?php
+                                                            }
+                                                        }
+                                                        ?>
                                                     </select>
                                                 </div>
                                             </div>
                                             <!--end col-->
                                             <div class="col-lg-6">
                                                 <div class="mb-3">
-                                                    <label for="unidad" class="form-label">Categoria de la Tabla</label>
+                                                    <label for="unidad" class="form-label">Categoria de la Tabla (si no es market selecciona CIUDADHIVE)</label>
                                                     <select name="unidad" class="form-control" data-choices data-choices-text-unique-true id="unidad">
                                                         <option value="">Seleccione una Categoria</option>
                                                         <?php
-                                                        if(is_array($mercados)){
-                                                            foreach($mercados as $mercado){?>
-                                                                <option value="<?=$mercado['control_id']?>"><?=ucfirst($mercado['nombre'])?></option>
+                                                        if(is_array($categorias)){
+                                                            foreach($categorias as $categoria){?>
+                                                                <option value="<?=$categoria['control_id']?>"
+                                                                <?php if($categoria['codigo']=="ciudadhive"){echo "selected";}?>
+                                                                ><?=ucfirst($categoria['nombre'])?></option>
                                                             <?php
                                                             }
                                                         }
