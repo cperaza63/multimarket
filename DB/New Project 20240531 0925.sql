@@ -144,6 +144,7 @@ CREATE TABLE `company` (
   `company_contrato` int(10) unsigned NOT NULL DEFAULT 0,
   `company_contrato_vencimiento` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
   `company_market_cat` varchar(200) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `company_membresia` int(10) unsigned NOT NULL DEFAULT 0,
   PRIMARY KEY (`company_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
 
@@ -152,9 +153,373 @@ CREATE TABLE `company` (
 --
 
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` (`company_id`,`company_name`,`company_description`,`company_email`,`company_logo`,`company_card`,`company_banner1`,`company_banner2`,`company_banner3`,`company_user`,`company_phone`,`company_estatus`,`company_address`,`company_country`,`company_state`,`company_city`,`company_type`,`company_rif`,`created_at`,`company_red1`,`company_red_valor1`,`company_red2`,`company_red_valor2`,`company_red3`,`company_red_valor3`,`company_web`,`company_latitude`,`company_longitude`,`company_tipo_delivery`,`company_tarifa_delivery`,`company_horario_desde`,`company_horario_hasta`,`company_iva`,`company_servicio_email`,`company_servicio_email_envio`,`company_servicio_email_password`,`company_servicio_email_puerto`,`company_slogan`,`company_logo_witdh`,`company_logo_height`,`company_pdf`,`company_youtube_index`,`company_contrato`,`company_contrato_vencimiento`,`company_market_cat`) VALUES 
- (5,'CP Digital','Negocio administrador del sistema Ciudadhive','josegomez@gmail.com','company_logo-5_99.png','company_card-5_29.png','company_banner1-5_51.png','company_banner2-5_89.png','company_banner3-5_64.jpg',1,'04124560079',1,'Resiencias Las trinitarias Torre 9 planta baja apto pbb','VEN','CA',45414,'E','J316732630','2024-05-13 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://ciudadhive.com',10.264109,-67.894393,'0',0,'08:00|08:00|08:00|08:00|08:00|08:00|08:00','18:00|18:00|18:00|18:00|18:00|18:00|18:00',16,'mail.ciudadhive.com','info@ciudadhive.com','ceph7065079',587,'El mejor sitio para hacer negocios',200,80,'company_pdf-5_27.pdf','-VOBp-pGUQk&t=7s',0,'1900-01-01 00:00:00','23');
+INSERT INTO `company` (`company_id`,`company_name`,`company_description`,`company_email`,`company_logo`,`company_card`,`company_banner1`,`company_banner2`,`company_banner3`,`company_user`,`company_phone`,`company_estatus`,`company_address`,`company_country`,`company_state`,`company_city`,`company_type`,`company_rif`,`created_at`,`company_red1`,`company_red_valor1`,`company_red2`,`company_red_valor2`,`company_red3`,`company_red_valor3`,`company_web`,`company_latitude`,`company_longitude`,`company_tipo_delivery`,`company_tarifa_delivery`,`company_horario_desde`,`company_horario_hasta`,`company_iva`,`company_servicio_email`,`company_servicio_email_envio`,`company_servicio_email_password`,`company_servicio_email_puerto`,`company_slogan`,`company_logo_witdh`,`company_logo_height`,`company_pdf`,`company_youtube_index`,`company_contrato`,`company_contrato_vencimiento`,`company_market_cat`,`company_membresia`) VALUES 
+ (5,'AP LURES','Tienda Nautica que vende Articulos de Pesca','josegomez@gmail.com','company_logo-5_80.jpg','company_card-5_29.png','company_banner1-5_51.png','company_banner2-5_89.png','company_banner3-5_64.jpg',2,'04124560079',1,'Resiencias Martinica 2 Piso 11 apto 11b\r\nValles de Camoruco','VEN','CA',45414,'E','J316732630','2024-05-13 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://ciudadhive.com',10.264109,-67.894393,'0',0,'08:00|08:00|08:00|08:00|08:00|08:00|08:00','18:00|18:00|18:00|18:00|18:00|18:00|18:00',16,'mail.ciudadhive.com','info@ciudadhive.com','ceph7065079',587,'El mejor sitio para hacer negocios',200,80,'company_pdf-5_27.pdf','-VOBp-pGUQk&t=7s',0,'1900-01-01 00:00:00','72',9);
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_bancos`
+--
+
+DROP TABLE IF EXISTS `company_bancos`;
+CREATE TABLE `company_bancos` (
+  `banco_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '' COMMENT 'codigo del banco',
+  `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `banco_foto` varchar(145) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`banco_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_bancos';
+
+--
+-- Dumping data for table `multimarket`.`company_bancos`
+--
+
+/*!40000 ALTER TABLE `company_bancos` DISABLE KEYS */;
+INSERT INTO `company_bancos` (`banco_id`,`codigo`,`nombre`,`banco_foto`,`estatus`,`company_id`,`unidad`) VALUES 
+ (75,'banesco','Banco Banesco','banesco_58.png',1,5,0),
+ (77,'100banco','100 BANCO','100banco_61.png',1,5,0);
+/*!40000 ALTER TABLE `company_bancos` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_categorias`
+--
+
+DROP TABLE IF EXISTS `company_categorias`;
+CREATE TABLE `company_categorias` (
+  `categoria_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '' COMMENT 'codigo cat o subcat',
+  `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `categoria_foto` varchar(145) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'si hay unidad es categoria',
+  PRIMARY KEY (`categoria_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=87 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_categorias';
+
+--
+-- Dumping data for table `multimarket`.`company_categorias`
+--
+
+/*!40000 ALTER TABLE `company_categorias` DISABLE KEYS */;
+INSERT INTO `company_categorias` (`categoria_id`,`codigo`,`nombre`,`categoria_foto`,`estatus`,`company_id`,`unidad`) VALUES 
+ (84,'senuelos','Señuelos','senuelos_98.png',1,5,0),
+ (85,'sen-agua-salada','Señuelos de Agua Salada','subcat-5-sen-agua-salada_77.png',1,5,84),
+ (86,'3m','3M','subcat-5-3m_54.png',1,5,84);
+/*!40000 ALTER TABLE `company_categorias` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_clientes`
+--
+
+DROP TABLE IF EXISTS `company_clientes`;
+CREATE TABLE `company_clientes` (
+  `cliente_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `cliente_name` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_description` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `cliente_email` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_logo` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_card` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_banner1` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_banner2` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_banner3` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_phone` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `cliente_address` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `cliente_country` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_state` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_city` int(10) unsigned NOT NULL DEFAULT 0,
+  `cliente_rif` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `created_at` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `cliente_red1` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_red_valor1` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_red2` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_red_valor2` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_red3` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_red_valor3` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_web` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `cliente_latitude` double NOT NULL DEFAULT 0,
+  `cliente_longitude` double NOT NULL DEFAULT 0,
+  `cliente_horario_desde` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '08:00|08:00|08:00|08:00|08:00|08:00|08:00',
+  `cliente_horario_hasta` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '18:00|18:00|18:00|18:00|18:00|18:00|18:00',
+  `cliente_logo_witdh` int(10) unsigned NOT NULL DEFAULT 200,
+  `cliente_logo_height` int(10) unsigned NOT NULL DEFAULT 80,
+  `cliente_pdf` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `cliente_youtube_index` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'solo lo que va despues de v=',
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`cliente_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `multimarket`.`company_clientes`
+--
+
+/*!40000 ALTER TABLE `company_clientes` DISABLE KEYS */;
+INSERT INTO `company_clientes` (`cliente_id`,`cliente_name`,`cliente_description`,`cliente_email`,`cliente_logo`,`cliente_card`,`cliente_banner1`,`cliente_banner2`,`cliente_banner3`,`cliente_phone`,`cliente_estatus`,`cliente_address`,`cliente_country`,`cliente_state`,`cliente_city`,`cliente_rif`,`created_at`,`cliente_red1`,`cliente_red_valor1`,`cliente_red2`,`cliente_red_valor2`,`cliente_red3`,`cliente_red_valor3`,`cliente_web`,`cliente_latitude`,`cliente_longitude`,`cliente_horario_desde`,`cliente_horario_hasta`,`cliente_logo_witdh`,`cliente_logo_height`,`cliente_pdf`,`cliente_youtube_index`,`company_id`) VALUES 
+ (5,'MIKE PERAZA PHOTO','DONDE QUIERA QUE ESTAS TE LA TOMO','mikeperazaphoto@gmail.com','5_22.png','','','','','04124560079',1,'Valencia Residnecias Martinica 2','VEN','CA',45414,'j215421547','2024-05-29 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket/','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://',0,0,'08:00|08:00|08:00|08:00|08:00|08:00|08:00','18:00|18:00|18:00|18:00|18:00|18:00|18:00',200,80,'','',5),
+ (6,'DRA MARIANELLA','MEDICO PEDIATRA','ramsbott20o@gmail.com','6_98.png','cliente_card-6_29.jpg','cliente_banner1-6_17.jpg','cliente_banner2-6_15.jpg','cliente_banner3-6_44.jpg','04140441790',1,'Valencia Residnecias Martinica 2','VEN','CA',45414,'J21548764','2024-05-29 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket/','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://',10.4813461,-66.82159810000002,'04:15|04:15|04:15|04:15|04:15|04:15|04:15','15:00|15:00|15:00|15:00|15:00|15:00|15:00',200,80,'cliente_pdf-6_91.pdf','',5);
+/*!40000 ALTER TABLE `company_clientes` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_control`
+--
+
+DROP TABLE IF EXISTS `company_control`;
+CREATE TABLE `company_control` (
+  `control_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `tipo` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0',
+  `codigo` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `nombre` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_foto` varchar(80) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `valor` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0,
+  `control_card` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner1` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner2` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner3` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `country` varchar(5) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'VEN',
+  PRIMARY KEY (`control_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=80 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tablde control empreaa';
+
+--
+-- Dumping data for table `multimarket`.`company_control`
+--
+
+/*!40000 ALTER TABLE `company_control` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_control` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_marcas`
+--
+
+DROP TABLE IF EXISTS `company_marcas`;
+CREATE TABLE `company_marcas` (
+  `marca_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '' COMMENT 'codigo de marca',
+  `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `marca_foto` varchar(145) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0 COMMENT 'si hay unidad es modelo',
+  PRIMARY KEY (`marca_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=78 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_marca_modelo';
+
+--
+-- Dumping data for table `multimarket`.`company_marcas`
+--
+
+/*!40000 ALTER TABLE `company_marcas` DISABLE KEYS */;
+INSERT INTO `company_marcas` (`marca_id`,`codigo`,`nombre`,`marca_foto`,`estatus`,`company_id`,`unidad`) VALUES 
+ (75,'harris','Capitan Harrys','marca-5-75_55.png',1,5,0),
+ (77,'Capitan_gorra','Gorra de Capitan','modelo-5-Capitan_gorra_94.png',1,5,75);
+/*!40000 ALTER TABLE `company_marcas` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_productos`
+--
+
+DROP TABLE IF EXISTS `company_productos`;
+CREATE TABLE `company_productos` (
+  `producto_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `producto_name` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `producto_description` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `producto_epi` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `producto_logo` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_card` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_banner1` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_banner2` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_banner3` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_inventiable` tinyint(1) NOT NULL DEFAULT 1,
+  `producto_estatus` tinyint(1) NOT NULL DEFAULT 1,
+  `producto_proveedor` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_precio` double NOT NULL DEFAULT 0,
+  `producto_anterior` double NOT NULL DEFAULT 0,
+  `producto_costo` double NOT NULL DEFAULT 0,
+  `producto_margen_utilidad` double NOT NULL DEFAULT 0,
+  `created_at` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `producto_reorden` int(10) unsigned DEFAULT NULL,
+  `producto_pedido` int(10) unsigned DEFAULT NULL,
+  `producto_stock` int(10) unsigned DEFAULT NULL,
+  `producto_peso` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_unidad` varchar(50) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `producto_precio_final` double DEFAULT NULL,
+  `producto_tax` double DEFAULT NULL,
+  `producto_aplica_flete` tinyint(1) NOT NULL DEFAULT 0,
+  `producto_mostrar_peso` tinyint(1) NOT NULL DEFAULT 0,
+  `producto_mostrar_carrito` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '08:00|08:00|08:00|08:00|08:00|08:00|08:00',
+  `producto_horario_hasta` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '18:00|18:00|18:00|18:00|18:00|18:00|18:00',
+  `producto_usado` tinyint(1) NOT NULL DEFAULT 0,
+  `producto_height` int(10) unsigned NOT NULL DEFAULT 80,
+  `producto_width` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_year` int(10) unsigned NOT NULL DEFAULT 0,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_cambio_precio` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `producto_excento_tax` tinyint(1) NOT NULL DEFAULT 0,
+  PRIMARY KEY (`producto_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `multimarket`.`company_productos`
+--
+
+/*!40000 ALTER TABLE `company_productos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_productos` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_productos_descuentos`
+--
+
+DROP TABLE IF EXISTS `company_productos_descuentos`;
+CREATE TABLE `company_productos_descuentos` (
+  `descuento_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `desde` int(10) unsigned NOT NULL DEFAULT 0,
+  `hasta` int(10) unsigned NOT NULL DEFAULT 0,
+  `valor` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`descuento_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_productos_descuentos';
+
+--
+-- Dumping data for table `multimarket`.`company_productos_descuentos`
+--
+
+/*!40000 ALTER TABLE `company_productos_descuentos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_productos_descuentos` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_productos_etiquetas`
+--
+
+DROP TABLE IF EXISTS `company_productos_etiquetas`;
+CREATE TABLE `company_productos_etiquetas` (
+  `etiqueta_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `etiqueta` varchar(145) COLLATE utf8_spanish_ci NOT NULL DEFAULT ' ',
+  `secuencia` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`etiqueta_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_productos_etiquetas';
+
+--
+-- Dumping data for table `multimarket`.`company_productos_etiquetas`
+--
+
+/*!40000 ALTER TABLE `company_productos_etiquetas` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_productos_etiquetas` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_productos_interes`
+--
+
+DROP TABLE IF EXISTS `company_productos_interes`;
+CREATE TABLE `company_productos_interes` (
+  `interes_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_hijo` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`interes_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_producto_interes';
+
+--
+-- Dumping data for table `multimarket`.`company_productos_interes`
+--
+
+/*!40000 ALTER TABLE `company_productos_interes` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_productos_interes` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_proveedores`
+--
+
+DROP TABLE IF EXISTS `company_proveedores`;
+CREATE TABLE `company_proveedores` (
+  `proveedor_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `proveedor_name` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_description` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `proveedor_email` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_logo` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_card` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_banner1` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_banner2` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_banner3` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_phone` varchar(80) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `proveedor_address` text COLLATE utf8_spanish2_ci NOT NULL DEFAULT '\'',
+  `proveedor_country` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_state` varchar(5) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_city` int(10) unsigned NOT NULL DEFAULT 0,
+  `proveedor_rif` varchar(45) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `created_at` datetime NOT NULL DEFAULT '1900-01-01 00:00:00',
+  `proveedor_red1` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_red_valor1` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_red2` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_red_valor2` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_red3` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_red_valor3` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_web` varchar(145) COLLATE utf8_spanish2_ci DEFAULT NULL,
+  `proveedor_latitude` double NOT NULL DEFAULT 0,
+  `proveedor_longitude` double NOT NULL DEFAULT 0,
+  `proveedor_horario_desde` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '08:00|08:00|08:00|08:00|08:00|08:00|08:00',
+  `proveedor_horario_hasta` varchar(200) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '18:00|18:00|18:00|18:00|18:00|18:00|18:00',
+  `proveedor_logo_witdh` int(10) unsigned NOT NULL DEFAULT 200,
+  `proveedor_logo_height` int(10) unsigned NOT NULL DEFAULT 80,
+  `proveedor_pdf` varchar(145) COLLATE utf8_spanish2_ci NOT NULL DEFAULT '',
+  `proveedor_youtube_index` varchar(45) COLLATE utf8_spanish2_ci DEFAULT NULL COMMENT 'solo lo que va despues de v=',
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`proveedor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish2_ci;
+
+--
+-- Dumping data for table `multimarket`.`company_proveedores`
+--
+
+/*!40000 ALTER TABLE `company_proveedores` DISABLE KEYS */;
+INSERT INTO `company_proveedores` (`proveedor_id`,`proveedor_name`,`proveedor_description`,`proveedor_email`,`proveedor_logo`,`proveedor_card`,`proveedor_banner1`,`proveedor_banner2`,`proveedor_banner3`,`proveedor_phone`,`proveedor_estatus`,`proveedor_address`,`proveedor_country`,`proveedor_state`,`proveedor_city`,`proveedor_rif`,`created_at`,`proveedor_red1`,`proveedor_red_valor1`,`proveedor_red2`,`proveedor_red_valor2`,`proveedor_red3`,`proveedor_red_valor3`,`proveedor_web`,`proveedor_latitude`,`proveedor_longitude`,`proveedor_horario_desde`,`proveedor_horario_hasta`,`proveedor_logo_witdh`,`proveedor_logo_height`,`proveedor_pdf`,`proveedor_youtube_index`,`company_id`) VALUES 
+ (4,'TELESYS','negocio de telecomunicaciones','cpdigitalsolution@yahoo.com.ve','4_32.png','proveedor_card-4_97.png','proveedor_banner1-4_77.png','proveedor_banner2-4_27.png','proveedor_banner3-4_43.png','04144840676',1,'Residencias LAs Trinitarias torre 9 Planta Baja Apto PBB\r\nCiudad Alianza','VEN','CA',45414,'J316732630','2024-05-28 00:00:00','facebook','https://www.facebook.com/ciudadhivemarket/','instagram','https://www.instagram.com/ciudadcolmena/','tiktok','https://www.tiktok.com/es/','https://',10.218231,-67.916698,'08:00|08:00|08:00|08:00|08:00|08:00|08:00','18:00|18:00|18:00|18:00|18:00|18:00|18:00',200,80,'proveedor_pdf-4_7.pdf','',5);
+/*!40000 ALTER TABLE `company_proveedores` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`company_sub_productos`
+--
+
+DROP TABLE IF EXISTS `company_sub_productos`;
+CREATE TABLE `company_sub_productos` (
+  `subproducto_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `producto_id` int(10) unsigned NOT NULL DEFAULT 0,
+  `titulo_atributo1` int(10) unsigned NOT NULL DEFAULT 0,
+  `titulo_atributo2` int(10) unsigned NOT NULL DEFAULT 0,
+  `valor_atributo1` int(10) unsigned NOT NULL DEFAULT 0,
+  `valor_atributo2` int(10) unsigned NOT NULL DEFAULT 0,
+  `costo_unidad` int(10) unsigned NOT NULL DEFAULT 0,
+  `stock` int(10) unsigned NOT NULL DEFAULT 0,
+  `unidad_medida` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`subproducto_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_sub_productos';
+
+--
+-- Dumping data for table `multimarket`.`company_sub_productos`
+--
+
+/*!40000 ALTER TABLE `company_sub_productos` DISABLE KEYS */;
+/*!40000 ALTER TABLE `company_sub_productos` ENABLE KEYS */;
 
 
 --
@@ -167,40 +532,111 @@ CREATE TABLE `control` (
   `tipo` varchar(20) COLLATE utf8_spanish_ci NOT NULL DEFAULT '0',
   `codigo` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
   `nombre` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
-  `control_foto` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_foto` varchar(80) COLLATE utf8_spanish_ci DEFAULT NULL,
   `valor` varchar(45) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
   `estatus` int(10) unsigned NOT NULL DEFAULT 1,
   `company_id` int(10) unsigned NOT NULL DEFAULT 0,
   `unidad` int(10) unsigned NOT NULL DEFAULT 0,
-  `control_card` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
-  `control_banner1` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
-  `control_banner2` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
-  `control_banner3` varchar(180) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `control_card` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner1` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner2` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `control_banner3` varchar(180) COLLATE utf8_spanish_ci DEFAULT NULL,
+  `country` varchar(5) COLLATE utf8_spanish_ci NOT NULL DEFAULT 'VEN',
   PRIMARY KEY (`control_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tablde control general';
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tablde control general';
 
 --
 -- Dumping data for table `multimarket`.`control`
 --
 
 /*!40000 ALTER TABLE `control` DISABLE KEYS */;
-INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`) VALUES 
- (1,'market','comida','COMIDA','','',1,0,0,'','','',''),
- (2,'market','ciudadhive','CIUDADHIVE','2_52.png','',1,0,0,'','','',''),
- (3,'market','autos','AUTOS','','',1,0,0,'','','',''),
- (4,'market','ferreteria','FERRETERIA','','',1,0,0,'','','',''),
- (6,'market','industria','INDUSTRIA','','',1,0,0,'','','',''),
- (7,'market','medico','MEDICINA','','',1,0,0,'','','',''),
- (8,'market','salud','SALUD','','',1,0,0,'','','',''),
- (9,'market','nautica','NAUTICA','','',1,0,0,'','','',''),
- (10,'market','delhogar','DEL HOGAR','','',1,0,0,'','','',''),
- (11,'market','tecnoligia','TECNOLOGIA','','',1,0,0,'','','',''),
- (12,'market','vestidos','VESTIDOS','','',1,0,0,'','','',''),
- (15,'market','deporte','DEPORTE','','',1,0,0,'','','',''),
- (21,'market_cat','autos nuevos','autonuevos y bonitos','autos_nuevos_48.png','',1,0,3,'','','',''),
- (22,'market_cat','autos usados','usados pero sirve los carros','control_foto-22_6.png','',1,0,3,'','','','');
-INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`) VALUES 
- (23,'market_cat','comida cacera','comida cacera','comida_cacera_73.jpg','',1,0,1,'','','','');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (1,'market','comida','COMIDA','','',1,0,0,'','','','','VEN'),
+ (2,'market','ciudadhive','CIUDADHIVE','2_52.png','',1,0,0,'','','','','VEN'),
+ (3,'market','autos','AUTOS','control_foto-3_15.png','',1,0,0,'','','','','VEN'),
+ (4,'market','ferreteria','FERRETERIA','','',1,0,0,'','','','','VEN'),
+ (6,'market','industria','INDUSTRIA','','',1,0,0,'','','','','VEN'),
+ (7,'market','medico','MEDICINA','','',1,0,0,'','','','','VEN'),
+ (8,'market','salud','SALUD','','',1,0,0,'','','','','VEN'),
+ (9,'market','nautica','NAUTICA','control_foto-9_10.png','',1,0,0,'','','','','VEN'),
+ (10,'market','delhogar','DEL HOGAR','','',1,0,0,'','','','','VEN'),
+ (11,'market','tecnoligia','TECNOLOGIA','','',1,0,0,'','','','','VEN'),
+ (12,'market','vestidos','VESTIDOS','','',1,0,0,'','','','','VEN'),
+ (15,'market','deporte','DEPORTE','','',1,0,0,'','','','','VEN'),
+ (21,'market_cat','autos nuevos','autonuevos y bonitos','autos_nuevos_48.png','',1,0,3,'','','','','VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (22,'market_cat','autos usados','usados pero sirve los carros','control_foto-22_6.png','',1,0,3,'','','','','VEN'),
+ (23,'market_cat','comida cacera','comida cacera','comida_cacera_73.jpg','',1,0,1,'','','','','VEN'),
+ (24,'unidades','unidades','Unidades','','',1,0,0,'','','','','VEN'),
+ (25,'unidades','litros','Litros','','',1,0,0,'','','','','VEN'),
+ (27,'unidades','kilos','Kilogramos','','',1,0,0,'','','','','VEN'),
+ (28,'unidades','afiliacion-anual','Afiliacion Anual','','',1,0,0,'','','','','VEN'),
+ (29,'unidades','afiliacion-mensual','Afiliacion Mensual','','',1,0,0,'','','','','VEN'),
+ (30,'unidades','pago-mensual','Pago Mensual','','',1,0,0,'','','','','VEN'),
+ (31,'unidades','servicio','Servicio','','',1,0,0,'','','','','VEN'),
+ (32,'unidades','servicio-mes','Servicio Mensual','','',1,0,0,'','','','','VEN'),
+ (33,'unidades','trabajo','Trabajo','','',1,0,0,'','','','','VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (34,'unidades','combo','Combo','','',1,0,0,'','','','','VEN'),
+ (35,'monedas','USD','US$','','',1,0,0,'','','','','VEN'),
+ (36,'monedas','BSD','BSD','','',1,0,0,'','','','','VEN'),
+ (37,'monedas','EUR','EUR','','',1,0,0,'','','','','VEN'),
+ (38,'monedas','$CO','$COL','','',1,0,0,'','','','','VEN'),
+ (39,'bancos','100banco','100BANCO','control_foto-39_55.jpg','',1,0,0,'control_card-39_75.png','control_banner1-39_85.jpg','control_banner2-39_89.png','control_banner3-39_55.png','VEN'),
+ (40,'bancos','bancamiga','BANCAMIGA','control_foto-40_26.png','',1,0,0,'','','','','VEN'),
+ (41,'bancos','banco-activo','BANCO ACTIVO','','',1,0,0,'','','','','VEN'),
+ (42,'bancos','banco-agricola-venezuela','BANCO AGRICOLA DE VENEZUELA','','',1,0,0,'','','','','VEN'),
+ (43,'bancos','banco-pueblo-soberano','BANCO DEL PUEBLO SOBERANO','','',1,0,0,'','','','','VEN'),
+ (44,'bancos','banco-del-tesoro','BANCO DEL TESORO','','',1,0,0,'','','','','VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (45,'bancos','bancrecer','BANCRECER','','',1,0,0,'','','','','VEN'),
+ (46,'bancos','banesco','BANESCO','','',1,0,0,'','','','','VEN'),
+ (47,'bancos','banfanb','BANFANB','','',1,0,0,'','','','','VEN'),
+ (48,'bancos','bangente','BANGENTE','','',1,0,0,'','','','','VEN'),
+ (49,'bancos','banplus','BANPLUS','','',1,0,0,'','','','','VEN'),
+ (50,'bancos','bbva-provincial','BBVA PROVINCIAL','','',1,0,0,'','','','','VEN'),
+ (51,'bancos','bicentenario','BICENTNERARIO','','',1,0,0,'','','','','VEN'),
+ (52,'bancos','bnc','BNC','','',1,0,0,'','','','','VEN'),
+ (53,'bancos','bod','BANCO OCCIDENTAL DE DESCUENTO','','',1,0,0,'','','','','VEN'),
+ (54,'bancos','caribe','BANCO DEL CARIBE','','',1,0,0,'','','','','VEN'),
+ (55,'bancos','caroni','BANCO DEL CARONI','','',1,0,0,'','','','','VEN'),
+ (56,'bancos','citibank','CITIBANK','','',1,0,0,'','','','','VEN'),
+ (57,'bancos','corpbanca','CORP BANCA','','',1,0,0,'','','','','VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (58,'bancos','del sur','DEL SUR','','',1,0,0,'','','','','VEN'),
+ (59,'delivery','tienda','Recoje en tienda','','',1,0,0,'','','','','VEN'),
+ (60,'delivery','flat','Tarifa Unida','','',1,0,0,'','','','','VEN'),
+ (61,'delivery','peso-distanca','Peso/Distancia','','',1,0,0,'','','','','VEN'),
+ (62,'delivery','valor-distancia','Valor/Distancia','','',1,0,0,'','','','','VEN'),
+ (63,'delivery','distancia','Por Distancia','','',1,0,0,'','','','','VEN'),
+ (64,'vehiculos','moto','Moto','','',1,0,0,'','','','','VEN'),
+ (65,'vehiculos','bicicleta','Bicicleta','','',1,0,0,'','','','','VEN'),
+ (66,'vehiculos','auto','Autómovil','','',1,0,0,'','','','','VEN'),
+ (67,'vehiculos','suv','Camioneta SUV','','',1,0,0,'','','','','VEN'),
+ (68,'vehiculos','pick-up','Camioneta Pick Up','','',1,0,0,'','','','','VEN'),
+ (69,'vehiculos','camion','Camión','','',1,0,0,'','','','','VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (70,'vehiculos','aereo','Aéreo','','',1,0,0,'','','','','VEN'),
+ (71,'vehiculos','maritimo','Marítimo','','',1,0,0,'','','','','VEN'),
+ (72,'market_cat','articulos-pesca','Articulos de pesca','control_foto-72_19.png','',1,0,9,'','','','','VEN'),
+ (73,'market_cat','equipo_pesca','Equipo de Pesca','control_foto-73_36.png','',1,0,9,'','','','','VEN'),
+ (74,'market_cat','salvamento','Equipos de Salvamento','control_foto-74_83.png','',1,0,9,'','','','','VEN'),
+ (75,'etiquetas','resaltante','Los mas resaltantes','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (76,'etiquetas','bucados','Los mas buscados','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (77,'etiquetas','ultimos','Ultimos incorporados','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (78,'etiquetas','especiales','Especiales','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (79,'etiquetas','vendidos','Los mas vendidos','','',1,0,2,NULL,NULL,NULL,NULL,'VEN');
+INSERT INTO `control` (`control_id`,`tipo`,`codigo`,`nombre`,`control_foto`,`valor`,`estatus`,`company_id`,`unidad`,`control_card`,`control_banner1`,`control_banner2`,`control_banner3`,`country`) VALUES 
+ (80,'control','market_cat','Categorias de market','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (81,'control','market','Market Place','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (82,'control','unidades','Unidades de Medida','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (83,'control','monedas','Tipo de Moneda','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (84,'control','contratos','Tipo de Contratos','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (85,'control','bancos','Tipo de Bancos','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (86,'control','delivery','Tipos de Delivery','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (87,'control','vehiculos','Tipo de Vehiculos','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (88,'control','etiquetas','Tipo de Etiquetas','','',1,0,2,NULL,NULL,NULL,NULL,'VEN'),
+ (89,'control','control','Tipo de tablas de control','','',1,0,2,NULL,NULL,NULL,NULL,'VEN');
 /*!40000 ALTER TABLE `control` ENABLE KEYS */;
 
 
@@ -277,6 +713,29 @@ CREATE TABLE `producto` (
 
 /*!40000 ALTER TABLE `producto` DISABLE KEYS */;
 /*!40000 ALTER TABLE `producto` ENABLE KEYS */;
+
+
+--
+-- Table structure for table `multimarket`.`proveedor`
+--
+
+DROP TABLE IF EXISTS `proveedor`;
+CREATE TABLE `proveedor` (
+  `proveedor_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `codigo` varchar(80) COLLATE utf8_spanish_ci NOT NULL DEFAULT '' COMMENT 'codigo de proeedor',
+  `nombre` varchar(200) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `proveedor_foto` varchar(145) COLLATE utf8_spanish_ci NOT NULL DEFAULT '',
+  `estatus` int(10) unsigned NOT NULL DEFAULT 1,
+  `company_id` int(10) unsigned NOT NULL DEFAULT 0,
+  PRIMARY KEY (`proveedor_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=75 DEFAULT CHARSET=utf8 COLLATE=utf8_spanish_ci COMMENT='tabla company_proveedor';
+
+--
+-- Dumping data for table `multimarket`.`proveedor`
+--
+
+/*!40000 ALTER TABLE `proveedor` DISABLE KEYS */;
+/*!40000 ALTER TABLE `proveedor` ENABLE KEYS */;
 
 
 --
@@ -806,9 +1265,9 @@ CREATE TABLE `usuario` (
 
 /*!40000 ALTER TABLE `usuario` DISABLE KEYS */;
 INSERT INTO `usuario` (`user_id`,`firstname`,`lastname`,`email`,`login`,`password`,`usuario_foto`,`caja_id`,`created_at`,`dateofbirth`,`telefono`,`departamento`,`estatus`,`tipo`,`company_id`,`location`,`colmena_conexion`,`state`,`city`,`country`,`nombre_completo`,`pregunta_clave`,`respuesta_clave`,`tarjeta_presentacion`,`gender`,`rif`,`tcarea`,`tcnumber`) VALUES 
- (1,'Administrador Ppal','De CiudadHive','ciudadhive@gmail.com','ciudadhive@gmail.com','$2y$10$DuMw9s52hxi01c2tnA5pfewoFpHxAv4UovPtagI3k1rlj9dhsFyr6','Administrador_18.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ADMINISTRATOR',1,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Administrador Ppal De CiudadHive','cual es tu nombre?','usuario de ciudadhive',' ','M','V-7065079','0414','4840676'),
- (2,'Carlos','Peraza','carlosperazavz@gmail.com','carlosperazavz@gmail.com','$2y$10$oMBj1uqWpkmUbJUAnIw76OLVyrmO7v9riCoW6Aojv9huuViLl1Eh6','Carlos_67.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ASISTENTE',0,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Carlos Peraza','cual es tu nombre?','Carlos',' ','M','V-7065079','0414','4840676'),
- (8,'Virginia','Sanchez','josegomez@gmail.com','josegomez@gmail.com','$2y$10$.KN93Vu/iHz7VFgl8.DxweQZtJQFicnBii0oF0kxGvnOwBNpuzYm.','1234_VirginiaSanchez_24.jpg',0,'2024-05-07 00:00:00','2024-05-07 00:00:00','','Ventas',1,'VENDOR',0,'Carribbean Suits\r\nTucasa',1000,'CA',45414,'VEN','Virginia Sanchez','cual es tu nombre?','usuario de ciudadhive',' ','F','7065079','412','4560079');
+ (1,'Administrador','De CiudadHive','ciudadhive@gmail.com','ciudadhive@gmail.com','$2y$10$DuMw9s52hxi01c2tnA5pfewoFpHxAv4UovPtagI3k1rlj9dhsFyr6','Administrador_18.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ADMINISTRATOR',1,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Administrador Ppal De CiudadHive','cual es tu nombre?','usuario de ciudadhive',' ','M','V-7065079','0414','4840676'),
+ (2,'Carlos','Peraza','carlosperazavz@gmail.com','carlosperazavz@gmail.com','$2y$10$DuMw9s52hxi01c2tnA5pfewoFpHxAv4UovPtagI3k1rlj9dhsFyr6','Carlos_67.png',1,'2024-04-12 00:00:00','1963-05-22 00:00:00','0414-4840676','Administrador principal de la aplicacion',1,'ADMINISTRATOR',5,'Residencias Las Trinitarias Torre 9 Planta Apto PBB, Ciudad Alianza',1000,'CA',45414,'VEN','Carlos Peraza','cual es tu nombre?','Carlos',' ','M','V-7065079','0414','4840676'),
+ (8,'Miguel','Peraza','mikeperazaphoto@gmail.com','josegomez@gmail.com','$2y$10$.KN93Vu/iHz7VFgl8.DxweQZtJQFicnBii0oF0kxGvnOwBNpuzYm.','1234_VirginiaSanchez_24.jpg',0,'2024-05-07 00:00:00','1961-05-07 00:00:00','','Admiinistracion',1,'ASISTENTE',5,'Valencia Residnecias Martinica 2',1000,'CA',45414,'VEN','Miguel Peraza','cual es tu nombre?','usuario de ciudadhive',' ','M','7065079','414','4560079');
 /*!40000 ALTER TABLE `usuario` ENABLE KEYS */;
 
 
@@ -873,6 +1332,14 @@ CREATE TABLE `venta_detalle` (
 
 /*!40000 ALTER TABLE `venta_detalle` DISABLE KEYS */;
 /*!40000 ALTER TABLE `venta_detalle` ENABLE KEYS */;
+
+
+--
+-- View structure for view `multimarket`.`vista_ubicacion`
+--
+
+DROP VIEW IF EXISTS `vista_ubicacion`;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `multimarket`.`vista_ubicacion` AS select `multimarket`.`ubicacion`.`id` AS `id`,`multimarket`.`ubicacion`.`country` AS `country`,`multimarket`.`ubicacion`.`state_abbreviation` AS `state_abbreviation`,`multimarket`.`ubicacion`.`state_name` AS `state_name`,`multimarket`.`ubicacion`.`city` AS `city`,`multimarket`.`ubicacion`.`capital` AS `capital`,`multimarket`.`ubicacion`.`latitude` AS `latitude`,`multimarket`.`ubicacion`.`longitude` AS `longitude`,`multimarket`.`ubicacion`.`zipcode` AS `zipcode` from `multimarket`.`ubicacion`;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
