@@ -109,8 +109,8 @@ if ($mysqli->connect_errno) {
                                             <img src="
                                             <?php
                                             echo $proveedor_logo == "nophoto.jpg"
-                                                ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/" . $proveedor_logo;
+                                                ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                : APP_URL."app/views/fotos/company/$company_id/proveedores/" . $proveedor_logo;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>
@@ -394,10 +394,11 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo $proveedor_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_card;
-                                                                        ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                            <img src="
+                                                                <?php echo $proveedor_card == "nophoto.jpg"
+                                                                ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                : APP_URL."app/views/fotos/company/$company_id/proveedores/".$proveedor_card;
+                                                                ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="proveedor_card" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
@@ -414,10 +415,10 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo $proveedor_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_banner1;
-                                                                        ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                            <img src="<?php echo $proveedor_banner1 == "nophoto.jpg"
+                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                            : APP_URL."app/views/fotos/company/$company_id/proveedores/".$proveedor_banner1;
+                                                            ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="proveedor_banner1" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
@@ -436,9 +437,9 @@ if ($mysqli->connect_errno) {
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
 
                                                             <img src="<?php echo $proveedor_banner2 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/". $proveedor_banner2;
-                                                                        ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                            : APP_URL."app/views/fotos/company/$company_id/proveedores/".$proveedor_banner2;
+                                                            ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="proveedor_banner2" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
@@ -455,9 +456,9 @@ if ($mysqli->connect_errno) {
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $proveedor_banner3 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_banner3;
-                                                                        ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                            : APP_URL."app/views/fotos/company/$company_id/proveedores/".$proveedor_banner3;
+                                                            ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="proveedor_banner3" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
@@ -473,8 +474,8 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
 
-                                                        <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo APP_URL; ?>app/views/fotos/pdf.jpg" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                        <div <?php echo APP_URL; ?>sition-relative d-inline-block mx-auto  mb-4">
+http://localhost/multimarket/                                      <img src="http://localhost/multimarket/app/views/fotos/pdf.jpg" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="proveedor_pdf" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>

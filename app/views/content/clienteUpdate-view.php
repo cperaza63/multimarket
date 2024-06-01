@@ -109,8 +109,8 @@ if ($mysqli->connect_errno) {
                                             <img src="
                                             <?php
                                             echo $cliente_logo == "nophoto.jpg"
-                                                ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/clientes/" . $cliente_logo;
+                                                ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                : APP_URL."app/views/fotos/company/$company_id/clientes/" . $cliente_logo;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>
@@ -136,7 +136,7 @@ if ($mysqli->connect_errno) {
                                             </table>
                                         </div>
                                     </form>
-                                    <h5 class="fs-16 mb-1"><?php echo "ACTUALIZANDO PROVEEDOR " . $datos['cliente_name']; ?></h5>
+                                    <h5 class="fs-16 mb-1"><?php echo "ACTUALIZANDO CLIENTE " . $datos['cliente_name']; ?></h5>
                                     <p class="text-muted mb-0"><?php echo "Item # " . $datos['cliente_id']; ?></p>
                                 </div>
                             </div>
@@ -395,8 +395,8 @@ if ($mysqli->connect_errno) {
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/clientes/".$cliente_card;
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/clientes/".$cliente_card;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_card" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -415,8 +415,8 @@ if ($mysqli->connect_errno) {
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/clientes/".$cliente_banner1;
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/clientes/".$cliente_banner1;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner1" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -436,8 +436,8 @@ if ($mysqli->connect_errno) {
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
 
                                                             <img src="<?php echo $cliente_banner2 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/clientes/". $cliente_banner2;
+                                                                            ? APP_URL.">app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/clientes/". $cliente_banner2;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner2" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -455,8 +455,8 @@ if ($mysqli->connect_errno) {
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $cliente_banner3 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/clientes/".$cliente_banner3;
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/clientes/".$cliente_banner3;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="cliente_banner3" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
