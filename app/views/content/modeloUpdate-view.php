@@ -59,8 +59,8 @@
                                             <img src="
                                             <?php
                                             echo $marca_foto == "nophoto.jpg"
-                                                ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                : "http://localhost/multimarket/app/views/fotos/company/" . $datos['company_id'] . "/marcas/" . $marca_foto;
+                                                ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                : "<?php echo APP_URL; ?>app/views/fotos/company/" . $datos['company_id'] . "/marcas/" . $marca_foto;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>

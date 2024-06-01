@@ -24,7 +24,7 @@
 
                             <div class="text-center">
                                 <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                    <img src="http://localhost/multimarket/app/views/fotos/nophoto.jpg" 
+                                    <img src="<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg" 
                                     class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                     alt="user-profile-image">
                                     <div class="avatar-xs p-0 rounded-circle ">

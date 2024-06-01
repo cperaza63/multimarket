@@ -71,7 +71,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajax.js" ></script><?php
                 }
             }else{
-                ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
+                ?><script src="<?php echo APP_URL; ?>app/views/js/app.js"></script><?php
             }
             // Se debe colocar el controlador que usara AJAX
         }
@@ -94,12 +94,12 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 11) == "productNew/"
                 || substr($_GET['views'], 0, 14) == "productUpdate/"
             ){
-                ?><script src="http://localhost/multimarket/app/views/js/ajax_edo.js"></script><?php
+                ?><script src="<?php echo APP_URL; ?>app/views/js/ajax_edo.js"></script><?php
             }else{
-                ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
+                ?><script src="<?php echo APP_URL; ?>app/views/js/app.js"></script><?php
             }
         }else{
-            ?><script src="http://localhost/multimarket/app/views/js/app.js"></script><?php
+            ?><script src="<?php echo APP_URL; ?>app/views/js/app.js"></script><?php
         }
         ?>
 </body>

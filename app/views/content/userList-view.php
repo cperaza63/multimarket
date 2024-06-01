@@ -110,7 +110,7 @@
                                             if($rows['usuario_foto'] != ""){
                                                 $usuario_foto = APP_URL . "app/views/fotos/usuarios/".$rows['usuario_foto'];
                                             }else{
-                                                $usuario_foto = "http://localhost/multimarket/app/views/images/users/avatar-1.jpg";
+                                                $usuario_foto = "<?php echo APP_URL; ?>app/views/images/users/avatar-1.jpg";
                                             }
                                             
                                             ?>

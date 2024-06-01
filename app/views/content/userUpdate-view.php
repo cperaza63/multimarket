@@ -41,7 +41,7 @@ if (!isset($_SESSION["tab"])) {
                 $boton_accion = "Actualizar";
                 $usuario_foto = $datos['usuario_foto'];
                 if( $datos['usuario_foto'] ==""){
-                    $usuario_foto = "http://localhost/multimarket/app/views/fotos/usuarios/default.png";
+                    $usuario_foto = "<?php echo APP_URL; ?>app/views/fotos/usuarios/default.png";
                 }
                 $pasa = 1;
             }else{
@@ -105,7 +105,7 @@ if (!isset($_SESSION["tab"])) {
                                         <input type="hidden" name="user_id" value="<?php echo $datos['user_id']; ?>">
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                             
-                                            <img src="http://localhost/multimarket/app/views/fotos/usuarios/<?php echo $usuario_foto; ?>" 
+                                            <img src="<?php echo APP_URL; ?>app/views/fotos/usuarios/<?php echo $usuario_foto; ?>" 
                                             class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                             alt="user-profile-image">
                                             

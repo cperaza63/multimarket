@@ -24,7 +24,7 @@
                 $boton_accion = "Actualizar";
                 $control_foto = $datos['control_foto'];
                 if( $datos['control_foto'] ==""){
-                    $control_foto = "http://localhost/multimarket/app/views/fotos/default.png";
+                    $control_foto = "<?php echo APP_URL; ?>app/views/fotos/default.png";
                 }
                 $pasa = 1;
             }else{
@@ -51,7 +51,7 @@
 
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                             
-                                            <img src="http://localhost/multimarket/app/views/fotos/control/<?php echo $control_foto; ?>" 
+                                            <img src="<?php echo APP_URL; ?>app/views/fotos/control/<?php echo $control_foto; ?>" 
                                             class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" 
                                             alt="user-profile-image">
                                             

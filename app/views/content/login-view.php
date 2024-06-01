@@ -17,7 +17,7 @@
                                         <div class="position-relative h-100 d-flex flex-column">
                                             <div class="mb-4">
                                                 <a href="index.html" class="d-block">
-                                                    <img src="http://localhost/multimarket/app/views/images/logo-light.png" alt="" height="18">
+                                                    <img src="<?php echo APP_URL; ?>app/views/images/logo-light.png" alt="" height="18">
                                                 </a>
                                             </div>
                                             <div class="mt-auto">

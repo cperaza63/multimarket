@@ -11,18 +11,18 @@
     <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
     <meta content="Themesbrand" name="author" />
     <!-- App favicon -->
-    <link rel="shortcut icon" href="http://localhost/multimarket/app/views/images/favicon.ico">
+    <link rel="shortcut icon" href="<?php echo APP_URL; ?>app/views/images/favicon.ico">
 
     <!-- Layout config Js -->
-    <script src="http://localhost/multimarket/app/views/js/layout.js"></script>
+    <script src="<?php echo APP_URL; ?>app/views/js/layout.js"></script>
     <!-- Bootstrap Css -->
-    <link href="http://localhost/multimarket/app/views/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo APP_URL; ?>app/views/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <!-- Icons Css -->
-    <link href="http://localhost/multimarket/app/views/css/icons.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo APP_URL; ?>app/views/css/icons.min.css" rel="stylesheet" type="text/css" />
     <!-- App Css-->
-    <link href="http://localhost/multimarket/app/views/css/app.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo APP_URL; ?>app/views/css/app.min.css" rel="stylesheet" type="text/css" />
     <!-- custom Css-->
-    <link href="http://localhost/multimarket/app/views/css/custom.min.css" rel="stylesheet" type="text/css" />
+    <link href="<?php echo APP_URL; ?>app/views/css/custom.min.css" rel="stylesheet" type="text/css" />
 
 
 </head>
@@ -38,11 +38,11 @@
                 <div class="row justify-content-center">
                     <div class="col-xl-7 col-lg-8">
                         <div class="text-center">
-                            <img src="http://localhost/multimarket/app/views/images/error400-cover.png" alt="error img" class="img-fluid">
+                            <img src="<?php echo APP_URL; ?>app/views/images/error400-cover.png" alt="error img" class="img-fluid">
                             <div class="mt-3">
                                 <h3 class="text-uppercase">Sorry, Page not Found 😭</h3>
                                 <p class="text-muted mb-4">The page you are looking for not available!</p>
-                                <a href="http://localhost/multimarket/" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>
+                                <a href="<?php echo APP_URL; ?>" class="btn btn-success"><i class="mdi mdi-home me-1"></i>Back to home</a>
                             </div>
                         </div>
                     </div><!-- end col -->

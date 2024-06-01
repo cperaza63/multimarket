@@ -70,8 +70,8 @@
                                             <img src="
                                             <?php
                                             echo $control_foto == "nophoto.jpg"
-                                                ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                : "http://localhost/multimarket/app/views/fotos/control/" . $control_foto;
+                                                ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                : "<?php echo APP_URL; ?>app/views/fotos/control/" . $control_foto;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
 
                                             <table>
@@ -239,8 +239,8 @@
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $control_card == "nophoto.jpg"
-                                                                            ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/control/" . $control_card;
+                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                                            : "<?php echo APP_URL; ?>app/views/fotos/control/" . $control_card;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="control_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -259,8 +259,8 @@
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?= $control_banner1 == "nophoto.jpg"
-                                                                            ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/control/" . $control_banner1;
+                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                                            : "<?php echo APP_URL; ?>app/views/fotos/control/" . $control_banner1;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="control_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -277,8 +277,8 @@
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $control_banner2 == "nophoto.jpg"
-                                                                            ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/control/" . $control_banner2;
+                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                                            : "<?php echo APP_URL; ?>app/views/fotos/control/" . $control_banner2;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="control_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
@@ -295,8 +295,8 @@
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo $control_banner3 == "nophoto.jpg"
-                                                                            ? "http://localhost/multimarket/app/views/fotos/nophoto.jpg"
-                                                                            : "http://localhost/multimarket/app/views/fotos/control/" . $control_banner3;
+                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
+                                                                            : "<?php echo APP_URL; ?>app/views/fotos/control/" . $control_banner3;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
                                                                 <input id="profile-img-file-input" name="control_foto" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
