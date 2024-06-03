@@ -66,9 +66,9 @@
             <!--end row-->
             <?php
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insMarca->listarTodosMarcaControlador($_SESSION[$url[0]]);
+                $datos = $insMarca->listarTodosMarcaControlador($company_id, $_SESSION[$url[0]]);
             }else{
-                $datos = $insMarca->listarTodosMarcaControlador("*");
+                $datos = $insMarca->listarTodosMarcaControlador($company_id, "*");
             }
             ?>
             <div class="row">

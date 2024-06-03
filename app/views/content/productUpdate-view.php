@@ -15,12 +15,21 @@ if ($mysqli->connect_errno) {
     <div class="page-content">
         <div class="container-fluid">
             <?php
-            use app\controllers\ubicacionController;
-            $ubicacionController = new ubicacionController();
-            use app\controllers\controlController;
-            $controlController = new controlController();
             use app\controllers\proveedorController;
+            use app\controllers\controlController;
+            use app\controllers\marcaController;
+            use app\controllers\categoryController;
             $proveedorController = new proveedorController();
+            $proveedores = $proveedorController->listarTodosProveedorControlador($company_id, "*");
+            //
+            $controlController = new controlController();
+            $unidades = $controlController->obtenerListaMarketControlador("unidades");
+            //
+            $marcaController = new marcaController();
+            $marcas = $marcaController->listarTodosMarcaControlador($company_id, "*");
+            //
+            $categoryController = new categoryController();
+            $categorias = $categoryController->listarTodosCategoryControlador($company_id, "*");
             if (!isset($_SESSION["tab"])) {
                 $_SESSION["tab"] = "";
             }

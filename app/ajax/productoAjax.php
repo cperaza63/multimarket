@@ -6,37 +6,37 @@
 	if(isset($_POST['tab'])){
 		$_SESSION['tab'] = $_POST['tab']; 
 	}
-	if(isset($_POST['modulo_producto'])){
+	if(isset($_POST['modulo_product'])){
 
 		$insProducto = new productController();
-		if($_POST['modulo_producto']=="registrar"){
-			echo $insProducto->registrarProductoControlador();
+		if($_POST['modulo_product']=="registrar"){
+			echo $insProducto->registrarProductControlador();
 		}
-		if($_POST['modulo_producto']=="eliminar"){
-			echo $insProducto->eliminarProductoControlador();
+		if($_POST['modulo_product']=="eliminar"){
+			echo $insProducto->eliminarProductControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarFoto"){
-			echo $insProducto->actualizarFotoProductoControlador();
+		if($_POST['modulo_product']=="actualizarFoto"){
+			echo $insProducto->actualizarFotoProductControlador();
 		}
-		if($_POST['modulo_producto']=="actualizar"){
-			echo $insProducto->actualizarProductoControlador();
+		if($_POST['modulo_product']=="actualizar"){
+			echo $insProducto->actualizarProductControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarMasInformacion"){
+		if($_POST['modulo_product']=="actualizarMasInformacion"){
 			echo $insProducto->actualizarMasInformacionControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarZonaHoraria"){
+		if($_POST['modulo_product']=="actualizarZonaHoraria"){
 			echo $insProducto->actualizarZonaHorariaControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarMarket"){
-			echo $insProducto->actualizarMarketControlador();
+		if($_POST['modulo_product']=="actualizarMarket"){
+			echo $insProducto->actualizarProductControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarUbicacion"){
+		if($_POST['modulo_product']=="actualizarUbicacion"){
 			echo $insProducto->actualizarUbicacionControlador();
 		}
-		if($_POST['modulo_producto']=="eliminarFoto"){
-			echo $insProducto->eliminarFotoProductoControlador();
+		if($_POST['modulo_product']=="eliminarFoto"){
+			echo $insProducto->eliminarFotoProductControlador();
 		}
-		if($_POST['modulo_producto']=="actualizarFotoMasa"){
+		if($_POST['modulo_product']=="actualizarFotoMasa"){
 			echo $insProducto->actualizarFotoMasaControlador();
 		}
 	}else{

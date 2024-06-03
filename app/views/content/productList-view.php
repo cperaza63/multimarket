@@ -6,8 +6,8 @@
         <div class="container-fluid">
         
             <?php
-            use app\controllers\proveedorController;
-            $insProveedor = new proveedorController();
+            use app\controllers\productController;
+            $insProduct = new productController();
             $company_id = $_SESSION['user_company_id'];
             ?>
         
@@ -31,7 +31,7 @@
                                                     value="<?php echo isset($_SESSION[$url[0]])?$_SESSION[$url[0]]:""; ?>"
                                                     maxlength="30" required >
                                                     <button class="btn btn-info" type="submit" >Buscar</button>
-                                                    <a href="<?php echo APP_URL; ?>proveedorNew/" class="btn btn-success" >Agregar al Proveedor</a>
+                                                    <a href="<?php echo APP_URL; ?>productNew/" class="btn btn-success" >Agregar el Producto</a>
                                                     
                                                 </div>
                                             </div>
@@ -67,9 +67,9 @@
             <?php
 
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insProveedor->listarTodosProveedorControlador($company_id, $_SESSION[$url[0]]);
+                $datos = $insProduct->listarTodosProductControlador($company_id, $_SESSION[$url[0]]);
             }else{
-                $datos = $insProveedor->listarTodosProveedorControlador($company_id, "*");
+                $datos = $insProduct->listarTodosProductControlador($company_id, "*");
             }
             ?>
             <div class="row">
@@ -81,7 +81,7 @@
                             </div>
                         </div>
                         <div class="card-header">
-                            <h5 class="card-title mb-0">Lista de Proveedores por Tienda</h5>
+                            <h5 class="card-title mb-0">Lista de Productos por Tienda</h5>
                         </div>
                         <div class="card-body">
                             <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
@@ -95,10 +95,10 @@
                                         <th>Logo</th>
                                         <th>Nombre</th>
                                         <th>Acción</th>
-                                        <th>Id</th>
-                                        <th>Email</th>
-                                        <th>Telefono</th>
-                                        <th>Ubicación</th>
+                                        <th>Codigo</th>
+                                        <th>Unidad</th>
+                                        <th>Precio</th>
+                                        <th>Inventariable</th>
                                         <th>Estatus</th>
                                     </tr>
                                 </thead>
@@ -107,10 +107,10 @@
                                     <?php
                                     if(is_array($datos)){
                                         foreach($datos as $rows){
-                                            if($rows['proveedor_logo'] != ""){
-                                                $proveedor_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/proveedores/".$rows['proveedor_logo'];
+                                            if($rows['product_logo'] != ""){
+                                                $product_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/productos/".$rows['product_logo'];
                                             }else{
-                                                $proveedor_logo = APP_URL . "app/views/fotos/nophoto.jpg";
+                                                $product_logo = APP_URL . "app/views/fotos/nophoto.jpg";
                                             }
                                             ?>
                                             <tr>
@@ -120,26 +120,26 @@
                                                     </div>
                                                 </th>
                                                 <td>
-                                                    <a href="<?= APP_URL.'proveedorUpdate/'.$rows['proveedor_id'].'/'?>">
+                                                    <a href="<?= APP_URL.'productUpdate/'.$rows['product_id'].'/'?>">
                                                     <img class="rounded-circle header-profile-user" 
-                                                    src="<?=$proveedor_logo; ?>" 
-                                                    alt="Logo del proveedor de la tabla">
+                                                    src="<?=$product_logo; ?>" 
+                                                    alt="Logo del product de la tabla">
                                                     </a>
                                                 </td>
-                                                <td><?=$rows['proveedor_name'];?></td>
+                                                <td><?=$rows['product_name'];?></td>
                                                 <td>
                                                     <div class="dropdown d-inline-block">
                                                         <button class="btn btn-soft-secondary btn-sm dropdown" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                                                             <i class="ri-more-fill align-middle"></i>
                                                         </button>
                                                         <ul class="dropdown-menu dropdown-menu-end">
-                                                            <li><a href="<?= APP_URL.'proveedorUpdate/'.$rows['proveedor_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
+                                                            <li><a href="<?= APP_URL.'productUpdate/'.$rows['product_id'].'/'?>" class="dropdown-item"><i class="ri-pencil-fill align-bottom me-2 text-muted"></i> Editar</a></li>
                                                             <li>
 
                                                             <li>
-                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/proveedorAjax.php" method="POST" autocomplete="off" >
-                                                                    <input type="hidden" name="modulo_proveedor" value="eliminar">
-                                                                    <input type="hidden" name="proveedor_id" value="<?=$rows['proveedor_id']?>">
+                                                                    <form class="FormularioAjax" action="<?=APP_URL?>app/ajax/productAjax.php" method="POST" autocomplete="off" >
+                                                                    <input type="hidden" name="modulo_product" value="eliminar">
+                                                                    <input type="hidden" name="product_id" value="<?=$rows['product_id']?>">
                                                                     <input type="hidden" name="company_id"   value="<?=$rows['company_id']?>">
                                                                     <button type="submit" class="dropdown-item" > <i class="ri-delete-back-2-line align-bottom me-2 text-muted"></i>Borrar
                                                                     </button>
@@ -148,13 +148,20 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?=$rows['proveedor_id'];?></td>
-                                                <td><?=$rows['proveedor_email'];?></td>
-                                                <td><?=$rows['proveedor_phone'];?></td>
-                                                <td><?=$rows['proveedor_address'];?></td>
+                                                <td><?=$rows['product_id'];?></td>
+                                                <td><?=$rows['product_unidad'];?></td>
+                                                <td><?=$rows['product_precio'];?></td>
                                                 <td>
                                                     <?php
-                                                    if($rows['proveedor_estatus'] ==1 ){
+                                                    if($rows['product_invetariable'] ==1 ){
+                                                        ?><span class="badge bg-info">Con Inventario<?php
+                                                    }else{
+                                                        ?><span class="badge bg-warning">Sin Inventario<?php
+                                                    }?>
+                                                    </span>    
+                                                <td>
+                                                    <?php
+                                                    if($rows['product_estatus'] ==1 ){
                                                         ?><span class="badge bg-success">Activo<?php
                                                     }else{
                                                         ?><span class="badge bg-danger">Inactivo<?php

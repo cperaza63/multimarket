@@ -140,29 +140,20 @@
 			return json_encode($alerta);
 		}
 		/*----------  Controlador listar control  ----------*/
-		public function listarTodosMarcaControlador($busqueda){	
+		public function listarTodosMarcaControlador($company_id,$busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
+			$company_id=$this->limpiarCadena($company_id);
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company_marcas WHERE unidad=0  AND ( 
+				$consulta_datos="SELECT * FROM company_marcas WHERE company_id=$company_id and unidad=0  AND ( 
 				codigo LIKE '%$busqueda%'
 				OR nombre LIKE '%$busqueda%' 
 				) 
 				ORDER BY nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM company_marcas WHERE unidad=0 ORDER BY nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company_marcas WHERE company_id=$company_id  AND unidad=0 ORDER BY nombre ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
-			return $datos;
-			exit();
-		}
-		public function obtenerListaMarketControlador($tipo){
-			$consulta_datos = "SELECT * FROM company_marcas 
-			WHERE estatus=1 AND tipo='$tipo' AND a.company_id=0 ORDER BY a.tipo, a.nombre";
-			//
-			$datos = $this->ejecutarConsulta($consulta_datos);
-			$datos = $datos->fetchAll();
-
 			return $datos;
 			exit();
 		}

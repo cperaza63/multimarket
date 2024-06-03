@@ -146,16 +146,16 @@
 			return json_encode($alerta);
 		}
 		/*----------  Controlador listar control  ----------*/
-		public function listarTodosCategoryControlador($busqueda){	
+		public function listarTodosCategoryControlador($company_id, $busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
+			$company_id=$this->limpiarCadena($company_id);
 			if(isset($busqueda) && $busqueda!="*"){
-				$consulta_datos="SELECT * FROM company_categorias WHERE unidad=0  AND ( 
-				codigo LIKE '%$busqueda%'
-				OR nombre LIKE '%$busqueda%' 
+				$consulta_datos="SELECT * FROM company_categorias WHERE $company_id=$company_id AND unidad=0  AND ( 
+				codigo LIKE '%$busqueda%' OR nombre LIKE '%$busqueda%' 
 				) 
 				ORDER BY nombre ASC limit 500";
 			}else{
-				$consulta_datos="SELECT * FROM company_categorias WHERE unidad=0 ORDER BY nombre ASC limit 500";
+				$consulta_datos="SELECT * FROM company_categorias WHERE company_id=$company_id AND unidad=0 ORDER BY nombre ASC limit 500";
 			}
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
