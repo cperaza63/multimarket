@@ -36,9 +36,10 @@ $categorias = $categoryController->listarTodosCategoryControlador($company_id, "
                 <!-- 
                     FORMULARIO  
                                 -->
-                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productoAjax.php" 
+                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                     method="POST" autocomplete="off" enctype="multipart/form-data" >
                     <input type="hidden" name="modulo_product" value="registrar">
+                    <input type="hidden" name="product_id" value="0">
                     <input type="hidden" name="product_user" value="<?=$_SESSION['id']?>">
                     <input type="hidden" name="company_id" value="<?=$_SESSION['user_company_id']?>">
                     <div class="col-xxl-9">

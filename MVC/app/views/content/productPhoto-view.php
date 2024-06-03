@@ -25,7 +25,7 @@
                 <img class="is-photo" src="<?php echo APP_URL; ?>app/views/productos/<?php echo $datos['producto_foto']; ?>">
 			</figure>
 			
-			<form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productoAjax.php" method="POST" autocomplete="off" >
+			<form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" autocomplete="off" >
 
 				<input type="hidden" name="modulo_producto" value="eliminarFoto">
 				<input type="hidden" name="producto_id" value="<?php echo $datos['producto_id']; ?>">
@@ -44,7 +44,7 @@
 
 		<div class="column">
 			<h4 class="subtitle is-4 has-text-centered pb-6">Actualizar foto de producto</h4>
-			<form class="mb-6 has-text-centered FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productoAjax.php" method="POST" enctype="multipart/form-data" autocomplete="off" >
+			<form class="mb-6 has-text-centered FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" enctype="multipart/form-data" autocomplete="off" >
 
 				<input type="hidden" name="modulo_producto" value="actualizarFoto">
 				<input type="hidden" name="producto_id" value="<?php echo $datos['producto_id']; ?>">

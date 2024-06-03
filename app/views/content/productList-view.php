@@ -148,12 +148,12 @@
                                                         </ul>
                                                     </div>
                                                 </td>
-                                                <td><?=$rows['product_id'];?></td>
+                                                <td><?=$rows['product_codigo'];?></td>
                                                 <td><?=$rows['product_unidad'];?></td>
                                                 <td><?=$rows['product_precio'];?></td>
                                                 <td>
                                                     <?php
-                                                    if($rows['product_invetariable'] ==1 ){
+                                                    if($rows['product_inventariable'] ==1 ){
                                                         ?><span class="badge bg-info">Con Inventario<?php
                                                     }else{
                                                         ?><span class="badge bg-warning">Sin Inventario<?php

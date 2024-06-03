@@ -9,7 +9,7 @@
 	if(isset($_POST['modulo_product'])){
 
 		$insProducto = new productController();
-		if($_POST['modulo_product']=="registrar"){
+		if($_POST['modulo_product']=="registrar" || $_POST['modulo_product']=="actualizar" ){
 			echo $insProducto->registrarProductControlador();
 		}
 		if($_POST['modulo_product']=="eliminar"){
@@ -18,20 +18,8 @@
 		if($_POST['modulo_product']=="actualizarFoto"){
 			echo $insProducto->actualizarFotoProductControlador();
 		}
-		if($_POST['modulo_product']=="actualizar"){
-			echo $insProducto->actualizarProductControlador();
-		}
 		if($_POST['modulo_product']=="actualizarMasInformacion"){
 			echo $insProducto->actualizarMasInformacionControlador();
-		}
-		if($_POST['modulo_product']=="actualizarZonaHoraria"){
-			echo $insProducto->actualizarZonaHorariaControlador();
-		}
-		if($_POST['modulo_product']=="actualizarMarket"){
-			echo $insProducto->actualizarProductControlador();
-		}
-		if($_POST['modulo_product']=="actualizarUbicacion"){
-			echo $insProducto->actualizarUbicacionControlador();
 		}
 		if($_POST['modulo_product']=="eliminarFoto"){
 			echo $insProducto->eliminarFotoProductControlador();

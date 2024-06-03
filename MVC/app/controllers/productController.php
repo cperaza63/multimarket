@@ -461,7 +461,7 @@
 		                        	<i class="fas fa-sync fa-fw"></i>
 		                        </a>
 
-		                        <form class="FormularioAjax is-inline-block" action="'.APP_URL.'app/ajax/productoAjax.php" method="POST" autocomplete="off" >
+		                        <form class="FormularioAjax is-inline-block" action="'.APP_URL.'app/ajax/productAjax.php" method="POST" autocomplete="off" >
 
 			                		<input type="hidden" name="modulo_producto" value="eliminar">
 			                		<input type="hidden" name="producto_id" value="'.$rows['producto_id'].'">

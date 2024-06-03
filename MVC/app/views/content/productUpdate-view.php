@@ -30,7 +30,7 @@
 
 	<h2 class="title has-text-centered"><?php echo $datos['producto_nombre']." (Stock: ".$datos['producto_stock_total']." ".$datos['producto_tipo_unidad'].")"; ?></h2>
 
-	<form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productoAjax.php" method="POST" autocomplete="off" >
+	<form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" autocomplete="off" >
 
 		<input type="hidden" name="modulo_producto" value="actualizar">
 		<input type="hidden" name="producto_id" value="<?php echo $datos['producto_id']; ?>">

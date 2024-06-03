@@ -7,7 +7,9 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
     exit();
 }
+// <?php echo $fila['city'] == "" ? "Seleccione Ciudad" : $fila['city']; 
 ?>
+
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -15,10 +17,52 @@ if ($mysqli->connect_errno) {
     <div class="page-content">
         <div class="container-fluid">
             <?php
+            $product_id = $insLogin->limpiarCadena($url[1]);
+            $datos = $insLogin->seleccionarDatos("Unico", "company_products", "product_id", $product_id);
+            if ($datos->rowCount() == 1) {
+                $datos = $datos->fetch();
+                $product_modelo = $datos['product_modelo'];
+                $company_id = $datos['company_id'];
+                $product_name   = $datos['product_name'];
+                $product_description   = $datos['product_description'];
+                $accion = "actualizar";
+                $boton_accion = "Actualizar";
+                $product_logo = $datos['product_logo'];
+                if ($datos['product_logo'] == "") {
+                    $product_logo = "nophoto.jpg";
+                }
+                $product_card = $datos['product_card'];
+                if ($datos['product_card'] == "") {
+                    $product_card = "nophoto.jpg";
+                }
+                $product_banner1 = $datos['product_banner1'];
+                if ($datos['product_banner1'] == "") {
+                    $product_banner1 = "nophoto.jpg";
+                }
+                $product_banner2 = $datos['product_banner2'];
+                if ($datos['product_banner2'] == "") {
+                    $product_banner2 = "nophoto.jpg";
+                }
+                $product_banner3 = $datos['product_banner3'];
+                if ($datos['product_banner3'] == "") {
+                    $product_banner3 = "nophoto.jpg";
+                }
+                $product_pdf = $datos['product_pdf'];
+                if ($datos['product_pdf'] == "") {
+                    $product_pdf = "nophoto.jpg";
+                }
+                $pasa = 1;
+            } else {
+                // registro es nuevo
+                $accion = "registrar";
+                $boton_accion = "Agregar";
+                $pasa = 0;
+            }
             use app\controllers\proveedorController;
             use app\controllers\controlController;
             use app\controllers\marcaController;
             use app\controllers\categoryController;
+            
             $proveedorController = new proveedorController();
             $proveedores = $proveedorController->listarTodosProveedorControlador($company_id, "*");
             //
@@ -33,71 +77,7 @@ if ($mysqli->connect_errno) {
             if (!isset($_SESSION["tab"])) {
                 $_SESSION["tab"] = "";
             }
-            $proveedor_id = $insLogin->limpiarCadena($url[1]);
-            $datos = $insLogin->seleccionarDatos("Unico", "company_proveedores", "proveedor_id", $proveedor_id);
-            if ($datos->rowCount() == 1) {
-
-                $datos = $datos->fetch();
-                $company_id = $datos['company_id'];
-                $proveedor_name   = $datos['proveedor_name'];
-                $accion = "actualizar";
-                $boton_accion = "Actualizar";
-                $proveedor_logo = $datos['proveedor_logo'];
-                if ($datos['proveedor_logo'] == "") {
-                    $proveedor_logo = "nophoto.jpg";
-                }
-                $proveedor_card = $datos['proveedor_card'];
-                if ($datos['proveedor_card'] == "") {
-                    $proveedor_card = "nophoto.jpg";
-                }
-                $proveedor_banner1 = $datos['proveedor_banner1'];
-                if ($datos['proveedor_banner1'] == "") {
-                    $proveedor_banner1 = "nophoto.jpg";
-                }
-                $proveedor_banner2 = $datos['proveedor_banner2'];
-                if ($datos['proveedor_banner2'] == "") {
-                    $proveedor_banner2 = "nophoto.jpg";
-                }
-                $proveedor_banner3 = $datos['proveedor_banner3'];
-                if ($datos['proveedor_banner3'] == "") {
-                    $proveedor_banner3 = "nophoto.jpg";
-                }
-                $proveedor_pdf = $datos['proveedor_pdf'];
-                if ($datos['proveedor_pdf'] == "") {
-                    $proveedor_pdf = "nophoto.jpg";
-                }
-                $country_proveedor = $datos['proveedor_country'];
-                $state_proveedor = $datos['proveedor_state'];
-                $city_proveedor = $datos['proveedor_city'];
-                $pasa = 1;
-            } else {
-                // registro es nuevo
-                $accion = "registrar";
-                $boton_accion = "Agregar";
-                $pasa = 0;
-            }
-            // busco paises
-            $paises = $ubicacionController->obtenerPaisControlador();
-            // busco estados
-            if (isset($_POST['proveedor_country'])) {
-                $estados = $ubicacionController->obtenerEstadosControlador($_POST['proveedor_country']);
-            } else {
-                if ($country_proveedor > 0) {
-                    $estados = $ubicacionController->obtenerEstadosControlador($country_proveedor);
-                } else {
-                    $estados = $ubicacionController->obtenerEstadosControlador(APP_COUNTRY);
-                }
-            }
-            // Parametros para el ajax de Ciudad
-            if (isset($_POST['proveedor_state'])) {
-                $q = $_POST['proveedor_state'];
-                $c = $_POST['proveedor_city'];
-            } else {
-                $q = $state_proveedor;
-                $c = $city_proveedor;
-            }
-            //print_r($proveedor_logo);
-            //exit();
+            
             if ($pasa == 1) {
             ?>
                 <div class="row">
@@ -105,23 +85,18 @@ if ($mysqli->connect_errno) {
                         <div class="card mt-n6">
                             <div class="card-body p-1">
                                 <div class="text-center">
-                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php"
+                                    <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php"
                                     method="POST" autocomplete="off" enctype="multipart/form-data">
-                                        <!--    Campos parametros     -->
-                                        <input type="hidden" name="modulo_proveedor" value="actualizarFoto">
-                                        <input type="hidden" name="proveedor_id" value="<?php echo $proveedor_id; ?>">
+                                        <input type="hidden" name="modulo_product" value="actualizarFoto">
+                                        <input type="hidden" name="product_id" value="<?php echo $product_id; ?>">
                                         <input type="hidden" name="company_id" value="<?php echo $company_id; ?>">
-                                        <input type="hidden" name="proveedor_tipo" value="proveedor_logo">
-
                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-
                                             <img src="
                                             <?php
-                                            echo $proveedor_logo == "nophoto.jpg"
-                                                ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/" . $proveedor_logo;
+                                            echo $product_logo == "nophoto.jpg" || $product_logo=="" 
+                                                ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                : APP_URL."app/views/fotos/company/$company_id/productos/" . $product_logo;
                                             ?>" class="rounded-circle avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
-
                                             <table>
                                                 <tr>
                                                     <td>
@@ -131,7 +106,7 @@ if ($mysqli->connect_errno) {
                                                     </td>
                                                     <td>
                                                         <div class="avatar-xs p-0 rounded-circle ">
-                                                            <input id="profile-img-file-input" name="proveedor_logo" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                            <input id="profile-img-file-input" name="product_logo" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
 
                                                             <label for="profile-img-file-input" class="profile-photo-edit avatar-xs">
                                                                 <span class="avatar-title rounded-circle bg-light text-body shadow">
@@ -145,8 +120,8 @@ if ($mysqli->connect_errno) {
                                             </table>
                                         </div>
                                     </form>
-                                    <h5 class="fs-16 mb-1"><?php echo "ACTUALIZANDO PROVEEDOR " . $datos['proveedor_name']; ?></h5>
-                                    <p class="text-muted mb-0"><?php echo "Item # " . $datos['proveedor_id']; ?></p>
+                                    <h5 class="fs-16 mb-1"><?php echo "ACTUALIZANDO PRODUCTO " . $datos['product_name']; ?></h5>
+                                    <p class="text-muted mb-0"><?php echo "Item # " . $datos['product_id']; ?></p>
                                 </div>
                             </div>
                         </div>
@@ -224,161 +199,283 @@ if ($mysqli->connect_errno) {
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane <?= $tab1 ?>" id="personaldetails" role="tabpanel">
-                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
-                                        method="POST" autocomplete="off">
-                                            <input type="hidden" name="modulo_proveedor" value="<?= $accion; ?>">
-                                            <input type="hidden" name="proveedor_id" value="<?= $proveedor_id; ?>">
+                                        <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" autocomplete="off">
+                                            <input type="hidden" name="modulo_product" value="actualizar">
+                                            <input type="hidden" name="product_id" value="<?= $product_id; ?>">
                                             <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                             <input type="hidden" name="tab" value="personaldetails">
-                                            <input type="hidden" name="proveedor_user" value="<?= $_SESSION['id'] ?>">
-
+                                            <input type="hidden" name="product_user" value="<?= $_SESSION['id'] ?>">
                                             <div class="row">
-                                                <div class="col-lg-2">
-                                                    <div class="mb-3">
-                                                        <label for="codigo" class="form-label">Código</label>
-                                                        <input name="codigo" type="text" class="form-control" name="codigo" id="proveedor_id" value="<?php echo $datos['proveedor_id']; ?>" maxlength="40" disabled>
-                                                    </div>
+                                            <div class="col-lg-2">
+                                                <div class="mb-3">
+                                                    <label for="product_codigo" class="form-label">Código del producto</label>
+                                                    <input name="product_codigo" type="text" class="form-control" 
+                                                    value="<?php echo $datos['product_codigo']?>" 
+                                                    id="product_codigo" placeholder="Codigo del Producto" required 
+                                                    />
                                                 </div>
-                                                <!--end col-->
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_name" class="form-label">Nombre de Negocio</label>
-                                                        <input name="proveedor_name" type="text" class="form-control" id="proveedor_name" placeholder="Entre el nombre del negocio" value="<?php echo $datos['proveedor_name']; ?>" pattern="[a-zA-Z0-9áéíóúÁÉÍÓÚñÑ().,#\-]{3,80}" maxlength="40" required>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3 pb-2">
-                                                        <label for="proveedor_description" class="form-label">Breve descripción</label>
-                                                        <textarea name="proveedor_description" class="form-control" id="proveedor_description" placeholder="Breve descripción del negocio" rows="3"><?= trim($datos["proveedor_description"]); ?></textarea>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-6">
-                                                    <div class="mb-3 pb-2">
-                                                        <label for="location" class="form-label">Dirección</label>
-                                                        <textarea name="proveedor_address" class="form-control" id="proveedor_address" placeholder="Dirección del negocio" rows="3"><?= $datos["proveedor_address"] ?></textarea>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label for="countryInput" class="form-label">País</label>
-                                                        <?php
+                                            </div>
 
-                                                        if (is_array($paises)) {
-                                                            foreach ($paises as $pais) {
-                                                        ?>
-                                                                <select name="proveedor_country" class="form-control" data-choices data-choices-text-unique-true id="country">
-                                                                    <option value="<?= $pais['country']; ?>" <?php if ($pais['country'] == $datos["proveedor_country"]) echo "selected"; ?>><?= $pais['country']; ?>
-                                                                    </option>
-                                                                </select>
-                                                        <?php
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_name" class="form-label">Nombre del producto</label>
+                                                    <input name="product_name" type="text" class="form-control" 
+                                                    id="codigo" placeholder="Entre el nombre oficial" 
+                                                    pattern="[a-zA-ZñÑáéíóúÁÉÍÓÚ\s]{5,80}" 
+                                                    value="<?php echo $datos['product_name']?>" 
+                                                    maxlength="80" required>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-6">
+                                                <div class="mb-3 pb-2">
+                                                    <label for="location" class="form-label">Descripción del producto</label><textarea name="product_description" class="form-control" id="product_description"  placeholder="Breve descripción del producto" rows="3"><?php echo $datos['product_description']?></textarea>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="product_precio" class="form-label">Precio del producto</label>
+                                                    <input class="form-control" name="product_precio" type="number" placeholder="0.00" required min="0" value="<?php echo $datos['product_precio'];?>" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$" onblur="this.parentNode.parentNode.style.backgroundColor=/^\d+(?:\.\d{1,2})?$/.test(this.value)?'inherit':'red'"
+                                                    >
+                                                </div>
+                                            </div>
+
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="product_anterior" class="form-label">Precio anterior a la oferta</label>
+                                                    <input class="form-control" name="product_anterior" type="number" placeholder="0.00" min="0" value="<?php echo $datos['product_anterior'];?>" step="0.01" title="Currency" pattern="^\d+(?:\.\d{1,2})?$"
+                                                    <?php echo $datos['product_anterior']?>
+                                                    >
+                                                </div>
+                                            </div>
+
+                                            <!--end col-->
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="countryInput" class="form-label">Unidad/Medida</label>
+                                                        <select name="product_unidad" class="form-control" data-choices data-choices-text-unique-true id="product_unidad">
+                                                        <option value="">Seleccione unidad/medida</option>
+                                                            <?php
+                                                            if(is_array($unidades)){
+                                                                foreach($unidades as $unidad){
+                                                                ?>
+                                                                <option value="<?=$unidad['control_id'];?>" 
+                                                                <?=$datos['product_unidad'] == $unidad['control_id'] ?"selected":""?>
+                                                                    ><?=$unidad['nombre'];?>
+                                                                </option>
+                                                            <?php
                                                             }
                                                         }
                                                         ?>
-                                                    </div>
+                                                    </select>
                                                 </div>
-
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_state" class="form-label">Estado/Provincia</label>
-                                                        <select name="proveedor_state" language="javascript:void(0)" onchange="loadAjaxCiudadHive(this.value, <?= $city_proveedor ?>)" class="form-control" data-choices data-choices-text-unique-true id="proveedor_state">
-                                                            <?php
-                                                            if (is_array($estados)) {
-                                                                foreach ($estados as $estado) {
-                                                            ?>
-                                                                    <option value="<?= $estado['state_abbreviation']; ?>" <?php if ($estado['state_abbreviation'] == $datos["proveedor_state"]) echo "selected"; ?>><?= $estado['state_name']; ?>
-                                                                    </option>
-                                                            <?php
-                                                                }
-                                                            }
-                                                            ?>
-                                                        </select>
-                                                    </div>
+                                            </div>
+                                            <div class="col-lg-3">
+                                                <div class="mb-3">
+                                                    <label for="product_inventariable" class="form-label">Es inventariable?</label>
+                                                    <select name="product_inventariable" class="form-control" required 
+                                                        data-choices data-choices-text-unique-true id="tipo">
+                                                        <option value="">Escoja una opción</option>
+                                                        <option value="0"
+                                                        <?=$datos['product_inventariable'] == "0" ?"selected":""?>
+                                                        >No inventariable</option>
+                                                        <option value="1" 
+                                                        <?=$datos['product_inventariable'] == "1" ?"selected":""?>
+                                                        >Si Maneja inventario</option>
+                                                        <option value="2" 
+                                                        <?=$datos['product_inventariable'] == "2" ?"selected":""?>
+                                                        >Es producto digital</option>
+                                                    </select>
                                                 </div>
-                                                <!--end col-->
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_city" class="form-label">Ciudades</label>
-                                                        <select name="proveedor_city" class="form-control" data-choices data-choices-text-unique-true id="city">
-                                                            <?php
-                                                            if ($res = $mysqli->query("SELECT * FROM ubicacion WHERE state_abbreviation<>'' AND 
-                                                                state_abbreviation='$q' ORDER BY city")) {
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_estatus" class="form-label">Estatus Actual</label>
+                                                    <select name="product_estatus" class="form-control" required 
+                                                        data-choices data-choices-text-unique-true id="tipo">
+                                                        <option value="">Escoja una opción</option>
+                                                        <option value="1"
+                                                        <?=$datos['product_estatus'] == "1" ?"selected":""?>
+                                                        >Activo</option>
+                                                        <option value="0"
+                                                        <?=$datos['product_estatus'] == "0" ?"selected":""?>
+                                                        >Inactivo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_proveedor" class="form-label">Seleccione Proveedor</label>
+                                                    <select name="product_proveedor" 
+                                                    language="javascript:void(0)" class="form-control" 
+                                                    data-choices data-choices-text-unique-true id="product_proveedor">
+                                                    <option value="">Seleccione proveedor</option>
+                                                    <?php
+                                                    if(is_array($proveedores)){
+                                                        foreach($proveedores as $proveedor){
+                                                            ?>
+                                                            <option value="<?=$proveedor['proveedor_id'];?>"
+                                                            <?=$datos['product_proveedor'] == $proveedor['proveedor_id'] ?"selected":""?>
+                                                            ><?=$proveedor['proveedor_name'];?>
+                                                            </option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_usado" class="form-label">Es usado o nuevo?</label>
+                                                    <select name="product_usado" class="form-control" required 
+                                                        data-choices data-choices-text-unique-true id="product_usado">
+                                                        <option value="">Escoja una opción</option>
+                                                        <option value="1" 
+                                                        <?=$datos['product_usado'] == "1" ?"selected":""?>
+                                                        >Es Usado</option>
+                                                        <option value="0" 
+                                                        <?=$datos['product_usado'] == "0" ?"selected":""?>
+                                                        >Es nuevo</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_marca" class="form-label">Marca</label>
+                                                    <select name="product_marca" 
+                                                    language="javascript:void(0)" 
+                                                    onchange="loadAjaxMarcaModelo(this.value, <?=$product_modelo?>)"
+                                                    class="form-control" data-choices data-choices-text-unique-true id="state">
+                                                    <option value="">Escoja una opción</option>
+                                                    <?php
+                                                    if(is_array($marcas)){
+                                                        foreach($marcas as $marca){
+                                                            ?>
+                                                            <option value="<?=$marca['marca_id'];?>"
+                                                            <?=$datos['product_marca'] == $marca['marca_id'] ?"selected":""?>
+                                                            ><?=$marca['nombre'];?>
+                                                            </option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_modelo" class="form-label">Modelo</label>
+                                                    <select name="product_modelo" class="form-control" data-choices data-choices-text-unique-true id="product_modelo">
+                                                        <option value="">Escoja una opción</option>
+                                                        <?php
+                                                        $sql = "SELECT * FROM company_marcas WHERE unidad= ".$datos['product_marca']." AND company_id=$company_id AND estatus=1 ORDER BY nombre";
+                                                        //echo $sql;
+                                                        if ($res = $mysqli->query("SELECT * FROM company_marcas WHERE unidad= ".$datos['product_marca']." AND company_id=$company_id AND estatus=1 ORDER BY nombre")) {
+                                                        ?>
+                                                            <?php while ($fila = mysqli_fetch_array($res)) { ?>
+                                                                <option value="<?php echo $fila['marca_id']; ?>" 
+                                                                <?php if ($fila['marca_id'] == $datos["product_modelo"]) echo "selected"; ?>>
+                                                                    <?php echo $fila['marca_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
+                                                                </option>
+                                                            <?php } ?>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_year" class="form-label">Año de marca/modelo</label>
+                                                    <input name="product_year" type="number" class="form-control" 
+                                                    value="<?=$datos['product_year']?>"
+                                                    id="product_year" placeholder="Año de Marca/Modelo" 
+                                                    />
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_categoria" class="form-label">Categorias</label>
+                                                    <select name="product_categoria" 
+                                                    language="javascript:void(0)" 
+                                                    onchange="loadAjaxCatSubcat(this.value, '')"
+                                                    class="form-control" data-choices data-choices-text-unique-true id="product_categoria">
+                                                    <option value="">Escoja una opción</option>
+                                                    <?php
+                                                    if(is_array($categorias)){
+                                                        foreach($categorias as $categoria){
+                                                            ?>
+                                                            <option value="<?=$categoria['categoria_id'];?>"
+                                                            <?=$datos['product_categoria'] == $categoria['categoria_id'] ?"selected":""?>
+                                                            ><?=$categoria['nombre'];?>
+                                                            </option>
+                                                        <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                            <div class="col-lg-4">
+                                                <div class="mb-3">
+                                                    <label for="product_subcat" class="form-label">Subcategorías</label>
+                                                    <select name="product_subcat" class="form-control" data-choices data-choices-text-unique-true id="product_subcat">
+                                                        <?php
+                                                            $sql = "SELECT * FROM company_categorias WHERE unidad= ".$datos['product_categoria']." AND company_id=$company_id AND estatus=1 ORDER BY nombre";
+                                                            //echo $sql;
+                                                            if ($res = $mysqli->query("SELECT * FROM company_categorias WHERE unidad= ".$datos['product_categoria']." AND company_id=$company_id AND estatus=1 ORDER BY nombre")) {
                                                             ?>
                                                                 <?php while ($fila = mysqli_fetch_array($res)) { ?>
-                                                                    <option value="<?php echo $fila['id']; ?>" <?php if ($fila['id'] == $datos["proveedor_city"]) echo "selected"; ?>>
-                                                                        <?php echo $fila['city'] == "" ? "Seleccione Ciudad" : $fila['city']; ?>
+                                                                    <option value="<?php echo $fila['categoria_id']; ?>" 
+                                                                    <?php if ($fila['categoria_id'] == $datos["product_subcat"]) echo "selected"; ?>>
+                                                                        <?php echo $fila['categoria_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
                                                                     </option>
                                                                 <?php } ?>
                                                             <?php
                                                             }
-                                                            ?>
-                                                        </select>
-                                                    </div>
+                                                        ?>
+                                                    </select>
                                                 </div>
-                                                <!--end col-->
-                                                <div class="col-lg-4">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_email" class="form-label">Email del proveedor</label>
-                                                        <input name="proveedor_email" type="email" class="form-control" value="<?= $datos["proveedor_email"] ?>" id="proveedor_email" placeholder="Email de la empresa" required />
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-3">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_phone" class="form-label">Teléfono contacto</label>
-                                                        <input name="proveedor_phone" type="number" class="form-control" value="<?= $datos["proveedor_phone"] ?>" id="codigo" placeholder="Entre su numero de contacto" maxlength="80" required>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-3">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_rif" class="form-label">Número de Rif</label>
-                                                        <input name="proveedor_rif" type="text" class="form-control" value="<?= $datos["proveedor_rif"] ?>" id="codigo" placeholder="Entre su numero de rif, ejemplo: J12304567890" maxlength="20" required>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <div class="col-lg-2">
-                                                    <div class="mb-3">
-                                                        <label for="proveedor_estatus" class="form-label">Estatus Actual</label>
-                                                        <select name="proveedor_estatus" class="form-control" required data-choices data-choices-text-unique-true id="tipo">
-                                                            <option value="1" <?php if ($datos["proveedor_estatus"] == 1) echo "selected"; ?>>Activo</option>
-                                                            <option value="0" <?php if ($datos["proveedor_estatus"] == 0) echo "selected"; ?>>Inactivo</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                                <!--end col-->
-                                                <?php
-                                                $createdAt = date("Y-m-d");
-                                                //echo $createdAt; 
-                                                ?>
-
-                                                <div class="col-lg-12">
-                                                    <div class="hstack gap-2 justify-content-end">
-                                                        <button type="submit" class="btn btn-primary">Actualizar el Proveedor</button>
-                                                        <a href="<?php echo APP_URL; ?>proveedorList/" class="btn btn-soft-success">Regresar</a>
-
-                                                    </div>
-                                                    <p class="has-text-centered pt-6">
-                                                        <small>Los campos marcados con
-                                                            <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                                    </p>
-                                                </div>
-                                                <!--end col-->
                                             </div>
-                                            <!--end row-->
+                                            <?php
+                                            $createdAt = date("Y-m-d");
+                                            //echo $createdAt; ?>
+                                            <div class="col-lg-12">
+                                                <div class="hstack gap-2 justify-content-end">
+                                                    <button type="submit" class="btn btn-primary">Actualizar el Producto</button>
+                                                    <a href="<?php echo APP_URL; ?>productList/" 
+                                                    class="btn btn-soft-success">Regresar</a>
+                                                    
+                                                </div>
+                                                <p class="has-text-centered pt-6">
+                                                    <small>Los campos marcados con 
+                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                </p>
+                                            </div>
+                                            <!--end col-->
+                                        </div>
+                                        <!--end row-->
                                         </form>
                                     </div>
                                     <!--end tab-pane-->
                                     <div class="tab-pane <?= $tab2 ?>" id="multimedia" role="tabpanel">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <form class="FormularioAjax" name="<?php echo $proveedor_tipo; ?>" 
-                                                action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" method="POST" 
+                                                <form class="FormularioAjax" name="<?php echo $product_tipo; ?>" 
+                                                action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" 
                                                 autocomplete="off" enctype="multipart/form-data">
-                                                    <input type="hidden" name="modulo_proveedor" value="actualizarFotoMasa">
-                                                    <input type="hidden" name="proveedor_id" value="<?php echo $datos['proveedor_id']; ?>">
+                                                    <input type="hidden" name="modulo_product" value="actualizarFotoMasa">
+                                                    <input type="hidden" name="product_id" value="<?php echo $datos['product_id']; ?>">
                                                     <input type="hidden" name="company_id" value="<?php echo $datos['company_id']; ?>">
                                                     <input type="hidden" name="tab" value="multimedia">
                                                     <div class="card-body p-4">
@@ -394,7 +491,7 @@ if ($mysqli->connect_errno) {
                                                             <input class="form-control" type="file" name="archivo[4]"></label>
                                                         <br>
                                                         <button class="btn btn-success" type="submit">Enviar</button>
-                                                        <a href="<?php echo APP_URL; ?>proveedorList/" class="btn btn-soft-success">Regresar</a>
+                                                        <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
                                                     </div>
                                                 </form>
                                                 <hr class="my-4">
@@ -403,18 +500,18 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo $proveedor_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_card;
+                                                            <img src="<?php echo $product_card == "nophoto.jpg"
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/productos/".$product_card;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_card" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                <input id="profile-img-file-input" name="product_card" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
                                                         <strong>
                                                             <h4 class="fs-16 mb-1">Tarjeta - Card</h4>
                                                         </strong>
-                                                        <p class="text-muted mb-0"><?php echo $datos['proveedor_card'] . " Item # " . $datos['proveedor_id']; ?></p>
+                                                        <p class="text-muted mb-0"><?php echo $datos['product_card'] . " Item # " . $datos['product_id']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -423,17 +520,16 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo $proveedor_card == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_banner1;
+                                                            <img src="<?php echo $product_card == "nophoto.jpg"
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/productos/".$product_banner1;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_banner1" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                <input id="profile-img-file-input" name="product_banner1" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
-
                                                         <h5 class="fs-16 mb-1">Banner #1</h5>
-                                                        <p class="text-muted mb-0"><?php echo $datos['proveedor_banner1'] . " Item # " . $datos['proveedor_id']; ?></p>
+                                                        <p class="text-muted mb-0"><?php echo $datos['product_banner1'] . " Item # " . $datos['product_id']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -444,17 +540,17 @@ if ($mysqli->connect_errno) {
 
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
 
-                                                            <img src="<?php echo $proveedor_banner2 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/". $proveedor_banner2;
+                                                            <img src="<?php echo $product_banner2 == "nophoto.jpg"
+                                                                            ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                            : APP_URL."app/views/fotos/company/$company_id/productos/". $product_banner2;
                                                                         ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_banner2" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                <input id="profile-img-file-input" name="product_banner2" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
 
                                                         <h5 class="fs-16 mb-1">Banner #2</h5>
-                                                        <p class="text-muted mb-0"><?php echo $datos['proveedor_banner2'] . " Item # " . $datos['proveedor_id']; ?></p>
+                                                        <p class="text-muted mb-0"><?php echo $datos['product_banner2'] . " Item # " . $datos['product_id']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -463,17 +559,17 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
-                                                            <img src="<?php echo $proveedor_banner3 == "nophoto.jpg"
-                                                                            ? "<?php echo APP_URL; ?>app/views/fotos/nophoto.jpg"
-                                                                            : "<?php echo APP_URL; ?>app/views/fotos/company/$company_id/proveedores/".$proveedor_banner3;
-                                                                        ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                            <img src="<?php echo $product_banner3 == "nophoto.jpg"
+                                                                ? APP_URL."app/views/fotos/nophoto.jpg"
+                                                                : APP_URL."app/views/fotos/company/$company_id/productos/".$product_banner3;
+                                                            ?>" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_banner3" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                <input id="profile-img-file-input" name="product_banner3" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
 
                                                         <h5 class="fs-16 mb-1">Banner #3</h5>
-                                                        <p class="text-muted mb-0"><?php echo $datos['proveedor_banner3'] . " Item # " . $datos['proveedor_id']; ?></p>
+                                                        <p class="text-muted mb-0"><?php echo $datos['product_banner3'] . " Item # " . $datos['product_id']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -481,16 +577,14 @@ if ($mysqli->connect_errno) {
                                             <div class="col-lg-3">
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
-
                                                         <div class="profile-user position-relative d-inline-block mx-auto  mb-4">
                                                             <img src="<?php echo APP_URL; ?>app/views/fotos/pdf.jpg" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_pdf" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
+                                                                <input id="profile-img-file-input" name="product_pdf" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
-
                                                         <h5 class="fs-16 mb-1">Archivo PDF</h5>
-                                                        <p class="text-muted mb-0"><?php echo $datos['proveedor_pdf'] . " Item # " . $datos['proveedor_id']; ?></p>
+                                                        <p class="text-muted mb-0"><?php echo $datos['product_pdf'] . " Item # " . $datos['product_id']; ?></p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -498,25 +592,24 @@ if ($mysqli->connect_errno) {
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
-
                                     <div class="tab-pane <?= $tab3 ?>" id="masinformacion" role="tabpanel">
                                         <div class="row">
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
                                             method="POST" autocomplete="off">
-                                                <input type="hidden" name="modulo_proveedor" value="actualizarMasInformacion">
-                                                <input type="hidden" name="proveedor_id" value="<?= $proveedor_id; ?>">
+                                                <input type="hidden" name="modulo_product" value="actualizarMasInformacion">
+                                                <input type="hidden" name="product_id" value="<?= $product_id; ?>">
                                                 <input type="hidden" name="tab" value="masinformacion">
                                                 <div class="row">
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
                                                             <label for="codigo" class="form-label">Código Negocio</label>
-                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="proveedor_id" value="<?php echo $datos['proveedor_id']; ?>" maxlength="40" disabled>
+                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="product_id" value="<?php echo $datos['product_id']; ?>" maxlength="40" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_name" class="form-label">Nombre del Negocio</label>
-                                                            <input name="proveedor_name" type="text" class="form-control" id="proveedor_name" value="<?php echo $datos['proveedor_name']; ?>" disabled>
+                                                            <label for="product_name" class="form-label">Nombre del Negocio</label>
+                                                            <input name="product_name" type="text" class="form-control" id="product_name" value="<?php echo $datos['product_name']; ?>" disabled>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -526,7 +619,7 @@ if ($mysqli->connect_errno) {
                                                     ?>
                                                         <div class="col-lg-2">
                                                             <div class="mb-3">
-                                                                <label for="proveedor_red" class="form-label">
+                                                                <label for="product_red" class="form-label">
                                                                     <?php if ($i == 0) {
                                                                         echo "<strong>";
                                                                     } ?>
@@ -535,22 +628,22 @@ if ($mysqli->connect_errno) {
                                                                         echo "</strong>";
                                                                     } ?>
                                                                 </label>
-                                                                <select name="proveedor_red<?= $i + 1 ?>" class="form-control" required data-choices data-choices-text-unique-true id="proveedor_red<?= $i + 1; ?>">
-                                                                    <option value="facebook" <?php if ($datos['proveedor_red' . ($i + 1)] == 'facebook') echo "selected" ?>>facebook</option>
-                                                                    <option value="instagram" <?php if ($datos['proveedor_red' . ($i + 1)] == 'instagram') echo "selected" ?>>instagram</option>
-                                                                    <option value="twitterx" <?php if ($datos['proveedor_red' . ($i + 1)] == 'twitterx') echo "selected" ?>>twitterx</option>
-                                                                    <option value="tiktok" <?php if ($datos['proveedor_red' . ($i + 1)] == 'tiktok') echo "selected" ?>>tiktok</option>
-                                                                    <option value="youtube" <?php if ($datos['proveedor_red' . ($i + 1)] == 'youtube') echo "selected" ?>>youtube</option>
-                                                                    <option value="pinterest" <?php if ($datos['proveedor_red' . ($i + 1)] == 'pinterest') echo "selected" ?>>pinterest</option>
-                                                                    <option value="linkedin" <?php if ($datos['proveedor_red' . ($i + 1)] == 'linkedin') echo "selected" ?>>linkedin</option>
+                                                                <select name="product_red<?= $i + 1 ?>" class="form-control" required data-choices data-choices-text-unique-true id="product_red<?= $i + 1; ?>">
+                                                                    <option value="facebook" <?php if ($datos['product_red' . ($i + 1)] == 'facebook') echo "selected" ?>>facebook</option>
+                                                                    <option value="instagram" <?php if ($datos['product_red' . ($i + 1)] == 'instagram') echo "selected" ?>>instagram</option>
+                                                                    <option value="twitterx" <?php if ($datos['product_red' . ($i + 1)] == 'twitterx') echo "selected" ?>>twitterx</option>
+                                                                    <option value="tiktok" <?php if ($datos['product_red' . ($i + 1)] == 'tiktok') echo "selected" ?>>tiktok</option>
+                                                                    <option value="youtube" <?php if ($datos['product_red' . ($i + 1)] == 'youtube') echo "selected" ?>>youtube</option>
+                                                                    <option value="pinterest" <?php if ($datos['product_red' . ($i + 1)] == 'pinterest') echo "selected" ?>>pinterest</option>
+                                                                    <option value="linkedin" <?php if ($datos['product_red' . ($i + 1)] == 'linkedin') echo "selected" ?>>linkedin</option>
                                                                 </select>
                                                             </div>
                                                         </div>
                                                         <!--end col-->
                                                         <div class="col-lg-2">
                                                             <div class="mb-3">
-                                                                <label for="proveedor_red_valor<?= $i + 1; ?>" class="form-label">URL Red Social <?= $i + 1; ?></label>
-                                                                <input name="proveedor_red_valor<?= $i + 1; ?>" type="text" class="form-control" value="<?= $datos["proveedor_red_valor" . ($i + 1)] ?>" id="proveedor_red_valor<?= $i + 1; ?>" placeholder="Red<?= $i + 1; ?> selección" required />
+                                                                <label for="product_red_valor<?= $i + 1; ?>" class="form-label">URL Red Social <?= $i + 1; ?></label>
+                                                                <input name="product_red_valor<?= $i + 1; ?>" type="text" class="form-control" value="<?= $datos["product_red_valor" . ($i + 1)] ?>" id="product_red_valor<?= $i + 1; ?>" placeholder="Red<?= $i + 1; ?> selección" required />
                                                             </div>
                                                         </div>
                                                         <!--end col-->
@@ -560,30 +653,30 @@ if ($mysqli->connect_errno) {
                                                     <hr>
                                                     <div class="col-lg-5">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_web" class="form-label">Página Web del negocio</label>
-                                                            <input name="proveedor_web" type="text" class="form-control" value="<?= $datos["proveedor_web"] ?>" id="proveedor_web" placeholder="Entre Pagina web del negocio" maxlength="240">
+                                                            <label for="product_web" class="form-label">Página Web del negocio</label>
+                                                            <input name="product_web" type="text" class="form-control" value="<?= $datos["product_web"] ?>" id="product_web" placeholder="Entre Pagina web del negocio" maxlength="240">
                                                         </div>
                                                     </div>
                                                     <hr>
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_youtube_index" class="form-label">
+                                                            <label for="product_youtube_index" class="form-label">
                                                                 <strong>Video de Youtube</strong></label>
-                                                            <input name="proveedor_youtube_index" type="text" class="form-control" value="<?= $datos["proveedor_youtube_index"] ?>" id="proveedor_youtube_index" placeholder="Valor indice del video" />
+                                                            <input name="product_youtube_index" type="text" class="form-control" value="<?= $datos["product_youtube_index"] ?>" id="product_youtube_index" placeholder="Valor indice del video" />
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_logo_witdh" class="form-label">Ancho del Logo </label>
-                                                            <input name="proveedor_logo_witdh" type="number" class="form-control" value="<?= $datos["proveedor_logo_witdh"] ?>" id="proveedor_logo_witdh" placeholder="Coloque el ancho del logo" maxlength="10" required>
+                                                            <label for="product_logo_witdh" class="form-label">Ancho del Logo </label>
+                                                            <input name="product_logo_witdh" type="number" class="form-control" value="<?= $datos["product_logo_witdh"] ?>" id="product_logo_witdh" placeholder="Coloque el ancho del logo" maxlength="10" required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_logo_height" class="form-label">Alto del Logo </label>
-                                                            <input name="proveedor_logo_height" type="number" class="form-control" value="<?= $datos["proveedor_logo_height"] ?>" id="proveedor_logo_height" placeholder="Coloque el alto del logo" maxlength="10" required>
+                                                            <label for="product_logo_height" class="form-label">Alto del Logo </label>
+                                                            <input name="product_logo_height" type="number" class="form-control" value="<?= $datos["product_logo_height"] ?>" id="product_logo_height" placeholder="Coloque el alto del logo" maxlength="10" required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -612,23 +705,23 @@ if ($mysqli->connect_errno) {
                                         <div class="row">
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
                                                 method="POST" autocomplete="off">
-                                                <input type="hidden" name="modulo_proveedor" value="actualizarZonaHoraria">
-                                                <input type="hidden" name="proveedor_id" value="<?= $proveedor_id; ?>">
+                                                <input type="hidden" name="modulo_product" value="actualizarZonaHoraria">
+                                                <input type="hidden" name="product_id" value="<?= $product_id; ?>">
                                                 <input type="hidden" name="tab" value="horario">
-                                                <input type="hidden" name="proveedor_horario_desde" value="<?= $datos['proveedor_horario_desde'] ?>">
-                                                <input type="hidden" name="proveedor_horario_hasta" value="<?= $datos['proveedor_horario_hasta'] ?>">
+                                                <input type="hidden" name="product_horario_desde" value="<?= $datos['product_horario_desde'] ?>">
+                                                <input type="hidden" name="product_horario_hasta" value="<?= $datos['product_horario_hasta'] ?>">
 
                                                 <div class="row">
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
                                                             <label for="codigo" class="form-label">Código Negocio</label>
-                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="proveedor_id" value="<?php echo $datos['proveedor_id']; ?>" maxlength="40" disabled>
+                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="product_id" value="<?php echo $datos['product_id']; ?>" maxlength="40" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_name" class="form-label">Nombre del Negocio</label>
-                                                            <input name="proveedor_name" type="text" class="form-control" id="proveedor_name" value="<?php echo $datos['proveedor_name']; ?>" disabled>
+                                                            <label for="product_name" class="form-label">Nombre del Negocio</label>
+                                                            <input name="product_name" type="text" class="form-control" id="product_name" value="<?php echo $datos['product_name']; ?>" disabled>
                                                         </div>
                                                     </div>
                                                     <hr>
@@ -699,8 +792,8 @@ if ($mysqli->connect_errno) {
 
                                                                 $desdehora=[];
                                                                 $hastahora=[];
-                                                                $desdehora=explode("|", $datos['proveedor_horario_desde']);
-                                                                $hastahora=explode("|", $datos['proveedor_horario_hasta']);
+                                                                $desdehora=explode("|", $datos['product_horario_desde']);
+                                                                $hastahora=explode("|", $datos['product_horario_hasta']);
 
                                                                 ?>
                                                             </select>
@@ -768,8 +861,8 @@ if ($mysqli->connect_errno) {
                                         <div class="row">
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
                                                 method="POST" autocomplete="off">
-                                                <input type="hidden" name="modulo_proveedor" value="actualizarUbicacion">
-                                                <input type="hidden" name="proveedor_id" value="<?= $proveedor_id; ?>">
+                                                <input type="hidden" name="modulo_product" value="actualizarUbicacion">
+                                                <input type="hidden" name="product_id" value="<?= $product_id; ?>">
                                                 <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                                 <input type="hidden" name="tab" value="ubicacion">
                                                 
@@ -777,13 +870,13 @@ if ($mysqli->connect_errno) {
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
                                                             <label for="codigo" class="form-label">Código Negocio</label>
-                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="proveedor_id" value="<?php echo $datos['proveedor_id']; ?>" maxlength="40" disabled>
+                                                            <input name="codigo" type="text" class="form-control" name="codigo" id="product_id" value="<?php echo $datos['product_id']; ?>" maxlength="40" disabled>
                                                         </div>
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
-                                                            <label for="proveedor_name" class="form-label">Nombre del Negocio</label>
-                                                            <input name="proveedor_name" type="text" class="form-control" id="proveedor_name" value="<?php echo $datos['proveedor_name']; ?>" disabled>
+                                                            <label for="product_name" class="form-label">Nombre del Negocio</label>
+                                                            <input name="product_name" type="text" class="form-control" id="product_name" value="<?php echo $datos['product_name']; ?>" disabled>
                                                         </div>
                                                     </div>
                                                     <hr>
