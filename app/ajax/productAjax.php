@@ -28,7 +28,7 @@
 			echo $insProducto->actualizarFotoMasaControlador();
 		}
 	}else{
-		//echo "fin de sesion";
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "fin de sesion product";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}

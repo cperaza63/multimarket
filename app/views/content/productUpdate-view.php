@@ -16,16 +16,34 @@ if ($mysqli->connect_errno) {
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
-        
             <?php
+            use app\controllers\proveedorController;
+            use app\controllers\controlController;
+            use app\controllers\marcaController;
+            use app\controllers\categoryController;
+            use app\controllers\companyController;
             $product_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "company_products", "product_id", $product_id);
             if ($datos->rowCount() == 1) {
                 $datos = $datos->fetch();
                 $product_modelo = $datos['product_modelo'];
                 $company_id = $datos['company_id'];
+                // busco el iva del a empresa
+                $company_iva = 0;
+                $companyController = new companyController();
+                $company_actual = $companyController->seleccionarDatos("Unico", "company", "company_id", $company_id);
+                if ($company_actual->rowCount() == 1) {
+                    $datos_company = $company_actual->fetch();
+                    $company_iva = $datos_company['company_iva'];
+                }
                 $product_name   = $datos['product_name'];
+                $product_precio   = $datos['product_precio'];
                 $product_description   = $datos['product_description'];
+                if($datos['product_tax'] == 0 ){
+                    $product_tax = $company_iva;
+                }else{
+                    $product_tax = $datos['product_tax'];
+                }
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
 
@@ -61,16 +79,12 @@ if ($mysqli->connect_errno) {
                 $boton_accion = "Agregar";
                 $pasa = 0;
             }
-            use app\controllers\proveedorController;
-            use app\controllers\controlController;
-            use app\controllers\marcaController;
-            use app\controllers\categoryController;
-            
             $proveedorController = new proveedorController();
             $proveedores = $proveedorController->listarTodosProveedorControlador($company_id, "*");
             //
             $controlController = new controlController();
             $unidades = $controlController->obtenerListaMarketControlador("unidades");
+            $unidad = $controlController-> obtenerUnItemControlador($datos['product_unidad']);
             //
             $marcaController = new marcaController();
             $marcas = $marcaController->listarTodosMarcaControlador($company_id, "*");
@@ -598,10 +612,12 @@ if ($mysqli->connect_errno) {
                                     <!--end tab-pane-->
                                     <div class="tab-pane <?= $tab3 ?>" id="masinformacion" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                                             method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_product" value="actualizarMasInformacion">
                                                 <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                                <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                                <input type="hidden" name="product_precio" value="<?= $product_precio; ?>">
                                                 <input type="hidden" name="tab" value="masinformacion">
                                                 <div class="row">
                                                     <div class="col-lg-2">
@@ -610,77 +626,152 @@ if ($mysqli->connect_errno) {
                                                             <input name="codigo" type="text" class="form-control" name="codigo" id="product_id" value="<?php echo $datos['product_id']; ?>" maxlength="40" disabled>
                                                         </div>
                                                     </div>
-                                                    <div class="col-lg-6">
+                                                    <div class="col-lg-4">
                                                         <div class="mb-3">
                                                             <label for="product_name" class="form-label">Nombre del Negocio</label>
                                                             <input name="product_name" type="text" class="form-control" id="product_name" value="<?php echo $datos['product_name']; ?>" disabled>
                                                         </div>
                                                     </div>
-                                                    <hr>
-                                                    <?php
-                                                    $vector = [1, 2, 3];
-                                                    for ($i = 0; $i < 3; $i++) {
-                                                    ?>
-                                                        <div class="col-lg-2">
-                                                            <div class="mb-3">
-                                                                <label for="product_red" class="form-label">
-                                                                    <?php if ($i == 0) {
-                                                                        echo "<strong>";
-                                                                    } ?>
-                                                                    Red Social #
-                                                                    <?php if ($i == 0) {
-                                                                        echo "</strong>";
-                                                                    } ?>
-                                                                </label>
-                                                                <select name="product_red<?= $i + 1 ?>" class="form-control" required data-choices data-choices-text-unique-true id="product_red<?= $i + 1; ?>">
-                                                                    <option value="facebook" <?php if ($datos['product_red' . ($i + 1)] == 'facebook') echo "selected" ?>>facebook</option>
-                                                                    <option value="instagram" <?php if ($datos['product_red' . ($i + 1)] == 'instagram') echo "selected" ?>>instagram</option>
-                                                                    <option value="twitterx" <?php if ($datos['product_red' . ($i + 1)] == 'twitterx') echo "selected" ?>>twitterx</option>
-                                                                    <option value="tiktok" <?php if ($datos['product_red' . ($i + 1)] == 'tiktok') echo "selected" ?>>tiktok</option>
-                                                                    <option value="youtube" <?php if ($datos['product_red' . ($i + 1)] == 'youtube') echo "selected" ?>>youtube</option>
-                                                                    <option value="pinterest" <?php if ($datos['product_red' . ($i + 1)] == 'pinterest') echo "selected" ?>>pinterest</option>
-                                                                    <option value="linkedin" <?php if ($datos['product_red' . ($i + 1)] == 'linkedin') echo "selected" ?>>linkedin</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <!--end col-->
-                                                        <div class="col-lg-2">
-                                                            <div class="mb-3">
-                                                                <label for="product_red_valor<?= $i + 1; ?>" class="form-label">URL Red Social <?= $i + 1; ?></label>
-                                                                <input name="product_red_valor<?= $i + 1; ?>" type="text" class="form-control" value="<?= $datos["product_red_valor" . ($i + 1)] ?>" id="product_red_valor<?= $i + 1; ?>" placeholder="Red<?= $i + 1; ?> selección" required />
-                                                            </div>
-                                                        </div>
-                                                        <!--end col-->
-                                                    <?php
-                                                    }
-                                                    ?>
-                                                    <hr>
-                                                    <div class="col-lg-5">
+                                                    <div class="col-lg-2">
                                                         <div class="mb-3">
-                                                            <label for="product_web" class="form-label">Página Web del negocio</label>
-                                                            <input name="product_web" type="text" class="form-control" value="<?= $datos["product_web"] ?>" id="product_web" placeholder="Entre Pagina web del negocio" maxlength="240">
+                                                            <label for="product_unidad" class="form-label">Unidad de medida</label>
+                                                            <input name="product_unidad" type="text" class="form-control" id="product_unidad" value="<?php echo $unidad['nombre']; ?>" disabled>
                                                         </div>
                                                     </div>
-                                                    <hr>
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-2">
                                                         <div class="mb-3">
-                                                            <label for="product_youtube_index" class="form-label">
-                                                                <strong>Video de Youtube</strong></label>
-                                                            <input name="product_youtube_index" type="text" class="form-control" value="<?= $datos["product_youtube_index"] ?>" id="product_youtube_index" placeholder="Valor indice del video" />
+                                                            <label for="product_margen_utilidad" class="form-label">Precio final</label>
+                                                            <input name="product_precio_final" type="number" class="form-control" value="<?= $datos["product_precio"] ?>" id="product_precio" placeholder="Calculado $" maxlength="20" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                <div class="mb-3">
+                                                    <label for="product_inventariable" class="form-label">Es inventariable?</label>
+                                                    <select name="product_inventariable" class="form-control" disabled 
+                                                    data-choices data-choices-text-unique-true id="tipo">
+                                                        <option value="0"
+                                                        <?=$datos['product_inventariable'] == "0" ?"selected":""?>
+                                                        >No inventariable</option>
+                                                        <option value="1" 
+                                                        <?=$datos['product_inventariable'] == "1" ?"selected":""?>
+                                                        >Es inventariable</option>
+                                                        <option value="2" 
+                                                        <?=$datos['product_inventariable'] == "2" ?"selected":""?>
+                                                        Producto digital</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <!--end col-->
+                                                    <hr>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_costo" class="form-label">Costo del producto</label>
+                                                            <input name="product_costo" type="number" class="form-control" value="<?= $datos["product_costo"] ?>" id="product_web" placeholder="Entre el costo $" maxlength="240">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_margen_utilidad" class="form-label">Margen de utilidad</label>
+                                                            <input name="product_margen_utilidad" type="number" class="form-control" value="<?= $datos["product_margen_utilidad"] ?>" id="product_margen_utilidad" placeholder="Entre el margen de utilidad $" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_stock" class="form-label">Stock atual</label>
+                                                            <input name="product_stock" type="number" class="form-control" value="<?= $datos["product_stock"] ?>" id="product_stock" placeholder="Stock actual" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_reorden" class="form-label">Punto de reorden</label>
+                                                            <input name="product_reorden" type="number" class="form-control" value="<?= $datos["product_reorden"] ?>" id="product_reorden" placeholder="Reordenamiento" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_pedido" class="form-label">Cantidad a reordenar</label>
+                                                            <input name="product_pedido" type="number" class="form-control" value="<?= $datos["product_pedido"] ?>" id="product_pedido" placeholder="Entre cantidad" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_tax" class="form-label">Aplicar impuesto %</label>
+                                                            <input name="product_tax" type="number" class="form-control" value="<?= $product_tax ?>" id="product_pedido" placeholder="Entre porcentaje de impuesta IVA" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_excento_tax" class="form-label">Excento de impuesto</label>
+                                                            <select name="product_excento_tax" class="form-control" 
+                                                                data-choices data-choices-text-unique-true id="product_excento_tax">
+                                                                <option value="0"
+                                                                <?=$datos['product_excento_tax'] == "0" ?"selected":""?>
+                                                                >No aplica</option>
+                                                                <option value="1" 
+                                                                <?=$datos['product_excento_tax'] == "1" ?"selected":""?>
+                                                                >Si aplica</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_peso" class="form-label">Peso en kgs</label>
+                                                            <input name="product_peso" type="number" class="form-control" value="<?= $datos["product_peso"] ?>" id="product_peso" placeholder="Peso en kgs" maxlength="20">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_mostrar_web" class="form-label">Mostrar en la web</label>
+                                                            <select name="product_mostrar_web" class="form-control" required 
+                                                                data-choices data-choices-text-unique-true id="product_mostrar_web">
+                                                                <option value="1" 
+                                                                <?=$datos['product_mostrar_web'] == "1" ?"selected":""?>
+                                                                >Si</option>
+                                                                <option value="0"
+                                                                <?=$datos['product_mostrar_web'] == "0" ?"selected":""?>
+                                                                >No</option>
+                                                                
+                                                            </select>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_mostrar_stock0" class="form-label">Mostrar con stock 0</label>
+                                                            <select name="product_mostrar_stock0" class="form-control" 
+                                                                data-choices data-choices-text-unique-true id="product_mostrar_stock0">
+                                                                <option value="">Escoja una opción</option>
+                                                                <option value="0"
+                                                                <?=$datos['product_mostrar_stock0'] == "0" ?"selected":""?>
+                                                                >No aplica</option>
+                                                                <option value="1" 
+                                                                <?=$datos['product_mostrar_stock0'] == "1" ?"selected":""?>
+                                                                >Si aplica</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-2">
+                                                        <div class="mb-3">
+                                                            <label for="product_width" class="form-label">Ancho de imagenes </label>
+                                                            <input name="product_width" type="number" class="form-control" 
+                                                            value="<?= $datos["product_width"] ?>" 
+                                                            id="product_witdh" 
+                                                            placeholder="Coloque el ancho de imagen" 
+                                                            maxlength="10" 
+                                                            required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
-                                                    <div class="col-lg-4">
+                                                    <div class="col-lg-2">
                                                         <div class="mb-3">
-                                                            <label for="product_logo_witdh" class="form-label">Ancho del Logo </label>
-                                                            <input name="product_logo_witdh" type="number" class="form-control" value="<?= $datos["product_logo_witdh"] ?>" id="product_logo_witdh" placeholder="Coloque el ancho del logo" maxlength="10" required>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3">
-                                                            <label for="product_logo_height" class="form-label">Alto del Logo </label>
-                                                            <input name="product_logo_height" type="number" class="form-control" value="<?= $datos["product_logo_height"] ?>" id="product_logo_height" placeholder="Coloque el alto del logo" maxlength="10" required>
+                                                            <label for="product_height" class="form-label">Alto de imagenes </label>
+                                                            <input name="product_height" type="number" class="form-control" 
+                                                            value="<?= $datos["product_height"] ?>" 
+                                                            id="product_height" 
+                                                            placeholder="Coloque el alto de imagen" 
+                                                            maxlength="10" 
+                                                            required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->
@@ -688,7 +779,7 @@ if ($mysqli->connect_errno) {
                                                     <div class="col-lg-12">
                                                         <div class="hstack gap-2 justify-content-end">
                                                             <button type="submit" class="btn btn-primary">Actualizar Mas Información</button>
-                                                            <a href="<?php echo APP_URL; ?>proveedorList/" class="btn btn-soft-success">Regresar</a>
+                                                            <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
 
                                                         </div>
                                                         <p class="has-text-centered pt-6">
@@ -706,14 +797,12 @@ if ($mysqli->connect_errno) {
                                     <!--end tab-pane-->
                                     <div class="tab-pane <?= $tab4 ?>" id="horario" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                                                 method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_product" value="actualizarZonaHoraria">
                                                 <input type="hidden" name="product_id" value="<?= $product_id; ?>">
                                                 <input type="hidden" name="tab" value="horario">
-                                                <input type="hidden" name="product_horario_desde" value="<?= $datos['product_horario_desde'] ?>">
-                                                <input type="hidden" name="product_horario_hasta" value="<?= $datos['product_horario_hasta'] ?>">
-
+                                                
                                                 <div class="row">
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
@@ -728,131 +817,150 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div class="col-lg-2">
-                                                        <div class="mb-3">
-                                                            <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
-                                                            <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                                <option value="0">Lunes</option>
-                                                                <option value="1">Martes</option>
-                                                                <option value="2">Miércoles</option>
-                                                                <option value="3">Jueves</option>
-                                                                <option value="4">Viernes</option>
-                                                                <option value="5">Sábado</option>
-                                                                <option value="6">Domingo</option>
+                                                   
+                                                    
+                                                    <table width="100%" border="0" cellspacing="10" class="datagrid">
+                                                        <tr>
+                                                            <td><span class="form-control">
+                                                            <select name="Tipo" class="form-control" id="Tipo" onChange="return dept_onchange(frmSelect)">
+                                                                <option value="0">Select</option>
+                                                                <%
+                                                        Sql = "Select * FROM Control WHERE COMPANY = "&SESSION("Company_ID")&" and Tipo = 10 and Tipo <> 0 ORDER BY CODIGO"
+                                                            Rsl.Open Sql, oMysql, 3, 3
+                                                            While (NOT Rsl.EOF)
+                                                                %>
+                                                                <option value="<%=(Rsl("Codigo").Value)%>"
+                                                                <%
+                                                                if RSL("CODIGO") = ucase(STIPO) then 
+                                                                    response.write("SELECTED") 
+                                                                else 
+                                                                    response.write("UNSELECTED")
+                                                                end if
+                                                                %>
+                                                            ><%=left(Rsl("Descrip"),40)%></option>
+                                                                <%
+                                                            Rsl.MoveNext()
+                                                            Wend
+                                                            Rsl.close
+                                            %>
                                                             </select>
-                                                        </div>
-                                                    </div>
-                                                    <!--end col-->
-                                                    <div class="col-lg-3">
-                                                        <div class="mb-3">
-                                                            <label for="hora_desde" class="form-label">
-                                                                <strong>Hora Desde</strong></label>
-                                                            <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                                <?php
-                                                                $tabla_horas = [];
-                                                                $tabla_minutos = ["00", "15", "30", "45"];
-                                                                $k = 0;
-                                                                for ($i = 0; $i <= 23; $i++) {
-                                                                    if ($i < 10) {
-                                                                        $i_text = "0" . $i;
-                                                                    } else {
-                                                                        $i_text = "" . $i;
-                                                                    };
-                                                                    for ($j = 0; $j <= 3; $j++) {
-                                                                        $k++;
-                                                                        $tabla_horas[$k] = $i_text . ":" . $tabla_minutos[$j];
-                                                                    ?>
-                                                                        <option value="<?= $tabla_horas[$k] ?>" <?= $tabla_horas[$k] == "08:00" ? "selected" : ""; ?>><?= "Entrando: " . $tabla_horas[$k] ?></option><?php
-                                                                    }
-                                                                }
-                                                                ?>
+                                                            <input name="Submit" type="submit" class="texto" id="Submit" title="refresh" value="refresh" />
+                                                            </span></td>
+                                                            <td><span class="form-control">
+                                                            <select name="Subtipo" class="texto" id="Subtipo" onChange="return dept_onchange(frmSelect)">
+                                                                <option value="0">Select Sub-cat.</option>
+                                                                <%
+                                                        Sql = "Select * FROM Control WHERE COMPANY = "&SESSION("Company_ID")&" and UNIDAD = '"&STIPO&"' AND Tipo = 11 and Tipo <> 0 ORDER BY CODIGO"
+                                                            Rsl.Open Sql, oMysql, 3, 3
+                                                            While (NOT Rsl.EOF)
+                                                                %>
+                                                                <option value="<%=(Rsl("Codigo").Value)%>"
+                                                                <%if ucase(RSL("CODIGO")) = sSUBTIPO then response.write("SELECTED")%>><%=left(Rsl("Descrip"),30)%></option>
+                                                                <%
+                                                            Rsl.MoveNext()
+                                                            Wend
+                                                            Rsl.close
+                                                            %>
                                                             </select>
-                                                        </div>
-                                                    </div>
-
-                                                    <div class="col-lg-3">
-                                                        <div class="mb-3">
-                                                            <label for="hora_hasta" class="form-label">
-                                                                <strong>Hora Hasta</strong></label>
-                                                            <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                                <?php
-                                                                $tabla_horas = [];
-                                                                $tabla_minutos = ["00", "15", "30", "45"];
-                                                                $k = 0;
-                                                                for ($i = 0; $i <= 23; $i++) {
-                                                                    if ($i < 10) {
-                                                                        $i_text = "0" . $i;
-                                                                    } else {
-                                                                        $i_text = "" . $i;
-                                                                    };
-                                                                    for ($j = 0; $j <= 3; $j++) {
-                                                                        $k++;
-                                                                        $tabla_horas[$k] = $i_text . ":" . $tabla_minutos[$j];
-                                                                ?>
-                                                                        <option value="<?= $tabla_horas[$k] ?>" <?= $tabla_horas[$k] == "18:00" ? "selected" : ""; ?>><?= "Saliendo: " . $tabla_horas[$k] ?></option><?php
-                                                                    }
-                                                                }
-
-                                                                $desdehora=[];
-                                                                $hastahora=[];
-                                                                $desdehora=explode("|", $datos['product_horario_desde']);
-                                                                $hastahora=explode("|", $datos['product_horario_hasta']);
-
-                                                                ?>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-4">
-                                                        <div class="mb-3">
-                                                            <label for="accion" class="form-label">
-                                                                <strong>Acción</strong></label><br>
-                                                            <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
-                                                            <button type="submit" name="submit" value="semana" class="btn btn-danger">Aplica a semana</button>
-                                                        </div>
-                                                    </div>
-                                                    <hr>
-                                                    <div class="col-lg-12">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="row">Horario</th>
-                                                                    <td>Lunes</td>
-                                                                    <td>Martes</td>
-                                                                    <td>Miercoles</td>
-                                                                    <td>Jueves</td>
-                                                                    <td>Viernes</td>
-                                                                    <td>Sábado</td>
-                                                                    <td>Domingo</td>
+                                                            </span></td>
+                                                            </tr>
+                                                        <tr>
+                                                            <td colspan="2"><table width="100%" border="0" cellspacing="10">
+                                                            <tr>
+                                                                <td colspan="2" class="form-control"><span class="texto">Escoja los productos que quiere mostrar cuando compra  Item</span></td>
                                                                 </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Entrada</th>
-                                                                    <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$desdehora[$i];?></td><?php
-                                                                    }
-                                                                    ?>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">Salida</th>
-                                                                    <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$hastahora[$i];?></td><?php
-                                                                    }
-                                                                    ?>
-                                                                </tr>
-                                                            </tbody>
+                                                            <tr>
+                                                                <td width="14%"><span class="texto">Items</span>:</td>
+                                                                <td width="86%"><select name="producto" size="8" multiple="multiple" class="texto" id="producto">
+                                                                <%
+                                                            if stipo ="0" and sSubtipo = "0" then
+                                                                stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
+                                                            else
+                                                                if stipo <> "0" and sSubtipo <> "0" then
+                                                                    stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' AND type = '"&stipo&"' and type2 = '"&sSubtipo&"' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
+                                                                else
+                                                                    if stipo <> "0" and sSubtipo = "0" then					  
+                                                                        stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' AND type = '"&sTipo&"' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
+                                                                    else
+                                                                        stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "  
+                                                                    end if
+                                                                end if
+                                                            end if
+                                                                '
+                                                            
+                                                            Sql = stexto
+                                                'response.write "===" & sql
+                                                            Rsl.Open Sql, oMysql, 3, 3
+                                                            sihay = "N"
+                                                            While (NOT Rsl.EOF)
+                                                                sihay = "Y"
+                                                                %>
+                                                                <option value="<%=(Rsl("epi").Value)%>" 
+                                                            <%
+                                                                if SESSION("CodProd") = Rsl("epi").Value then 
+                                                                    response.write("SELECTED") 
+                                                                else 
+                                                                    response.write("UNSELECTED")
+                                                                end if
+                                                                %>
+                                                                ><%= Rsl("epi") & " - (" & left(Rsl("nombre"),25)&") - " &  Rsl("type") %></option>
+                                                                <%
+                                                            Rsl.MoveNext()
+                                                            Wend
+                                                        Rsl.close
+                                                        '
+                                                        SPASA_PROGRAMA=1
+                                                        sql = "select * from perfiles where user_id = " & session("user_id") & " and UCASE(programa) = 'MODIFICAR STOCK Y TRANSITO DE PRODUCTOS'"
+                                                        Rsl5.Open Sql, oMysql, 3, 3
+                                                        if not Rsl5.eof then
+                                                            SPASA_PROGRAMA=0	
+                                                        end if
+                                                        rsl5.close
+                                                        %>
+                                                                </select></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td><span class="form-control">
+                                                                <input name="Submit" type="submit" class="texto" id="Submit" value="Incluir" />
+                                                                </span></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td><span class="texto">Interes</span>:</td>
+                                                                <td><select name="productos_interes" size="8" multiple="multiple" class="texto" id="productos_interes">
+                                                                <%
+                                                            sql = "SELECT * FROM items_interes where Producto = '"& SESSION("CodProd") &"' and company_id = " & SESSION("company_id") & " ORDER BY tipo, subtipo, epi"
+                                                            'response.write sql
+                                                            Rsl.Open Sql, oMysql, 3, 3
+                                                            sihay = "N"
+                                                            While (NOT Rsl.EOF)
+                                                                sihay = "Y"
+                                                                %>
+                                                                <option value="<%=Rsl("epi")%>"><%=Rsl("Epi") & " - " & Rsl("tipo") & "/" & Rsl("Subtipo")%></option>
+                                                                <%
+                                                            Rsl.MoveNext()
+                                                            Wend
+                                                        Rsl.close
+                                                        '
+                                                        SPASA_PROGRAMA=1
+                                                        sql = "select * from perfiles where user_id = " & session("user_id") & " and UCASE(programa) = 'MODIFICAR STOCK Y TRANSITO DE PRODUCTOS'"
+                                                        Rsl5.Open Sql, oMysql, 3, 3
+                                                        if not Rsl5.eof then
+                                                            SPASA_PROGRAMA=0	
+                                                        end if
+                                                        rsl5.close
+                                                        %>
+                                                                </select></td>
+                                                            </tr>
+                                                            <tr>
+                                                                <td>&nbsp;</td>
+                                                                <td><span class="form-control">
+                                                                <input name="Submit" type="submit" class="texto" id="Submit6" value="Excluir" />
+                                                                </span></td>
+                                                            </tr>
+                                                            </table></td>
+                                                            </tr>
                                                         </table>
-                                                        <div class="hstack gap-2 justify-content-end">
-                                                            <a href="<?php echo APP_URL; ?>proveedorList/" class="btn btn-soft-success">Regresar</a>
-                                                        </div>
-                                                        <p class="has-text-centered pt-6">
-                                                            <small>Los campos marcados con
-                                                                <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                                        </p>
-                                                    </div>
-                                                    <!--end col-->
                                                 </div>
                                                 <!--end row-->
                                             </form>
@@ -862,7 +970,7 @@ if ($mysqli->connect_errno) {
                                     <!--end tab-pane-->
                                     <div class="tab-pane <?= $tab5 ?>" id="ubicacion" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 
+                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                                                 method="POST" autocomplete="off">
                                                 <input type="hidden" name="modulo_product" value="actualizarUbicacion">
                                                 <input type="hidden" name="product_id" value="<?= $product_id; ?>">
@@ -888,7 +996,7 @@ if ($mysqli->connect_errno) {
                                                     ?>
                                                     <hr>
                                                     <div class="hstack gap-2 justify-content-end">
-                                                        <a href="<?php echo APP_URL; ?>proveedorList/" class="btn btn-soft-success">Regresar</a>
+                                                        <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
                                                     </div>
                                                     <p class="has-text-centered pt-6">
                                                         <small>Los campos marcados con

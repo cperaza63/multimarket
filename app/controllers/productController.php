@@ -322,20 +322,25 @@
 		public function actualizarMasInformacionControlador(){
 			# Almacenando datos#
 			$product_id=$this->limpiarCadena($_POST['product_id']);
-			$product_red1 = $this->limpiarCadena($_POST['product_red1']);
-			$product_red_valor1 = $this->limpiarCadena($_POST['product_red_valor1']);
-			$product_red2 = $this->limpiarCadena($_POST['product_red2']);
-			$product_red_valor2 = $this->limpiarCadena($_POST['product_red_valor2']);
-			$product_red3 = $this->limpiarCadena($_POST['product_red3']);
-			$product_red_valor3 = $this->limpiarCadena($_POST['product_red_valor3']);
-		    $product_web = $this->limpiarCadena($_POST['product_web']);
-		    $product_youtube_index = $this->limpiarCadena($_POST['product_youtube_index']);
-		    $product_logo_witdh= $this->limpiarCadena($_POST['product_logo_witdh']);
-			$product_logo_height= $this->limpiarCadena($_POST['product_logo_height']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$product_precio=$this->limpiarCadena($_POST['product_precio']);
+			$product_costo = $this->limpiarCadena($_POST['product_costo']);
+			$product_margen_utilidad = $this->limpiarCadena($_POST['product_margen_utilidad']);
+			$product_stock = $this->limpiarCadena($_POST['product_stock']);
+			$product_reorden = $this->limpiarCadena($_POST['product_reorden']);
+			$product_pedido = $this->limpiarCadena($_POST['product_pedido']);
+			$product_tax = $this->limpiarCadena($_POST['product_tax']);
+		    $product_excento_tax = $this->limpiarCadena($_POST['product_excento_tax']);
+		    $product_peso = $this->limpiarCadena($_POST['product_peso']);
+		    $product_mostrar_web= $this->limpiarCadena($_POST['product_mostrar_web']);
+			$product_mostrar_stock0= $this->limpiarCadena($_POST['product_mostrar_stock0']);
+			$product_width= $this->limpiarCadena($_POST['product_width']);
+			$product_height= $this->limpiarCadena($_POST['product_height']);
 			# Verificando campos obligatorios 
-		    if($product_red1=="" || $product_red_valor1=="" || $product_red2=="" 
-			|| $product_red_valor2=="" || $product_red3=="" || $product_red_valor3==""
-			|| $product_web=="" || $product_logo_witdh==""|| $product_logo_height=="" 
+		    if($product_id=="" || $company_id=="" || $product_costo=="" 
+			|| $product_margen_utilidad=="" || $product_stock=="" || $product_reorden==""
+			|| $product_pedido=="" || $product_tax==""|| $product_excento_tax=="" || $product_peso==""
+			|| $product_mostrar_web=="" || $product_mostrar_stock0=="" || $product_width=="" || $product_height=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -346,58 +351,88 @@
 				return json_encode($alerta);
 		        exit();
 		    }
+
+			if($product_costo > 0 ){
+				if($product_margen_utilidad > 0 ){
+					$product_precio_final = $product_costo + 
+					($product_costo * ($product_margen_utilidad/100));
+				}else{
+					$product_precio_final = $product_costo;
+				}
+			}else{
+				$product_precio_final = $product_precio;
+			}
+
+			if( $product_excento_tax == 1 ){
+				$product_tax = 0;
+			}
 			//return json_encode($product_iva);
 			//exit();
 		    $product_datos_reg=[
 				[
-					"campo_nombre"=>"product_red1",
-					"campo_marcador"=>":Product_red1",
-					"campo_valor"=>$product_red1
+					"campo_nombre"=>"product_costo",
+					"campo_marcador"=>":Product_costo",
+					"campo_valor"=>$product_costo
 				],
 				[
-					"campo_nombre"=>"product_red2",
-					"campo_marcador"=>":Product_red2",
-					"campo_valor"=>$product_red2
+					"campo_nombre"=>"product_precio",
+					"campo_marcador"=>":Product_precio",
+					"campo_valor"=>$product_precio_final
 				],
 				[
-					"campo_nombre"=>"product_red3",
-					"campo_marcador"=>":Product_red3",
-					"campo_valor"=>$product_red3
+					"campo_nombre"=>"product_margen_utilidad",
+					"campo_marcador"=>":Product_margen_utilidad",
+					"campo_valor"=>$product_margen_utilidad
 				],
 				[
-					"campo_nombre"=>"product_red_valor1",
-					"campo_marcador"=>":Product_red_valor1",
-					"campo_valor"=>$product_red_valor1
+					"campo_nombre"=>"product_stock",
+					"campo_marcador"=>":Product_stock",
+					"campo_valor"=>$product_stock
 				],
 				[
-					"campo_nombre"=>"product_red_valor2",
-					"campo_marcador"=>":Product_valor2",
-					"campo_valor"=>$product_red_valor2
+					"campo_nombre"=>"product_reorden",
+					"campo_marcador"=>":Product_reorden",
+					"campo_valor"=>$product_reorden
 				],
 				[
-					"campo_nombre"=>"product_red_valor3",
-					"campo_marcador"=>":Product_red_valor3",
-					"campo_valor"=>$product_red_valor3
+					"campo_nombre"=>"product_pedido",
+					"campo_marcador"=>":Product_pedido",
+					"campo_valor"=>$product_pedido
 				],
 				[
-					"campo_nombre"=>"product_web",
-					"campo_marcador"=>":Product_web",
-					"campo_valor"=>$product_web
+					"campo_nombre"=>"product_tax",
+					"campo_marcador"=>":Product_tax",
+					"campo_valor"=>$product_tax
 				],
 				[
-					"campo_nombre"=>"product_logo_witdh",
-					"campo_marcador"=>":Product_logo_witdh",
-					"campo_valor"=>$product_logo_witdh
+					"campo_nombre"=>"product_excento_tax",
+					"campo_marcador"=>":Product_excento_tax",
+					"campo_valor"=>$product_excento_tax
 				],
 				[
-					"campo_nombre"=>"product_logo_height",
-					"campo_marcador"=>":Product_logo_height",
-					"campo_valor"=>$product_logo_height
+					"campo_nombre"=>"product_peso",
+					"campo_marcador"=>":Product_peso",
+					"campo_valor"=>$product_peso
 				],
 				[
-					"campo_nombre"=>"product_youtube_index",
-					"campo_marcador"=>":Product_youtube_index",
-					"campo_valor"=>$product_youtube_index
+					"campo_nombre"=>"product_mostrar_web",
+					"campo_marcador"=>":Product_mostrar_web",
+					"campo_valor"=>$product_mostrar_web
+				],
+				[
+					"campo_nombre"=>"product_mostrar_stock0",
+					"campo_marcador"=>":Product_mostrar_stock0",
+					"campo_valor"=>$product_mostrar_stock0
+				],
+				[
+					"campo_nombre"=>"product_width",
+					"campo_marcador"=>":Product_width",
+					"campo_valor"=>$product_width
+				],
+				[
+					"campo_nombre"=>"product_height",
+					"campo_marcador"=>":Product_height",
+					"campo_valor"=>$product_height
 				]
 			];
 			$condicion=[
