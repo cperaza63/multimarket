@@ -21,6 +21,12 @@
 		if($_POST['modulo_product']=="actualizarMasInformacion"){
 			echo $insProducto->actualizarMasInformacionControlador();
 		}
+		if($_POST['modulo_product']=="actualizarInteres"){
+			echo $insProducto->actualizarInteresControlador();
+		}
+		if($_POST['modulo_product']=="excluirInteres"){
+			echo $insProducto->excluirInteresControlador();
+		}
 		if($_POST['modulo_product']=="eliminarFoto"){
 			echo $insProducto->eliminarFotoProductControlador();
 		}

@@ -274,6 +274,25 @@
 			return $datos;
 			exit();
 		}
+		/*----------  Controlador listar proveedor  ----------*/
+		public function listarCategoriasProductControlador($company_id, $categoria, $subcategoria){
+			$company_id=$this->limpiarCadena($company_id); 
+			$categoria=$this->limpiarCadena($categoria);
+			$subcategoria=$this->limpiarCadena($subcategoria);
+			if( $categoria!="*" && $subcategoria!="*" ){
+				$consulta_datos="SELECT * FROM company_products WHERE company_id= $company_id AND product_categoria = $categoria AND product_subcat = $subcategoria ORDER BY product_name ASC";
+			}else{
+				if( $categoria!="*" ){
+					$consulta_datos="SELECT * FROM company_products WHERE company_id=$company_id AND product_categoria = $categoria ORDER BY product_name ASC";
+				}else{
+					$consulta_datos="SELECT * FROM company_products WHERE company_id=$company_id ORDER BY product_name ASC";
+				}
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
 		/*----------  Controlador eliminar proveedor  ----------*/
 		public function eliminarProductControlador(){
 			$id=$this->limpiarCadena($_POST['product_id']);
@@ -459,19 +478,12 @@
 			return json_encode($alerta);
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
-		public function actualizarZonaHorariaControlador(){
+		public function actualizarInteresControlador(){
 			$product_id=$this->limpiarCadena($_POST['product_id']);
-			$dia_semana = $this->limpiarCadena($_POST['dia_semana']);
-			$hora_desde = $this->limpiarCadena($_POST['hora_desde']);
-			$hora_hasta = $this->limpiarCadena($_POST['hora_hasta']);
-			$aplica_submit = $this->limpiarCadena($_POST['submit']);
-			$product_horario_desde = explode("|", $this->limpiarCadena($_POST['product_horario_desde']));
-			$product_horario_hasta = explode("|", $this->limpiarCadena($_POST['product_horario_hasta']));
-			$vector_desde = [];
-			$vector_hasta = [];
+			$company_id=$this->limpiarCadena($_POST['company_id']);
 			//
-			if($dia_semana=="" || $hora_desde=="" || $hora_hasta=="" 
-			|| $product_horario_desde=="" || $product_horario_hasta=="") {
+			if($product_id=="" || $company_id==""
+			) {
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
@@ -481,92 +493,62 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-			if($aplica_submit != "dia" && $aplica_submit != "semana"){
-				$alerta=[
+			if(is_array($_POST['product_list'] )){
+				foreach($_POST['product_list'] as $producto){
+					$product_datos_reg=[
+						[
+							"campo_nombre"=>"company_id",
+							"campo_marcador"=>":Company_id",
+							"campo_valor"=>$company_id
+						],
+						[
+							"campo_nombre"=>"product_id",
+							"campo_marcador"=>":Product_id",
+							"campo_valor"=>$product_id
+						],
+						[
+							"campo_nombre"=>"product_hijo",
+							"campo_marcador"=>":Product_hijo",
+							"campo_valor"=>$producto
+						]
+					];
+					$registrar_interes=$this->guardarDatos("company_productos_interes",$product_datos_reg);
+					
+				}
+			}
+			return true;
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function listarInteresesControlador($company_id, $product_id){
+			$product_id=$this->limpiarCadena($product_id);
+			$company_id=$this->limpiarCadena($company_id);
+			//
+			if($product_id=="" || $company_id==""
+			) {
+		        $alerta=[
 					"tipo"=>"simple",
-					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Debe presionar el button tipo de acción día o semana",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
-				exit();
-			}
-
-			if($aplica_submit == "dia"){
-				$cadena_desde = "";
-				$cadena_hasta = "";
-				for($i=0;$i<=6;$i++ ){
-					if($i == $dia_semana){
-						$vector_desde[$i] = $hora_desde;
-						$vector_hasta[$i] = $hora_hasta;
-					}else{
-						$vector_desde[$i] = $product_horario_desde[$i];
-						$vector_hasta[$i] = $product_horario_hasta[$i];
-					}
-					$cadena_desde = $cadena_desde . "|". $vector_desde[$i];
-					$cadena_hasta = $cadena_hasta . "|". $vector_hasta[$i];
+		        exit();
+		    }
+			$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_productos_interes a inner join company_products b on (a.product_hijo = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id ORDER BY product_name ASC";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function excluirInteresControlador(){
+			if(is_array($_POST['product_relacionados'] )){
+				foreach($_POST['product_relacionados'] as $interes){
+					$registrar_interes=$this->eliminarRegistro("company_productos_interes","interes_id",$interes);
 				}
-				$cadena_desde = substr($cadena_desde, 1, 100);
-				$cadena_hasta = substr($cadena_hasta, 1, 100);
-				//echo $cadena; //retorna 1,5,9,6,8
-				$product_datos_reg=[
-					[
-						"campo_nombre"=>"product_horario_desde",
-						"campo_marcador"=>":Product_horario_desde",
-						"campo_valor"=>$cadena_desde
-					],
-					[
-						"campo_nombre"=>"product_horario_hasta",
-						"campo_marcador"=>":Product_horario_hasta",
-						"campo_valor"=>$cadena_hasta
-					]
-				];
-			}else{
-				$cadena_desde = "";
-				$cadena_hasta = "";
-				for($i=0;$i<=6;$i++ ){
-					$cadena_desde = $cadena_desde . "|". $hora_desde;
-					$cadena_hasta = $cadena_hasta . "|". $hora_hasta;
-				}
-				$cadena_desde = substr($cadena_desde, 1, 100);
-				$cadena_hasta = substr($cadena_hasta, 1, 100);
-				//echo $cadena; //retorna 1,5,9,6,8
-				$product_datos_reg=[
-					[
-						"campo_nombre"=>"product_horario_desde",
-						"campo_marcador"=>":Product_horario_desde",
-						"campo_valor"=>$cadena_desde
-					],
-					[
-						"campo_nombre"=>"product_horario_hasta",
-						"campo_marcador"=>":Product_horario_hasta",
-						"campo_valor"=>$cadena_hasta
-					]
-				];
 			}
-
-			$condicion=[
-				"condicion_campo"=>"product_id",
-				"condicion_marcador"=>":Product_id",
-				"condicion_valor"=>$product_id
-			];
-
-			if($this->actualizarDatos("company_products", $product_datos_reg, $condicion)){
-				$alerta=[
-				"tipo"=>"recargar",
-				"titulo"=>"Producto actualizado",
-				"texto"=>"Los datos de información adicional ".$product_id." se actualizaron correctamente",
-				"icono"=>"success"
-				];
-			}else{
-				$alerta=[
-				"tipo"=>"simple",
-				"titulo"=>"Ocurrió un error inesperado",
-				"texto"=>"No hemos podido actualizar los datos de información adicional ".$product_id.", por favor intente nuevamente",
-				"icono"=>"error"
-			];
-			}
-			return json_encode($alerta);
+			return true;
+			exit();
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarUbicacionControlador(){

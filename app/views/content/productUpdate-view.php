@@ -17,7 +17,11 @@ if ($mysqli->connect_errno) {
     <div class="page-content">
         <div class="container-fluid">
             <?php
+            if(isset($_POST['tab'])){
+                $_SESSION['tab'] = $_POST['tab']; 
+            }   
             use app\controllers\proveedorController;
+            use app\controllers\productController;
             use app\controllers\controlController;
             use app\controllers\marcaController;
             use app\controllers\categoryController;
@@ -94,7 +98,21 @@ if ($mysqli->connect_errno) {
             if (!isset($_SESSION["tab"])) {
                 $_SESSION["tab"] = "";
             }
-            
+
+            $productController = new productController();
+            if ( isset( $_POST["buscar_productos"] )){
+                if ( $_POST['product_categoria']!="" && $_POST['product_subcat']!="" ){
+                    $product_list = $productController->listarCategoriasProductControlador($company_id, $_POST['product_categoria'], $_POST['product_subcat']);
+                }else{
+                    if ( $_POST['product_categoria']!="") {
+                        $product_list = $productController->listarCategoriasProductControlador($company_id, $_POST['product_categoria'], "*");
+                    }else{
+                        $product_list = $productController->listarCategoriasProductControlador($company_id, '*','*');
+                    }
+                }
+            }
+            // lleno la lista de intereses
+            $product_relacionados = $productController->listarInteresesControlador($company_id,  $product_id);
             if ($pasa == 1) {
             ?>
                 <div class="row">
@@ -166,9 +184,9 @@ if ($mysqli->connect_errno) {
                         $tab3 = "active";
                         ?><script>location.href = "#masinformacion";</script><?php
 
-                    } else if ($_SESSION["tab"] == "horario") {
+                    } else if ($_SESSION["tab"] == "interes") {
                         $tab4 = "active";
-                        ?><script>location.href = "#horario";</script><?php
+                        ?><script>location.href = "#interes";</script><?php
                     } else if ($_SESSION["tab"] == "ubicacion") {
                         $tab5 = "active";
                         ?><script>location.href = "#ubicacion";</script><?php
@@ -201,8 +219,8 @@ if ($mysqli->connect_errno) {
                                     </li>
 
                                     <li li class="nav-item">
-                                        <a class="nav-link <?= $tab4 ?>" id="tab-header-4" data-bs-toggle="tab" href="#horario" role="tab">
-                                            <i class="far fa-user"></i> Horario
+                                        <a class="nav-link <?= $tab4 ?>" id="tab-header-4" data-bs-toggle="tab" href="#interes" role="tab">
+                                            <i class="far fa-user"></i> Interes
                                         </a>
                                     </li>
 
@@ -489,7 +507,7 @@ if ($mysqli->connect_errno) {
                                     <div class="tab-pane <?= $tab2 ?>" id="multimedia" role="tabpanel">
                                         <div class="row">
                                             <div class="col-lg-12">
-                                                <form class="FormularioAjax" name="<?php echo $product_tipo; ?>" 
+                                                <form class="FormularioAjax" name="productList" 
                                                 action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" 
                                                 autocomplete="off" enctype="multipart/form-data">
                                                     <input type="hidden" name="modulo_product" value="actualizarFotoMasa">
@@ -794,15 +812,10 @@ if ($mysqli->connect_errno) {
                                             <!--end tab-pane-->
                                         </div>
                                     </div>
-                                    <!--end tab-pane-->
-                                    <div class="tab-pane <?= $tab4 ?>" id="horario" role="tabpanel">
+                                    <!--<php echo APP_URL; ?>app/ajax/productAjax.php-->
+                                    <div class="tab-pane <?= $tab4 ?>" id="interes" role="tabpanel">
                                         <div class="row">
-                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
-                                                method="POST" autocomplete="off">
-                                                <input type="hidden" name="modulo_product" value="actualizarZonaHoraria">
-                                                <input type="hidden" name="product_id" value="<?= $product_id; ?>">
-                                                <input type="hidden" name="tab" value="horario">
-                                                
+                                            <form action="" method="POST">
                                                 <div class="row">
                                                     <div class="col-lg-2">
                                                         <div class="mb-">
@@ -817,153 +830,130 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                   
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="product_categoria" class="form-label">Categorias</label>
+                                                            <select name="product_categoria" 
+                                                            language="javascript:void(0)" 
+                                                            onchange="loadAjaxCatSubcat(this.value, '')"
+                                                            class="form-control" data-choices data-choices-text-unique-true id="product_categoria">
+                                                            <option value="">Escoja una opción</option>
+                                                            <?php
+                                                            if(is_array($categorias)){
+                                                                foreach($categorias as $categoria){
+                                                                    ?>
+                                                                    <option value="<?=$categoria['categoria_id'];?>"
+                                                                    <?=$datos['product_categoria'] == $categoria['categoria_id'] ?"selected":""?>
+                                                                    ><?=$categoria['nombre'];?>
+                                                                    </option>
+                                                                <?php
+                                                                }
+                                                            }
+                                                            ?>
+                                                            </select>
+                                                        </div>
+                                                    </div>
                                                     
-                                                    <table width="100%" border="0" cellspacing="10" class="datagrid">
-                                                        <tr>
-                                                            <td><span class="form-control">
-                                                            <select name="Tipo" class="form-control" id="Tipo" onChange="return dept_onchange(frmSelect)">
-                                                                <option value="0">Select</option>
-                                                                <%
-                                                        Sql = "Select * FROM Control WHERE COMPANY = "&SESSION("Company_ID")&" and Tipo = 10 and Tipo <> 0 ORDER BY CODIGO"
-                                                            Rsl.Open Sql, oMysql, 3, 3
-                                                            While (NOT Rsl.EOF)
-                                                                %>
-                                                                <option value="<%=(Rsl("Codigo").Value)%>"
-                                                                <%
-                                                                if RSL("CODIGO") = ucase(STIPO) then 
-                                                                    response.write("SELECTED") 
-                                                                else 
-                                                                    response.write("UNSELECTED")
-                                                                end if
-                                                                %>
-                                                            ><%=left(Rsl("Descrip"),40)%></option>
-                                                                <%
-                                                            Rsl.MoveNext()
-                                                            Wend
-                                                            Rsl.close
-                                            %>
+                                                    <!--end col-->
+                                                    <div class="col-lg-4">
+                                                        <div class="mb-3">
+                                                            <label for="product_subcat" class="form-label">Subcategorías</label>
+                                                            <select name="product_subcat" class="form-control" data-choices data-choices-text-unique-true id="product_subcat">
+                                                            <option value="">Escoja una opción</option>
+                                                                <?php
+                                                                    $sql = "SELECT * FROM company_categorias WHERE unidad= ".$datos['product_categoria']." AND company_id=$company_id AND estatus=1 ORDER BY nombre";
+                                                                    //echo $sql;
+                                                                    if ($res = $mysqli->query("SELECT * FROM company_categorias WHERE unidad= ".$datos['product_categoria']." AND company_id=$company_id AND estatus=1 ORDER BY nombre")) {
+                                                                    ?>
+                                                                        <?php while ($fila = mysqli_fetch_array($res)) { ?>
+                                                                            <option value="<?php echo $fila['categoria_id']; ?>" 
+                                                                            <?php if ($fila['categoria_id'] == $datos["product_subcat"]) echo "selected"; ?>>
+                                                                                <?php echo $fila['categoria_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
+                                                                            </option>
+                                                                        <?php } ?>
+                                                                    <?php
+                                                                    }
+                                                                ?>
                                                             </select>
-                                                            <input name="Submit" type="submit" class="texto" id="Submit" title="refresh" value="refresh" />
-                                                            </span></td>
-                                                            <td><span class="form-control">
-                                                            <select name="Subtipo" class="texto" id="Subtipo" onChange="return dept_onchange(frmSelect)">
-                                                                <option value="0">Select Sub-cat.</option>
-                                                                <%
-                                                        Sql = "Select * FROM Control WHERE COMPANY = "&SESSION("Company_ID")&" and UNIDAD = '"&STIPO&"' AND Tipo = 11 and Tipo <> 0 ORDER BY CODIGO"
-                                                            Rsl.Open Sql, oMysql, 3, 3
-                                                            While (NOT Rsl.EOF)
-                                                                %>
-                                                                <option value="<%=(Rsl("Codigo").Value)%>"
-                                                                <%if ucase(RSL("CODIGO")) = sSUBTIPO then response.write("SELECTED")%>><%=left(Rsl("Descrip"),30)%></option>
-                                                                <%
-                                                            Rsl.MoveNext()
-                                                            Wend
-                                                            Rsl.close
-                                                            %>
-                                                            </select>
-                                                            </span></td>
-                                                            </tr>
-                                                        <tr>
-                                                            <td colspan="2"><table width="100%" border="0" cellspacing="10">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4">
+                                                    <label for="accion" class="form-label">Acción</label>
+                                                        <div class="hstack gap-2">
+                                                            <button name="buscar_productos" type="submit" class="btn btn-primary">Buscar Productos</button>
+                                                        </div>
+                                                    </div>
+                                                    <hr>
+                                            </form>
+                                            
+                                            <form class="FormularioAjax" 
+                                                action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" autocomplete="off">
+                                                <input type="hidden" name="modulo_product" value="actualizarInteres">
+                                                <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                                <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                                <input type="hidden" name="tab" value="interes">
+                                                    <div class="col-lg-10">
+                                                        <div class="mb-3">
+                                                        <table width="100%" border="0" cellspacing="10">
                                                             <tr>
-                                                                <td colspan="2" class="form-control"><span class="texto">Escoja los productos que quiere mostrar cuando compra  Item</span></td>
-                                                                </tr>
-                                                            <tr>
-                                                                <td width="14%"><span class="texto">Items</span>:</td>
-                                                                <td width="86%"><select name="producto" size="8" multiple="multiple" class="texto" id="producto">
-                                                                <%
-                                                            if stipo ="0" and sSubtipo = "0" then
-                                                                stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
-                                                            else
-                                                                if stipo <> "0" and sSubtipo <> "0" then
-                                                                    stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' AND type = '"&stipo&"' and type2 = '"&sSubtipo&"' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
-                                                                else
-                                                                    if stipo <> "0" and sSubtipo = "0" then					  
-                                                                        stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' AND type = '"&sTipo&"' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "
-                                                                    else
-                                                                        stexto = "SELECT * FROM ITEMS WHERE estatus = 'A' and COMPANY = " & SESSION("COMPANY_ID") & " order by epi, estatus, type, type2, nombre "  
-                                                                    end if
-                                                                end if
-                                                            end if
-                                                                '
-                                                            
-                                                            Sql = stexto
-                                                'response.write "===" & sql
-                                                            Rsl.Open Sql, oMysql, 3, 3
-                                                            sihay = "N"
-                                                            While (NOT Rsl.EOF)
-                                                                sihay = "Y"
-                                                                %>
-                                                                <option value="<%=(Rsl("epi").Value)%>" 
-                                                            <%
-                                                                if SESSION("CodProd") = Rsl("epi").Value then 
-                                                                    response.write("SELECTED") 
-                                                                else 
-                                                                    response.write("UNSELECTED")
-                                                                end if
-                                                                %>
-                                                                ><%= Rsl("epi") & " - (" & left(Rsl("nombre"),25)&") - " &  Rsl("type") %></option>
-                                                                <%
-                                                            Rsl.MoveNext()
-                                                            Wend
-                                                        Rsl.close
-                                                        '
-                                                        SPASA_PROGRAMA=1
-                                                        sql = "select * from perfiles where user_id = " & session("user_id") & " and UCASE(programa) = 'MODIFICAR STOCK Y TRANSITO DE PRODUCTOS'"
-                                                        Rsl5.Open Sql, oMysql, 3, 3
-                                                        if not Rsl5.eof then
-                                                            SPASA_PROGRAMA=0	
-                                                        end if
-                                                        rsl5.close
-                                                        %>
-                                                                </select></td>
+                                                                <td width="14%">
+                                                                <span class="texto">Seleccione los productos a incluir en la relación</span>:</td>
+                                                                <td width="86%">
+                                                                    <select name="product_list[]" size="8" multiple="multiple" class="form-control" id="producto">
+                                                                    <?php
+                                                                    if(is_array($product_list)){
+                                                                        foreach($product_list as $prod){
+                                                                            ?>
+                                                                            <option value="<?=$prod['product_id']?>">
+                                                                            <?= $prod['product_codigo'] . " - (" .$prod['product_name'] . ")";?>
+                                                                            </option>
+                                                                            <?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                    </select>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>&nbsp;</td>
                                                                 <td><span class="form-control">
-                                                                <input name="Submit" type="submit" class="texto" id="Submit" value="Incluir" />
+                                                                <input name="Submit" type="submit" class="btn btn-success" id="Submit" value="Incluir" />
                                                                 </span></td>
                                                             </tr>
+                                                </form>
+                                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" method="POST" autocomplete="off">
+                                                    <input type="hidden" name="modulo_product" value="excluirInteres">
+                                                    <input type="hidden" name="tab" value="interes">
                                                             <tr>
-                                                                <td><span class="texto">Interes</span>:</td>
-                                                                <td><select name="productos_interes" size="8" multiple="multiple" class="texto" id="productos_interes">
-                                                                <%
-                                                            sql = "SELECT * FROM items_interes where Producto = '"& SESSION("CodProd") &"' and company_id = " & SESSION("company_id") & " ORDER BY tipo, subtipo, epi"
-                                                            'response.write sql
-                                                            Rsl.Open Sql, oMysql, 3, 3
-                                                            sihay = "N"
-                                                            While (NOT Rsl.EOF)
-                                                                sihay = "Y"
-                                                                %>
-                                                                <option value="<%=Rsl("epi")%>"><%=Rsl("Epi") & " - " & Rsl("tipo") & "/" & Rsl("Subtipo")%></option>
-                                                                <%
-                                                            Rsl.MoveNext()
-                                                            Wend
-                                                        Rsl.close
-                                                        '
-                                                        SPASA_PROGRAMA=1
-                                                        sql = "select * from perfiles where user_id = " & session("user_id") & " and UCASE(programa) = 'MODIFICAR STOCK Y TRANSITO DE PRODUCTOS'"
-                                                        Rsl5.Open Sql, oMysql, 3, 3
-                                                        if not Rsl5.eof then
-                                                            SPASA_PROGRAMA=0	
-                                                        end if
-                                                        rsl5.close
-                                                        %>
-                                                                </select></td>
+                                                                <td><span class="texto">Productos de interés seleccionados</span>:</td>
+                                                                <td width="86%">
+                                                                    <select name="product_relacionados[]" size="8" multiple="multiple" class="form-control" id="producto_relacionados">
+                                                                    <?php
+                                                                    if(is_array($product_relacionados)){
+                                                                        foreach($product_relacionados as $rel){
+                                                                            ?>
+                                                                            <option value="<?=$rel['interes_id']?>">
+                                                                            <?= $rel['product_codigo'] . " - (" . $rel['product_name'] . ")";?>
+                                                                            </option>
+                                                                            <?php
+                                                                        }
+                                                                    }
+                                                                    ?>
+                                                                    </select>
+                                                                </td>
                                                             </tr>
                                                             <tr>
                                                                 <td>&nbsp;</td>
                                                                 <td><span class="form-control">
-                                                                <input name="Submit" type="submit" class="texto" id="Submit6" value="Excluir" />
+                                                                <input name="excluir_productos" type="submit" class="btn btn-danger" id="Submit" value="Excluir" />
                                                                 </span></td>
                                                             </tr>
-                                                            </table></td>
-                                                            </tr>
-                                                        </table>
+                                                            </table>
+                                                        </div>
+                                                    </div>
+                                                </form>
                                                 </div>
                                                 <!--end row-->
-                                            </form>
                                             <!--end tab-pane-->
                                         </div>
                                     </div>
