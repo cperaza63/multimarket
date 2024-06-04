@@ -13,8 +13,8 @@
                 </li>
                 <li class="noLink">
                     <?php
-                        if(is_file("./app/views/fotos/".$_SESSION['foto'])){
-                            echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'">';
+                        if(is_file("./app/views/fotos/".$_SESSION['foto_user'])){
+                            echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto_user'].'">';
                         }else{
                             echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/default.png">';
                         }

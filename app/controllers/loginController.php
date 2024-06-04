@@ -48,7 +48,7 @@
 					            $_SESSION['nombre']=$check_usuario['firstname'];
 					            $_SESSION['apellido']=$check_usuario['lastname'];
 					            $_SESSION['usuario']=$check_usuario['login'];
-					            $_SESSION['foto']=$check_usuario['usuario_foto'];
+					            $_SESSION['foto_user']=$check_usuario['usuario_foto'];
 					            $_SESSION['caja']=$check_usuario['caja_id'];
 								$_SESSION['user_company_id']=$check_usuario['company_id'];
 								$_SESSION['user_company_logo']=$check_usuario['company_logo'];

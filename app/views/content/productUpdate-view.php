@@ -16,6 +16,7 @@ if ($mysqli->connect_errno) {
 <div class="main-content">
     <div class="page-content">
         <div class="container-fluid">
+        
             <?php
             $product_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "company_products", "product_id", $product_id);
@@ -27,7 +28,9 @@ if ($mysqli->connect_errno) {
                 $product_description   = $datos['product_description'];
                 $accion = "actualizar";
                 $boton_accion = "Actualizar";
+
                 $product_logo = $datos['product_logo'];
+                
                 if ($datos['product_logo'] == "") {
                     $product_logo = "nophoto.jpg";
                 }
@@ -196,6 +199,7 @@ if ($mysqli->connect_errno) {
                                     </li>
                                 </ul>
                             </div>
+                            <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
                             <div class="card-body p-4">
                                 <div class="tab-content">
                                     <div class="tab-pane <?= $tab1 ?>" id="personaldetails" role="tabpanel">
@@ -700,7 +704,6 @@ if ($mysqli->connect_errno) {
                                         </div>
                                     </div>
                                     <!--end tab-pane-->
-
                                     <div class="tab-pane <?= $tab4 ?>" id="horario" role="tabpanel">
                                         <div class="row">
                                             <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/proveedorAjax.php" 

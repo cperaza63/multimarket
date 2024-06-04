@@ -825,8 +825,6 @@
 			$array=[0,0,0,0,0];
 			$foto_array=["","","","",""];
 			for ($i=0; $i <= 4; $i++) {
-				//return json_encode($_FILES['archivo']['size'][$i]);
-				//exit();
 				if($_FILES['archivo']['name'][$i]!="" && $_FILES['archivo']['size'][$i]>0){
 					if( $i == 0 ){
 						$array[$i] = "product_card";
@@ -956,7 +954,7 @@
 				}
 			}
 			if($id==$_SESSION['id']){
-				$_SESSION['foto']=$foto_array[$i];
+			$_SESSION['foto']=$foto_array[$i];
 			}
 			$alerta=[
 				"tipo"=>"recargar",

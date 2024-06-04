@@ -12,9 +12,9 @@
                     $logo_sm = "http://localhost/multimarket/app/views/fotos/company/" 
                     . $_SESSION['user_company_id']."/".$_SESSION['user_company_logo'];
                 }
-                if( !empty($_SESSION['foto']) ){
+                if( !empty($_SESSION['foto_user']) ){
                     $foto_user = "http://localhost/multimarket/app/views/fotos/usuarios/" 
-                    . $_SESSION['foto'];
+                    . $_SESSION['foto_user'];
                 }else{
                     $foto_user = "http://localhost/multimarket/app/views/images/users/avatar-1.jpg";
                 }

@@ -3,8 +3,8 @@
   	<div class="columns is-flex is-justify-content-center">
     	<figure class="image is-128x128">
     		<?php
-    			if(is_file("./app/views/fotos/".$_SESSION['foto'])){
-    				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'">';
+    			if(is_file("./app/views/fotos/".$_SESSION['foto_user'])){
+    				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto_user'].'">';
     			}else{
     				echo '<img class="is-rounded" src="'.APP_URL.'app/views/fotos/default.png">';
     			}

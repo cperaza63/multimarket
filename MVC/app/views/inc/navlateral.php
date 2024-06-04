@@ -11,8 +11,8 @@
         <figure class="full-width" style="height: 77px;">
 			<div class="navLateral-body-cl">
 				<?php
-                    if(is_file("./app/views/fotos/".$_SESSION['foto'])){
-                        echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto'].'">';
+                    if(is_file("./app/views/fotos/".$_)){
+                        echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/'.$_SESSION['foto_user'].'">';
                     }else{
                         echo '<img class="is-rounded img-responsive" src="'.APP_URL.'app/views/fotos/default.png">';
                     }
