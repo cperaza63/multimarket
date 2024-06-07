@@ -47,6 +47,6 @@
 		
 	}else{
 		echo "fin de sesion proveedores";
-		//session_destroy();
-		//header("Location: ".APP_URL."login/");
+		session_destroy();
+		header("Location: ".APP_URL."login/");
 	}

@@ -586,6 +586,61 @@
 			exit();
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
+		public function actualizarSubproductoControlador(){
+			$product_id=$this->limpiarCadena($_POST['product_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			//
+			if($product_id=="" || $company_id=="" || !isset($_POST['product_list'])
+			) {
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			if(is_array($_POST['product_list'] )){
+				foreach($_POST['product_list'] as $producto){
+					if ($product_id != $producto){
+						$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_productos_interes a inner join company_products b on (a.product_hijo = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id and a.product_hijo=$producto GROUP BY product_name ASC";
+						$result = $this->ejecutarConsulta($consulta_datos);
+						$row_count = $result->rowCount();
+						if($row_count == 0 ){
+							$product_datos_reg=[
+								[
+									"campo_nombre"=>"company_id",
+									"campo_marcador"=>":Company_id",
+									"campo_valor"=>$company_id
+								],
+								[
+									"campo_nombre"=>"product_id",
+									"campo_marcador"=>":Product_id",
+									"campo_valor"=>$product_id
+								],
+								[
+									"campo_nombre"=>"product_hijo",
+									"campo_marcador"=>":Product_hijo",
+									"campo_valor"=>$producto
+								]
+							];
+							$resultado_accion= $this->guardarDatos("company_productos_interes",$product_datos_reg);
+						}
+					}
+					
+				}
+			}
+			$alerta=[
+			"tipo"=>"recargar",
+			"titulo"=>"Producto actualizado",
+			"texto"=>"Los datos de la tabla de proveedor ".$product_id." se actualizaron correctamente",
+			"icono"=>"success"
+			];
+			return json_encode($alerta);
+			exit();
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
 		public function listarInteresesControlador($company_id, $product_id){
 			$product_id=$this->limpiarCadena($product_id);
 			$company_id=$this->limpiarCadena($company_id);
@@ -658,6 +713,23 @@
 				"tipo"=>"recargar",
 				"titulo"=>"Etiquetas excluidas",
 				"texto"=>"Las etiquetas relacionadas al producto fueron excluidas",
+				"icono"=>"success"
+				];
+				return json_encode($alerta);
+				exit();
+			exit();
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function eliminarSubproductoControlador(){
+			if(is_array($_POST['product_relacionados'] )){
+				foreach($_POST['product_relacionados'] as $interes){
+					$excluir_interes=$this->eliminarRegistro("company_productos_interes","interes_id",$interes);
+				}
+			}
+			$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Producto excluido",
+				"texto"=>"Los productos marcados fueron excluidos",
 				"icono"=>"success"
 				];
 				return json_encode($alerta);

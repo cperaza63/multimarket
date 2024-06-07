@@ -33,6 +33,12 @@
 		if($_POST['modulo_product']=="excluirEtiquetas"){
 			echo $insProducto->excluirEtiquetasControlador();
 		}
+		if($_POST['modulo_product']=="actualizarSubproducto"){
+			echo $insProducto->actualizarSubproductoControlador();
+		}
+		if($_POST['modulo_product']=="eliminarSubproducto"){
+			echo $insProducto->eliminarSubproductoControlador();
+		}
 		if($_POST['modulo_product']=="eliminarFoto"){
 			echo $insProducto->eliminarFotoProductControlador();
 		}

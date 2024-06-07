@@ -27,7 +27,7 @@ if ($mysqli->connect_errno) {
             use app\controllers\marcaController;
             use app\controllers\categoryController;
             use app\controllers\companyController;
-
+            $product_list = "";
             $product_id = $insLogin->limpiarCadena($url[1]);
             $datos = $insLogin->seleccionarDatos("Unico", "company_products", "product_id", $product_id);
             if ($datos->rowCount() == 1) {
@@ -174,6 +174,9 @@ if ($mysqli->connect_errno) {
                     $tab3 = "";
                     $tab4 = "";
                     $tab5 = "";
+                    $tab6 = "";
+                    $tab7 = "";
+                    $tab8 = "";
                     if (!isset($_SESSION["tab"])) {
                         $_SESSION["tab"] = "personaldetails";
                     }
@@ -205,7 +208,22 @@ if ($mysqli->connect_errno) {
                                     ?><script>
                             location.href = "#etiquetas";
                         </script><?php
-                                } else {
+                                } else if ($_SESSION["tab"] == "subproductos") {
+                                    $tab6 = "active";
+                                    ?><script>
+                            location.href = "#subproductos";
+                        </script><?php
+                                } else if ($_SESSION["tab"] == "descuentos") {
+                                    $tab7 = "active";
+                                    ?><script>
+                            location.href = "#descuentos";
+                        </script><?php
+                                } else if ($_SESSION["tab"] == "cupones") {
+                                    $tab8 = "active";
+                                    ?><script>
+                            location.href = "#cupones";
+                        </script><?php
+                                }else {
                                     $tab1 = "active";
                                     ?><script>
                             location.href = "#personaldetails";
@@ -246,6 +264,25 @@ if ($mysqli->connect_errno) {
                                             <i class="far fa-user"></i> Etiquetas
                                         </a>
                                     </li>
+
+                                    <li li class="nav-item">
+                                        <a class="nav-link <?= $tab6 ?>" id="tab-header-6" data-bs-toggle="tab" href="#subproductos" role="tab">
+                                            <i class="far fa-user"></i> Subproductos
+                                        </a>
+                                    </li>
+
+                                    <li li class="nav-item">
+                                        <a class="nav-link <?= $tab7 ?>" id="tab-header-7" data-bs-toggle="tab" href="#descuentos" role="tab">
+                                            <i class="far fa-user"></i> Descuentos
+                                        </a>
+                                    </li>
+
+                                    <li li class="nav-item">
+                                        <a class="nav-link <?= $tab8 ?>" id="tab-header-8" data-bs-toggle="tab" href="#cupones" role="tab">
+                                            <i class="far fa-user"></i> Cupones
+                                        </a>
+                                    </li>
+
                                 </ul>
                             </div>
                             <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
@@ -888,6 +925,316 @@ if ($mysqli->connect_errno) {
                             </div>
                         </div>
                         <!--end tab-pane-->
+
+                        <div class="tab-pane <?= $tab6 ?>" id="subproductos" role="tabpanel">
+                            <div class="row">
+                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                    method="POST" autocomplete="off">
+                                    <input type="hidden" name="modulo_company" value="actualizarSubproducto">
+                                    <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                    <input type="hidden" name="producto_id" value="<?= $product_id ?>">
+                                    <input type="hidden" name="tab" value="subproducto">
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="mb-">
+                                                <label for="codigo" class="form-label">Código Producto</label>
+                                                <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="product_name" class="form-label">Nombre del Producto</label>
+                                                <input name="product_name" type="text" class="form-control" id="product_name" 
+                                                value="<?=$product_name;?>" disabled>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
+                                                <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    <option value="0">Lunes</option>
+                                                    <option value="1">Martes</option>
+                                                    <option value="2">Miércoles</option>
+                                                    <option value="3">Jueves</option>
+                                                    <option value="4">Viernes</option>
+                                                    <option value="5">Sábado</option>
+                                                    <option value="6">Domingo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_desde" class="form-label">
+                                                    <strong>Hora Desde</strong></label>
+                                                <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                   
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_hasta" class="form-label">
+                                                    <strong>Hora Hasta</strong></label>
+                                                <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="company_slogan" class="form-label">
+                                                    <strong>Acción</strong></label><br>
+                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="row">Horario</th>
+                                                        <td>Lunes</td>
+                                                        <td>Martes</td>
+                                                        <td>Miercoles</td>
+                                                        <td>Jueves</td>
+                                                        <td>Viernes</td>
+                                                        <td>Sábado</td>
+                                                        <td>Domingo</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                            </div>
+                                            <p class="has-text-centered pt-6">
+                                                <small>Los campos marcados con
+                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                            </p>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                                <!--end tab-pane-->
+                            </div>
+                        </div>
+                        <!--end tab-pane-->
+
+                        <div class="tab-pane <?= $tab7 ?>" id="descuentos" role="tabpanel">
+                            <div class="row">
+                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                    method="POST" autocomplete="off">
+                                    <input type="hidden" name="modulo_company" value="actualizarDescuentos">
+                                    <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                    <input type="hidden" name="producto_id" value="<?= $product_id ?>">
+                                    <input type="hidden" name="tab" value="subproducto">
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="mb-">
+                                                <label for="codigo" class="form-label">Código Producto</label>
+                                                <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="product_name" class="form-label">Nombre del Producto</label>
+                                                <input name="product_name" type="text" class="form-control" id="product_name" 
+                                                value="<?=$product_name;?>" disabled>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
+                                                <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    <option value="0">Lunes</option>
+                                                    <option value="1">Martes</option>
+                                                    <option value="2">Miércoles</option>
+                                                    <option value="3">Jueves</option>
+                                                    <option value="4">Viernes</option>
+                                                    <option value="5">Sábado</option>
+                                                    <option value="6">Domingo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_desde" class="form-label">
+                                                    <strong>Hora Desde</strong></label>
+                                                <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                   
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_hasta" class="form-label">
+                                                    <strong>Hora Hasta</strong></label>
+                                                <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="company_slogan" class="form-label">
+                                                    <strong>Acción</strong></label><br>
+                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="row">Horario</th>
+                                                        <td>Lunes</td>
+                                                        <td>Martes</td>
+                                                        <td>Miercoles</td>
+                                                        <td>Jueves</td>
+                                                        <td>Viernes</td>
+                                                        <td>Sábado</td>
+                                                        <td>Domingo</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                            </div>
+                                            <p class="has-text-centered pt-6">
+                                                <small>Los campos marcados con
+                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                            </p>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                                <!--end tab-pane-->
+                            </div>
+                        </div>
+                        <!--end tab-pane-->
+
+                        <div class="tab-pane <?= $tab8 ?>" id="cupones" role="tabpanel">
+                            <div class="row">
+                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                    method="POST" autocomplete="off">
+                                    <input type="hidden" name="modulo_company" value="actualizarCupones">
+                                    <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                    <input type="hidden" name="producto_id" value="<?= $product_id ?>">
+                                    <input type="hidden" name="tab" value="cupones">
+                                    
+                                    <div class="row">
+                                        <div class="col-lg-2">
+                                            <div class="mb-">
+                                                <label for="codigo" class="form-label">Código Producto</label>
+                                                <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-6">
+                                            <div class="mb-3">
+                                                <label for="product_name" class="form-label">Nombre del Producto</label>
+                                                <input name="product_name" type="text" class="form-control" id="product_name" 
+                                                value="<?=$product_name;?>" disabled>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
+                                                <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    <option value="0">Lunes</option>
+                                                    <option value="1">Martes</option>
+                                                    <option value="2">Miércoles</option>
+                                                    <option value="3">Jueves</option>
+                                                    <option value="4">Viernes</option>
+                                                    <option value="5">Sábado</option>
+                                                    <option value="6">Domingo</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_desde" class="form-label">
+                                                    <strong>Hora Desde</strong></label>
+                                                <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                   
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hora_hasta" class="form-label">
+                                                    <strong>Hora Hasta</strong></label>
+                                                <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
+                                                    
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="company_slogan" class="form-label">
+                                                    <strong>Acción</strong></label><br>
+                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-12">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th scope="row">Horario</th>
+                                                        <td>Lunes</td>
+                                                        <td>Martes</td>
+                                                        <td>Miercoles</td>
+                                                        <td>Jueves</td>
+                                                        <td>Viernes</td>
+                                                        <td>Sábado</td>
+                                                        <td>Domingo</td>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                            <div class="hstack gap-2 justify-content-end">
+                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                            </div>
+                                            <p class="has-text-centered pt-6">
+                                                <small>Los campos marcados con
+                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                            </p>
+                                        </div>
+                                        <!--end col-->
+                                    </div>
+                                    <!--end row-->
+                                </form>
+                                <!--end tab-pane-->
+                            </div>
+                        </div>
+                        <!--end tab-pane-->
+                        
                         <div class="tab-pane <?= $tab5 ?>" id="etiquetas" role="tabpanel">
                             <div class="row">
                                 <form action="" method="POST">
@@ -973,6 +1320,7 @@ if ($mysqli->connect_errno) {
                             </div>
                         </div>
                         </form>
+
                     </div>
                     <!--end row-->
                 </div>

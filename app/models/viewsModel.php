@@ -20,6 +20,7 @@
 			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate",
 			"clienteNew","clienteList","clienteSearch","clienteUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
+			"subproductNew", "subproductList", "subproductUpdate", 
 			"saleNew","saleList","saleSearch","saleDetail",
 			"logOut"
 			];
