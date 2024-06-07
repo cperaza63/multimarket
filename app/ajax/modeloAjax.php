@@ -31,7 +31,7 @@
 		}
 		
 	}else{
-		echo "error";
+		echo "error ajax modelo";
 		//session_destroy();
 		//header("Location: ".APP_URL."login/");
 	}

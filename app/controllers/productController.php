@@ -589,9 +589,16 @@
 		public function actualizarSubproductoControlador(){
 			$product_id=$this->limpiarCadena($_POST['product_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$subproduct_size=$this->limpiarCadena($_POST['subproduct_size']);
+			$subproduct_color=$this->limpiarCadena($_POST['subproduct_color']);
+			$subproduct_costo=$this->limpiarCadena($_POST['subproduct_costo']);
+			$subproduct_stock=$this->limpiarCadena($_POST['subproduct_stock']);
+			$subproduct_estatus=1;
 			//
-			if($product_id=="" || $company_id=="" || !isset($_POST['product_list'])
-			) {
+			if($product_id=="" || $company_id=="" || $_POST['subproduct_size'] == ""
+				|| $_POST['subproduct_color'] == "" || $_POST['subproduct_costo'] == ""
+				|| $_POST['subproduct_stock'] ) 
+			{
 		        $alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error al actualizar registro",
@@ -601,44 +608,66 @@
 				return json_encode($alerta);
 		        exit();
 		    }
-			if(is_array($_POST['product_list'] )){
-				foreach($_POST['product_list'] as $producto){
-					if ($product_id != $producto){
-						$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_productos_interes a inner join company_products b on (a.product_hijo = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id and a.product_hijo=$producto GROUP BY product_name ASC";
-						$result = $this->ejecutarConsulta($consulta_datos);
-						$row_count = $result->rowCount();
-						if($row_count == 0 ){
-							$product_datos_reg=[
-								[
-									"campo_nombre"=>"company_id",
-									"campo_marcador"=>":Company_id",
-									"campo_valor"=>$company_id
-								],
-								[
-									"campo_nombre"=>"product_id",
-									"campo_marcador"=>":Product_id",
-									"campo_valor"=>$product_id
-								],
-								[
-									"campo_nombre"=>"product_hijo",
-									"campo_marcador"=>":Product_hijo",
-									"campo_valor"=>$producto
-								]
-							];
-							$resultado_accion= $this->guardarDatos("company_productos_interes",$product_datos_reg);
-						}
-					}
-					
-				}
-			}
-			$alerta=[
-			"tipo"=>"recargar",
-			"titulo"=>"Producto actualizado",
-			"texto"=>"Los datos de la tabla de proveedor ".$product_id." se actualizaron correctamente",
-			"icono"=>"success"
+			$product_datos_reg=[
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"product_id",
+					"campo_marcador"=>":Product_id",
+					"campo_valor"=>$product_id
+				],
+				[
+					"campo_nombre"=>"subproduct_size",
+					"campo_marcador"=>":Subproduct_size",
+					"campo_valor"=>$subproduct_size
+				],
+				[
+					"campo_nombre"=>"subproduct_color",
+					"campo_marcador"=>":Subproduct_color",
+					"campo_valor"=>$subproduct_color
+				],
+				[
+					"campo_nombre"=>"subproduct_costo",
+					"campo_marcador"=>":Subproduct_costo",
+					"campo_valor"=>$subproduct_costo
+				],
+				[
+					"campo_nombre"=>"subproduct_stock",
+					"campo_marcador"=>":Subproduct_stock",
+					"campo_valor"=>$subproduct_stock
+				],
+				[
+					"campo_nombre"=>"subproduct_estatus",
+					"campo_marcador"=>":Subproduct_estatus",
+					"campo_valor"=>$subproduct_estatus
+				]
 			];
-			return json_encode($alerta);
-			exit();
+			
+			$resultado_accion= $this->guardarDatos("company_subproducts",$product_datos_reg);
+			$result = $this->ejecutarConsulta($resultado_accion);
+			$row_count = $result->rowCount();
+			if($row_count == 0 ){
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Sub-producto actualizado",
+				"texto"=>"Los datos de la tabla de producto ".$product_id." se actualizaron correctamente",
+				"icono"=>"success"
+				];
+				return json_encode($alerta);
+				exit();
+			}else{
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Sub-producto No Agregado",
+				"texto"=>"Los datos de la tabla del subproducto ".$product_id." ya esta cargagdo",
+				"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
 		public function listarInteresesControlador($company_id, $product_id){

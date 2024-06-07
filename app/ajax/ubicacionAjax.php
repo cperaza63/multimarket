@@ -23,6 +23,7 @@
 		}
 		
 	}else{
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "error Ajax ubicacion";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}

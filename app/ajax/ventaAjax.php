@@ -56,6 +56,7 @@
 		}
 		
 	}else{
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "error Ajax venta";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}

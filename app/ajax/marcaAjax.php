@@ -31,7 +31,7 @@
 		}
 		
 	}else{
-		echo "error";
+		echo "error ajax marca";
 		//session_destroy();
 		//header("Location: ".APP_URL."login/");
 	}

@@ -31,7 +31,7 @@
 		}
 		
 	}else{
-		echo "error";
+		echo "error Ajax categoria";
 		//session_destroy();
 		//header("Location: ".APP_URL."login/");
 	}

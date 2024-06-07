@@ -31,7 +31,7 @@
 		}
 		
 	}else{
-		echo "error";
+		echo "error Ajax banco";
 		//session_destroy();
 		//header("Location: ".APP_URL."login/");
 	}

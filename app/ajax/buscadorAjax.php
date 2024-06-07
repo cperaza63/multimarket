@@ -19,6 +19,7 @@
 		}
 		
 	}else{
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "error Ajax buscador";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}

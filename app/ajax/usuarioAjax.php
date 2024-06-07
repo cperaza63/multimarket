@@ -39,6 +39,7 @@
 		}
 		
 	}else{
-		session_destroy();
-		header("Location: ".APP_URL."login/");
+		echo "error Ajax usuario";
+		//session_destroy();
+		//header("Location: ".APP_URL."login/");
 	}

@@ -930,65 +930,90 @@ if ($mysqli->connect_errno) {
                             <div class="row">
                                 <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
                                     method="POST" autocomplete="off">
-                                    <input type="hidden" name="modulo_company" value="actualizarSubproducto">
+                                    <input type="hidden" name="modulo_product" value="actualizarSubproducto">
                                     <input type="hidden" name="company_id" value="<?= $company_id; ?>">
                                     <input type="hidden" name="producto_id" value="<?= $product_id ?>">
                                     <input type="hidden" name="tab" value="subproducto">
                                     
                                     <div class="row">
-                                        <div class="col-lg-2">
+                                        <div class="col-lg-2">  
                                             <div class="mb-">
                                                 <label for="codigo" class="form-label">Código Producto</label>
                                                 <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
                                             </div>
                                         </div>
-                                        <div class="col-lg-6">
+                                        <div class="col-lg-5">
                                             <div class="mb-3">
                                                 <label for="product_name" class="form-label">Nombre del Producto</label>
                                                 <input name="product_name" type="text" class="form-control" id="product_name" 
                                                 value="<?=$product_name;?>" disabled>
                                             </div>
                                         </div>
-                                        <hr>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="countryInput" class="form-label">Unidad/Medida</label>
+                                                <select name="product_unidad" class="form-control" data-choices data-choices-text-unique-true id="product_unidad" disabled>
+                                                    <?php
+                                                    if (is_array($unidades)) {
+                                                        foreach ($unidades as $unidad) {
+                                                    ?>
+                                                            <option value="<?= $unidad['control_id']; ?>" <?= $datos['product_unidad'] == $unidad['control_id'] ? "selected" : "" ?>><?= $unidad['nombre']; ?>
+                                                            </option>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-2">
                                             <div class="mb-3">
-                                                <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
-                                                <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                    <option value="0">Lunes</option>
-                                                    <option value="1">Martes</option>
-                                                    <option value="2">Miércoles</option>
-                                                    <option value="3">Jueves</option>
-                                                    <option value="4">Viernes</option>
-                                                    <option value="5">Sábado</option>
-                                                    <option value="6">Domingo</option>
-                                                </select>
+                                                <label for="subproduct_precio" class="form-label">Precio US$</label>
+                                                <input name="subproduct_precio" type="number" class="form-control" id="subproduct_precio" 
+                                                value="<?=$product_precio;?>" disabled>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="subproduct_size" class="form-label">Atributo1 (ej. SIZE)</label>
+                                                <input name="subproduct_size" type="text" class="form-control" 
+                                                id="codigo" placeholder="Entre el Atributo #1" 
+                                                value="SIZE" maxlength="80" required>
                                             </div>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-3">
                                             <div class="mb-3">
-                                                <label for="hora_desde" class="form-label">
-                                                    <strong>Hora Desde</strong></label>
-                                                <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                   
-                                                </select>
+                                                <label for="subproduct_color" class="form-label">Atributo2 (ej. COLOR)</label>
+                                                <input name="subproduct_color" type="text" class="form-control" 
+                                                id="codigo" placeholder="Entre el Atributo #1" 
+                                                value="COLOR" maxlength="80" required>
                                             </div>
                                         </div>
-
-                                        <div class="col-lg-3">
+                                        <!--end col-->
+                                        <div class="col-lg-2">
                                             <div class="mb-3">
-                                                <label for="hora_hasta" class="form-label">
-                                                    <strong>Hora Hasta</strong></label>
-                                                <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                    
-                                                </select>
+                                                <label for="subproduct_costo" class="form-label">Costo Unitario $</label>
+                                                <input name="subproduct_costo" type="number" class="form-control" 
+                                                id="subproduct_costo" placeholder="Entre el costo del subproducto $" value="0.00" maxlength="80" required>
                                             </div>
                                         </div>
-                                        <div class="col-lg-4">
+                                        <!--end col-->
+                                        <div class="col-lg-2">
                                             <div class="mb-3">
-                                                <label for="company_slogan" class="form-label">
+                                                <label for="subproduct_stock" class="form-label">Stock Unidades</label>
+                                                <input name="subproduct_stock" type="number" class="form-control" 
+                                                id="subproduct_stock" placeholder="Entre el Stock inicial del subproducto" 
+                                                value="0" required maxlength="80">
+                                            </div>
+                                        </div>
+                                        <!--end col-->
+                                        <div class="col-lg-2">
+                                            <div class="mb-3">
+                                                <label for="submitAccion" class="form-label">
                                                     <strong>Acción</strong></label><br>
-                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Agregar</button>
                                             </div>
                                         </div>
                                         <hr>
@@ -997,13 +1022,13 @@ if ($mysqli->connect_errno) {
                                                 <thead>
                                                     <tr>
                                                         <th scope="row">Horario</th>
-                                                        <td>Lunes</td>
-                                                        <td>Martes</td>
-                                                        <td>Miercoles</td>
-                                                        <td>Jueves</td>
-                                                        <td>Viernes</td>
-                                                        <td>Sábado</td>
-                                                        <td>Domingo</td>
+                                                        <td>Producto</td>
+                                                        <td>Nombre</td>
+                                                        <td>Atributo 1</td>
+                                                        <td>Atributo 2</td>
+                                                        <td>Precio (US$)</td>
+                                                        <td>Stock actual</td>
+                                                        <td>Acción</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
