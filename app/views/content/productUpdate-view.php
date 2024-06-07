@@ -1013,65 +1013,67 @@ if ($mysqli->connect_errno) {
                                             </div>
                                         </div>
                                         <hr>
-                                        <div class="col-lg-12">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <td>Atributo 1</td>
-                                                        <td>Atributo 2</td>
-                                                        <td>Precio (US$)</td>
-                                                        <td>Stock actual</td>
-                                                        <td>Estatus</td>
-                                                        <td>Acción</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <?php
-                                                    if (is_array($product_subproductos)) {
-                                                        foreach ($product_subproductos as $subproducto) {
-                                                        ?>  
+                                        <div align="center" class="table-responsive-sm">
+                                            <div class="col-lg-10">
+                                                <table class="table table-sm table-striped table-bordered">
+                                                    <thead>
                                                         <tr>
-                                                            <td>
-                                                            <?= $subproducto['subproduct_size']; ?>
-                                                            </td>
-                                                            <td>
-                                                            <?= $subproducto['subproduct_color']; ?>
-                                                            </td>
-                                                            <td>
-                                                            <?= $subproducto['subproduct_costo']; ?>
-                                                            </td>
-                                                            <td>
-                                                            <?= $subproducto['subproduct_stock'] . " " . $unidad['nombre']; ?>
-                                                            </td>
-                                                            <td>
-                                                            <?php
-                                                                if($subproducto['subproduct_estatus'] == 1 ){
-                                                                    ?><span class="badge bg-success">Activo<?php
-                                                                }else{
-                                                                    ?><span class="badge bg-danger">Inactivo<?php
-                                                                }
-                                                            ?>
-                                                            </td>
-                                                            <td>
-                                                            <div class="col-lg-2">
-                                                                <div class="mb-3">
-                                                                    <button type="submit" name="update" value="agregar" class="btn btn-success">Mod</button>
-                                                                </div>
-                                                            </td>
+                                                            <td>Atrib 1</td>
+                                                            <td>Atrib 2</td>
+                                                            <td>Precio</td>
+                                                            <td>Stock</td>
+                                                            <td>Estatus</td>
+                                                            <td>Acción</td>
                                                         </tr>
-                                                    <?php
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        if (is_array($product_subproductos)) {
+                                                            foreach ($product_subproductos as $subproducto) {
+                                                            ?>  
+                                                            <tr>
+                                                                <td>
+                                                                <?= $subproducto['subproduct_size']; ?>
+                                                                </td>
+                                                                <td>
+                                                                <?= $subproducto['subproduct_color']; ?>
+                                                                </td>
+                                                                <td>
+                                                                <?= $subproducto['subproduct_costo']; ?>
+                                                                </td>
+                                                                <td>
+                                                                <?= $subproducto['subproduct_stock'] . " " . $unidad['nombre']; ?>
+                                                                </td>
+                                                                <td>
+                                                                <?php
+                                                                    if($subproducto['subproduct_estatus'] == 1 ){
+                                                                        ?><span class="badge bg-success">Activo<?php
+                                                                    }else{
+                                                                        ?><span class="badge bg-danger">Inactivo<?php
+                                                                    }
+                                                                ?>
+                                                                </td>
+                                                                <td>
+                                                                <div class="col-lg-2">
+                                                                    <div class="mb-3">
+                                                                        <button type="submit" name="update" value="agregar" class="btn btn-success">Mod</button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        <?php
+                                                            }
                                                         }
-                                                    }
-                                                    ?>
-                                                </tbody>
-                                            </table>
-                                            <div class="hstack gap-2 justify-content-end">
-                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="hstack gap-2 justify-content-end">
+                                                    <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                </div><br>
+                                                <p class="has-text-centered pt-6">
+                                                    <small>Los campos marcados con
+                                                        <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                </p>
                                             </div>
-                                            <p class="has-text-centered pt-6">
-                                                <small>Los campos marcados con
-                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                            </p>
                                         </div>
                                         <!--end col-->
                                     </div>

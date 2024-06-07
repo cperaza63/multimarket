@@ -866,46 +866,49 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
                                                     <hr>
-                                                    <div class="col-lg-12">
-                                                        <table class="table">
-                                                            <thead>
-                                                                <tr>
-                                                                    <th scope="row">Horario</th>
-                                                                    <td>Lunes</td>
-                                                                    <td>Martes</td>
-                                                                    <td>Miercoles</td>
-                                                                    <td>Jueves</td>
-                                                                    <td>Viernes</td>
-                                                                    <td>Sábado</td>
-                                                                    <td>Domingo</td>
-                                                                </tr>
-                                                            </thead>
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th scope="row">Entrada</th>
-                                                                    <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$desdehora[$i];?></td><?php
-                                                                    }
-                                                                    ?>
-                                                                </tr>
-                                                                <tr>
-                                                                <th scope="row">Salida</th>
-                                                                    <?php
-                                                                    for ($i=0; $i <=6 ; $i++) { 
-                                                                        ?><td><?=$hastahora[$i];?></td><?php
-                                                                    }
-                                                                    ?>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="hstack gap-2 justify-content-end">
-                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+
+                                                    <div class="table-responsive-sm">
+                                                        <div class="col-lg-12">
+                                                            <table class="table table-sm table-striped">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th scope="row">Horario</th>
+                                                                        <td>Lun</td>
+                                                                        <td>Mar</td>
+                                                                        <td>Mie</td>
+                                                                        <td>Jue</td>
+                                                                        <td>Vie</td>
+                                                                        <td>Sáb</td>
+                                                                        <td>Dom</td>
+                                                                    </tr>
+                                                                </thead>
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">Entrada</th>
+                                                                        <?php
+                                                                        for ($i=0; $i <=6 ; $i++) { 
+                                                                            ?><td><?=$desdehora[$i];?></td><?php
+                                                                        }
+                                                                        ?>
+                                                                    </tr>
+                                                                    <tr>
+                                                                    <th scope="row">Salida</th>
+                                                                        <?php
+                                                                        for ($i=0; $i <=6 ; $i++) { 
+                                                                            ?><td><?=$hastahora[$i];?></td><?php
+                                                                        }
+                                                                        ?>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                            </div>
+                                                            <p class="has-text-centered pt-6">
+                                                                <small>Los campos marcados con
+                                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                            </p>
                                                         </div>
-                                                        <p class="has-text-centered pt-6">
-                                                            <small>Los campos marcados con
-                                                                <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                                        </p>
                                                     </div>
                                                     <!--end col-->
                                                 </div>
@@ -969,45 +972,46 @@ if ($mysqli->connect_errno) {
                                                             <button type="submit" name="submit" value="agregar" class="btn btn-info">Actualizar</button>
                                                         </div>
                                                     </div>
-                                                    <hr>
-                                                    <div class="col-lg-12">
-                                                        
-                                                        <hr>
-                                                        <table class="table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <th scope="row">MarketPlace<br>Categoria
-                                                                    </th>
-                                                                    <?php
-                                                                    $cadena=[];
-                                                                    $cadena=explode("|", $datos['company_market_cat']);
-                                                                    if(count($cadena)>=8){
-                                                                        $cuenta=8;
-                                                                    }else{  
-                                                                        $cuenta= count($cadena)-1;
-                                                                    }
-                                                                    if($cuenta>0){
-                                                                        for ($i=0; $i <= $cuenta ; $i++) {
-                                                                            $itemCat = $controlController->obtenerUnItemControlador($cadena[$i]);
-                                                                            ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                    
+                                                    <div class="table-responsive-sm">
+                                                        <div class="col-lg-12">
+                                                            <hr>
+                                                            <table class="table table-striped table-hover table-bordered ">
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th scope="row">MarketPlace<br>Categoria
+                                                                        </th>
+                                                                        <?php
+                                                                        $cadena=[];
+                                                                        $cadena=explode("|", $datos['company_market_cat']);
+                                                                        if(count($cadena)>=8){
+                                                                            $cuenta=8;
+                                                                        }else{  
+                                                                            $cuenta= count($cadena)-1;
                                                                         }
-                                                                    }else{
-                                                                        if ($cadena[0]!=""){
-                                                                            $itemCat = $controlController->obtenerUnItemControlador($cadena[0]);
-                                                                            ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                                        if($cuenta>0){
+                                                                            for ($i=0; $i <= $cuenta ; $i++) {
+                                                                                $itemCat = $controlController->obtenerUnItemControlador($cadena[$i]);
+                                                                                ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                                            }
+                                                                        }else{
+                                                                            if ($cadena[0]!=""){
+                                                                                $itemCat = $controlController->obtenerUnItemControlador($cadena[0]);
+                                                                                ?><td><?=$itemCat['nombre']."<br><strong>".$itemCat['nombre_cat']."</strong>";?></td><?php
+                                                                            }
                                                                         }
-                                                                    }
-                                                                    ?>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                        <div class="hstack gap-2 justify-content-end">
-                                                            <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                                        ?>
+                                                                    </tr>
+                                                                </tbody>
+                                                            </table>
+                                                            <div class="hstack gap-2 justify-content-end">
+                                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                            </div><br>
+                                                            <p class="has-text-centered pt-6">
+                                                                <small>Los campos marcados con
+                                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                            </p>
                                                         </div>
-                                                        <p class="has-text-centered pt-6">
-                                                            <small>Los campos marcados con
-                                                                <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                                        </p>
                                                     </div>
                                                     <!--end col-->
                                                 </div>
@@ -1059,7 +1063,7 @@ if ($mysqli->connect_errno) {
                                                     <hr>
                                                     <div class="hstack gap-2 justify-content-end">
                                                         <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
-                                                    </div>
+                                                    </div><br>
                                                     <p class="has-text-centered pt-6">
                                                         <small>Los campos marcados con
                                                         <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
