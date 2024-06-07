@@ -27,6 +27,12 @@
 		if($_POST['modulo_product']=="excluirInteres"){
 			echo $insProducto->excluirInteresControlador();
 		}
+		if($_POST['modulo_product']=="actualizarEtiquetas"){
+			echo $insProducto->actualizarEtiquetasControlador();
+		}
+		if($_POST['modulo_product']=="excluirEtiquetas"){
+			echo $insProducto->excluirEtiquetasControlador();
+		}
 		if($_POST['modulo_product']=="eliminarFoto"){
 			echo $insProducto->eliminarFotoProductControlador();
 		}

@@ -51,6 +51,6 @@
 		
 	}else{
 		echo "fin de sesion company";
-		//session_destroy();
-		//header("Location: ".APP_URL."login/");
+		session_destroy();
+		header("Location: ".APP_URL."login/");
 	}
