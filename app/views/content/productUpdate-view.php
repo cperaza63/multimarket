@@ -952,7 +952,6 @@ if ($mysqli->connect_errno) {
                                                 <?php
                                                 if (is_array($product_etiquetas)) {
                                                     foreach ($product_etiquetas as $etiqueta) {
-                                                        print_r($etiqueta);
                                                     ?>
                                                     <option value="<?= $etiqueta['etiqueta'] ?>">
                                                         <?= $etiqueta['nombre']; ?>

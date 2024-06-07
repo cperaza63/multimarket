@@ -625,9 +625,7 @@
 		        exit();
 		    }
 			$consulta_datos="SELECT a.*, b.control_id, b.codigo, b.nombre FROM company_products_etiquetas a inner join control b on (a.etiqueta = b.control_id) WHERE a.company_id=$company_id ORDER BY a.etiqueta ASC";
-			print_r ($consulta_datos);
 			$datos = $this->ejecutarConsulta($consulta_datos);
-			
 			$datos = $datos->fetchAll();
 			return $datos;
 			exit();
