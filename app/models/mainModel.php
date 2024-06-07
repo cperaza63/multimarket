@@ -82,8 +82,6 @@
 			foreach ($datos as $clave){
 				$sql->bindParam($clave["campo_marcador"],$clave["campo_valor"]);
 			}
-			//print_r($datos	);
-			//exit();
 			$sql->execute();
 			return $sql;
 		}

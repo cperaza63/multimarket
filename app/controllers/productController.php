@@ -587,6 +587,7 @@
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarSubproductoControlador(){
+
 			$product_id=$this->limpiarCadena($_POST['product_id']);
 			$company_id=$this->limpiarCadena($_POST['company_id']);
 			$subproduct_size=$this->limpiarCadena($_POST['subproduct_size']);
@@ -594,10 +595,9 @@
 			$subproduct_costo=$this->limpiarCadena($_POST['subproduct_costo']);
 			$subproduct_stock=$this->limpiarCadena($_POST['subproduct_stock']);
 			$subproduct_estatus=1;
-			//
-			if($product_id=="" || $company_id=="" || $_POST['subproduct_size'] == ""
-				|| $_POST['subproduct_color'] == "" || $_POST['subproduct_costo'] == ""
-				|| $_POST['subproduct_stock'] ) 
+
+			if($product_id=="" || $company_id=="" || $subproduct_size == "" || $subproduct_color == "" || $subproduct_costo == ""
+				|| $subproduct_stock == "") 
 			{
 		        $alerta=[
 					"tipo"=>"simple",
@@ -645,11 +645,12 @@
 					"campo_valor"=>$subproduct_estatus
 				]
 			];
+		
 			
-			$resultado_accion= $this->guardarDatos("company_subproducts",$product_datos_reg);
-			$result = $this->ejecutarConsulta($resultado_accion);
+			$result = $this->ejecutarConsulta("SELECT * FROM company_subproducts WHERE company_id=company_id AND product_id=product_id AND ucase(subproduct_color)=ucase('$subproduct_color') and ucase(subproduct_size)=ucase('$subproduct_size')");
 			$row_count = $result->rowCount();
 			if($row_count == 0 ){
+				$resultado_accion= $this->guardarDatos("company_subproducts",$product_datos_reg);
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Sub-producto actualizado",
@@ -709,6 +710,29 @@
 		        exit();
 		    }
 			$consulta_datos="SELECT a.*, b.control_id, b.codigo, b.nombre FROM company_products_etiquetas a inner join control b on (a.etiqueta = b.control_id) WHERE a.company_id=$company_id ORDER BY a.etiqueta ASC";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function listarSubproductosControlador($company_id, $product_id){
+			$product_id=$this->limpiarCadena($product_id);
+			$company_id=$this->limpiarCadena($company_id);
+			//
+			if($product_id=="" || $company_id==""
+			) {
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al leer registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_subproducts a inner join company_products b on (a.product_id = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id GROUP BY subproduct_size, subproduct_color ASC";
+
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;

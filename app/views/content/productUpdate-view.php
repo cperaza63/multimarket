@@ -106,6 +106,8 @@ if ($mysqli->connect_errno) {
             $productController = new productController();
             $product_relacionados = $productController->listarInteresesControlador($company_id,  $product_id);
             $product_etiquetas = $productController->listarEtiquetasControlador($company_id,  $product_id);
+            $product_subproductos = $productController->listarSubproductosControlador($company_id,  $product_id);
+            
 
             if (isset($_POST["buscar_productos"])) {
                 if ($_POST['product_categoria'] != "" && $_POST['product_subcat'] != "") {
@@ -928,23 +930,17 @@ if ($mysqli->connect_errno) {
 
                         <div class="tab-pane <?= $tab6 ?>" id="subproductos" role="tabpanel">
                             <div class="row">
-                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                                     method="POST" autocomplete="off">
                                     <input type="hidden" name="modulo_product" value="actualizarSubproducto">
                                     <input type="hidden" name="company_id" value="<?= $company_id; ?>">
-                                    <input type="hidden" name="producto_id" value="<?= $product_id ?>">
-                                    <input type="hidden" name="tab" value="subproducto">
+                                    <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                    <input type="hidden" name="tab" value="subproductos">
                                     
                                     <div class="row">
-                                        <div class="col-lg-2">  
-                                            <div class="mb-">
-                                                <label for="codigo" class="form-label">Código Producto</label>
-                                                <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-5">
+                                        <div class="col-lg-7">
                                             <div class="mb-3">
-                                                <label for="product_name" class="form-label">Nombre del Producto</label>
+                                                <label for="product_name" class="form-label">Nombre del Producto #<?php echo $product_id; ?></label>
                                                 <input name="product_name" type="text" class="form-control" id="product_name" 
                                                 value="<?=$product_name;?>" disabled>
                                             </div>
@@ -1013,7 +1009,7 @@ if ($mysqli->connect_errno) {
                                             <div class="mb-3">
                                                 <label for="submitAccion" class="form-label">
                                                     <strong>Acción</strong></label><br>
-                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Agregar</button>
+                                                <button type="submit" name="submit" value="agregar" class="btn btn-info">Agregar</button>
                                             </div>
                                         </div>
                                         <hr>
@@ -1021,20 +1017,52 @@ if ($mysqli->connect_errno) {
                                             <table class="table">
                                                 <thead>
                                                     <tr>
-                                                        <th scope="row">Horario</th>
-                                                        <td>Producto</td>
-                                                        <td>Nombre</td>
                                                         <td>Atributo 1</td>
                                                         <td>Atributo 2</td>
                                                         <td>Precio (US$)</td>
                                                         <td>Stock actual</td>
+                                                        <td>Estatus</td>
                                                         <td>Acción</td>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    <tr>
-                                                        
-                                                    </tr>
+                                                    <?php
+                                                    if (is_array($product_subproductos)) {
+                                                        foreach ($product_subproductos as $subproducto) {
+                                                        ?>  
+                                                        <tr>
+                                                            <td>
+                                                            <?= $subproducto['subproduct_size']; ?>
+                                                            </td>
+                                                            <td>
+                                                            <?= $subproducto['subproduct_color']; ?>
+                                                            </td>
+                                                            <td>
+                                                            <?= $subproducto['subproduct_costo']; ?>
+                                                            </td>
+                                                            <td>
+                                                            <?= $subproducto['subproduct_stock'] . " " . $unidad['nombre']; ?>
+                                                            </td>
+                                                            <td>
+                                                            <?php
+                                                                if($subproducto['subproduct_estatus'] == 1 ){
+                                                                    ?><span class="badge bg-success">Activo<?php
+                                                                }else{
+                                                                    ?><span class="badge bg-danger">Inactivo<?php
+                                                                }
+                                                            ?>
+                                                            </td>
+                                                            <td>
+                                                            <div class="col-lg-2">
+                                                                <div class="mb-3">
+                                                                    <button type="submit" name="update" value="agregar" class="btn btn-success">Mod</button>
+                                                                </div>
+                                                            </td>
+                                                        </tr>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
                                                 </tbody>
                                             </table>
                                             <div class="hstack gap-2 justify-content-end">
