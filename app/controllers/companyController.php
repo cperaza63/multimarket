@@ -1,10 +1,7 @@
 <?php
-
 	namespace app\controllers;
 	use app\models\mainModel; 
-
 	class companyController extends mainModel{
-
 		/*----------  Controlador registrar company  ----------*/
 		public function registrarCompanyControlador(){
 			# Almacenando datos#
@@ -160,7 +157,6 @@
 
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador listar company  ----------*/
 		public function listarTodosCompanyControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
@@ -184,7 +180,6 @@
 			return $datos;
 			exit();
 		}
-
 		/*----------  Controlador listar company  ----------*/
 		public function listarSoloTipoControlador($busqueda){	
 			$busqueda=$this->limpiarCadena($busqueda);
@@ -198,7 +193,6 @@
 			return $datos;
 			exit();
 		}
-
 		/*----------  Controlador eliminar company  ----------*/
 		public function eliminarCompanyControlador(){
 
@@ -259,7 +253,6 @@
 		    }
 		    return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarCompanyControlador(){
 			# Almacenando datos#
@@ -412,7 +405,6 @@
 			}
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarMasInformacionControlador(){
 			# Almacenando datos#
@@ -570,7 +562,6 @@
 			}
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarZonaHorariaControlador(){
 			$company_id=$this->limpiarCadena($_POST['company_id']);
@@ -683,7 +674,6 @@
 			}
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar company  ----------*/
 		public function actualizarMarketControlador(){
 			$company_id=$this->limpiarCadena($_POST['company_id']);
@@ -705,19 +695,23 @@
 				$alerta=[
 					"tipo"=>"simple",
 					"titulo"=>"Error en la entrada de datos",
-					"texto"=>"Debe presioar el button tipo de acción actualizar",
+					"texto"=>"Debe presionar el button tipo de acción actualizar",
 					"icono"=>"error"
 				];
 				return json_encode($alerta);
 				exit();
 			}
-			for ($i=0;$i<count($market_cat);$i++)
-			{
-				$cadena = $cadena . "|". $market_cat[$i];
+			$i=0;
+			foreach($market_cat as $key) {
+				if ($i==0){
+					$cadena = $key;
+				}else{
+					$cadena = $cadena . "|". $key;
+				}
+				$i++;
 			}
-			
-			$cadena = substr($cadena, 1, 100);
-			//echo $cadena; //retorna 1,5,9,6,8
+			// $cadena = substr($cadena, 1, 100);
+			// echo $cadena; //retorna 1,5,9,6,8
 			$company_datos_reg=[
 				[
 					"campo_nombre"=>"company_market_cat",
@@ -725,13 +719,11 @@
 					"campo_valor"=>$cadena
 				]
 			];
-
 			$condicion=[
 				"condicion_campo"=>"company_id",
 				"condicion_marcador"=>":Company_id",
 				"condicion_valor"=>$company_id
 			];
-
 			if($this->actualizarDatos("company", $company_datos_reg, $condicion)){
 				$alerta=[
 				"tipo"=>"recargar",
@@ -801,7 +793,6 @@
 			}
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador eliminar foto company  ----------*/
 		public function eliminarFotoCompanyControlador(){
 
@@ -889,7 +880,6 @@
 
 			return json_encode($alerta);
 		}
-
 		/*----------  Controlador actualizar foto company  ----------*/
 		public function actualizarFotoCompanyControlador(){
 			$id = $this->limpiarCadena($_POST['company_id']);
@@ -1024,7 +1014,6 @@
 			}
 			return json_encode($alerta);
 		}
-
 		public function actualizarFotoMasaControlador(){
 			$id = $this->limpiarCadena($_POST['company_id']);
 			# Verificando company #

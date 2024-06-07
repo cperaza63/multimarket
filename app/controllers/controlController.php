@@ -158,7 +158,14 @@
 
 			return json_encode($alerta);
 		}
-
+		public function listarMarketSubcatControlador($busqueda){	
+			$busqueda=$this->limpiarCadena($busqueda);
+			$consulta_datos = "SELECT a.control_id, b.codigo, b.nombre, a.codigo as codigo_cat, a.nombre as nombre_cat FROM control a inner join control b on (a.unidad = b.control_id) where a.estatus=1 and a.tipo='". $busqueda . "'";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
 		/*----------  Controlador listar control  ----------*/
 		public function listarTodosControlControlador($busqueda){	
 
@@ -180,7 +187,6 @@
 			return $datos;
 			exit();
 		}
-
 		public function obtenerListaMarketControlador($tipo){
 			$consulta_datos = "SELECT * FROM control WHERE estatus=1 AND tipo='$tipo' AND company_id=0 ORDER BY tipo, nombre";
 			//

@@ -19,7 +19,7 @@ if ($mysqli->connect_errno) {
             $ubicacionController = new ubicacionController();
             use app\controllers\controlController;
             $controlController = new controlController();
-            $listaMarket = $controlController->listarTodosControlControlador("market");
+            $listaMarket = $controlController->listarMarketSubcatControlador("market_cat");
             //print_r($listaMarket);
             use app\controllers\companyController;
             $companyController = new companyController();
@@ -952,9 +952,8 @@ if ($mysqli->connect_errno) {
                                                     <div class="col-lg-6">
                                                         <div class="mb-3">
                                                             
-                                                            <select name="market_cat[]" class="form-control size="5"  
-                                                            data-choices data-choices-text-unique-true id="dia_semana">
-                                                                    <option value="">Seleccione un Market y una categoría</option>
+                                                            <select name="market_cat[]" class="form-control size="5" multiple="MULTIPLE" 
+                                                            data-choices data-choices-text-unique-true id="market_cat">
                                                                 <?php
                                                                     foreach($listaMarket as $market){
                                                                         ?><option value="<?=$market["control_id"];?>">
