@@ -107,6 +107,9 @@ if ($mysqli->connect_errno) {
             $product_relacionados = $productController->listarInteresesControlador($company_id,  $product_id);
             $product_etiquetas = $productController->listarEtiquetasControlador($company_id,  $product_id);
             $product_subproductos = $productController->listarSubproductosControlador($company_id,  $product_id);
+            $product_descuentos = $productController->listarDescuentosControlador($company_id,  $product_id);
+            
+            
             
 
             if (isset($_POST["buscar_productos"])) {
@@ -1013,6 +1016,7 @@ if ($mysqli->connect_errno) {
                                             </div>
                                         </div>
                                         <hr>
+                                </form>
                                         <div align="center" class="table-responsive-sm">
                                             <div class="col-lg-10">
                                                 <table class="table table-sm table-striped table-bordered">
@@ -1022,8 +1026,8 @@ if ($mysqli->connect_errno) {
                                                             <td>Atrib 2</td>
                                                             <td>Precio</td>
                                                             <td>Stock</td>
-                                                            <td>Estatus</td>
-                                                            <td>Acción</td>
+                                                            <td></td>
+                                                            <td></td>
                                                         </tr>
                                                     </thead>
                                                     <tbody>
@@ -1031,35 +1035,52 @@ if ($mysqli->connect_errno) {
                                                         if (is_array($product_subproductos)) {
                                                             foreach ($product_subproductos as $subproducto) {
                                                             ?>  
-                                                            <tr>
-                                                                <td>
-                                                                <?= $subproducto['subproduct_size']; ?>
-                                                                </td>
-                                                                <td>
-                                                                <?= $subproducto['subproduct_color']; ?>
-                                                                </td>
-                                                                <td>
-                                                                <?= $subproducto['subproduct_costo']; ?>
-                                                                </td>
-                                                                <td>
-                                                                <?= $subproducto['subproduct_stock'] . " " . $unidad['nombre']; ?>
-                                                                </td>
-                                                                <td>
-                                                                <?php
-                                                                    if($subproducto['subproduct_estatus'] == 1 ){
-                                                                        ?><span class="badge bg-success">Activo<?php
-                                                                    }else{
-                                                                        ?><span class="badge bg-danger">Inactivo<?php
-                                                                    }
-                                                                ?>
-                                                                </td>
-                                                                <td>
-                                                                <div class="col-lg-2">
-                                                                    <div class="mb-3">
-                                                                        <button type="submit" name="update" value="agregar" class="btn btn-success">Mod</button>
-                                                                    </div>
-                                                                </td>
-                                                            </tr>
+                                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
+                                                            method="POST" autocomplete="off">
+                                                            <input type="hidden" name="modulo_product" value="detalleSubproducto">
+                                                            <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                                            <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                                            <input type="hidden" name="subproduct_id" value="<?= $subproducto['subproduct_id']; ?>">
+                                                            <input type="hidden" name="tab" value="subproductos">
+                                                                <tr>
+                                                                    <td>
+                                                                    <input name="subproduct_size" type="text" class="form-control" 
+                                                                    id="subproduct_size" required
+                                                                    value="<?= $subproducto['subproduct_size']; ?>" maxlength="80" >
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <input name="subproduct_color" type="text" class="form-control" 
+                                                                    id="subproduct_color" required
+                                                                    value="<?= $subproducto['subproduct_color']; ?>" maxlength="80" >
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <input name="subproduct_costo" type="text" class="form-control" 
+                                                                    id="subproduct_costo" 
+                                                                    value="<?= $subproducto['subproduct_costo']; ?>" maxlength="80" required>
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <input name="subproduct_stock" type="text" class="form-control" 
+                                                                    id="subproduct_stock" 
+                                                                    value="<?= $subproducto['subproduct_stock']; ?>" maxlength="80" required>
+                                                                    </td>
+
+                                                                    <td>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="mb-3">
+                                                                            <button type="submit" name="accion" value="update" class="btn btn-success"><i class="ri-edit-line"></i></button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="mb-3">
+                                                                            <button type="submit" name="accion" value="delete" class="btn btn-danger"><i class="ri-delete-bin-5-line"></i></button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </form>
                                                         <?php
                                                             }
                                                         }
@@ -1067,7 +1088,7 @@ if ($mysqli->connect_errno) {
                                                     </tbody>
                                                 </table>
                                                 <div class="hstack gap-2 justify-content-end">
-                                                    <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                    <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
                                                 </div><br>
                                                 <p class="has-text-centered pt-6">
                                                     <small>Los campos marcados con
@@ -1078,110 +1099,164 @@ if ($mysqli->connect_errno) {
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
-                                </form>
                                 <!--end tab-pane-->
                             </div>
                         </div>
                         <!--end tab-pane-->
 
                         <div class="tab-pane <?= $tab7 ?>" id="descuentos" role="tabpanel">
-                            <div class="row">
-                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/companyAjax.php" 
+                        <div class="row">
+                                <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
                                     method="POST" autocomplete="off">
-                                    <input type="hidden" name="modulo_company" value="actualizarDescuentos">
+                                    <input type="hidden" name="modulo_product" value="actualizarDescuento">
                                     <input type="hidden" name="company_id" value="<?= $company_id; ?>">
-                                    <input type="hidden" name="producto_id" value="<?= $product_id ?>">
-                                    <input type="hidden" name="tab" value="subproducto">
+                                    <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                    <input type="hidden" name="tab" value="descuentos">
                                     
                                     <div class="row">
-                                        <div class="col-lg-2">
-                                            <div class="mb-">
-                                                <label for="codigo" class="form-label">Código Producto</label>
-                                                <input name="product_id" type="text" class="form-control" id="product_id" value="<?php echo $product_id; ?>" maxlength="40" disabled>
-                                            </div>
-                                        </div>
                                         <div class="col-lg-6">
                                             <div class="mb-3">
-                                                <label for="product_name" class="form-label">Nombre del Producto</label>
+                                                <label for="product_name" class="form-label">Nombre del Producto #<?php echo $product_id; ?></label>
                                                 <input name="product_name" type="text" class="form-control" id="product_name" 
                                                 value="<?=$product_name;?>" disabled>
                                             </div>
                                         </div>
-                                        <hr>
+                                        <div class="col-lg-4">
+                                            <div class="mb-3">
+                                                <label for="countryInput" class="form-label">Unidad/Medida</label>
+                                                <select name="product_unidad" class="form-control" data-choices data-choices-text-unique-true id="product_unidad" disabled>
+                                                    <?php
+                                                    if (is_array($unidades)) {
+                                                        foreach ($unidades as $unidad) {
+                                                    ?>
+                                                            <option value="<?= $unidad['control_id']; ?>" <?= $datos['product_unidad'] == $unidad['control_id'] ? "selected" : "" ?>><?= $unidad['nombre']; ?>
+                                                            </option>
+                                                    <?php
+                                                        }
+                                                    }
+                                                    ?>
+                                                </select>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-2">
                                             <div class="mb-3">
-                                                <label for="dia_semana" class="form-label"><strong>Dia de la semana</strong></label>
-                                                <select name="dia_semana" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                    <option value="0">Lunes</option>
-                                                    <option value="1">Martes</option>
-                                                    <option value="2">Miércoles</option>
-                                                    <option value="3">Jueves</option>
-                                                    <option value="4">Viernes</option>
-                                                    <option value="5">Sábado</option>
-                                                    <option value="6">Domingo</option>
-                                                </select>
+                                                <label for="product_precio" class="form-label">Precio</label>
+                                                <input name="product_precio" type="number" class="form-control" id="product_precio" 
+                                                value="<?=$product_precio;?>" disabled>
+                                            </div>
+                                        </div>
+
+                                        <hr>
+                                        
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="desde" class="form-label">Cantidad Unidades Desde</label>
+                                                <input name="desde" type="number" class="form-control" id="desde" 
+                                                value="0>" required placeholder="Cantidad minima del descuento">
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-3">
+                                            <div class="mb-3">
+                                                <label for="hasta" class="form-label">Cantidad  Unidades Hasta</label>
+                                                <input name="hasta" type="text" class="form-control" 
+                                                id="codigo" placeholder="Cantidad maxima del descuento" 
+                                                value="0" maxlength="80" required>
                                             </div>
                                         </div>
                                         <!--end col-->
                                         <div class="col-lg-3">
                                             <div class="mb-3">
-                                                <label for="hora_desde" class="form-label">
-                                                    <strong>Hora Desde</strong></label>
-                                                <select name="hora_desde" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                   
-                                                </select>
+                                                <label for="valor" class="form-label">% Descuento</label>
+                                                <input name="valor" type="text" class="form-control" 
+                                                id="codigo" placeholder="coloque descuento a aplicar" 
+                                                value="0.00" maxlength="80" required>
                                             </div>
-                                        </div>
-
+                                                </div>
+                                        <!--end col-->
                                         <div class="col-lg-3">
                                             <div class="mb-3">
-                                                <label for="hora_hasta" class="form-label">
-                                                    <strong>Hora Hasta</strong></label>
-                                                <select name="hora_hasta" class="form-control" data-choices data-choices-text-unique-true id="tipo">
-                                                    
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="col-lg-4">
-                                            <div class="mb-3">
-                                                <label for="company_slogan" class="form-label">
+                                                <label for="submitAccion" class="form-label">
                                                     <strong>Acción</strong></label><br>
-                                                <button type="submit" name="submit" value="dia" class="btn btn-info">Aplica al dia</button>
+                                                <button type="submit" name="submit" value="agregar" class="btn btn-info">Agregar</button>
                                             </div>
                                         </div>
                                         <hr>
-                                        <div class="col-lg-12">
-                                            <table class="table">
-                                                <thead>
-                                                    <tr>
-                                                        <th scope="row">Horario</th>
-                                                        <td>Lunes</td>
-                                                        <td>Martes</td>
-                                                        <td>Miercoles</td>
-                                                        <td>Jueves</td>
-                                                        <td>Viernes</td>
-                                                        <td>Sábado</td>
-                                                        <td>Domingo</td>
-                                                    </tr>
-                                                </thead>
-                                                <tbody>
-                                                    <tr>
-                                                        
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                            <div class="hstack gap-2 justify-content-end">
-                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                </form>
+                                        <div align="center" class="table-responsive-sm">
+                                            <div class="col-lg-10">
+                                                <table class="table table-sm table-striped table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <td>Cant Desde</td>
+                                                            <td>Cant Hasta</td>
+                                                            <td>% Descuento</td>
+                                                            <td></td>
+                                                            <td></td>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <?php
+                                                        if (is_array($product_descuentos)) {
+                                                            foreach ($product_descuentos as $descuento) {
+                                                            ?>  
+                                                            <form class="FormularioAjax" action="<?php echo APP_URL; ?>app/ajax/productAjax.php" 
+                                                            method="POST" autocomplete="off">
+                                                            <input type="hidden" name="modulo_product" value="detalleDescuento">
+                                                            <input type="hidden" name="company_id" value="<?= $company_id; ?>">
+                                                            <input type="hidden" name="product_id" value="<?= $product_id; ?>">
+                                                            <input type="hidden" name="descuento_id" value="<?= $descuento['descuento_id']; ?>">
+                                                            <input type="hidden" name="tab" value="descuentos">
+                                                                <tr>
+                                                                    <td>
+                                                                    <input name="desde" type="number" class="form-control" 
+                                                                    id="desde" required
+                                                                    value="<?= $descuento['desde']; ?>" maxlength="80" >
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <input name="hasta" type="number" class="form-control" 
+                                                                    id="hasta" required
+                                                                    value="<?= $descuento['hasta']; ?>" maxlength="80" >
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <input name="valor" type="number" step="any" class="form-control" 
+                                                                    id="valor" 
+                                                                    value="<?= $descuento['valor']; ?>" maxlength="80" required>
+                                                                    </td>
+                                                                    
+                                                                    <td>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="mb-3">
+                                                                            <button type="submit" name="accion" value="update" class="btn btn-success"><i class="ri-edit-line"></i></button>
+                                                                        </div>
+                                                                    </td>
+                                                                    <td>
+                                                                    <div class="col-lg-1">
+                                                                        <div class="mb-3">
+                                                                            <button type="submit" name="accion" value="delete" class="btn btn-danger"><i class="ri-delete-bin-5-line"></i></button>
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            </form>
+                                                        <?php
+                                                            }
+                                                        }
+                                                        ?>
+                                                    </tbody>
+                                                </table>
+                                                <div class="hstack gap-2 justify-content-end">
+                                                    <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
+                                                </div><br>
+                                                <p class="has-text-centered pt-6">
+                                                    <small>Los campos marcados con
+                                                        <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
+                                                </p>
                                             </div>
-                                            <p class="has-text-centered pt-6">
-                                                <small>Los campos marcados con
-                                                    <strong><?php echo CAMPO_OBLIGATORIO; ?></strong> son obligatorios</small>
-                                            </p>
                                         </div>
                                         <!--end col-->
                                     </div>
                                     <!--end row-->
-                                </form>
                                 <!--end tab-pane-->
                             </div>
                         </div>
@@ -1274,7 +1349,7 @@ if ($mysqli->connect_errno) {
                                                 </tbody>
                                             </table>
                                             <div class="hstack gap-2 justify-content-end">
-                                                <a href="<?php echo APP_URL; ?>companyList/" class="btn btn-soft-success">Regresar</a>
+                                                <a href="<?php echo APP_URL; ?>productList/" class="btn btn-soft-success">Regresar</a>
                                             </div>
                                             <p class="has-text-centered pt-6">
                                                 <small>Los campos marcados con

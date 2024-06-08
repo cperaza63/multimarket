@@ -585,6 +585,7 @@
 			return json_encode($alerta);
 			exit();
 		}
+
 		/*----------  Controlador actualizar proveedor  ----------*/
 		public function actualizarSubproductoControlador(){
 
@@ -663,11 +664,323 @@
 				$alerta=[
 				"tipo"=>"recargar",
 				"titulo"=>"Sub-producto No Agregado",
-				"texto"=>"Los datos de la tabla del subproducto ".$product_id." ya esta cargagdo",
+				"texto"=>"Los datos de la tabla del subproducto ".$product_id." ya esta cargado",
 				"icono"=>"error"
 				];
 				return json_encode($alerta);
 				exit();
+			}
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function actualizarDescuentoControlador(){
+			$product_id=$this->limpiarCadena($_POST['product_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$desde=$this->limpiarCadena($_POST['desde']);
+			$hasta=$this->limpiarCadena($_POST['hasta']);
+			$valor=$this->limpiarCadena($_POST['valor']);
+			$estatus=1;
+
+			if($product_id=="" || $company_id=="" || $desde == "" || $hasta == "" || $valor == "") 
+			{
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			$product_datos_reg=[
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"product_id",
+					"campo_marcador"=>":Product_id",
+					"campo_valor"=>$product_id
+				],
+				[
+					"campo_nombre"=>"desde",
+					"campo_marcador"=>":Desde",
+					"campo_valor"=>$desde
+				],
+				[
+					"campo_nombre"=>"hasta",
+					"campo_marcador"=>":Hasta",
+					"campo_valor"=>$hasta
+				],
+				[
+					"campo_nombre"=>"valor",
+					"campo_marcador"=>":Valor",
+					"campo_valor"=>$valor
+				],
+				[
+					"campo_nombre"=>"estatus",
+					"campo_marcador"=>":Estatus",
+					"campo_valor"=>$estatus
+				]
+			];
+			$result = $this->ejecutarConsulta("SELECT * FROM company_products_descuentos WHERE company_id=company_id AND product_id=product_id AND desde=$desde and hasta=$hasta");
+			$row_count = $result->rowCount();
+			if($row_count == 0 ){
+				$resultado_accion= $this->guardarDatos("company_products_descuentos",$product_datos_reg);
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Descuento actualizado",
+				"texto"=>"Los datos de descuento del producto ".$product_id." se actualizaron correctamente",
+				"icono"=>"success"
+				];
+				return json_encode($alerta);
+				exit();
+			}else{
+				$alerta=[
+				"tipo"=>"recargar",
+				"titulo"=>"Descuento No Agregado",
+				"texto"=>"Los datos de la tabla de descuento ".$product_id." ya esta cargado",
+				"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+			}
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function actualizarDetalleSubproductoControlador(){
+			$subproduct_id = $this->limpiarCadena($_POST['subproduct_id']);
+			$product_id=$this->limpiarCadena($_POST['product_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			
+			// return json_encode($_POST['subproduct_color']);
+			// exit();
+			$subproduct_size=$this->limpiarCadena($_POST['subproduct_size']);
+			$subproduct_color=$this->limpiarCadena($_POST['subproduct_color']);
+			$subproduct_costo=$this->limpiarCadena($_POST['subproduct_costo']);
+			$subproduct_stock=$this->limpiarCadena($_POST['subproduct_stock']);
+			
+			if($subproduct_id== "" || $product_id=="" || $company_id=="" || $subproduct_size == "" 
+			|| $subproduct_color == "" || $subproduct_costo == "" || $subproduct_stock == "") 
+			{
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
+			if( isset($_POST['accion'] ) ){
+				if( $_POST['accion'] == "delete"){
+					$subproduct_estatus=0;
+				}else{
+					$subproduct_estatus=1;
+				}
+			}else{
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No hay accion de actividad de modificar - eliminar",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+			}
+
+			$product_datos_reg=[
+				[
+					"campo_nombre"=>"subproduct_costo",
+					"campo_marcador"=>":Subproduct_costo",
+					"campo_valor"=>$subproduct_costo
+				],
+				[
+					"campo_nombre"=>"subproduct_stock",
+					"campo_marcador"=>":Subproduct_stock",
+					"campo_valor"=>$subproduct_stock
+				],
+				[
+					"campo_nombre"=>"subproduct_estatus",
+					"campo_marcador"=>":Subproduct_estatus",
+					"campo_valor"=>$subproduct_estatus
+				]
+			];
+			
+			$condicion=[
+				"condicion_campo"=>"subproduct_id",
+				"condicion_marcador"=>":Subproduct_id",
+				"condicion_valor"=>$subproduct_id
+			];
+
+			if($subproduct_estatus == 0){
+				if($this->eliminarRegistro("company_subproducts","subproduct_id", $subproduct_id)){
+					$alerta=[
+					"tipo"=>"recargar",
+					"titulo"=>"Sub-producto eliminado",
+					"texto"=>"El subproducto ".$product_id." se elimino correctamente",
+					"icono"=>"success"
+					];
+					return json_encode($alerta);
+					exit();
+				}else{
+					$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos podido el subproducto ".$subproduct_id.", por favor intente nuevamente",
+					"icono"=>"error"
+					];
+					return json_encode($alerta);
+					exit();
+				}
+			}else{
+				//return json_encode($condicion);
+				//exit();
+				if($this->actualizarDatos("company_subproducts", $product_datos_reg, $condicion)){
+					$this->ejecutarConsulta("UPDATE company_subproducts SET subproduct_size='".strtoupper($subproduct_size)."', subproduct_color='".strtoupper($subproduct_color)."' WHERE company_id=$company_id AND product_id=$product_id");
+					$alerta=[
+					"tipo"=>"recargar",
+					"titulo"=>"Subproducto actualizado",
+					"texto"=>"Los datos de información de ".$subproduct_id." se actualizaron correctamente",
+					"icono"=>"success"
+					];
+					return json_encode($alerta);
+					exit();
+				}else{
+					$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos podido actualizar los datos de información adicional ".$subproduct_id.", por favor intente nuevamente",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+				}
+			}
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function actualizarDetalleDescuentoControlador(){
+			$descuento_id=$this->limpiarCadena($_POST['descuento_id']);
+			$product_id=$this->limpiarCadena($_POST['product_id']);
+			$company_id=$this->limpiarCadena($_POST['company_id']);
+			$desde=$this->limpiarCadena($_POST['desde']);
+			$hasta=$this->limpiarCadena($_POST['hasta']);
+			$valor=$this->limpiarCadena($_POST['valor']);
+			
+			// return json_encode($_POST['subproduct_color']);
+			// exit();
+			if($descuento_id== "" || $product_id=="" || $company_id=="" || $desde == "" 
+			|| $hasta == "" || $valor == "" ) 
+			{
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			
+			if( isset($_POST['accion'] ) ){
+				if( $_POST['accion'] == "delete"){
+					$estatus=0;
+				}else{
+					$estatus=1;
+				}
+			}else{
+				$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al actualizar registro",
+					"texto"=>"No hay accion de actividad de modificar - eliminar",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+			}
+
+			$product_datos_reg=[
+				[
+					"campo_nombre"=>"company_id",
+					"campo_marcador"=>":Company_id",
+					"campo_valor"=>$company_id
+				],
+				[
+					"campo_nombre"=>"product_id",
+					"campo_marcador"=>":Product_id",
+					"campo_valor"=>$product_id
+				],
+				[
+					"campo_nombre"=>"desde",
+					"campo_marcador"=>":Desde",
+					"campo_valor"=>$desde
+				],
+				[
+					"campo_nombre"=>"hasta",
+					"campo_marcador"=>":Hasta",
+					"campo_valor"=>$hasta
+				],
+				[
+					"campo_nombre"=>"valor",
+					"campo_marcador"=>":Valor",
+					"campo_valor"=>$valor
+				],
+				[
+					"campo_nombre"=>"estatus",
+					"campo_marcador"=>":Estatus",
+					"campo_valor"=>$estatus
+				]
+				];
+			
+			$condicion=[
+				"condicion_campo"=>"$descuento_id",
+				"condicion_marcador"=>"Descuento_id",
+				"condicion_valor"=>$descuento_id
+			];
+
+			if($estatus == 0){
+				if($this->eliminarRegistro("company_products_descuentos","descuento_id", $descuento_id)){
+					$alerta=[
+					"tipo"=>"recargar",
+					"titulo"=>"Descuento eliminado",
+					"texto"=>"El descuento ".$product_id." se elimino correctamente",
+					"icono"=>"success"
+					];
+					return json_encode($alerta);
+					exit();
+				}else{
+					$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos podido el descuento ".$descuento_id.", por favor intente nuevamente",
+					"icono"=>"error"
+					];
+					return json_encode($alerta);
+					exit();
+				}
+			}else{
+				//return json_encode($condicion);
+				//exit();
+				if($this->actualizarDatos("company_products_descuentos", $product_datos_reg, $condicion)){
+					$this->ejecutarConsulta("UPDATE company_products_descuentos SET desde=". $desde . ", hasta=" . $hasta . " WHERE company_id=$company_id AND product_id=$product_id");
+					$alerta=[
+					"tipo"=>"recargar",
+					"titulo"=>"Descuento actualizado",
+					"texto"=>"Los datos de información de ".$descuento_id." se actualizaron correctamente",
+					"icono"=>"success"
+					];
+					return json_encode($alerta);
+					exit();
+				}else{
+					$alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Ocurrió un error inesperado",
+					"texto"=>"No hemos podido actualizar los datos de descuento ".$descuento_id.", por favor intente nuevamente",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+				exit();
+				}
 			}
 		}
 		/*----------  Controlador actualizar proveedor  ----------*/
@@ -732,6 +1045,29 @@
 		        exit();
 		    }
 			$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_subproducts a inner join company_products b on (a.product_id = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id GROUP BY subproduct_size, subproduct_color ASC";
+
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+		/*----------  Controlador actualizar proveedor  ----------*/
+		public function listarDescuentosControlador($company_id, $product_id){
+			$product_id=$this->limpiarCadena($product_id);
+			$company_id=$this->limpiarCadena($company_id);
+			//
+			if($product_id=="" || $company_id==""
+			) {
+		        $alerta=[
+					"tipo"=>"simple",
+					"titulo"=>"Error al leer registro",
+					"texto"=>"No has llenado todos los campos que son obligatorios",
+					"icono"=>"error"
+				];
+				return json_encode($alerta);
+		        exit();
+		    }
+			$consulta_datos="SELECT a.*, b.product_codigo, b.product_name FROM company_products_descuentos a inner join company_products b on (a.product_id = b.product_id) WHERE a.company_id=$company_id AND a.product_id=$product_id GROUP BY desde, hasta ASC";
 
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();

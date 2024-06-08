@@ -36,6 +36,15 @@
 		if($_POST['modulo_product']=="actualizarSubproducto"){
 			echo $insProducto->actualizarSubproductoControlador();
 		}
+		if($_POST['modulo_product']=="detalleSubproducto"){
+			echo $insProducto->actualizarDetalleSubproductoControlador();
+		}
+		if($_POST['modulo_product']=="actualizarDescuento"){
+			echo $insProducto->actualizarDescuentoControlador();
+		}
+		if($_POST['modulo_product']=="detalleDescuento"){
+			echo $insProducto->actualizarDetalleDescuentoControlador();
+		}
 		if($_POST['modulo_product']=="eliminarSubproducto"){
 			echo $insProducto->eliminarSubproductoControlador();
 		}
