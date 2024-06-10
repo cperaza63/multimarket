@@ -866,9 +866,7 @@
 			$desde=$this->limpiarCadena($_POST['desde']);
 			$hasta=$this->limpiarCadena($_POST['hasta']);
 			$valor=$this->limpiarCadena($_POST['valor']);
-			
-			// return json_encode($_POST['subproduct_color']);
-			// exit();
+
 			if($descuento_id== "" || $product_id=="" || $company_id=="" || $desde == "" 
 			|| $hasta == "" || $valor == "" ) 
 			{
@@ -901,26 +899,6 @@
 
 			$product_datos_reg=[
 				[
-					"campo_nombre"=>"company_id",
-					"campo_marcador"=>":Company_id",
-					"campo_valor"=>$company_id
-				],
-				[
-					"campo_nombre"=>"product_id",
-					"campo_marcador"=>":Product_id",
-					"campo_valor"=>$product_id
-				],
-				[
-					"campo_nombre"=>"desde",
-					"campo_marcador"=>":Desde",
-					"campo_valor"=>$desde
-				],
-				[
-					"campo_nombre"=>"hasta",
-					"campo_marcador"=>":Hasta",
-					"campo_valor"=>$hasta
-				],
-				[
 					"campo_nombre"=>"valor",
 					"campo_marcador"=>":Valor",
 					"campo_valor"=>$valor
@@ -931,10 +909,9 @@
 					"campo_valor"=>$estatus
 				]
 				];
-			
 			$condicion=[
-				"condicion_campo"=>"$descuento_id",
-				"condicion_marcador"=>"Descuento_id",
+				"condicion_campo"=>"descuento_id",
+				"condicion_marcador"=>":Descuento_id",
 				"condicion_valor"=>$descuento_id
 			];
 
@@ -959,10 +936,7 @@
 					exit();
 				}
 			}else{
-				//return json_encode($condicion);
-				//exit();
 				if($this->actualizarDatos("company_products_descuentos", $product_datos_reg, $condicion)){
-					$this->ejecutarConsulta("UPDATE company_products_descuentos SET desde=". $desde . ", hasta=" . $hasta . " WHERE company_id=$company_id AND product_id=$product_id");
 					$alerta=[
 					"tipo"=>"recargar",
 					"titulo"=>"Descuento actualizado",

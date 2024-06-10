@@ -1221,7 +1221,7 @@ if ($mysqli->connect_errno) {
                                                                     
                                                                     <td>
                                                                     <input name="valor" type="number" step="any" class="form-control" 
-                                                                    id="valor" 
+                                                                    id="valor" step="0.01" 
                                                                     value="<?= $descuento['valor']; ?>" maxlength="80" required>
                                                                     </td>
                                                                     
