@@ -5,6 +5,7 @@
     <div class="page-content">
         <div class="container-fluid">
             <?php
+            $company_id = $_SESSION['user_company_id'];
             use app\controllers\categoryController;
             $insCategory = new categoryController();
             ?>
@@ -51,7 +52,7 @@
                                     </div>
                                 </div>
                             
-                            <?php 
+                            <?php
                             }
                             ?>
                         </div>
@@ -62,9 +63,9 @@
             <!--end row-->
             <?php
             if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                $datos = $insCategory->listarTodosCategoryControlador($_SESSION[$url[0]]);
+                $datos = $insCategory->listarTodosCategoryControlador($company_id, $_SESSION[$url[0]]);
             }else{
-                $datos = $insCategory->listarTodosCategoryControlador("*");
+                $datos = $insCategory->listarTodosCategoryControlador($company_id, "*");
             }
             ?>
             <div class="row">

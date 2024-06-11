@@ -12,16 +12,16 @@
 			"controlNew", "controlList", "controlUpdate", "controlSearch", "controlPhoto",
 			"categoryNew","categoryList","categoryUpdate","categorySearch", "categoryPhoto",
 			"marcaNew","marcaList","marcaUpdate","marcaSearch", "marcaPhoto",
-			"subcatNew","subcatList","subcatUpdate","subcatSearch", "subcatPhoto",
-			"modeloNew","modeloList","modeloUpdate","modeloSearch", "modeloPhoto",
-			"ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
+			"cuponNew","cuponList","cuponUpdate","subcatNew","subcatList","subcatUpdate",
+			"subcatSearch", "subcatPhoto", "modeloNew","modeloList","modeloUpdate","modeloSearch", 
+			"modeloPhoto", "ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
 			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
 			"bancoNew","bancoList","bancoUpdate","bancoSearch", "bancoPhoto",
 			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate",
 			"despachadorNew", "despachadorList", "despachadorSearch", "despachadorUpdate",
-			"clienteNew","clienteList","clienteSearch","clienteUpdate",
-			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
-			"saleNew","saleList","saleSearch","saleDetail",
+			"clienteNew","clienteList","clienteSearch","clienteUpdate","productNew","productList",
+			"productSearch","productUpdate","productPhoto","productCategory","saleNew","saleList",
+			"saleSearch","saleDetail",
 			"logOut"
 			];
 

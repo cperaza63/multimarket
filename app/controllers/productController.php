@@ -255,7 +255,6 @@
 		public function listarTodosProductControlador($company_id, $busqueda){
 			$company_id=$this->limpiarCadena($company_id); 
 			$busqueda=$this->limpiarCadena($busqueda);
-
 			if(isset($busqueda) && $busqueda!="*"){
 				$consulta_datos="SELECT * FROM company_products WHERE company_id= $company_id AND ( 
 				product_name LIKE '%$busqueda%'
@@ -269,6 +268,7 @@
 				$consulta_datos="SELECT * FROM company_products WHERE company_id=$company_id 
 				ORDER BY product_name ASC";
 			}
+			//print_r($consulta_datos);
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;

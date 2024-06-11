@@ -62,10 +62,11 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
-                || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
-                || $_GET['views'] == "marcaList/"  || $_GET['views'] == "modeloList/" 
-                || $_GET['views'] == "proveedorList/" || $_GET['views'] == "clienteList/"
-                || $_GET['views'] == "despachadorList/" || $_GET['views'] == "productList/" 
+                 || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
+                 || $_GET['views'] == "cuponList/" || $_GET['views'] == "marcaList/"  
+                 || $_GET['views'] == "modeloList/" || $_GET['views'] == "proveedorList/" 
+                 || $_GET['views'] == "clienteList/" || $_GET['views'] == "despachadorList/" 
+                 || $_GET['views'] == "productList/" 
                 ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
@@ -94,6 +95,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 15) == "categoryUpdate/"
                 || substr($_GET['views'], 0, 9) == "marcaNew/"
                 || substr($_GET['views'], 0, 12) == "marcaUpdate/"
+                || substr($_GET['views'], 0, 9) == "cuponNew/"
+                || substr($_GET['views'], 0, 12) == "cuponUpdate/"
                 || substr($_GET['views'], 0, 11) == "productNew/"
                 || substr($_GET['views'], 0, 14) == "productUpdate/"
             ){

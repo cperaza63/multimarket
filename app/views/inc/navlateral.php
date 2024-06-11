@@ -91,6 +91,9 @@
                                         <a href="<?php echo APP_URL; ?>productList/" class="nav-link" data-key="t-projects"> Productos de la tienda</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>cuponList/" class="nav-link" data-key="t-projects"> Cupones de ofertas</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-nft"> Facturación de la tienda</a>
                                     </li>
                                     <li class="nav-item">
