@@ -76,6 +76,9 @@
                                         <a href="<?php echo APP_URL; ?>proveedorList/" class="nav-link" data-key="t-ecommerce"> Proveedores por tienda</a>
                                     </li>
                                     <li class="nav-item">
+                                        <a href="<?php echo APP_URL; ?>despachadorList/" class="nav-link" data-key="t-ecommerce"> Despachadores de la tienda</a>
+                                    </li>
+                                    <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>clienteList/" class="nav-link" data-key="t-crypto"> Clientes por tienda</a>
                                     </li>
                                     <li class="nav-item">

@@ -605,10 +605,9 @@
 		}
 
 		/*----------  Controlador listar usuario  que aun no estan asignados a ninguna empresa----------*/
-		public function listarUsuarioNegocioControlador(){
-			$consulta_datos="SELECT * FROM usuario 
-				WHERE company_id == 0) 
-				ORDER BY company_name";
+		public function listarUsuarioNegocioControlador($company_id){
+			$company_id=$this->limpiarCadena($company_id);
+			$consulta_datos="SELECT * FROM usuario WHERE company_id = $company_id ORDER BY nombre_completo";
 			$datos = $this->ejecutarConsulta($consulta_datos);
 			$datos = $datos->fetchAll();
 			return $datos;

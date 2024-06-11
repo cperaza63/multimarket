@@ -10,8 +10,7 @@
         <header class="masthead mb-auto">
             <div class="inner">
               <div class="nav nav-masthead justify-content-center">
-              	<form method="POST" target="_parent" action="https://administracion.ciudadhive.com/ciudadhive_amazon/ciudadhive/verShoppingCart.php">
-                    <form class="FormularioAjax" method="POST"
+              	<form class="FormularioAjax" method="POST"
                     action="<?php echo APP_URL; ?>app/ajax/companyAjax.php">
                     <input type="hidden" name="modulo_company" value="actualizarUbicacion">
                     <input type="hidden" name="cliente_id" value="<?php echo $cliente_id; ?>">
@@ -49,7 +48,7 @@
                             value="Grabar Dirección" id="txtLng" placeholder="grabar">
                             </div>
                         </div>
-                               
+                </form>
               </div>
             </div>
       	</header>
@@ -62,8 +61,6 @@
     <input type="submit" class="brn btn-danger form-control" value="Salir" id="salir" placeholder="Salir">
     </span>
       </p>-->
-      
-    </form>
       <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
       <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>

@@ -18,6 +18,7 @@
 			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
 			"bancoNew","bancoList","bancoUpdate","bancoSearch", "bancoPhoto",
 			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate",
+			"despachadorNew", "despachadorList", "despachadorSearch", "despachadorUpdate",
 			"clienteNew","clienteList","clienteSearch","clienteUpdate",
 			"productNew","productList","productSearch","productUpdate","productPhoto","productCategory",
 			"saleNew","saleList","saleSearch","saleDetail",

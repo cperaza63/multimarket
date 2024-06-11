@@ -474,10 +474,8 @@ if ($mysqli->connect_errno) {
                                                 <div class="card-body p-1">
                                                     <div class="text-center">
 
-                                                        <div <?php echo APP_URL; ?>sition-relative d-inline-block mx-auto  mb-4">
-http://localhost/multimarket/                                      <img src="http://localhost/multimarket/app/views/fotos/pdf.jpg" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
+                                                        <div <?php echo APP_URL; ?>sition-relative d-inline-block mx-auto  mb-4"><img src="http://localhost/multimarket/app/views/fotos/pdf.jpg" class="rounded avatar-xl img-thumbnail user-profile-image  shadow" alt="user-profile-image">
                                                             <div class="avatar-xs p-0 rounded-circle ">
-                                                                <input id="profile-img-file-input" name="proveedor_pdf" type="file" accept=".jpg, .png, .jpeg" class="profile-img-file-input">
                                                             </div>
                                                         </div>
 

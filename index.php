@@ -65,7 +65,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || $_GET['views'] == "categoryList/" || $_GET['views'] == "subcatList/"
                 || $_GET['views'] == "marcaList/"  || $_GET['views'] == "modeloList/" 
                 || $_GET['views'] == "proveedorList/" || $_GET['views'] == "clienteList/"
-                || $_GET['views'] == "productList/" 
+                || $_GET['views'] == "despachadorList/" || $_GET['views'] == "productList/" 
                 ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{
@@ -84,6 +84,8 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 14) == "companyUpdate/"
                 || substr($_GET['views'], 0, 13) == "proveedorNew/"
                 || substr($_GET['views'], 0, 16) == "proveedorUpdate/"
+                || substr($_GET['views'], 0, 15) == "despachadorNew/"
+                || substr($_GET['views'], 0, 18) == "despachadorUpdate/"
                 || substr($_GET['views'], 0, 11) == "clienteNew/"
                 || substr($_GET['views'], 0, 14) == "clienteUpdate/"
                 || substr($_GET['views'], 0, 11) == "controlNew/"
