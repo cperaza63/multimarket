@@ -110,8 +110,6 @@
                                     <li class="nav-item">
                                         <a href="<?php echo APP_URL; ?>userUpdateAdmin/" class="nav-link" data-key="t-crm"> Administrador </a>
                                     </li>
-                                    
-
                                 </ul>
                             </div>
                         </li> <!-- end Dashboard Menu -->
@@ -129,7 +127,7 @@
                                         <div class="collapse menu-dropdown" id="sidebarEcommerce">
                                             <ul class="nav nav-sm flex-column">
                                                 <li class="nav-item">
-                                                    <a href="<?php echo APP_URL; ?>productSearch/" class="nav-link" data-key="t-products"> Consulta de Productos </a>
+                                                    <a href="<?php echo APP_URL; ?>productCompra/" class="nav-link" data-key="t-productCompra"> Consulta de Productos </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a href="apps-ecommerce-product-details.html" class="nav-link" data-key="t-product-Details"> Product Details </a>
@@ -1084,19 +1082,19 @@
                 <div class="navbar-brand-box horizontal-logo">
                     <a href="index.html" class="logo logo-dark">
                         <span class="logo-sm">
-                            <img src="http://localhost/multimarket/app/views/images/logo-sm.png" alt="" height="22">
+                            <img src="<?=$logo_sm;?>" alt="" height="55">
                         </span>
                         <span class="logo-lg">
-                            <img src="http://localhost/multimarket/app/views/images/logo-dark.png" alt="" height="17">
+                            <img src="<?=$logo_lg;?>" alt="" height="55">
                         </span>
                     </a>
 
                     <a href="index.html" class="logo logo-light">
                         <span class="logo-sm">
-                            <img src="http://localhost/multimarket/app/views/images/logo-sm.png" alt="" height="22">
+                            <img src="<?=$logo_sm;?>" alt="" height="55">
                         </span>
                         <span class="logo-lg">
-                            <img src="http://localhost/multimarket/app/views/images/logo-light.png" alt="" height="17">
+                            <img src="<?=$logo_lg;?>" alt="" height="55">
                         </span>
                     </a>
                 </div>
@@ -1164,16 +1162,21 @@
                             <img src="http://localhost/multimarket/app/views/images/flags/us.svg" alt="user-image" class="me-2 rounded" height="18">
                             <span class="align-middle">English</span>
                         </a>
-
+                        <!-- item-->
+                        <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp" title="Venezuela">
+                            <img src="http://localhost/multimarket/app/views/images/flags/venezuela.png" alt="user-image" class="me-2 rounded" height="18">
+                            <span class="align-middle">Venezuela</span>
+                        </a>
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="sp" title="Spanish">
                             <img src="http://localhost/multimarket/app/views/images/flags/spain.svg" alt="user-image" class="me-2 rounded" height="18">
-                            <span class="align-middle">Española</span>
+                            <span class="align-middle">España</span>
                         </a>
 
                         <!-- item-->
                         <a href="javascript:void(0);" class="dropdown-item notify-item language" data-lang="gr" title="German">
-                            <img src="http://localhost/multimarket/app/views/images/flags/germany.svg" alt="user-image" class="me-2 rounded" height="18"> <span class="align-middle">Deutsche</span>
+                            <img src="http://localhost/multimarket/app/views/images/flags/germany.svg" alt="user-image" class="me-2 rounded" height="18"> 
+                            <span class="align-middle">Alemania</span>
                         </a>
 
                         <!-- item-->

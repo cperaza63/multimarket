@@ -66,7 +66,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                  || $_GET['views'] == "cuponList/" || $_GET['views'] == "marcaList/"  
                  || $_GET['views'] == "modeloList/" || $_GET['views'] == "proveedorList/" 
                  || $_GET['views'] == "clienteList/" || $_GET['views'] == "despachadorList/" 
-                 || $_GET['views'] == "productList/" 
+                 || $_GET['views'] == "productCompra/" 
                 ){
                     ?><script src="<?php echo APP_URL; ?>app/views/js/ajaxSinSwall.js" ></script><?php
                 }else{

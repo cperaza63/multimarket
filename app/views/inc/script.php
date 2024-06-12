@@ -25,15 +25,7 @@
 
    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
    
-       <!-- nouisliderribute js -->
-       <script src="<?php echo APP_URL; ?>app/views/libs/nouislider/nouislider.min.js"></script>
-    <script src="<?php echo APP_URL; ?>app/views/libs/wnumb/wNumb.min.js"></script>
 
-    <!-- gridjs js -->
-    <script src="<?php echo APP_URL; ?>app/views/libs/gridjs/gridjs.umd.js"></script>
-    <script src="../../../../unpkg.com/gridjs%406.2.0/plugins/selection/dist/selection.umd.js"></script>
-    <!-- ecommerce product list -->
-    <script src="<?php echo APP_URL; ?>app/views/js/pages/ecommerce-product-list.init.js"></script>
    
    <!--datatable js-->
    <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
@@ -48,4 +40,13 @@
 
    <script src="<?php echo APP_URL; ?>app/views/js/pages/datatables.init.js"></script>
 
+          <!-- nouisliderribute js -->
+    <script src="<?php echo APP_URL; ?>app/views/libs/nouislider/nouislider.min.js"></script>
+    <script src="<?php echo APP_URL; ?>app/views/libs/wnumb/wNumb.min.js"></script>
+
+    <!-- gridjs js -->
+    <script src="<?php echo APP_URL; ?>app/views/libs/gridjs/gridjs.umd.js"></script>
+    <script src="../../../../unpkg.com/gridjs%406.2.0/plugins/selection/dist/selection.umd.js"></script>
+    <!-- ecommerce product list -->
+    <script src="<?php echo APP_URL; ?>app/views/js/pages/ecommerce-product-list.init.js"></script>
    

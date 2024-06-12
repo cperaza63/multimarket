@@ -20,9 +20,8 @@
 			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate",
 			"despachadorNew", "despachadorList", "despachadorSearch", "despachadorUpdate",
 			"clienteNew","clienteList","clienteSearch","clienteUpdate","productNew","productList",
-			"productSearch","productUpdate","productPhoto","productCategory","saleNew","saleList",
-			"saleSearch","saleDetail",
-			"logOut"
+			"productUpdate","productPhoto","productCategory","saleNew","saleList",
+			"saleSearch","saleDetail","productCompra", "logOut"
 			];
 
 			if(in_array($vista, $listaBlanca)){

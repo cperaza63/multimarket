@@ -297,7 +297,7 @@
 							</a>
 						</li>
 						<li class="full-width">
-							<a href="<?php echo APP_URL; ?>productSearch/" class="full-width">
+							<a href="<?php echo APP_URL; ?>CompraSearch/" class="full-width">
 								<div class="navLateral-body-cl">
 									<i class="fas fa-search fa-fw"></i>
 								</div>

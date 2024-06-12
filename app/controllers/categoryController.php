@@ -162,6 +162,20 @@
 			return $datos;
 			exit();
 		}
+		/*----------  Controlador listar control  ----------*/
+		public function listarCuantosCategoryControlador($company_id, $busqueda){	
+			$busqueda=$this->limpiarCadena($busqueda);
+			$company_id=$this->limpiarCadena($company_id);
+			if(isset($busqueda) && $busqueda!="*"){
+				$consulta_datos="SELECT count(categoria_id) as cuantos, categoria_id, codigo, nombre FROM company_categorias WHERE $company_id=$company_id AND unidad=0  AND ( codigo LIKE '%$busqueda%' OR nombre LIKE '%$busqueda%') ORDER BY nombre";
+			}else{
+				$consulta_datos="SELECT count(categoria_id) as cuantos, categoria_id, codigo, nombre FROM company_categorias WHERE company_id=$company_id AND unidad=0 GROUP BY nombre";
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
 		public function obtenerListaMarketControlador($tipo){
 			$consulta_datos = "SELECT * FROM company_categorias 
 			WHERE estatus=1 AND tipo='$tipo' AND a.company_id=0 ORDER BY a.tipo, a.nombre";
