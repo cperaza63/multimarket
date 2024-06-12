@@ -48,8 +48,4 @@
 
    <script src="<?php echo APP_URL; ?>app/views/js/pages/datatables.init.js"></script>
 
-    <!-- nouisliderribute js -->
-    <script src="http://localhost/multimarket/app/views/libs/nouislider/nouislider.min.js"></script>
-    <script src="http://localhost/multimarket/app/views/libs/wnumb/wNumb.min.js"></script>
-
    

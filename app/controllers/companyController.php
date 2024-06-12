@@ -193,6 +193,18 @@
 			return $datos;
 			exit();
 		}
+		/*----------  Controlador listar company  ----------*/
+		public function listarNegociosUsuarioControlador($user_id){	
+			$user_id=$this->limpiarCadena($user_id);
+			
+			if(isset($user_id)){
+				$consulta_datos="SELECT a.user_id, a.firstname, a.lastname, b.* from usuario a inner join company b on (a.company_id = b.company_id) WHERE a.user_id = $user_id ORDER BY b.company_name";
+			}
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
 		/*----------  Controlador eliminar company  ----------*/
 		public function eliminarCompanyControlador(){
 

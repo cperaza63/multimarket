@@ -52,6 +52,8 @@
 					            $_SESSION['caja']=$check_usuario['caja_id'];
 								$_SESSION['user_company_id']=$check_usuario['company_id'];
 								$_SESSION['user_company_logo']=$check_usuario['company_logo'];
+								$_SESSION['company_name']=$check_usuario['company_name'];
+
 					            if(headers_sent()){
 					                echo "<script> window.location.href='".APP_URL."dashboard/'; </script>";
 					            }else{
