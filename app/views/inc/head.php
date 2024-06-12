@@ -27,6 +27,10 @@
 <link href="<?php echo APP_URL; ?>app/views/css/custom.min.css" rel="stylesheet" type="text/css" />
 <!-- Sweet Alert css-->
 <link href="<?php echo APP_URL; ?>app/views/libs/sweetalert2/sweetalert2.min.css" rel="stylesheet" type="text/css" />
+<!-- nouisliderribute css -->
+<link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/libs/nouislider/nouislider.min.css">
+<!-- gridjs css -->
+<link rel="stylesheet" href="<?php echo APP_URL; ?>app/views/libs/gridjs/theme/mermaid.min.css">
 
 <!--datatable css-->
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css" />

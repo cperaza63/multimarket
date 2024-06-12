@@ -271,7 +271,9 @@ if ($mysqli->connect_errno) {
                                                 <div class="col-lg-6">
                                                     <div class="mb-3 pb-2">
                                                         <label for="company_description" class="form-label">Breve descripción</label>
+                                                        <div id="ckeditor-classic">
                                                         <textarea name="company_description" class="form-control" id="company_description" placeholder="Breve descripción del negocio" rows="3"><?= trim($datos["company_description"]); ?></textarea>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!--end col-->
@@ -607,6 +609,7 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
                                                     <!--end col-->
+                                                    <span><h4>Configuración redes sociales</h4></span>
                                                     <hr>
                                                     <?php
                                                     $vector = [1, 2, 3];
@@ -645,6 +648,7 @@ if ($mysqli->connect_errno) {
                                                     <?php
                                                     }
                                                     ?>
+                                                    <span><h4>Configuración web</h4></span>
                                                     <hr>
                                                     <div class="col-lg-5">
                                                         <div class="mb-3">
@@ -668,6 +672,7 @@ if ($mysqli->connect_errno) {
                                                         </div>
                                                     </div>
                                                     <!--end col-->
+                                                    <span><h4>Configuración servicio email</h4></span>
                                                     <hr>
                                                     <div class="col-lg-4">
                                                         <div class="mb-3">
@@ -722,6 +727,28 @@ if ($mysqli->connect_errno) {
                                                         <div class="mb-3">
                                                             <label for="company_logo_height" class="form-label">Alto del Logo </label>
                                                             <input name="company_logo_height" type="number" class="form-control" value="<?= $datos["company_logo_height"] ?>" id="company_logo_height" placeholder="Coloque el alto del logo" maxlength="10" required>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <span><h4>Configuración de delivery</h4></span>
+                                                    <hr>
+                                                    <div class="col-lg-5">
+                                                        <div class="mb-3">
+                                                            <label for="company_tipo_delivery" class="form-label">
+                                                                <strong>Tipo de delivery</strong></label>
+                                                                <select name="company_tipo_delivery" class="form-control" required data-choices data-choices-text-unique-true id="company_tipo_delivery">
+                                                                    <option value="6" <?php if ($datos['company_tipo_delivery'] == '6') echo "selected" ?>>Sin delivery o solo entrega a domicilio</option>
+                                                                    <option value="7" <?php if ($datos['company_tipo_delivery'] == '7') echo "selected" ?>>Aplica una tarifa única al delivery</option>
+                                                                    <option value="8" <?php if ($datos['company_tipo_delivery'] == '8') echo "selected" ?>>Aplica un cobro por distancia/peso total kgs </option>
+                                                                    <option value="8" <?php if ($datos['company_tipo_delivery'] == '9') echo "selected" ?>>Aplica un cobro por distancia/% del total factura  </option>
+                                                                </select>
+                                                        </div>
+                                                    </div>
+                                                    <!--end col-->
+                                                    <div class="col-lg-3">
+                                                        <div class="mb-3">
+                                                            <label for="company_tarifa_delivery" class="form-label">Tarifa del delivery $ </label>
+                                                            <input name="company_tarifa_delivery" type="number" step="0.01" class="form-control" value="<?= $datos["company_tarifa_delivery"] ?>" id="company_tarifa_delivery" placeholder="Coloque el monto de la tarifa a cobrar $" maxlength="10" required>
                                                         </div>
                                                     </div>
                                                     <!--end col-->

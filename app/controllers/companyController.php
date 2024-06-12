@@ -425,13 +425,17 @@
 			$company_youtube_index = $this->limpiarCadena($_POST['company_youtube_index']);
 		    $company_logo_witdh= $this->limpiarCadena($_POST['company_logo_witdh']);
 			$company_logo_height= $this->limpiarCadena($_POST['company_logo_height']);
+			$company_tarifa_delivery = $this->limpiarCadena($_POST['company_tarifa_delivery']);
+			$company_tipo_delivery = $this->limpiarCadena($_POST['company_tipo_delivery']);
+			
 			# Verificando campos obligatorios 
 		    if($company_red1=="" || $company_red_valor1=="" || $company_red2=="" || $company_iva=="" 
 			|| $company_red_valor2=="" || $company_red3=="" || $company_red_valor3==""
 			|| $company_web=="" || $company_slogan=="" || $company_youtube_index=="" 
-			|| $company_logo_witdh==""|| $company_logo_height=="" 
+			|| $company_logo_witdh==""|| $company_logo_height=="" || $company_tarifa_delivery ==""
 			|| $company_servicio_email=="" || $company_servicio_email_envio=="" 
-			|| $company_servicio_email_password=="" || $company_servicio_email_puerto=="" 
+			|| $company_tipo_delivery =="" || $company_servicio_email_password=="" 
+			|| $company_servicio_email_puerto=="" 
 			){
 		        $alerta=[
 					"tipo"=>"simple",
@@ -537,7 +541,18 @@
 					"campo_nombre"=>"company_servicio_email_puerto",
 					"campo_marcador"=>":Company_servicio_email_puerto",
 					"campo_valor"=>$company_servicio_email_puerto
+				],
+				[
+					"campo_nombre"=>"company_tarifa_delivery",
+					"campo_marcador"=>":Company_tarifa_delivery",
+					"campo_valor"=>$company_tarifa_delivery
+				],
+				[
+					"campo_nombre"=>"company_tipo_delivery",
+					"campo_marcador"=>":Company_tipo_delivery",
+					"campo_valor"=>$company_tipo_delivery
 				]
+				
 			];
 			$condicion=[
 				"condicion_campo"=>"company_id",

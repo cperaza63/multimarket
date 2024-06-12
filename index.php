@@ -58,7 +58,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
         require_once "./app/views/inc/script.php";
         // recuerda el tab de las pestañas
         // desativamos el ajax para hacer prueas
-        $a=1;
+        $a=0;
         if ($a == 0){
             if(isset($_GET['views']) && $_GET['views']!=""){
                 if( $_GET['views'] == "userList/" || $_GET['views'] == "ubicacionList/"
