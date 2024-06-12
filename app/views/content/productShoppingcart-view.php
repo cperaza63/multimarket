@@ -1,525 +1,304 @@
-<!-- Layout config Js -->
-<?php
-$mysqli = new mysqli("localhost", "root", "", "multimarket");
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-    exit();
-}
-if (!isset($_SESSION['product_categoria'])){
-    $_SESSION['product_categoria']="";
-}
-if (!isset($_SESSION['product_subcat'])){
-    $_SESSION['product_subcat']="";
-}
-$product_categoria ="";
-$product_subcat ="";
-$company_id= $_SESSION['user_company_id'];
-use app\controllers\productController;
-use app\controllers\categoryController;
-use app\controllers\marcaController;
-
-$insProduct = new productController();
-$categoryController = new categoryController();
-$categorias = $categoryController->listarTodosCategoryControlador($company_id, "*");
-$categoria_cuantos = $categoryController->listarCuantosCategoryControlador($company_id, "*");
-$marcaController = new marcaController();
-$marcas = $marcaController->listarTodosMarcaControlador($company_id,"*");
-
-// reviso el POST
-if(isset($_POST['product_categoria'])){
-    $product_categoria = $_POST['product_categoria'];
-    $_SESSION['product_categoria'] = $product_categoria;
-}else{
-    $product_categoria = $_SESSION['product_categoria'];
-}
-
-if(isset($_POST['product_subcat'])){
-    $product_subcat = $_POST['product_subcat'];
-    $_SESSION['product_subcat'] = $product_subcat;
-}else{
-    $product_subcat = $_SESSION['product_subcat'];
-}
-
-?>
-<script src="assets/js/layout.js"></script>
-<!-- Bootstrap Css -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
-<link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-<!-- custom Css-->
-<link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-<!-- Begin page -->
+    <!-- Begin page -->
 <div id="layout-wrapper">
-<!-- removeNotificationModal -->
-<div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mt-2 text-center">
-                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Estas seguro ?</h4>
-                        <p class="text-muted mx-4 mb-0">Estas seguro que quieres remover esta notifiación ?</p>
-                    </div>
-                </div>
-                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn w-sm btn-danger" id="delete-notification">Si, Bórralo!</button>
-                </div>
-            </div>
+    <div class="vertical-overlay"></div>
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content">
 
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-        
-<!-- Vertical Overlay-->
-<div class="vertical-overlay"></div>
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                <!-- start page title -->
-                <div class="row">
-                    <div class="col-12">
-                    <form  action="" method="POST">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Productos</h4>
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="product_categoria" class="form-label">Categorias</label>
-                                    <select name="product_categoria" language="javascript:void(0)" onchange="loadAjaxCatSubcat(this.value, '')" class="form-control" data-choices data-choices-text-unique-true id="product_categoria">
-                                        <option value="0">Escoja una opción</option>
-                                        <?php
-                                        if (is_array($categorias)) {
-                                            foreach ($categorias as $categoria) {
-                                        ?>
-                                                <option value="<?= $categoria['categoria_id']; ?>" 
-                                                <?= $product_categoria == $categoria['categoria_id'] ? "selected" : "" ?>><?= $categoria['nombre']; ?>
-                                                </option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="product_subcat" class="form-label">Subcategorías</label>
-                                    <select name="product_subcat" class="form-control" data-choices data-choices-text-unique-true id="product_subcat">
-                                    <option value="0">Escoja una opción</option>
-                                    <?php
-                                        $sql = "SELECT * FROM company_categorias WHERE unidad= " . $product_categoria . " AND company_id=$company_id AND estatus=1 ORDER BY nombre";
-                                        //echo $sql;
-                                        if ($res = $mysqli->query("SELECT * FROM company_categorias WHERE unidad='" . $product_categoria . "' AND company_id=$company_id AND estatus=1 ORDER BY nombre")) {
-                                        ?>
-                                            <?php while ($fila = mysqli_fetch_array($res)) { ?>
-                                                <option value="<?php echo $fila['categoria_id']; ?>" <?php if ($fila['categoria_id'] == $product_subcat) echo "selected"; ?>>
-                                                    <?php echo $fila['categoria_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
-                                                </option>
-                                            <?php } ?>
-                                        <?php
-                                        }
-                                    ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-1">
-                                <div class="mb-3">
-                                    <label for="accion" class="form-label"><span style="color: white;">_______</span></label>
-                                    <button type="submit" class="btn btn-info"><i class="ri-search-line search-icon"></i></button>
-                                </div>
-                            </div>
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                    <li class="breadcrumb-item active">Productos</li>
-                                </ol>
-                            </div>
+            <div class="page-content">
+                <div class="container-fluid">
 
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                <!-- end page title -->
-                <form action="">
+                    <!-- start page title -->
                     <div class="row">
-                        <div class="col-xl-3 col-lg-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex mb-3">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-16">Filtros</h5>
-                                        </div>
-                                        <div class="flex-shrink-0">
-                                            <a href="#" class="text-decoration-underline" id="clearall">Quitar filtros</a>
-                                        </div>
-                                    </div>
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Shopping Cart</h4>
 
-                                    <div class="filter-choices-input">
-                                        <input class="form-control" type="text" id="filter-choices-input" value="T-Shirts" />
-                                    </div>
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                        <li class="breadcrumb-item active">Shopping Cart</li>
+                                    </ol>
                                 </div>
 
-                                <div class="accordion accordion-flush filter-accordion">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
 
-                                    <div class="card-body border-bottom">
-                                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Precio</p>
+                    <div class="row mb-3">
+                        <div class="col-xl-8">
+                            <div class="row align-items-center gy-3 mb-3">
+                                <div class="col-sm">
+                                    <div>
+                                        <h5 class="fs-14 mb-0">Tienes (03 items) en tu carrito</h5>
+                                    </div>
+                                </div>
+                                <div class="col-sm-auto">
+                                    <a href="<?php echo APP_URL; ?>productCompra/" class="link-primary text-decoration-underline">Seguir comprando</a>
+                                </div>
+                            </div>
 
-                                        <div id="product-price-range" data-slider-color="primary"></div>
-                                        <div class="formCost d-flex gap-2 align-items-center mt-3">
-                                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" /> <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm" type="text" id="maxCost" value="1000" />
+                            <div class="card product">
+                                <div class="card-body">
+                                    <div class="row gy-3">
+                                        <div class="col-sm-auto">
+                                            <div class="avatar-lg bg-light rounded p-1">
+                                                <img src="<?php echo APP_URL;?>app/views/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                            </div>
                                         </div>
-                                        <div><br>
-                                        <button type="submit" name="filtro_inicial" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos filtros</button>
-                                    </div>
-                                    </div>
-                                    
-                                    <div class="card-body border-bottom">
-                                        <div>
-                                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Categorías de productos</p>
-                                            <ul class="list-unstyled mb-0 filter-list">
-                                                <?php 
-                                                if (is_array($categoria_cuantos)) {
-                                                    foreach ($categoria_cuantos as $res) {
-                                                    ?>  
-                                                    <li>
-                                                        <a href="#" class="d-flex py-1 align-items-center">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-13 mb-0 listname"><?=$res['nombre']?></h5>
-                                                            </div>
-                                                            <div class="flex-shrink-0 ms-2">
-                                                            <span class="badge bg-light text-muted"><?=$res['cuantos']?></span>
-                                                        </div>
-                                                        </a>
-                                                    </li>
-                                                <?php
-                                                    }
-                                                } 
-                                                ?>
-                                                
+                                        <div class="col-sm">
+                                            <h5 class="fs-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-body">Sweatshirt for Men (Pink)</a></h5>
+                                            <ul class="list-inline text-muted">
+                                                <li class="list-inline-item">Color : <span class="fw-medium">Pink</span></li>
+                                                <li class="list-inline-item">Size : <span class="fw-medium">M</span></li>
                                             </ul>
-                                        </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingBrands">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands" aria-expanded="true" aria-controls="flush-collapseBrands">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Marcas</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
 
-                                        <div id="flush-collapseBrands" class="accordion-collapse collapse show" aria-labelledby="flush-headingBrands">
-                                            <div class="accordion-body text-body pt-0">
-                                                <div class="search-box search-box-sm">
-                                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList" placeholder="Buscar Marcas...">
-                                                    <i class="ri-search-line search-icon"></i>
-                                                </div>
-                                                <div class="d-flex flex-column gap-2 mt-3 filter-check">
-                                                    <?php 
-                                                        if (is_array($marcas)) {
-                                                            foreach ($marcas as $res) {
-                                                            ?>  
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="Boat" id="productBrandRadio5" checked>
-                                                                <label class="form-check-label" for="productBrandRadio5" checked><?=mb_strtolower($res['nombre']);?></label>
-                                                            </div>
-                                                        <?php
-                                                            }
-                                                        } 
-                                                    ?>
-                                                    <button type="submit" name="filtro_marca" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estas marcas</button>
-                                                </div>
+                                            <div class="input-step">
+                                                <button type="button" class="minus shadow">–</button>
+                                                <input type="number" class="product-quantity" value="2" min="0" max="100">
+                                                <button type="button" class="plus shadow">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="text-lg-end">
+                                                <p class="text-muted mb-1">Precio del item:</p>
+                                                <h5 class="fs-14">$<span id="ticket_price" class="product-price">119.99</span></h5>
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- end accordion-item -->
-
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingDiscount">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseDiscount" aria-expanded="true" aria-controls="flush-collapseDiscount">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Descuento</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseDiscount" class="accordion-collapse collapse" aria-labelledby="flush-headingDiscount">
-                                            <div class="accordion-body text-body pt-1">
-                                                <div class="d-flex flex-column gap-2 filter-check">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="50% or more" id="productdiscountRadio6">
-                                                        <label class="form-check-label" for="productdiscountRadio6">50% o más</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="40% or more" id="productdiscountRadio5">
-                                                        <label class="form-check-label" for="productdiscountRadio5">40% o más</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="30% o más" id="productdiscountRadio4">
-                                                        <label class="form-check-label" for="productdiscountRadio4">
-                                                            30% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="20% or más" id="productdiscountRadio3" checked>
-                                                        <label class="form-check-label" for="productdiscountRadio3">
-                                                            20% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="10% o más" id="productdiscountRadio2">
-                                                        <label class="form-check-label" for="productdiscountRadio2">
-                                                            10% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="Memos del  10%" id="productdiscountRadio1">
-                                                        <label class="form-check-label" for="productdiscountRadio1">
-                                                            menos del 10%
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                    <button type="submit" name="filtro_descuento" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar descuentos</button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion-item -->
-
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingRating">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseRating" aria-expanded="false" aria-controls="flush-collapseRating">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Rating</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
-
-                                        <div id="flush-collapseRating" class="accordion-collapse collapse" aria-labelledby="flush-headingRating">
-                                            <div class="accordion-body text-body">
-                                                <div class="d-flex flex-column gap-2 filter-check">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="4 & más Estrellas" id="productratingRadio4" checked>
-                                                        <label class="form-check-label" for="productratingRadio4">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 4 & Más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="3 & más Estrellas" id="productratingRadio3">
-                                                        <label class="form-check-label" for="productratingRadio3">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 3 & Más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="2 & más Estrellas" id="productratingRadio2">
-                                                        <label class="form-check-label" for="productratingRadio2">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 2 & Más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="1 Star" id="productratingRadio1">
-                                                        <label class="form-check-label" for="productratingRadio1">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 1
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <button type="submit" name="filtro_rating" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos ratings</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion-item -->
                                 </div>
+                                <!-- card body -->
+                                <div class="card-footer">
+                                    <div class="row align-items-center gy-3">
+                                        <div class="col-sm">
+                                            <div class="d-flex flex-wrap my-n1">
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Quitar</a>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2"><i class="ri-star-fill text-muted align-bottom me-1"></i> Agregar a favoritos</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="d-flex align-items-center gap-2 text-muted">
+                                                <div>Total :</div>
+                                                <h5 class="fs-14 mb-0">$<span class="product-line-price">239.98</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card footer -->
                             </div>
                             <!-- end card -->
-                        </div>
-                        <!-- end col -->
 
-                        <div class="col-xl-9 col-lg-8">
-                            <div>
-                                <div class="card">
-                                    <div class="card-header border-0">
-                                        <div class="row g-4">
-                                            
-                                            <div class="col-sm-auto">
-                                                <div>
-                                                    <a href="<?php echo APP_URL; ?>productShoppingcart/" class="btn btn-info" id="addproduct-btn"><i class="ri-shopping-cart-line  align-bottom me-1"></i> Ver mi carrito </a>
-                                                </div>
+                            <div class="card product">
+                                <div class="card-body">
+                                    <div class="row gy-3">
+                                        <div class="col-sm-auto">
+                                            <div class="avatar-lg bg-light rounded p-1">
+                                                <img src="<?php echo APP_URL; ?>app/views/images/products/img-7.png" alt="" class="img-fluid d-block">
                                             </div>
-                                            <div class="col-sm-auto">
-                                                <div>
-                                                    <a href="<?php echo APP_URL; ?>ecommerceOrdenes/" class="btn btn-info" id="ecommerceOrdenes-btn"><i class="ri-search-line search-icon  align-bottom me-1"></i> Ver mis Ordenes </a>
-                                                </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <h5 class="fs-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-body">Noise NoiseFit Endure Smart Watch</a></h5>
+
+                                            <ul class="list-inline text-muted">
+                                                <li class="list-inline-item">Color : <span class="fw-medium">Black</span></li>
+                                                <li class="list-inline-item">Size : <span class="fw-medium">32.5mm</span></li>
+                                            </ul>
+
+                                            <div class="input-step">
+                                                <button type="button" class="minus shadow">–</button>
+                                                <input type="number" class="product-quantity" value="1" min="0" max="100">
+                                                <button type="button" class="plus shadow">+</button>
                                             </div>
-                                            <div class="col-sm">
-                                                <div class="d-flex justify-content-sm-end">
-                                                    <div class="search-box ms-2">
-                                                        <input hidden type="text" class="form-control" id="searchProductList" placeholder="Buscar Productos...">
-                                                    </div>
-                                                </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="text-lg-end">
+                                                <p class="text-muted mb-1">Item Price:</p>
+                                                <h5 class="fs-14">$<span class="product-price">94.99</span></h5>
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all" role="tab">
-                                                            Productos filtrados <span class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">12</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end card header -->
-                                    <?php
-                                    if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, $_SESSION[$url[0]]);
-                                    }else{
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, "*");
-                                    }
-                                    ?>
-                                    <div class="card-body">
-                                        <div class="tab-content text-muted">
-                                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                                <div id="table-product-list-all" >
-                                                <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col" style="width: 10px;">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
-                                                                </div>
-                                                            </th>
-                                                            <th>Logo</th>
-                                                            <th>Nombre</th>
-                                                            <th>Carrito</th>
-                                                            <th>Codigo</th>
-                                                            <th>Unidad</th>
-                                                            <th>Precio</th>
-                                                            <th>Inventariable</th>
-                                                            <th>Estatus</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        if(is_array($datos)){
-                                                            foreach($datos as $rows){
-                                                                if($rows['product_logo'] != ""){
-                                                                    $product_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/productos/".$rows['product_logo'];
-                                                                }else{
-                                                                    $product_logo = APP_URL . "app/views/fotos/nophoto.jpg";
-                                                                }
-                                                                ?>
-                                                                <tr>
-                                                                    <th scope="row">
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
-                                                                        </div>
-                                                                    </th>
-                                                                    <td>
-                                                                        <img src="<?=$product_logo; ?>" width="60px" alt="Logo del product de la tabla">
-                                                                    </td>
-                                                                    <td><?=$rows['product_name'];?></td>
-                                                                    <td>
-                                                                        <a href="<?= APP_URL.'productDetails/'.$rows['product_id'].'/'?>" class="btn btn-success"><i class="ri-add-line"></i></a>
-                                                                    </td>
-                                                                    <td><?=$rows['product_codigo'];?></td>
-                                                                    <td><?=$rows['product_unidad'];?></td>
-                                                                    <td><?=$rows['product_precio'];?></td>
-                                                                    <td>
-                                                                        <?php
-                                                                        if($rows['product_inventariable'] ==1 ){
-                                                                            ?><span class="badge bg-info">Con Inventario<?php
-                                                                        }else{
-                                                                            ?><span class="badge bg-warning">Sin Inventario<?php
-                                                                        }?>
-                                                                        </span>    
-                                                                    <td>
-                                                                        <?php
-                                                                        if($rows['product_estatus'] ==1 ){
-                                                                            ?><span class="badge bg-success">Activo<?php
-                                                                        }else{
-                                                                            ?><span class="badge bg-danger">Inactivo<?php
-                                                                        }?>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                        <?php
-                                                            }    
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
-                                                </div>
-                                            </div>
-                                            <!-- end tab pane -->
-
-                                            <div class="tab-pane" id="productnav-published" role="tabpanel">
-                                                <div id="table-product-list-published" class="table-card gridjs-border-none"></div>
-                                            </div>
-                                            <!-- end tab pane -->
-
-                                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                                <div class="py-4 text-center">
-                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                                    </lord-icon>
-                                                    <h5 class="mt-4">Sorry! No Result Found</h5>
-                                                </div>
-                                            </div>
-                                            <!-- end tab pane -->
-                                        </div>
-                                        <!-- end tab content -->
-
-                                    </div>
-                                    <!-- end card body -->
                                 </div>
-                                <!-- end card -->
+                                <!-- card body -->
+                                <div class="card-footer">
+                                    <div class="row align-items-center gy-3">
+                                        <div class="col-sm">
+                                            <div class="d-flex flex-wrap my-n1">
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2"><i class="ri-star-fill text-muted align-bottom me-1"></i> Add Wishlist</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="d-flex align-items-center gap-2 text-muted">
+                                                <div>Total :</div>
+                                                <h5 class="fs-14 mb-0">$<span class="product-line-price">94.99</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card footer -->
+                            </div>
+                            <!-- end card -->
+
+                            <div class="card product">
+                                <div class="card-body">
+                                    <div class="row gy-3">
+                                        <div class="col-sm-auto">
+                                            <div class="avatar-lg bg-light rounded p-1">
+                                                <img src="<?php echo APP_URL;?>app/views/images/products/img-3.png" alt="" class="img-fluid d-block">
+                                            </div>
+                                        </div>
+                                        <div class="col-sm">
+                                            <h5 class="fs-14 text-truncate"><a href="ecommerce-product-detail.html" class="text-body">350 ml Glass Grocery Container</a></h5>
+
+                                            <ul class="list-inline text-muted">
+                                                <li class="list-inline-item">Color : <span class="fw-medium">White</span></li>
+                                                <li class="list-inline-item">Size : <span class="fw-medium">350 ml</span></li>
+                                            </ul>
+
+                                            <div class="input-step">
+                                                <button type="button" class="minus shadow">–</button>
+                                                <input type="number" class="product-quantity" value="1" min="0" max="100">
+                                                <button type="button" class="plus shadow">+</button>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="text-lg-end">
+                                                <p class="text-muted mb-1">Item Price:</p>
+                                                <h5 class="fs-14">$<span class="product-price">24.99</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- card body -->
+                                <div class="card-footer">
+                                    <div class="row align-items-center gy-3">
+                                        <div class="col-sm">
+                                            <div class="d-flex flex-wrap my-n1">
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
+                                                </div>
+                                                <div>
+                                                    <a href="#" class="d-block text-body p-1 px-2"><i class="ri-star-fill text-muted align-bottom me-1"></i> Add Wishlist</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-auto">
+                                            <div class="d-flex align-items-center gap-2 text-muted">
+                                                <div>Total :</div>
+                                                <h5 class="fs-14 mb-0">$<span class="product-line-price">24.99</span></h5>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- end card footer -->
+                            </div>
+                            <!-- end card -->
+
+
+                            <div class="text-end mb-4">
+                                <a href="<?php echo APP_URL; ?>ecommerceCheckout/" class="btn btn-success btn-label right ms-auto"><i class="ri-arrow-right-line label-icon align-bottom fs-16 ms-2"></i> Checkout</a>
                             </div>
                         </div>
                         <!-- end col -->
+
+                        <div class="col-xl-4">
+                            <div class="sticky-side-div">
+                                <div class="card">
+                                    <div class="card-header border-bottom-dashed">
+                                        <h5 class="card-title mb-0">Order Summary</h5>
+                                    </div>
+                                    <div class="card-header bg-light-subtle border-bottom-dashed">
+                                        <div class="text-center">
+                                            <h6 class="mb-2">Have a <span class="fw-semibold">promo</span> code ?</h6>
+                                        </div>
+                                        <div class="hstack gap-3 px-3 mx-n3">
+                                            <input class="form-control me-auto" type="text" placeholder="Enter coupon code" aria-label="Add Promo Code here...">
+                                            <button type="button" class="btn btn-success w-xs">Apply</button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body pt-2">
+                                        <div class="table-responsive">
+                                            <table class="table table-borderless mb-0">
+                                                <tbody>
+                                                    <tr>
+                                                        <td>Sub Total :</td>
+                                                        <td class="text-end" id="cart-subtotal">$ 359.96</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Discount <span class="text-muted">(VELZON15)</span> : </td>
+                                                        <td class="text-end" id="cart-discount">- $ 53.99</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Shipping Charge :</td>
+                                                        <td class="text-end" id="cart-shipping">$ 65.00</td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>Estimated Tax (12.5%) : </td>
+                                                        <td class="text-end" id="cart-tax">$ 44.99</td>
+                                                    </tr>
+                                                    <tr class="table-active">
+                                                        <th>Total (USD) :</th>
+                                                        <td class="text-end">
+                                                            <span class="fw-semibold" id="cart-total">
+                                                                $415.96
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <!-- end table-responsive -->
+                                    </div>
+                                </div>
+
+                                <div class="alert border-dashed alert-danger" role="alert">
+                                    <div class="d-flex align-items-center">
+                                        <lord-icon src="https://cdn.lordicon.com/nkmsrxys.json" trigger="loop" colors="primary:#121331,secondary:#f06548" style="width:80px;height:80px"></lord-icon>
+                                        <div class="ms-2">
+                                            <h5 class="fs-14 text-danger fw-semibold"> Buying for a loved one?</h5>
+                                            <p class="text-body mb-1">Gift wrap and personalized message on card, <br />Only for <span class="fw-semibold">$9.99</span> USD </p>
+                                            <button type="button" class="btn ps-0 btn-sm btn-link text-danger text-uppercase shadow-none">Add Gift Wrap</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- end stickey -->
+
+                        </div>
                     </div>
                     <!-- end row -->
-                </form>
+                </div>
+                <!-- container-fluid -->
             </div>
-            <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
+            <!-- End Page-content -->
 
-    </div>
-    <!-- end main content-->
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © Velzon.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Develop by Themesbrand
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+
     </div>
     <!-- END layout-wrapper -->
 
@@ -528,19 +307,19 @@ if(isset($_POST['product_subcat'])){
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-modal"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mt-2 text-center">
                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Esta seguro?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you sure you want to remove this product ?</p>
+                            <h4>Are you sure ?</h4>
+                            <p class="text-muted mx-4 mb-0">Are you sure You want to remove this Product ?</p>
                         </div>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-product">Si, eliminelo!</button>
+                        <button type="button" class="btn w-sm btn-danger" id="remove-product">Yes, Delete It!</button>
                     </div>
                 </div>
 
@@ -1202,26 +981,26 @@ if(isset($_POST['product_subcat'])){
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-01" value="img-1">
                                 <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-01">
-                                    <img src="assets/images/sidebar/img-1.jpg" alt="" class="avatar-md w-auto object-fit-cover">
+                                    <img src="<?php echo APP_URL;?>app/views/images/sidebar/img-1.jpg" alt="" class="avatar-md w-auto object-fit-cover">
                                 </label>
                             </div>	
 
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-02" value="img-2">
                                 <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-02">
-                                    <img src="assets/images/sidebar/img-2.jpg" alt="" class="avatar-md w-auto object-fit-cover">
+                                    <img src="<?php echo APP_URL;?>app/views/images/sidebar/img-2.jpg" alt="" class="avatar-md w-auto object-fit-cover">
                                 </label>
                             </div>
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-03" value="img-3">
                                 <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-03">
-                                    <img src="assets/images/sidebar/img-3.jpg" alt="" class="avatar-md w-auto object-fit-cover">
+                                    <img src="<?php echo APP_URL;?>app/views/images/sidebar/img-3.jpg" alt="" class="avatar-md w-auto object-fit-cover">
                                 </label>
                             </div>
                             <div class="form-check sidebar-setting card-radio">
                                 <input class="form-check-input" type="radio" name="data-sidebar-image" id="sidebarimg-04" value="img-4">
                                 <label class="form-check-label p-0 avatar-sm h-auto" for="sidebarimg-04">
-                                    <img src="assets/images/sidebar/img-4.jpg" alt="" class="avatar-md w-auto object-fit-cover">
+                                    <img src="<?php echo APP_URL;?>app/views/images/sidebar/img-4.jpg" alt="" class="avatar-md w-auto object-fit-cover">
                                 </label>
                             </div>
                         </div>
@@ -1307,12 +1086,11 @@ if(isset($_POST['product_subcat'])){
             </div>
         </div>
     </div>
+
     <!-- JAVASCRIPT -->
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/feather-icons/feather.min.js"></script>
-    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="assets/js/plugins.js"></script>
+    <!-- input step init -->
+    <script src="<?php echo APP_URL; ?>app/views/js/pages/form-input-spin.init.js"></script>
+    <!-- ecommerce cart js -->
+    <script src="<?php echo APP_URL; ?>app/views/js/pages/ecommerce-cart.init.js"></script>
     <!-- App js -->
     <script src="assets/js/app.js"></script>

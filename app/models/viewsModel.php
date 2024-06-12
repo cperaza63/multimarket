@@ -16,12 +16,12 @@
 			"subcatSearch", "subcatPhoto", "modeloNew","modeloList","modeloUpdate","modeloSearch", 
 			"modeloPhoto", "ubicacionNew", "ubicacionList", "ubicacionUpdate", "ubicacionSearch",
 			"companyNew","companyList","companyUpdate", "companySearch","companyPhoto",
-			"bancoNew","bancoList","bancoUpdate","bancoSearch", "bancoPhoto",
-			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate",
+			"bancoNew","bancoList","bancoUpdate","bancoSearch", "bancoPhoto", "ecommerceOrdenes",
+			"proveedorNew", "proveedorList", "proveedorSearch", "proveedorUpdate", "ecommerceCheckout", 
 			"despachadorNew", "despachadorList", "despachadorSearch", "despachadorUpdate",
 			"clienteNew","clienteList","clienteSearch","clienteUpdate","productNew","productList",
-			"productUpdate","productPhoto","productCategory","saleNew","saleList",
-			"saleSearch","saleDetail","productCompra", "logOut"
+			"productUpdate","productPhoto","productCategory","saleNew","saleList", "productShoppingcart", 
+			"saleSearch","saleDetail","productCompra", "logOut", "productDetails", "productShopping"
 			];
 
 			if(in_array($vista, $listaBlanca)){

@@ -1,525 +1,479 @@
-<!-- Layout config Js -->
-<?php
-$mysqli = new mysqli("localhost", "root", "", "multimarket");
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-    exit();
-}
-if (!isset($_SESSION['product_categoria'])){
-    $_SESSION['product_categoria']="";
-}
-if (!isset($_SESSION['product_subcat'])){
-    $_SESSION['product_subcat']="";
-}
-$product_categoria ="";
-$product_subcat ="";
-$company_id= $_SESSION['user_company_id'];
-use app\controllers\productController;
-use app\controllers\categoryController;
-use app\controllers\marcaController;
-
-$insProduct = new productController();
-$categoryController = new categoryController();
-$categorias = $categoryController->listarTodosCategoryControlador($company_id, "*");
-$categoria_cuantos = $categoryController->listarCuantosCategoryControlador($company_id, "*");
-$marcaController = new marcaController();
-$marcas = $marcaController->listarTodosMarcaControlador($company_id,"*");
-
-// reviso el POST
-if(isset($_POST['product_categoria'])){
-    $product_categoria = $_POST['product_categoria'];
-    $_SESSION['product_categoria'] = $product_categoria;
-}else{
-    $product_categoria = $_SESSION['product_categoria'];
-}
-
-if(isset($_POST['product_subcat'])){
-    $product_subcat = $_POST['product_subcat'];
-    $_SESSION['product_subcat'] = $product_subcat;
-}else{
-    $product_subcat = $_SESSION['product_subcat'];
-}
-
-?>
-<script src="assets/js/layout.js"></script>
-<!-- Bootstrap Css -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
-<link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-<!-- custom Css-->
-<link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-<!-- Begin page -->
+    <!-- Begin page -->
 <div id="layout-wrapper">
-<!-- removeNotificationModal -->
-<div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-            </div>
-            <div class="modal-body">
-                <div class="mt-2 text-center">
-                    <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                    <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                        <h4>Estas seguro ?</h4>
-                        <p class="text-muted mx-4 mb-0">Estas seguro que quieres remover esta notifiación ?</p>
-                    </div>
-                </div>
-                <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                    <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Cerrar</button>
-                    <button type="button" class="btn w-sm btn-danger" id="delete-notification">Si, Bórralo!</button>
-                </div>
-            </div>
+    <div class="vertical-overlay"></div>
 
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
-        
-<!-- Vertical Overlay-->
-<div class="vertical-overlay"></div>
-    <!-- ============================================================== -->
-    <!-- Start right Content here -->
-    <!-- ============================================================== -->
-    <div class="main-content">
-        <div class="page-content">
-            <div class="container-fluid">
-                <!-- start page title -->
-                <div class="row">
-                    <div class="col-12">
-                    <form  action="" method="POST">
-                        <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                            <h4 class="mb-sm-0">Productos</h4>
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="product_categoria" class="form-label">Categorias</label>
-                                    <select name="product_categoria" language="javascript:void(0)" onchange="loadAjaxCatSubcat(this.value, '')" class="form-control" data-choices data-choices-text-unique-true id="product_categoria">
-                                        <option value="0">Escoja una opción</option>
-                                        <?php
-                                        if (is_array($categorias)) {
-                                            foreach ($categorias as $categoria) {
-                                        ?>
-                                                <option value="<?= $categoria['categoria_id']; ?>" 
-                                                <?= $product_categoria == $categoria['categoria_id'] ? "selected" : "" ?>><?= $categoria['nombre']; ?>
-                                                </option>
-                                        <?php
-                                            }
-                                        }
-                                        ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <!--end col-->
-                            <div class="col-lg-3">
-                                <div class="mb-3">
-                                    <label for="product_subcat" class="form-label">Subcategorías</label>
-                                    <select name="product_subcat" class="form-control" data-choices data-choices-text-unique-true id="product_subcat">
-                                    <option value="0">Escoja una opción</option>
-                                    <?php
-                                        $sql = "SELECT * FROM company_categorias WHERE unidad= " . $product_categoria . " AND company_id=$company_id AND estatus=1 ORDER BY nombre";
-                                        //echo $sql;
-                                        if ($res = $mysqli->query("SELECT * FROM company_categorias WHERE unidad='" . $product_categoria . "' AND company_id=$company_id AND estatus=1 ORDER BY nombre")) {
-                                        ?>
-                                            <?php while ($fila = mysqli_fetch_array($res)) { ?>
-                                                <option value="<?php echo $fila['categoria_id']; ?>" <?php if ($fila['categoria_id'] == $product_subcat) echo "selected"; ?>>
-                                                    <?php echo $fila['categoria_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
-                                                </option>
-                                            <?php } ?>
-                                        <?php
-                                        }
-                                    ?>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-lg-1">
-                                <div class="mb-3">
-                                    <label for="accion" class="form-label"><span style="color: white;">_______</span></label>
-                                    <button type="submit" class="btn btn-info"><i class="ri-search-line search-icon"></i></button>
-                                </div>
-                            </div>
-                            <div class="page-title-right">
-                                <ol class="breadcrumb m-0">
-                                    <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
-                                    <li class="breadcrumb-item active">Productos</li>
-                                </ol>
-                            </div>
+        <!-- ============================================================== -->
+        <!-- Start right Content here -->
+        <!-- ============================================================== -->
+        <div class="main-content overflow-hidden">
 
-                        </div>
-                    </form>
-                    </div>
-                </div>
-                <!-- end page title -->
-                <form action="">
+            <div class="page-content">
+                <div class="container-fluid">
+
+                    <!-- start page title -->
                     <div class="row">
-                        <div class="col-xl-3 col-lg-4">
-                            <div class="card">
-                                <div class="card-header">
-                                    <div class="d-flex mb-3">
-                                        <div class="flex-grow-1">
-                                            <h5 class="fs-16">Filtros</h5>
-                                        </div>
-                                        <div class="flex-shrink-0">
-                                            <a href="#" class="text-decoration-underline" id="clearall">Quitar filtros</a>
-                                        </div>
-                                    </div>
+                        <div class="col-12">
+                            <div class="page-title-box d-sm-flex align-items-center justify-content-between">
+                                <h4 class="mb-sm-0">Checkout</h4>
 
-                                    <div class="filter-choices-input">
-                                        <input class="form-control" type="text" id="filter-choices-input" value="T-Shirts" />
-                                    </div>
+                                <div class="page-title-right">
+                                    <ol class="breadcrumb m-0">
+                                        <li class="breadcrumb-item"><a href="javascript: void(0);">Ecommerce</a></li>
+                                        <li class="breadcrumb-item active">Checkout</li>
+                                    </ol>
                                 </div>
 
-                                <div class="accordion accordion-flush filter-accordion">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end page title -->
 
-                                    <div class="card-body border-bottom">
-                                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Precio</p>
+                    <div class="row">
+                        <div class="col-xl-8">
+                            <div class="card">
+                                <div class="card-body checkout-tab">
 
-                                        <div id="product-price-range" data-slider-color="primary"></div>
-                                        <div class="formCost d-flex gap-2 align-items-center mt-3">
-                                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" /> <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm" type="text" id="maxCost" value="1000" />
-                                        </div>
-                                        <div><br>
-                                        <button type="submit" name="filtro_inicial" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos filtros</button>
-                                    </div>
-                                    </div>
-                                    
-                                    <div class="card-body border-bottom">
-                                        <div>
-                                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Categorías de productos</p>
-                                            <ul class="list-unstyled mb-0 filter-list">
-                                                <?php 
-                                                if (is_array($categoria_cuantos)) {
-                                                    foreach ($categoria_cuantos as $res) {
-                                                    ?>  
-                                                    <li>
-                                                        <a href="#" class="d-flex py-1 align-items-center">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-13 mb-0 listname"><?=$res['nombre']?></h5>
-                                                            </div>
-                                                            <div class="flex-shrink-0 ms-2">
-                                                            <span class="badge bg-light text-muted"><?=$res['cuantos']?></span>
-                                                        </div>
-                                                        </a>
-                                                    </li>
-                                                <?php
-                                                    }
-                                                } 
-                                                ?>
-                                                
+                                    <form action="#">
+                                        <div class="step-arrow-nav mt-n3 mx-n3 mb-3">
+
+                                            <ul class="nav nav-pills nav-justified custom-nav" role="tablist">
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link fs-15 p-3 active" id="pills-bill-info-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-info" type="button" role="tab" aria-controls="pills-bill-info" aria-selected="true">
+                                                        <i class="ri-user-2-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i> Personal Info
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link fs-15 p-3" id="pills-bill-address-tab" data-bs-toggle="pill" data-bs-target="#pills-bill-address" type="button" role="tab" aria-controls="pills-bill-address" aria-selected="false">
+                                                        <i class="ri-truck-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i> Shipping Info
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link fs-15 p-3" id="pills-payment-tab" data-bs-toggle="pill" data-bs-target="#pills-payment" type="button" role="tab" aria-controls="pills-payment" aria-selected="false">
+                                                        <i class="ri-bank-card-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i> Payment Info
+                                                    </button>
+                                                </li>
+                                                <li class="nav-item" role="presentation">
+                                                    <button class="nav-link fs-15 p-3" id="pills-finish-tab" data-bs-toggle="pill" data-bs-target="#pills-finish" type="button" role="tab" aria-controls="pills-finish" aria-selected="false">
+                                                        <i class="ri-checkbox-circle-line fs-16 p-2 bg-primary-subtle text-primary rounded-circle align-middle me-2"></i> Finish
+                                                    </button>
+                                                </li>
                                             </ul>
                                         </div>
-                                    </div>
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingBrands">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseBrands" aria-expanded="true" aria-controls="flush-collapseBrands">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Marcas</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
 
-                                        <div id="flush-collapseBrands" class="accordion-collapse collapse show" aria-labelledby="flush-headingBrands">
-                                            <div class="accordion-body text-body pt-0">
-                                                <div class="search-box search-box-sm">
-                                                    <input type="text" class="form-control bg-light border-0" id="searchBrandsList" placeholder="Buscar Marcas...">
-                                                    <i class="ri-search-line search-icon"></i>
+                                        <div class="tab-content">
+                                            <div class="tab-pane fade show active" id="pills-bill-info" role="tabpanel" aria-labelledby="pills-bill-info-tab">
+                                                <div>
+                                                    <h5 class="mb-1">Billing Information</h5>
+                                                    <p class="text-muted mb-4">Please fill all information below</p>
                                                 </div>
-                                                <div class="d-flex flex-column gap-2 mt-3 filter-check">
-                                                    <?php 
-                                                        if (is_array($marcas)) {
-                                                            foreach ($marcas as $res) {
-                                                            ?>  
-                                                            <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="Boat" id="productBrandRadio5" checked>
-                                                                <label class="form-check-label" for="productBrandRadio5" checked><?=mb_strtolower($res['nombre']);?></label>
+
+                                                <div>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="billinginfo-firstName" class="form-label">First Name</label>
+                                                                <input type="text" class="form-control" id="billinginfo-firstName" placeholder="Enter first name" value="">
                                                             </div>
-                                                        <?php
-                                                            }
-                                                        } 
-                                                    ?>
-                                                    <button type="submit" name="filtro_marca" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estas marcas</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion-item -->
+                                                        </div>
 
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingDiscount">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseDiscount" aria-expanded="true" aria-controls="flush-collapseDiscount">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Descuento</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
-                                        <div id="flush-collapseDiscount" class="accordion-collapse collapse" aria-labelledby="flush-headingDiscount">
-                                            <div class="accordion-body text-body pt-1">
-                                                <div class="d-flex flex-column gap-2 filter-check">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="50% or more" id="productdiscountRadio6">
-                                                        <label class="form-check-label" for="productdiscountRadio6">50% o más</label>
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="billinginfo-lastName" class="form-label">Last Name</label>
+                                                                <input type="text" class="form-control" id="billinginfo-lastName" placeholder="Enter last name" value="">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="40% or more" id="productdiscountRadio5">
-                                                        <label class="form-check-label" for="productdiscountRadio5">40% o más</label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="30% o más" id="productdiscountRadio4">
-                                                        <label class="form-check-label" for="productdiscountRadio4">
-                                                            30% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="20% or más" id="productdiscountRadio3" checked>
-                                                        <label class="form-check-label" for="productdiscountRadio3">
-                                                            20% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="10% o más" id="productdiscountRadio2">
-                                                        <label class="form-check-label" for="productdiscountRadio2">
-                                                            10% o más
-                                                        </label>
-                                                    </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="Memos del  10%" id="productdiscountRadio1">
-                                                        <label class="form-check-label" for="productdiscountRadio1">
-                                                            menos del 10%
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                    <button type="submit" name="filtro_descuento" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar descuentos</button>
-                                                </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion-item -->
 
-                                    <div class="accordion-item">
-                                        <h2 class="accordion-header" id="flush-headingRating">
-                                            <button class="accordion-button bg-transparent shadow-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseRating" aria-expanded="false" aria-controls="flush-collapseRating">
-                                                <span class="text-muted text-uppercase fs-12 fw-medium">Rating</span> <span class="badge bg-success rounded-pill align-middle ms-1 filter-badge"></span>
-                                            </button>
-                                        </h2>
+                                                    <div class="row">
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="billinginfo-email" class="form-label">Email <span class="text-muted">(Optional)</span></label>
+                                                                <input type="email" class="form-control" id="billinginfo-email" placeholder="Enter email">
+                                                            </div>
+                                                        </div>
 
-                                        <div id="flush-collapseRating" class="accordion-collapse collapse" aria-labelledby="flush-headingRating">
-                                            <div class="accordion-body text-body">
-                                                <div class="d-flex flex-column gap-2 filter-check">
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="4 & más Estrellas" id="productratingRadio4" checked>
-                                                        <label class="form-check-label" for="productratingRadio4">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 4 & Más
-                                                        </label>
+                                                        <div class="col-sm-6">
+                                                            <div class="mb-3">
+                                                                <label for="billinginfo-phone" class="form-label">Phone</label>
+                                                                <input type="text" class="form-control" id="billinginfo-phone" placeholder="Enter phone no.">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="3 & más Estrellas" id="productratingRadio3">
-                                                        <label class="form-check-label" for="productratingRadio3">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 3 & Más
-                                                        </label>
+
+                                                    <div class="mb-3">
+                                                        <label for="billinginfo-address" class="form-label">Address</label>
+                                                        <textarea class="form-control" id="billinginfo-address" placeholder="Enter address" rows="3"></textarea>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="2 & más Estrellas" id="productratingRadio2">
-                                                        <label class="form-check-label" for="productratingRadio2">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 2 & Más
-                                                        </label>
+
+                                                    <div class="row">
+                                                        <div class="col-md-4">
+                                                            <div class="mb-3">
+                                                                <label for="country" class="form-label">Country</label>
+                                                                <select class="form-select" id="country" data-plugin="choices">
+                                                                    <option value="">Select Country...</option>
+                                                                    <option selected>United States</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="mb-3">
+                                                                <label for="state" class="form-label">State</label>
+                                                                <select class="form-select" id="state" data-plugin="choices">
+                                                                    <option value="">Select State...</option>
+                                                                    <option value="Alabama">Alabama</option>
+                                                                    <option value="Alaska">Alaska</option>
+                                                                    <option value="American Samoa">American Samoa</option>
+                                                                    <option value="California" selected>California</option>
+                                                                    <option value="Colorado">Colorado</option>
+                                                                    <option value="District Of Columbia">District Of Columbia</option>
+                                                                    <option value="Florida">Florida</option>
+                                                                    <option value="Georgia">Georgia</option>
+                                                                    <option value="Guam">Guam</option>
+                                                                    <option value="Hawaii">Hawaii</option>
+                                                                    <option value="Idaho">Idaho</option>
+                                                                    <option value="Kansas">Kansas</option>
+                                                                    <option value="Louisiana">Louisiana</option>
+                                                                    <option value="Montana">Montana</option>
+                                                                    <option value="Nevada">Nevada</option>
+                                                                    <option value="New Jersey">New Jersey</option>
+                                                                    <option value="New Mexico">New Mexico</option>
+                                                                    <option value="New York">New York</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-md-4">
+                                                            <div class="mb-3">
+                                                                <label for="zip" class="form-label">Zip Code</label>
+                                                                <input type="text" class="form-control" id="zip" placeholder="Enter zip code">
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="1 Star" id="productratingRadio1">
-                                                        <label class="form-check-label" for="productratingRadio1">
-                                                            <span class="text-muted">
-                                                                <i class="mdi mdi-star text-warning"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                                <i class="mdi mdi-star"></i>
-                                                            </span> 1
-                                                        </label>
-                                                    </div>
-                                                    <div>
-                                                        <button type="submit" name="filtro_rating" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos ratings</button>
+
+                                                    <div class="d-flex align-items-start gap-3 mt-3">
+                                                        <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-bill-address-tab">
+                                                            <i class="ri-truck-line label-icon align-middle fs-16 ms-2"></i>Proceed to Shipping
+                                                        </button>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    </div>
-                                    <!-- end accordion-item -->
-                                </div>
-                            </div>
-                            <!-- end card -->
-                        </div>
-                        <!-- end col -->
+                                            <!-- end tab pane -->
 
-                        <div class="col-xl-9 col-lg-8">
-                            <div>
-                                <div class="card">
-                                    <div class="card-header border-0">
-                                        <div class="row g-4">
-                                            
-                                            <div class="col-sm-auto">
+                                            <div class="tab-pane fade" id="pills-bill-address" role="tabpanel" aria-labelledby="pills-bill-address-tab">
                                                 <div>
-                                                    <a href="<?php echo APP_URL; ?>productShoppingcart/" class="btn btn-info" id="addproduct-btn"><i class="ri-shopping-cart-line  align-bottom me-1"></i> Ver mi carrito </a>
+                                                    <h5 class="mb-1">Shipping Information</h5>
+                                                    <p class="text-muted mb-4">Please fill all information below</p>
                                                 </div>
-                                            </div>
-                                            <div class="col-sm-auto">
-                                                <div>
-                                                    <a href="<?php echo APP_URL; ?>ecommerceOrdenes/" class="btn btn-info" id="ecommerceOrdenes-btn"><i class="ri-search-line search-icon  align-bottom me-1"></i> Ver mis Ordenes </a>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm">
-                                                <div class="d-flex justify-content-sm-end">
-                                                    <div class="search-box ms-2">
-                                                        <input hidden type="text" class="form-control" id="searchProductList" placeholder="Buscar Productos...">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
 
-                                    <div class="card-header">
-                                        <div class="row align-items-center">
-                                            <div class="col">
-                                                <ul class="nav nav-tabs-custom card-header-tabs border-bottom-0" role="tablist">
-                                                    <li class="nav-item">
-                                                        <a class="nav-link active fw-semibold" data-bs-toggle="tab" href="#productnav-all" role="tab">
-                                                            Productos filtrados <span class="badge bg-danger-subtle text-danger align-middle rounded-pill ms-1">12</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <!-- end card header -->
-                                    <?php
-                                    if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, $_SESSION[$url[0]]);
-                                    }else{
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, "*");
-                                    }
-                                    ?>
-                                    <div class="card-body">
-                                        <div class="tab-content text-muted">
-                                            <div class="tab-pane active" id="productnav-all" role="tabpanel">
-                                                <div id="table-product-list-all" >
-                                                <table id="fixed-header" class="table table-bordered dt-responsive nowrap table-striped align-middle" style="width:100%">
-                                                    <thead>
-                                                        <tr>
-                                                            <th scope="col" style="width: 10px;">
-                                                                <div class="form-check">
-                                                                    <input class="form-check-input fs-15" type="checkbox" id="checkAll" value="option">
+                                                <div class="mt-4">
+                                                    <div class="d-flex align-items-center mb-2">
+                                                        <div class="flex-grow-1">
+                                                            <h5 class="fs-14 mb-0">Saved Address</h5>
+                                                        </div>
+                                                        <div class="flex-shrink-0">
+                                                            <!-- Button trigger modal -->
+                                                            <button type="button" class="btn btn-sm btn-success mb-3" data-bs-toggle="modal" data-bs-target="#addAddressModal">
+                                                                Add Address
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row gy-3">
+                                                        <div class="col-lg-4 col-sm-6">
+                                                            <div class="form-check card-radio">
+                                                                <input id="shippingAddress01" name="shippingAddress" type="radio" class="form-check-input" checked>
+                                                                <label class="form-check-label" for="shippingAddress01">
+                                                                    <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Home Address</span>
+
+                                                                    <span class="fs-14 mb-2 d-block">Marcus Alfaro</span>
+                                                                    <span class="text-muted fw-normal text-wrap mb-1 d-block">4739 Bubby Drive Austin, TX 78729</span>
+                                                                    <span class="text-muted fw-normal d-block">Mo. 012-345-6789</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
+                                                                <div>
+                                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
                                                                 </div>
-                                                            </th>
-                                                            <th>Logo</th>
-                                                            <th>Nombre</th>
-                                                            <th>Carrito</th>
-                                                            <th>Codigo</th>
-                                                            <th>Unidad</th>
-                                                            <th>Precio</th>
-                                                            <th>Inventariable</th>
-                                                            <th>Estatus</th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody>
-                                                        <?php
-                                                        if(is_array($datos)){
-                                                            foreach($datos as $rows){
-                                                                if($rows['product_logo'] != ""){
-                                                                    $product_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/productos/".$rows['product_logo'];
-                                                                }else{
-                                                                    $product_logo = APP_URL . "app/views/fotos/nophoto.jpg";
-                                                                }
-                                                                ?>
-                                                                <tr>
-                                                                    <th scope="row">
-                                                                        <div class="form-check">
-                                                                            <input class="form-check-input fs-15" type="checkbox" name="checkAll" value="option1">
-                                                                        </div>
-                                                                    </th>
-                                                                    <td>
-                                                                        <img src="<?=$product_logo; ?>" width="60px" alt="Logo del product de la tabla">
-                                                                    </td>
-                                                                    <td><?=$rows['product_name'];?></td>
-                                                                    <td>
-                                                                        <a href="<?= APP_URL.'productDetails/'.$rows['product_id'].'/'?>" class="btn btn-success"><i class="ri-add-line"></i></a>
-                                                                    </td>
-                                                                    <td><?=$rows['product_codigo'];?></td>
-                                                                    <td><?=$rows['product_unidad'];?></td>
-                                                                    <td><?=$rows['product_precio'];?></td>
-                                                                    <td>
-                                                                        <?php
-                                                                        if($rows['product_inventariable'] ==1 ){
-                                                                            ?><span class="badge bg-info">Con Inventario<?php
-                                                                        }else{
-                                                                            ?><span class="badge bg-warning">Sin Inventario<?php
-                                                                        }?>
-                                                                        </span>    
-                                                                    <td>
-                                                                        <?php
-                                                                        if($rows['product_estatus'] ==1 ){
-                                                                            ?><span class="badge bg-success">Activo<?php
-                                                                        }else{
-                                                                            ?><span class="badge bg-danger">Inactivo<?php
-                                                                        }?>
-                                                                        </span>
-                                                                    </td>
-                                                                </tr>
-                                                        <?php
-                                                            }    
-                                                        }
-                                                        ?>
-                                                    </tbody>
-                                                </table>
+                                                                <div>
+                                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-sm-6">
+                                                            <div class="form-check card-radio">
+                                                                <input id="shippingAddress02" name="shippingAddress" type="radio" class="form-check-input">
+                                                                <label class="form-check-label" for="shippingAddress02">
+                                                                    <span class="mb-4 fw-semibold d-block text-muted text-uppercase">Office Address</span>
+
+                                                                    <span class="fs-14 mb-2 d-block">James Honda</span>
+                                                                    <span class="text-muted fw-normal text-wrap mb-1 d-block">1246 Virgil Street Pensacola, FL 32501</span>
+                                                                    <span class="text-muted fw-normal d-block">Mo. 012-345-6789</span>
+                                                                </label>
+                                                            </div>
+                                                            <div class="d-flex flex-wrap p-2 py-1 bg-light rounded-bottom border mt-n1">
+                                                                <div>
+                                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#addAddressModal"><i class="ri-pencil-fill text-muted align-bottom me-1"></i> Edit</a>
+                                                                </div>
+                                                                <div>
+                                                                    <a href="#" class="d-block text-body p-1 px-2" data-bs-toggle="modal" data-bs-target="#removeItemModal"><i class="ri-delete-bin-fill text-muted align-bottom me-1"></i> Remove</a>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="mt-4">
+                                                        <h5 class="fs-14 mb-3">Shipping Method</h5>
+
+                                                        <div class="row g-4">
+                                                            <div class="col-lg-6">
+                                                                <div class="form-check card-radio">
+                                                                    <input id="shippingMethod01" name="shippingMethod" type="radio" class="form-check-input" checked>
+                                                                    <label class="form-check-label" for="shippingMethod01">
+                                                                        <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">Free</span>
+                                                                        <span class="fs-14 mb-1 text-wrap d-block">Free Delivery</span>
+                                                                        <span class="text-muted fw-normal text-wrap d-block">Expected Delivery 3 to 5 Days</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-lg-6">
+                                                                <div class="form-check card-radio">
+                                                                    <input id="shippingMethod02" name="shippingMethod" type="radio" class="form-check-input" checked>
+                                                                    <label class="form-check-label" for="shippingMethod02">
+                                                                        <span class="fs-20 float-end mt-2 text-wrap d-block fw-semibold">$24.99</span>
+                                                                        <span class="fs-14 mb-1 text-wrap d-block">Express Delivery</span>
+                                                                        <span class="text-muted fw-normal text-wrap d-block">Delivery within 24hrs.</span>
+                                                                    </label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-start gap-3 mt-4">
+                                                    <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-info-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Personal Info</button>
+                                                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-payment-tab"><i class="ri-bank-card-line label-icon align-middle fs-16 ms-2"></i>Continue to Payment</button>
                                                 </div>
                                             </div>
                                             <!-- end tab pane -->
 
-                                            <div class="tab-pane" id="productnav-published" role="tabpanel">
-                                                <div id="table-product-list-published" class="table-card gridjs-border-none"></div>
+                                            <div class="tab-pane fade" id="pills-payment" role="tabpanel" aria-labelledby="pills-payment-tab">
+                                                <div>
+                                                    <h5 class="mb-1">Payment Selection</h5>
+                                                    <p class="text-muted mb-4">Please select and enter your billing information</p>
+                                                </div>
+
+                                                <div class="row g-4">
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show" aria-expanded="false" aria-controls="paymentmethodCollapse">
+                                                            <div class="form-check card-radio">
+                                                                <input id="paymentMethod01" name="paymentMethod" type="radio" class="form-check-input">
+                                                                <label class="form-check-label" for="paymentMethod01">
+                                                                    <span class="fs-16 text-muted me-2"><i class="ri-paypal-fill align-bottom"></i></span>
+                                                                    <span class="fs-14 text-wrap">Paypal</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse" aria-expanded="true" aria-controls="paymentmethodCollapse">
+                                                            <div class="form-check card-radio">
+                                                                <input id="paymentMethod02" name="paymentMethod" type="radio" class="form-check-input" checked>
+                                                                <label class="form-check-label" for="paymentMethod02">
+                                                                    <span class="fs-16 text-muted me-2"><i class="ri-bank-card-fill align-bottom"></i></span>
+                                                                    <span class="fs-14 text-wrap">Credit / Debit Card</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-4 col-sm-6">
+                                                        <div data-bs-toggle="collapse" data-bs-target="#paymentmethodCollapse.show" aria-expanded="false" aria-controls="paymentmethodCollapse">
+                                                            <div class="form-check card-radio">
+                                                                <input id="paymentMethod03" name="paymentMethod" type="radio" class="form-check-input">
+                                                                <label class="form-check-label" for="paymentMethod03">
+                                                                    <span class="fs-16 text-muted me-2"><i class="ri-money-dollar-box-fill align-bottom"></i></span>
+                                                                    <span class="fs-14 text-wrap">Cash on Delivery</span>
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="collapse show" id="paymentmethodCollapse">
+                                                    <div class="card p-4 border shadow-none mb-0 mt-4">
+                                                        <div class="row gy-3">
+                                                            <div class="col-md-12">
+                                                                <label for="cc-name" class="form-label">Name on card</label>
+                                                                <input type="text" class="form-control" id="cc-name" placeholder="Enter name">
+                                                                <small class="text-muted">Full name as displayed on card</small>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label for="cc-number" class="form-label">Credit card number</label>
+                                                                <input type="text" class="form-control" id="cc-number" placeholder="xxxx xxxx xxxx xxxx">
+                                                            </div>
+
+                                                            <div class="col-md-3">
+                                                                <label for="cc-expiration" class="form-label">Expiration</label>
+                                                                <input type="text" class="form-control" id="cc-expiration" placeholder="MM/YY">
+                                                            </div>
+
+                                                            <div class="col-md-3">
+                                                                <label for="cc-cvv" class="form-label">CVV</label>
+                                                                <input type="text" class="form-control" id="cc-cvv" placeholder="xxx">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="text-muted mt-2 fst-italic">
+                                                        <i data-feather="lock" class="text-muted icon-xs"></i> Your transaction is secured with SSL encryption
+                                                    </div>
+                                                </div>
+
+                                                <div class="d-flex align-items-start gap-3 mt-4">
+                                                    <button type="button" class="btn btn-light btn-label previestab" data-previous="pills-bill-address-tab"><i class="ri-arrow-left-line label-icon align-middle fs-16 me-2"></i>Back to Shipping</button>
+                                                    <button type="button" class="btn btn-primary btn-label right ms-auto nexttab" data-nexttab="pills-finish-tab"><i class="ri-shopping-basket-line label-icon align-middle fs-16 ms-2"></i>Complete Order</button>
+                                                </div>
                                             </div>
                                             <!-- end tab pane -->
 
-                                            <div class="tab-pane" id="productnav-draft" role="tabpanel">
-                                                <div class="py-4 text-center">
-                                                    <lord-icon src="https://cdn.lordicon.com/msoeawqm.json" trigger="loop" colors="primary:#405189,secondary:#0ab39c" style="width:72px;height:72px">
-                                                    </lord-icon>
-                                                    <h5 class="mt-4">Sorry! No Result Found</h5>
+                                            <div class="tab-pane fade" id="pills-finish" role="tabpanel" aria-labelledby="pills-finish-tab">
+                                                <div class="text-center py-5">
+
+                                                    <div class="mb-4">
+                                                        <lord-icon src="https://cdn.lordicon.com/lupuorrc.json" trigger="loop" colors="primary:#0ab39c,secondary:#405189" style="width:120px;height:120px"></lord-icon>
+                                                    </div>
+                                                    <h5>Thank you ! Your Order is Completed !</h5>
+                                                    <p class="text-muted">You will receive an order confirmation email with details of your order.</p>
+
+                                                    <h3 class="fw-semibold">Order ID: <a href="apps-ecommerce-order-details.html" class="text-decoration-underline">VZ2451</a></h3>
                                                 </div>
                                             </div>
                                             <!-- end tab pane -->
                                         </div>
                                         <!-- end tab content -->
+                                    </form>
+                                </div>
+                                <!-- end card body -->
+                            </div>
+                            <!-- end card -->
+                        </div>
+                        <!-- end col -->
+
+                        <div class="col-xl-4">
+                            <div class="card">
+                                <div class="card-header">
+                                    <div class="d-flex">
+                                        <div class="flex-grow-1">
+                                            <h5 class="card-title mb-0">Order Summary</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-body">
+                                    <div class="table-responsive table-card">
+                                        <table class="table table-borderless align-middle mb-0">
+                                            <thead class="table-light text-muted">
+                                                <tr>
+                                                    <th style="width: 90px;" scope="col">Product</th>
+                                                    <th scope="col">Product Info</th>
+                                                    <th scope="col" class="text-end">Price</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>
+                                                        <div class="avatar-md bg-light rounded p-1">
+                                                            <img src="assets/images/products/img-8.png" alt="" class="img-fluid d-block">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="fs-14"><a href="apps-ecommerce-product-details.html" class="text-body">Sweatshirt for Men (Pink)</a></h5>
+                                                        <p class="text-muted mb-0">$ 119.99 x 2</p>
+                                                    </td>
+                                                    <td class="text-end">$ 239.98</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="avatar-md bg-light rounded p-1">
+                                                            <img src="assets/images/products/img-7.png" alt="" class="img-fluid d-block">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="fs-14"><a href="apps-ecommerce-product-details.html" class="text-body">Noise Evolve Smartwatch</a></h5>
+                                                        <p class="text-muted mb-0">$ 94.99 x 1</p>
+                                                    </td>
+                                                    <td class="text-end">$ 94.99</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <div class="avatar-md bg-light rounded p-1">
+                                                            <img src="assets/images/products/img-3.png" alt="" class="img-fluid d-block">
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <h5 class="fs-14"><a href="apps-ecommerce-product-details.html" class="text-body">350 ml Glass Grocery Container</a></h5>
+                                                        <p class="text-muted mb-0">$ 24.99 x 1</p>
+                                                    </td>
+                                                    <td class="text-end">$ 24.99</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="fw-semibold" colspan="2">Sub Total :</td>
+                                                    <td class="fw-semibold text-end">$ 359.96</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">Discount <span class="text-muted">(VELZON15)</span> : </td>
+                                                    <td class="text-end">- $ 50.00</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">Shipping Charge :</td>
+                                                    <td class="text-end">$ 24.99</td>
+                                                </tr>
+                                                <tr>
+                                                    <td colspan="2">Estimated Tax (12%): </td>
+                                                    <td class="text-end">$ 18.20</td>
+                                                </tr>
+                                                <tr class="table-active">
+                                                    <th colspan="2">Total (USD) :</th>
+                                                    <td class="text-end">
+                                                        <span class="fw-semibold">
+                                                            $353.15
+                                                        </span>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
                                     </div>
-                                    <!-- end card body -->
                                 </div>
-                                <!-- end card -->
+                                <!-- end card body -->
                             </div>
+                            <!-- end card -->
                         </div>
                         <!-- end col -->
                     </div>
                     <!-- end row -->
-                </form>
-            </div>
-            <!-- container-fluid -->
-        </div>
-        <!-- End Page-content -->
 
-    </div>
-    <!-- end main content-->
+                </div>
+                <!-- container-fluid -->
+            </div>
+            <!-- End Page-content -->
+
+            <footer class="footer">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <script>document.write(new Date().getFullYear())</script> © Velzon.
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="text-sm-end d-none d-sm-block">
+                                Design & Develop by Themesbrand
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        <!-- end main content-->
+
     </div>
     <!-- END layout-wrapper -->
 
@@ -528,22 +482,64 @@ if(isset($_POST['product_subcat'])){
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="btn-close"></button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <div class="mt-2 text-center">
                         <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
                         <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Esta seguro?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you sure you want to remove this product ?</p>
+                            <h4>Are you sure ?</h4>
+                            <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Address ?</p>
                         </div>
                     </div>
                     <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
                         <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger " id="delete-product">Si, eliminelo!</button>
+                        <button type="button" class="btn w-sm btn-danger ">Yes, Delete It!</button>
                     </div>
                 </div>
 
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- editItemModal -->
+    <div id="addAddressModal" class="modal fade zoomIn" tabindex="-1" aria-labelledby="addAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addAddressModalLabel">Address</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div>
+                        <div class="mb-3">
+                            <label for="addaddress-Name" class="form-label">Name</label>
+                            <input type="text" class="form-control" id="addaddress-Name" placeholder="Enter name">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="addaddress-textarea" class="form-label">Address</label>
+                            <textarea class="form-control" id="addaddress-textarea" placeholder="Enter address" rows="2"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="addaddress-Name" class="form-label">Phone</label>
+                            <input type="text" class="form-control" id="addaddress-Name" placeholder="Enter phone no.">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="state" class="form-label">Address Type</label>
+                            <select class="form-select" id="state" data-choices data-choices-search-false>
+                                <option value="homeAddress">Home (7am to 10pm)</option>
+                                <option value="officeAddress">Office (11am to 7pm)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-light" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-success">Save</button>
+                </div>
             </div><!-- /.modal-content -->
         </div><!-- /.modal-dialog -->
     </div><!-- /.modal -->
@@ -1307,12 +1303,9 @@ if(isset($_POST['product_subcat'])){
             </div>
         </div>
     </div>
+
     <!-- JAVASCRIPT -->
-    <script src="assets/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-    <script src="assets/libs/simplebar/simplebar.min.js"></script>
-    <script src="assets/libs/node-waves/waves.min.js"></script>
-    <script src="assets/libs/feather-icons/feather.min.js"></script>
-    <script src="assets/js/pages/plugins/lord-icon-2.1.0.js"></script>
-    <script src="assets/js/plugins.js"></script>
+    <!-- init js -->
+    <script src="assets/js/pages/ecommerce-product-checkout.init.js"></script>
     <!-- App js -->
     <script src="assets/js/app.js"></script>
