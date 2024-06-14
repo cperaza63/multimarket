@@ -230,6 +230,12 @@ if (isset($_POST["buscar_productos"])) {
                                                     </div>
                                                 </div>
                                                 <!-- end swiper nav slide -->
+
+                                                <!-- Ratio Video 16:9 -->
+                                                <div class="ratio ratio-16x9">
+                                                    <iframe src="https://www.youtube.com/embed/1y_kfWUCFDQ" title="YouTube video" allowfullscreen></iframe>
+                                                </div>
+
                                             </div>
                                         </div>
                                         <!-- end col -->
@@ -248,12 +254,18 @@ if (isset($_POST["buscar_productos"])) {
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
-                                                    <div class="col-sm-auto">
-                                                        <div>
-                                                            <a href="<?php echo APP_URL; ?>productShoppingcart/" class="btn btn-success" id="addproduct-btn"><i class="ri-add-line align-bottom me-1"></i> Agregar al carrito </a>
+                                                        <div class="col-sm-auto">
+                                                            <div>
+                                                                <a href="<?php echo APP_URL; ?>productShoppingcart/" class="btn btn-success" id="addproduct-btn"><i class="ri-add-line align-bottom me-1"></i> Agregar al carrito </a>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-auto">
+                                                            <div>
+                                                               Seleccionado, <br>Size: XXL Color: blue
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                    </div>
+                                                    
                                                 </div>
 
                                                 <div class="d-flex flex-wrap gap-2 align-items-center mt-3">
@@ -357,59 +369,72 @@ if (isset($_POST["buscar_productos"])) {
                                                                     <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio4" disabled>
                                                                     <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio4">XL</label>
                                                                 </div>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productsize-radio" id="productsize-radio5" >
+                                                                    <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center align-items-center" for="productsize-radio5">XXL</label>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
                                                     <!-- end col -->
+                                                    
 
                                                     <div class="col-xl-6">
-                                                        <div class=" mt-4">
-                                                            <h5 class="fs-14">Colors :</h5>
+                                                        <div class="mt-4">
+                                                            <h5 class="fs-14">Colores :</h5>
                                                             <div class="d-flex flex-wrap gap-2">
                                                                 <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-primary" disabled>
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio1" >
+                                                                    <label class="btn btn-soft-primary avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-primary" for="productcolor-radio1"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="03 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-secondary">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio2" >
+                                                                    <label class="btn btn-soft-secondary avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-secondary" for="productcolor-radio2"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="03 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-success">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio3" >
+                                                                    <label class="btn btn-soft-success avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-success" for="productcolor-radio3"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="02 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-info">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio4" >
+                                                                    <label class="btn btn-soft-info avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-info" for="productcolor-radio4"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="01 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-warning">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio5" >
+                                                                    <label class="btn btn-soft-warning avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-warning" for="productcolor-radio5"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="04 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-danger">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio6" >
+                                                                    <label class="btn btn-soft-danger avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-danger" for="productcolor-radio6"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="03 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-light">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio7" >
+                                                                    <label class="btn btn-soft-light avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-light" for="productcolor-radio7"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
-                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="04 Items Available">
-                                                                    <button type="button" class="btn avatar-xs p-0 d-flex align-items-center justify-content-center border rounded-circle fs-20 text-body">
-                                                                        <i class="ri-checkbox-blank-circle-fill"></i>
-                                                                    </button>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio8" >
+                                                                    <label class="btn btn-soft-dark avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-dark" for="productcolor-radio8"> <i class="ri-checkbox-blank-circle-fill"></i></label>
                                                                 </div>
+
+                                                                <div data-bs-toggle="tooltip" data-bs-trigger="hover" data-bs-placement="top" title="White: Out of Stock">
+                                                                    <input type="radio" class="btn-check" name="productcolor-radio" id="productcolor-radio9">
+                                                                    <label class="btn btn-soft-secondary avatar-xs rounded-circle p-0 d-flex justify-content-center fs-20 align-items-center text-light" for="productcolor-radio9"><i class="ri-checkbox-blank-circle-fill"></i></label>
+                                                                </div>
+                                                                
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <!-- end col -->
+
                                                 </div>
                                                 <!-- end row -->
 
