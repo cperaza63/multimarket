@@ -45,7 +45,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 <section class="full-width pageContent scroll" id="pageContent">
                     <?php
                         
-                        require_once "./app/views/inc/navlateral.php";
+                        //require_once "./app/views/inc/navlateral.php";
                         require_once $vista;
                         require_once "./app/views/inc/barra-final.php";
                         //require_once "./app/views/inc/navbar.php";

@@ -275,6 +275,14 @@
 			exit();
 		}
 		/*----------  Controlador listar proveedor  ----------*/
+		public function listarProductEcommerceControlador($busqueda){
+			//print_r($consulta_datos);
+			$datos = $this->ejecutarConsulta($busqueda);
+			$datos = $datos->fetchAll();
+			return $datos;
+			exit();
+		}
+		/*----------  Controlador listar proveedor  ----------*/
 		public function listarCategoriasProductControlador($company_id, $categoria, $subcategoria){
 			$company_id=$this->limpiarCadena($company_id); 
 			$categoria=$this->limpiarCadena($categoria);

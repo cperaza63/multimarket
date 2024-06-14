@@ -1,29 +1,124 @@
+<?php
+$mysqli = new mysqli("localhost", "root", "", "multimarket");
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+}
+
+if (isset($_POST['tab'])) {
+    $_SESSION['tab'] = $_POST['tab'];
+}
+
+use app\controllers\proveedorController;
+use app\controllers\productController;
+use app\controllers\controlController;
+use app\controllers\marcaController;
+use app\controllers\categoryController;
+use app\controllers\companyController;
+use app\controllers\userController;
+$product_list = "";
+$product_id = $insLogin->limpiarCadena($url[1]);
+$datos = $insLogin->seleccionarDatos("Unico", "company_products", "product_id", $product_id);
+if ($datos->rowCount() == 1) {
+    $datos = $datos->fetch();
+    $product_modelo = $datos['product_modelo'];
+    $company_id = $datos['company_id'];
+    // busco el iva del a empresa
+    $product_marca  = $datos['product_marca'];
+    $company_iva = 0;
+    $companyController = new companyController();
+    $company_actual = $companyController->seleccionarDatos("Unico", "company", "company_id", $company_id);
+    if ($company_actual->rowCount() == 1) {
+        $datos_company = $company_actual->fetch();
+        $company_iva = $datos_company['company_iva'];
+    }
+    $product_name   = $datos['product_name'];
+    $product_precio   = $datos['product_precio'];
+    $product_description   = $datos['product_description'];
+    if ($datos['product_tax'] == 0) {
+        $product_tax = $company_iva;
+    } else {
+        $product_tax = $datos['product_tax'];
+    }
+    $accion = "actualizar";
+    $boton_accion = "Actualizar";
+
+    $product_logo = $datos['product_logo'];
+
+    if ($datos['product_logo'] == "") {
+        $product_logo = "nophoto.jpg";
+    }
+    $product_card = $datos['product_card'];
+    if ($datos['product_card'] == "") {
+        $product_card = "nophoto.jpg";
+    }
+    $product_banner1 = $datos['product_banner1'];
+    if ($datos['product_banner1'] == "") {
+        $product_banner1 = "nophoto.jpg";
+    }
+    $product_banner2 = $datos['product_banner2'];
+    if ($datos['product_banner2'] == "") {
+        $product_banner2 = "nophoto.jpg";
+    }
+    $product_banner3 = $datos['product_banner3'];
+    if ($datos['product_banner3'] == "") {
+        $product_banner3 = "nophoto.jpg";
+    }
+    $product_pdf = $datos['product_pdf'];
+    if ($datos['product_pdf'] == "") {
+        $product_pdf = "nophoto.jpg";
+    }
+    $pasa = 1;
+} else {
+    // registro es nuevo
+    $accion = "registrar";
+    $boton_accion = "Agregar";
+    $pasa = 0;
+}
+$userController = new userController();
+$user = $userController->listarUsuarioTipoNegocioControlador($company_id, "ASISTENTE");
+
+$proveedorController = new proveedorController();
+$proveedores = $proveedorController->listarTodosProveedorControlador($company_id, "*");
+//
+$controlController = new controlController();
+$unidades = $controlController->obtenerListaMarketControlador("unidades");
+$unidad = $controlController->obtenerUnItemControlador($datos['product_unidad']);
+$etiquetas = $controlController->obtenerListaMarketControlador("etiquetas");
+//
+
+$marcaController = new marcaController();
+$marcas = $marcaController->listarTodosMarcaControlador($company_id, "*");
+$marca_producto=$marcaController->obtenerUnItemControlador($product_marca);
+//
+$categoryController = new categoryController();
+$categorias = $categoryController->listarTodosCategoryControlador($company_id, "*");
+if (!isset($_SESSION["tab"])) {
+    $_SESSION["tab"] = "";
+}
+
+$productController = new productController();
+$product_relacionados = $productController->listarInteresesControlador($company_id,  $product_id);
+$product_etiquetas = $productController->listarEtiquetasControlador($company_id,  $product_id);
+$product_subproductos = $productController->listarSubproductosControlador($company_id,  $product_id);
+$product_descuentos = $productController->listarDescuentosControlador($company_id,  $product_id);
+
+
+
+
+if (isset($_POST["buscar_productos"])) {
+    if ($_POST['product_categoria'] != "" && $_POST['product_subcat'] != "") {
+        $product_list = $productController->listarCategoriasProductControlador($company_id, $_POST['product_categoria'], $_POST['product_subcat']);
+    } else {
+        if ($_POST['product_categoria'] != "") {
+            $product_list = $productController->listarCategoriasProductControlador($company_id, $_POST['product_categoria'], "*");
+        } else {
+            $product_list = $productController->listarCategoriasProductControlador($company_id, '*', '*');
+        }
+    }
+}
+?>
 <div id="layout-wrapper">
-
-    <!-- removeNotificationModal -->
-    <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="NotificationModalbtn-close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="mt-2 text-center">
-                        <lord-icon src="https://cdn.lordicon.com/gsqxdxog.json" trigger="loop" colors="primary:#f7b84b,secondary:#f06548" style="width:100px;height:100px"></lord-icon>
-                        <div class="mt-4 pt-2 fs-15 mx-4 mx-sm-5">
-                            <h4>Are you sure ?</h4>
-                            <p class="text-muted mx-4 mb-0">Are you sure you want to remove this Notification ?</p>
-                        </div>
-                    </div>
-                    <div class="d-flex gap-2 justify-content-center mt-4 mb-2">
-                        <button type="button" class="btn w-sm btn-light" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn w-sm btn-danger" id="delete-notification">Yes, Delete It!</button>
-                    </div>
-                </div>
-
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
     <!-- ========== App Menu ========== -->
     <!-- Vertical Overlay-->
     <div class="vertical-overlay"></div>
@@ -37,7 +132,7 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                                <h4 class="mb-sm-0">Product Details</h4>
+                                <h4 class="mb-sm-0">Detalles del Producto</h4>
 
                                 <div class="page-title-right">
                                     <ol class="breadcrumb m-0">
@@ -62,16 +157,32 @@
                                                 <div class="swiper product-thumbnail-slider p-2 rounded bg-light">
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
-                                                            <img src="<?php echo APP_URL; ?>app/views/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                                            <img src="<?php
+                                                                echo $product_logo == "nophoto.jpg" || $product_logo == ""
+                                                                    ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                    : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_logo;
+                                                                ?>" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <img src="<?php echo APP_URL; ?>app/views/images/products/img-6.png" alt="" class="img-fluid d-block" />
+                                                            <img src="<?php
+                                                            echo $product_banner1 == "nophoto.jpg" || $product_banner1 == ""
+                                                                ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner1;
+                                                            ?>" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <img src="<?php echo APP_URL; ?>app/views/images/products/img-1.png" alt="" class="img-fluid d-block" />
+                                                            <img src="<?php
+                                                            echo $product_banner2 == "nophoto.jpg" || $product_banner2 == ""
+                                                                ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner2;
+                                                            ?>" alt="" class="img-fluid d-block" />
                                                         </div>
                                                         <div class="swiper-slide">
-                                                            <img src="<?php echo APP_URL; ?>app/views/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                                            <img src="<?php
+                                                            echo $product_banner3 == "nophoto.jpg" || $product_banner3 == ""
+                                                                ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner3;
+                                                            ?>" alt="" class="img-fluid d-block" />
                                                         </div>
                                                     </div>
                                                     <div class="swiper-button-next bg-white shadow"></div>
@@ -82,22 +193,38 @@
                                                     <div class="swiper-wrapper">
                                                         <div class="swiper-slide">
                                                             <div class="nav-slide-item">
-                                                                <img src="<?php echo APP_URL; ?>app/views/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                                                <img src="<?php
+                                                                echo $product_logo == "nophoto.jpg" || $product_logo == ""
+                                                                    ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                    : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_logo;
+                                                                ?>" alt="" class="img-fluid d-block" />
                                                             </div>
                                                         </div>
                                                         <div class="swiper-slide">
                                                             <div class="nav-slide-item">
-                                                                <img src="<?php echo APP_URL; ?>app/views/images/products/img-6.png" alt="" class="img-fluid d-block" />
+                                                                <img src="<?php
+                                                                echo $product_banner1 == "nophoto.jpg" || $product_banner1 == ""
+                                                                    ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                    : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner1;
+                                                                ?>" alt="" class="img-fluid d-block" />
                                                             </div>
                                                         </div>
                                                         <div class="swiper-slide">
                                                             <div class="nav-slide-item">
-                                                                <img src="<?php echo APP_URL; ?>app/views/images/products/img-1.png" alt="" class="img-fluid d-block" />
+                                                                <img src="<?php
+                                                                echo $product_banner2 == "nophoto.jpg" || $product_banner2 == ""
+                                                                    ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                    : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner2;
+                                                                ?>" alt="" class="img-fluid d-block" />
                                                             </div>
                                                         </div>
                                                         <div class="swiper-slide">
                                                             <div class="nav-slide-item">
-                                                                <img src="<?php echo APP_URL; ?>app/views/images/products/img-8.png" alt="" class="img-fluid d-block" />
+                                                                <img src="<?php
+                                                                echo $product_banner3 == "nophoto.jpg" || $product_banner3 == ""
+                                                                    ? APP_URL . "app/views/fotos/nophoto.jpg"
+                                                                    : APP_URL . "app/views/fotos/company/$company_id/productos/" . $product_banner3;
+                                                                ?>" alt="" class="img-fluid d-block" />
                                                             </div>
                                                         </div>
                                                     </div>
@@ -111,13 +238,13 @@
                                             <div class="mt-xl-0 mt-5">
                                                 <div class="d-flex">
                                                     <div class="flex-grow-1">
-                                                        <h4>Full Sleeve Sweatshirt for Men (Pink)</h4>
+                                                        <h4><?=ucfirst($product_name);?></h4>
                                                         <div class="hstack gap-3 flex-wrap">
-                                                            <div><a href="#" class="text-primary d-block">Tommy Hilfiger</a></div>
+                                                            <div><a href="#" class="text-primary d-block"><?=$marca_producto['nombre']?></a></div>
                                                             <div class="vr"></div>
-                                                            <div class="text-muted">Seller : <span class="text-body fw-medium">Zoetic Fashion</span></div>
+                                                            <div class="text-muted">Vendedor : <span class="text-body fw-medium"><?=$user['nombre_completo']?></span></div>
                                                             <div class="vr"></div>
-                                                            <div class="text-muted">Published : <span class="text-body fw-medium">26 Mar, 2021</span></div>
+                                                            <div class="text-muted">Publicado : <span class="text-body fw-medium"><?=date("jS F, Y", strtotime( $datos['created_at']))?></span></div>
                                                         </div>
                                                     </div>
                                                     <div class="flex-shrink-0">
@@ -150,8 +277,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-1">Price :</p>
-                                                                    <h5 class="mb-0">$120.40</h5>
+                                                                    <p class="text-muted mb-1">Precio:</p>
+                                                                    <h5 class="mb-0">$<?=number_format($datos['product_precio'], 2, '.', '');?></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -166,8 +293,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-1">No. of Orders :</p>
-                                                                    <h5 class="mb-0">2,234</h5>
+                                                                    <p class="text-muted mb-1">Ordenes :</p>
+                                                                    <h5 class="mb-0">24</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -182,8 +309,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-1">Available Stocks :</p>
-                                                                    <h5 class="mb-0">1,230</h5>
+                                                                    <p class="text-muted mb-1">Disponible:</p>
+                                                                    <h5 class="mb-0"><?=$datos['product_stock']?></h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -198,8 +325,8 @@
                                                                     </div>
                                                                 </div>
                                                                 <div class="flex-grow-1">
-                                                                    <p class="text-muted mb-1">Total Revenue :</p>
-                                                                    <h5 class="mb-0">$60,645</h5>
+                                                                    <p class="text-muted mb-1">Vendido :</p>
+                                                                    <h5 class="mb-0">$605,00</h5>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -287,8 +414,8 @@
                                                 <!-- end row -->
 
                                                 <div class="mt-4 text-muted">
-                                                    <h5 class="fs-14">Description :</h5>
-                                                    <p>Tommy Hilfiger men striped pink sweatshirt. Crafted with cotton. Material composition is 100% organic cotton. This is one of the world’s leading designer lifestyle brands and is internationally recognized for celebrating the essence of classic American cool style, featuring preppy with a twist designs.</p>
+                                                    <h5 class="fs-14">Descripción :</h5>
+                                                    <p><?=$datos['product_description']?></p>
                                                 </div>
 
                                                 <div class="row">
@@ -320,10 +447,10 @@
                                                     <nav>
                                                         <ul class="nav nav-tabs nav-tabs-custom nav-success" id="nav-tab" role="tablist">
                                                             <li class="nav-item">
-                                                                <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Specification</a>
+                                                                <a class="nav-link active" id="nav-speci-tab" data-bs-toggle="tab" href="#nav-speci" role="tab" aria-controls="nav-speci" aria-selected="true">Especification</a>
                                                             </li>
                                                             <li class="nav-item">
-                                                                <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false">Details</a>
+                                                                <a class="nav-link" id="nav-detail-tab" data-bs-toggle="tab" href="#nav-detail" role="tab" aria-controls="nav-detail" aria-selected="false">Detalles</a>
                                                             </li>
                                                         </ul>
                                                     </nav>
@@ -374,7 +501,7 @@
 
                                                 <div class="mt-5">
                                                     <div>
-                                                        <h5 class="fs-14 mb-3">Ratings & Reviews</h5>
+                                                        <h5 class="fs-14 mb-3">Rating y Opiniones</h5>
                                                     </div>
                                                     <div class="row gy-4 gx-0">
                                                         <div class="col-lg-4">

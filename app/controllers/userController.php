@@ -613,7 +613,17 @@
 			return $datos;
 			exit();
 		}
-
+		/*----------  Controlador listar usuario  que aun no estan asignados a ninguna empresa----------*/
+		public function listarUsuarioTipoNegocioControlador($company_id, $tipo){
+			$company_id=$this->limpiarCadena($company_id);
+			$tipo=$this->limpiarCadena($tipo);
+			$tipo=strtoupper($tipo);
+			$consulta_datos="SELECT * FROM usuario WHERE tipo='$tipo' OR tipo='ADMINISTRADOR' AND company_id = $company_id ORDER BY USER_ID DESC LIMIT 1";
+			$datos = $this->ejecutarConsulta($consulta_datos);
+			$datos=$datos->fetch();
+			return $datos;
+			exit();
+		}
 
 		/*----------  Controlador eliminar usuario  ----------*/
 		public function eliminarUsuarioControlador(){

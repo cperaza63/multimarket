@@ -21,7 +21,6 @@ if (!isset($_SESSION['product_subcat']))    $_SESSION['product_subcat']="";
 if (!isset($_SESSION['cadena_filtro']))     $_SESSION['cadena_filtro']="";
 if (!isset($_SESSION['sql'])) $_SELECT['sql'] = "";
 
-
 $mysqli = new mysqli("localhost", "root", "", "multimarket");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
@@ -45,10 +44,10 @@ if(isset($_POST['product_categoria'])){
 }
 
 if(isset($_POST['product_subcat'])){
-    $product_subcat = $_POST['product_subcat'];
+    $product_subcat = $_POST['product_subcat'] == "0" ? "": $_POST['product_subcat'];
     $_SESSION['product_subcat'] = $product_subcat;
 }else{
-    $product_subcat = $_SESSION['product_subcat'];
+    $product_subcat = $_SESSION['product_subcat']== "0" ? "": $_SESSION['product_subcat'];
 }
 // filterWord
 //  filtro de rango de precios , minCost, maxCost, 
@@ -76,7 +75,6 @@ $minCost = intval(str_replace ( " " , "" , $minCost ));
 $maxCost = str_replace ( "$" , "" , $maxCost );
 $maxCost = intval(str_replace ( " " , "" , $maxCost ));
 
-echo "===" . $minCost. " " . $maxCost;
 if( isset($_POST["minCost"]) ){
     $cadena_filtro1 = $cadena_filtro1 . " and product_precio>=" . intval($minCost);
 }
@@ -87,14 +85,13 @@ if( isset($_POST["maxCost"]) ){
 }
 
 // SECCION DE POST DE BUSQUEDA DE CATEGORIA Y SUBCATEGORIAS
-if ( ($product_categoria>0) ) {
-    $cadena_filtro2 = " and product_categoria = " . $product_categoria;
-    if ( ($product_subcat>0) ) {
-        $cadena_filtro2 = " and product_subcat = " . $product_subcat;
-    }
+if ( ($_SESSION['product_categoria']>0) && $_SESSION['product_subcat']>0 ) {
+    $cadena_filtro2 = " and product_subcat = " . $_SESSION['product_subcat'];
 }else{
-    if ( ($product_subcat>0) ) {
-        $cadena_filtro2 = " and product_subcat = " . $product_subcat;
+    if ( ($_SESSION['product_categoria']>0) ) {
+        $cadena_filtro2 = $cadena_filtro2 . " and b.unidad=0 and product_categoria = " . $_SESSION['product_categoria'];
+    }else{
+        $cadena_filtro2 = $cadena_filtro2 . " and product_subcat = " . $_SESSION['product_subcat'];
     }
 }
 
@@ -146,8 +143,7 @@ if ($cadena_descuento !=""){
     $cadena_descuento = " AND (" . $cadena_descuento . ")";
 }
 //echo "==" . $cadena_descuento;
-$_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_categorias b ON (a.product_categoria = b.categoria_id) left join company_products_descuentos c ON (a.company_id = c.company_id AND a.product_id = c.product_id AND c.estatus=1) WHERE a.company_id=$company_id " . $cadena_filtro . $cadena_descuento . " ORDER BY a.product_id";
-
+$_SELECT['sql'] = "SELECT a.company_id as company, a.*, c.* FROM company_products a inner join company_categorias b ON (a.product_categoria = b.categoria_id) left join company_products_descuentos c ON (a.company_id = c.company_id AND a.product_id = c.product_id AND c.estatus=1) WHERE a.company_id=$company_id " . $cadena_filtro . $cadena_descuento . " GROUP BY a.product_id";
 ?>
 <div id="layout-wrapper">
 <!-- removeNotificationModal -->
@@ -193,7 +189,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                 <div class="mb-3">
                                     <label for="product_categoria" class="form-label">Categorias</label>
                                     <select name="product_categoria" language="javascript:void(0)" onchange="loadAjaxCatSubcat(this.value, '')" class="form-control" data-choices data-choices-text-unique-true id="product_categoria">
-                                        <option value="0">Escoja una opción</option>
+                                        <option value="">Escoja una opción</option>
                                         <?php
                                         if (is_array($categorias)) {
                                             foreach ($categorias as $categoria) {
@@ -213,7 +209,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                 <div class="mb-3">
                                     <label for="product_subcat" class="form-label">Subcategorías</label>
                                     <select name="product_subcat" class="form-control" data-choices data-choices-text-unique-true id="product_subcat">
-                                    <option value="0">Escoja una opción</option>
+                                    <option value="">Escoja una opción</option>
                                     <?php
                                         $sql = "SELECT * FROM company_categorias WHERE unidad= " . $product_categoria . " AND company_id=$company_id AND estatus=1 ORDER BY nombre";
                                         //echo $sql;
@@ -272,7 +268,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                     <div class="card-body border-bottom">
                                         <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Precio <strong><?="($". $minCost . ".00 - $" . $maxCost.".00)"?></strong></p>
 
-                                        <div id="product-price-range" data-slider-color="primary"></div>
+                                        <div id="product-price-range..." data-slider-color="primary"></div>
                                         <div class="formCost d-flex gap-2 align-items-center mt-3">
                                             <input name="minCost" class="form-control form-control-sm" type="text" id="minCost" value="<?=$minCost;?>" /> 
                                             <span class="fw-semibold text-muted">to</span> 
@@ -525,11 +521,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                     </div>
                                     <!-- end card header -->
                                     <?php
-                                    if(isset($_SESSION[$url[0]]) && !empty($_SESSION[$url[0]])){
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, $_SESSION[$url[0]]);
-                                    }else{
-                                        $datos = $insProduct->listarTodosProductControlador($company_id, "*");
-                                    }
+                            $datos = $insProduct->listarProductEcommerceControlador( $_SELECT['sql'] ); 
                                     ?>
                                     <div class="card-body">
                                         <div class="tab-content text-muted">
@@ -558,7 +550,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                                         if(is_array($datos)){
                                                             foreach($datos as $rows){
                                                                 if($rows['product_logo'] != ""){
-                                                                    $product_logo = APP_URL . "app/views/fotos/company/".$rows['company_id']."/productos/".$rows['product_logo'];
+                                                                    $product_logo = APP_URL . "app/views/fotos/company/".$rows['company']."/productos/".$rows['product_logo'];
                                                                 }else{
                                                                     $product_logo = APP_URL . "app/views/fotos/nophoto.jpg";
                                                                 }
@@ -570,7 +562,9 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                                                         </div>
                                                                     </th>
                                                                     <td>
+                                                                        <a href="<?= APP_URL.'productDetails/'.$rows['product_id'].'/'?>">
                                                                         <img src="<?=$product_logo; ?>" width="60px" alt="Logo del product de la tabla">
+                                                                        </a>
                                                                     </td>
                                                                     <td><?=$rows['product_name'];?></td>
                                                                     <td>
@@ -603,7 +597,7 @@ $_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_ca
                                                         ?>
                                                     </tbody>
                                                 </table>
-                                                <?=$_SELECT['sql']?>; 
+                                                <!-- <=$_SELECT['sql']?>;  -->
                                                 </div>
                                             </div>
                                             <!-- end tab pane -->
