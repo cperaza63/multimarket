@@ -1,22 +1,32 @@
-<!-- Layout config Js -->
+
 <?php
+use app\controllers\productController;
+use app\controllers\categoryController;
+use app\controllers\marcaController;
+
+$company_id= $_SESSION['user_company_id'];
+$cadena_interna="";
+$cadena_filtro = "";
+$cadena_filtro1 = "";
+$cadena_filtro2 = "";
+$product_categoria ="";
+$product_subcat ="";
+$palabra_clave="";
+$i=0;
+$minCost=0; 
+$maxCost=1000;
+
+if (!isset($_SESSION['product_categoria'])) $_SESSION['product_categoria']="";
+if (!isset($_SESSION['product_subcat']))    $_SESSION['product_subcat']="";
+if (!isset($_SESSION['cadena_filtro']))     $_SESSION['cadena_filtro']="";
+if (!isset($_SESSION['sql'])) $_SELECT['sql'] = "";
+
+
 $mysqli = new mysqli("localhost", "root", "", "multimarket");
 if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
     exit();
 }
-if (!isset($_SESSION['product_categoria'])){
-    $_SESSION['product_categoria']="";
-}
-if (!isset($_SESSION['product_subcat'])){
-    $_SESSION['product_subcat']="";
-}
-$product_categoria ="";
-$product_subcat ="";
-$company_id= $_SESSION['user_company_id'];
-use app\controllers\productController;
-use app\controllers\categoryController;
-use app\controllers\marcaController;
 
 $insProduct = new productController();
 $categoryController = new categoryController();
@@ -24,6 +34,7 @@ $categorias = $categoryController->listarTodosCategoryControlador($company_id, "
 $categoria_cuantos = $categoryController->listarCuantosCategoryControlador($company_id, "*");
 $marcaController = new marcaController();
 $marcas = $marcaController->listarTodosMarcaControlador($company_id,"*");
+
 
 // reviso el POST
 if(isset($_POST['product_categoria'])){
@@ -39,18 +50,105 @@ if(isset($_POST['product_subcat'])){
 }else{
     $product_subcat = $_SESSION['product_subcat'];
 }
+// filterWord
+//  filtro de rango de precios , minCost, maxCost, 
+
+if( isset($_POST["filterWord"]) && $_POST["filterWord"] != "" ){
+    $palabra_clave = $_POST["filterWord"];
+    $cadena_filtro1 = " and (ucase(b.nombre) like '%" . strtoupper($palabra_clave) . "%' OR".
+    " ucase(b.codigo) like '%"     . strtoupper($palabra_clave) . "%' OR".
+    " ucase(product_name) like '%"    . strtoupper($palabra_clave) . "%' OR". 
+    " ucase(product_description) like '%" . strtoupper($palabra_clave) . "%')";
+}
+
+if(isset($_POST['minCost'])){
+    $minCost = $_POST['minCost'];
+    }else{
+    $minCost = 0;
+}
+if(isset($_POST['maxCost'])){
+    $maxCost = $_POST['maxCost'];
+    }else{
+    $maxCost = 1000;
+}
+$minCost = str_replace ( "$" , "" , $minCost );
+$minCost = intval(str_replace ( " " , "" , $minCost ));
+$maxCost = str_replace ( "$" , "" , $maxCost );
+$maxCost = intval(str_replace ( " " , "" , $maxCost ));
+
+echo "===" . $minCost. " " . $maxCost;
+if( isset($_POST["minCost"]) ){
+    $cadena_filtro1 = $cadena_filtro1 . " and product_precio>=" . intval($minCost);
+}
+
+if( isset($_POST["maxCost"]) ){
+    $maxCost = $_POST["maxCost"];
+    $cadena_filtro1 = $cadena_filtro1 . " and product_precio<=" . intval($maxCost);
+}
+
+// SECCION DE POST DE BUSQUEDA DE CATEGORIA Y SUBCATEGORIAS
+if ( ($product_categoria>0) ) {
+    $cadena_filtro2 = " and product_categoria = " . $product_categoria;
+    if ( ($product_subcat>0) ) {
+        $cadena_filtro2 = " and product_subcat = " . $product_subcat;
+    }
+}else{
+    if ( ($product_subcat>0) ) {
+        $cadena_filtro2 = " and product_subcat = " . $product_subcat;
+    }
+}
+
+if ( is_array($marcas) ) {
+    foreach ($marcas as $marca) {
+        $marca_id = $marca['marca_id'];
+        if(isset($_POST["marca-$marca_id"]) && $_POST["marca-$marca_id"] == "on"){
+            if ($i==0){
+                $cadena_interna = " product_marca = " . $marca_id;
+            }else{
+                if($cadena_interna!=""){
+                    $cadena_interna = $cadena_interna . " OR product_marca = " . $marca_id;
+                }else{
+                    $cadena_interna = " product_marca = " . $marca_id;
+                }
+                
+            }
+        }  
+        //echo "==" . $cadena_interna;
+        $i++;
+    }
+    if ($cadena_interna!=""){
+        $cadena_filtro = $cadena_filtro1 . $cadena_filtro2 . " and (" . $cadena_interna . ")";
+    }else{
+        $cadena_filtro = $cadena_filtro1 . $cadena_filtro2;
+    }
+}
+
+$cadena_descuento="";
+if( isset($_POST['descuento-50'] ) ) {
+    $cadena_descuento = " c.valor >= 50 ";
+}
+if ( isset($_POST['descuento-40']) ) {
+    $cadena_descuento = $cadena_descuento . ($cadena_descuento!="" ? " OR c.valor >= 40 " : " c.valor >= 40 ");
+}
+if ( isset($_POST['descuento-30']) ) {
+    $cadena_descuento = $cadena_descuento . ($cadena_descuento!="" ? " OR c.valor >= 30 " : " c.valor >= 30 ");
+}
+if ( isset($_POST['descuento-20']) ) {
+    $cadena_descuento = $cadena_descuento . ($cadena_descuento!="" ? " OR c.valor >= 20 " : " c.valor >= 20 ");
+}
+if ( isset($_POST['descuento-10']) ) {
+    $cadena_descuento = $cadena_descuento . ($cadena_descuento!="" ? " OR c.valor >= 10 " : " c.valor >= 10 ");
+}if ( isset($_POST['descuento-1']) ) {
+    $cadena_descuento = $cadena_descuento . ($cadena_descuento!="" ? " OR c.valor < 10 " : " c.valor < 10 ");
+}
+
+if ($cadena_descuento !=""){
+    $cadena_descuento = " AND (" . $cadena_descuento . ")";
+}
+//echo "==" . $cadena_descuento;
+$_SELECT['sql'] = "SELECT a.*, c.* FROM company_products a inner join company_categorias b ON (a.product_categoria = b.categoria_id) left join company_products_descuentos c ON (a.company_id = c.company_id AND a.product_id = c.product_id AND c.estatus=1) WHERE a.company_id=$company_id " . $cadena_filtro . $cadena_descuento . " ORDER BY a.product_id";
 
 ?>
-<script src="assets/js/layout.js"></script>
-<!-- Bootstrap Css -->
-<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-<!-- Icons Css -->
-<link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-<!-- App Css-->
-<link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-<!-- custom Css-->
-<link href="assets/css/custom.min.css" rel="stylesheet" type="text/css" />
-<!-- Begin page -->
 <div id="layout-wrapper">
 <!-- removeNotificationModal -->
 <div id="removeNotificationModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
@@ -123,7 +221,7 @@ if(isset($_POST['product_subcat'])){
                                         ?>
                                             <?php while ($fila = mysqli_fetch_array($res)) { ?>
                                                 <option value="<?php echo $fila['categoria_id']; ?>" <?php if ($fila['categoria_id'] == $product_subcat) echo "selected"; ?>>
-                                                    <?php echo $fila['categoria_id'] == "" ? "Seleccione Modelo" : $fila['nombre']; ?>
+                                                    <?php echo $fila['nombre'];?>
                                                 </option>
                                             <?php } ?>
                                         <?php
@@ -135,7 +233,7 @@ if(isset($_POST['product_subcat'])){
                             <div class="col-lg-1">
                                 <div class="mb-3">
                                     <label for="accion" class="form-label"><span style="color: white;">_______</span></label>
-                                    <button type="submit" class="btn btn-info"><i class="ri-search-line search-icon"></i></button>
+                                    <button name="buscar_catsubcat" type="submit" class="btn btn-info"><i class="ri-search-line search-icon"></i></button>
                                 </div>
                             </div>
                             <div class="page-title-right">
@@ -150,7 +248,7 @@ if(isset($_POST['product_subcat'])){
                     </div>
                 </div>
                 <!-- end page title -->
-                <form action="">
+                <form action="" method="POST">
                     <div class="row">
                         <div class="col-xl-3 col-lg-4">
                             <div class="card">
@@ -165,49 +263,24 @@ if(isset($_POST['product_subcat'])){
                                     </div>
 
                                     <div class="filter-choices-input">
-                                        <input class="form-control" type="text" id="filter-choices-input" value="T-Shirts" />
+                                        <input class="form-control" type="text" name="filterWord" id="filter-choices-input" value="<?=$palabra_clave?>" />
                                     </div>
                                 </div>
 
                                 <div class="accordion accordion-flush filter-accordion">
 
                                     <div class="card-body border-bottom">
-                                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Precio</p>
+                                        <p class="text-muted text-uppercase fs-12 fw-medium mb-4">Precio <strong><?="($". $minCost . ".00 - $" . $maxCost.".00)"?></strong></p>
 
                                         <div id="product-price-range" data-slider-color="primary"></div>
                                         <div class="formCost d-flex gap-2 align-items-center mt-3">
-                                            <input class="form-control form-control-sm" type="text" id="minCost" value="0" /> <span class="fw-semibold text-muted">to</span> <input class="form-control form-control-sm" type="text" id="maxCost" value="1000" />
+                                            <input name="minCost" class="form-control form-control-sm" type="text" id="minCost" value="<?=$minCost;?>" /> 
+                                            <span class="fw-semibold text-muted">to</span> 
+                                            <input name="maxCost" class="form-control form-control-sm" type="text" id="maxCost" value="<?=$maxCost;?>" />
                                         </div>
-                                        <div><br>
-                                        <button type="submit" name="filtro_inicial" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos filtros</button>
+                                        <div align="center"><br>
+                                        <button type="submit" name="filtro_lateral" value= "1" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar productos</button>
                                     </div>
-                                    </div>
-                                    
-                                    <div class="card-body border-bottom">
-                                        <div>
-                                            <p class="text-muted text-uppercase fs-12 fw-medium mb-2">Categorías de productos</p>
-                                            <ul class="list-unstyled mb-0 filter-list">
-                                                <?php 
-                                                if (is_array($categoria_cuantos)) {
-                                                    foreach ($categoria_cuantos as $res) {
-                                                    ?>  
-                                                    <li>
-                                                        <a href="#" class="d-flex py-1 align-items-center">
-                                                            <div class="flex-grow-1">
-                                                                <h5 class="fs-13 mb-0 listname"><?=$res['nombre']?></h5>
-                                                            </div>
-                                                            <div class="flex-shrink-0 ms-2">
-                                                            <span class="badge bg-light text-muted"><?=$res['cuantos']?></span>
-                                                        </div>
-                                                        </a>
-                                                    </li>
-                                                <?php
-                                                    }
-                                                } 
-                                                ?>
-                                                
-                                            </ul>
-                                        </div>
                                     </div>
                                     <div class="accordion-item">
                                         <h2 class="accordion-header" id="flush-headingBrands">
@@ -228,14 +301,25 @@ if(isset($_POST['product_subcat'])){
                                                             foreach ($marcas as $res) {
                                                             ?>  
                                                             <div class="form-check">
-                                                                <input class="form-check-input" type="checkbox" value="Boat" id="productBrandRadio5" checked>
-                                                                <label class="form-check-label" for="productBrandRadio5" checked><?=mb_strtolower($res['nombre']);?></label>
+                                                                <input name="marca-<?=$res['marca_id']?>" class="form-check-input" type="checkbox" value="on" id="productBrandRadio" 
+                                                                <?php
+                                                                if ( isset( $_POST["marca-".$res['marca_id']] ) ) {
+                                                                    echo "checked";
+                                                                }
+                                                                ?>>
+                                                                <label class="form-check-label" for="productBrandRadio" 
+                                                                <?php
+                                                                if ( isset( $_POST["marca-".$res['marca_id']] ) ) {
+                                                                    echo "checked";
+                                                                }
+                                                                ?>
+                                                                ><?=mb_strtolower($res['nombre']);?></label>
                                                             </div>
                                                         <?php
                                                             }
                                                         } 
                                                     ?>
-                                                    <button type="submit" name="filtro_marca" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estas marcas</button>
+                                                    <button type="submit" name="filtro_lateral" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar productos</button>
                                                 </div>
                                             </div>
                                         </div>
@@ -252,39 +336,75 @@ if(isset($_POST['product_subcat'])){
                                             <div class="accordion-body text-body pt-1">
                                                 <div class="d-flex flex-column gap-2 filter-check">
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="50% or more" id="productdiscountRadio6">
+                                                        <input name="descuento-50" class="form-check-input" type="checkbox" value="50" id="productdiscountRadio6"
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-50"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio6">50% o más</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="40% or more" id="productdiscountRadio5">
+                                                        <input <input name="descuento-40" class="form-check-input" type="checkbox" value="40" id="productdiscountRadio5"
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-40"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio5">40% o más</label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="30% o más" id="productdiscountRadio4">
+                                                        <input <input name="descuento-30" class="form-check-input" type="checkbox" value="30" id="productdiscountRadio4"
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-30"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio4">
                                                             30% o más
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="20% or más" id="productdiscountRadio3" checked>
+                                                        <input <input name="descuento-20" class="form-check-input" type="checkbox" value="20" id="productdiscountRadio3" 
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-20"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio3">
                                                             20% o más
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="10% o más" id="productdiscountRadio2">
+                                                        <input <input name="descuento-10" class="form-check-input" type="checkbox" value="10" id="productdiscountRadio2"
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-10"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio2">
                                                             10% o más
                                                         </label>
                                                     </div>
                                                     <div class="form-check">
-                                                        <input class="form-check-input" type="checkbox" value="Memos del  10%" id="productdiscountRadio1">
+                                                        <input <input name="descuento-1"class="form-check-input" type="checkbox" value="1" id="productdiscountRadio1"
+                                                        <?php
+                                                        if ( isset( $_POST["descuento-1"] ) ) {
+                                                            echo "checked";
+                                                        }
+                                                        ?>
+                                                        >
                                                         <label class="form-check-label" for="productdiscountRadio1">
                                                             menos del 10%
                                                         </label>
                                                     </div>
                                                     <div>
-                                                    <button type="submit" name="filtro_descuento" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar descuentos</button>
+                                                    <button type="submit" name="filtro_lateral" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar productos</button>
                                                 </div>
                                                 </div>
                                             </div>
@@ -351,7 +471,7 @@ if(isset($_POST['product_subcat'])){
                                                         </label>
                                                     </div>
                                                     <div>
-                                                        <button type="submit" name="filtro_rating" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar estos ratings</button>
+                                                    <button type="submit" name="filtro_lateral" class="btn btn-info"><i class="ri-search-line search-icon "></i> Buscar productos</button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -483,6 +603,7 @@ if(isset($_POST['product_subcat'])){
                                                         ?>
                                                     </tbody>
                                                 </table>
+                                                <?=$_SELECT['sql']?>; 
                                                 </div>
                                             </div>
                                             <!-- end tab pane -->
@@ -522,7 +643,6 @@ if(isset($_POST['product_subcat'])){
     <!-- end main content-->
     </div>
     <!-- END layout-wrapper -->
-
     <!-- removeItemModal -->
     <div id="removeItemModal" class="modal fade zoomIn" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">

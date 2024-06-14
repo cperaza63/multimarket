@@ -99,6 +99,7 @@ data-sidebar-size="lg" data-sidebar-image="none" data-preloader="disable">
                 || substr($_GET['views'], 0, 12) == "cuponUpdate/"
                 || substr($_GET['views'], 0, 11) == "productNew/"
                 || substr($_GET['views'], 0, 14) == "productUpdate/"
+                || substr($_GET['views'], 0, 14) == "productCompra/"
             ){
                 ?><script src="<?php echo APP_URL; ?>app/views/js/ajax_edo.js"></script><?php
             }else{

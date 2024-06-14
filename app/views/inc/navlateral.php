@@ -127,7 +127,7 @@
                                         <div class="collapse menu-dropdown" id="sidebarEcommerce">
                                             <ul class="nav nav-sm flex-column">
                                                 <li class="nav-item">
-                                                    <a href="<?php echo APP_URL; ?>productCompra/" class="nav-link" data-key="t-productCompra"> Consulta de Productos </a>
+                                                    <a href="<?php echo APP_URL; ?>productCompra/" class="nav-link" data-key="t-productCompra"> Comprar en tienda </a>
                                                 </li>
                                                 <li class="nav-item">
                                                     <a href="apps-ecommerce-product-details.html" class="nav-link" data-key="t-product-Details"> Product Details </a>
