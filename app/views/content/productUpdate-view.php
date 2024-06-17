@@ -1,3 +1,32 @@
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.4/tinymce.min.js"></script>
+<script>
+    tinymce.init({
+    selector: '#mytextarea_specifications',
+        plugins: [
+        "advlist autolink lists link image media pagebreak preview textcolor charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+        "insertdatetime media table contextmenu paste"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | " +
+                "alignleft aligncenter alignright alignjustify | " +
+                "bullist numlist outdent indent | link image",
+    language: "en"
+    });
+</script>
+<script>
+    tinymce.init({
+    selector: '#mytextarea_features',
+        plugins: [
+        "advlist autolink lists link image media pagebreak preview textcolor charmap print preview anchor",
+        "searchreplace visualblocks code fullscreen",
+        "insertdatetime media table contextmenu paste"
+    ],
+    toolbar: "insertfile undo redo | styleselect | bold italic | " +
+                "alignleft aligncenter alignright alignjustify | " +
+                "bullist numlist outdent indent | link image",
+    language: "en"
+    });
+</script>
 <!-- ============================================================== -->
 <!-- BASE DE DATOS PARA AJAX -->
 <!-- ============================================================== -->
@@ -8,7 +37,6 @@ if ($mysqli->connect_errno) {
     exit();
 }
 ?>
-
 <!-- ============================================================== -->
 <!-- Start right Content here -->
 <!-- ============================================================== -->
@@ -44,6 +72,9 @@ if ($mysqli->connect_errno) {
                 $product_name   = $datos['product_name'];
                 $product_precio   = $datos['product_precio'];
                 $product_description   = $datos['product_description'];
+                $product_description   = $datos['product_features'];
+                $product_description   = $datos['product_specifications'];
+
                 if ($datos['product_tax'] == 0) {
                     $product_tax = $company_iva;
                 } else {
@@ -769,6 +800,13 @@ if ($mysqli->connect_errno) {
                                                     </div>
                                                     <!--end col-->
                                                     <hr>
+                                                    Características del producto
+                                                    <textarea id="mytextarea_features"  placeholder="Coloque las caracteristicas del producto ..." name="mytextarea_features" class="editable" ><?= $datos['product_features'];?></textarea>
+
+                                                    <hr>
+                                                    Especificaciones del producto
+                                                    <textarea id="mytextarea_specifications"  placeholder="Coloque las especificaciones técnicas ..." name="mytextarea_specifications" class="editable" ><?= $datos['product_specifications'];?></textarea>
+
                                                     <div class="col-lg-12">
                                                         <div class="hstack gap-2 justify-content-end">
                                                             <button type="submit" class="btn btn-primary">Actualizar Mas Información</button>

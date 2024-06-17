@@ -363,6 +363,8 @@
 			$product_mostrar_stock0= $this->limpiarCadena($_POST['product_mostrar_stock0']);
 			$product_width= $this->limpiarCadena($_POST['product_width']);
 			$product_height= $this->limpiarCadena($_POST['product_height']);
+			$product_specifications = $this->limpiarCadena($_POST['mytextarea_specifications']);
+			$product_features = $this->limpiarCadena($_POST['mytextarea_features']);
 			# Verificando campos obligatorios 
 		    if($product_id=="" || $company_id=="" || $product_costo=="" 
 			|| $product_margen_utilidad=="" || $product_stock=="" || $product_reorden==""
@@ -460,6 +462,16 @@
 					"campo_nombre"=>"product_height",
 					"campo_marcador"=>":Product_height",
 					"campo_valor"=>$product_height
+				],
+				[
+					"campo_nombre"=>"product_specifications",
+					"campo_marcador"=>":Product_specifications",
+					"campo_valor"=>$product_specifications
+				],
+				[
+					"campo_nombre"=>"product_features",
+					"campo_marcador"=>":Product_features",
+					"campo_valor"=>$product_features
 				]
 			];
 			$condicion=[
